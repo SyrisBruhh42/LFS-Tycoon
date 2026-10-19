@@ -531,6 +531,51 @@ def check_economy_containment(capsules: Dict[str, Dict[str, Any]]) -> List[str]:
     return errors
 
 
+FALLBACK_BLOCK_ID = "blocks/stone"
+SOLID_MASS_BUDGET = 0.90
+
+
+def check_world_mass_budget(capsules: Dict[str, Dict[str, Any]]) -> List[str]:
+    """World-fill sanity: at EVERY depth the summed spawn_prob of non-fallback solid blocks must stay
+    <= SOLID_MASS_BUDGET so blocks/stone (the fixed fill) always keeps >= 10% of the world.
+    Use a small spawn_prob, a higher z_unlock, or an optional z_max to stay inside the budget."""
+    blocks: List[Tuple[str, float, int, int]] = []
+    for cid, data in capsules.items():
+        if cid == FALLBACK_BLOCK_ID or "mineable_block" not in data.get("affordances", []):
+            continue
+        st = data.get("stats", {})
+        if str(st.get("fluid_type", "NONE")) != "NONE":
+            continue
+        try:
+            p = float(st.get("spawn_prob", 0.05))
+            z_lo = int(st.get("z_unlock", 0))
+            z_hi = int(st.get("z_max", 2**31 - 1))
+        except (TypeError, ValueError):
+            continue
+        blocks.append((cid, p, z_lo, z_hi))
+
+    breakpoints = {0}
+    for _, _, z_lo, z_hi in blocks:
+        breakpoints.add(max(0, z_lo))
+        if z_hi < 2**31 - 1:
+            breakpoints.add(z_hi + 1)
+
+    errors: List[str] = []
+    flagged: Set[str] = set()
+    for z in sorted(breakpoints):
+        active = [(cid, p) for cid, p, z_lo, z_hi in blocks if z_lo <= z <= z_hi]
+        total = sum(p for _, p in active)
+        if total > SOLID_MASS_BUDGET + 1e-9:
+            for cid, _ in active:
+                if cid not in flagged:
+                    flagged.add(cid)
+                    errors.append(
+                        f"[{cid}] World Mass Budget exceeded at depth z={z}: solid spawn_prob total {total:.3f} > {SOLID_MASS_BUDGET}. "
+                        f"Lower stats.spawn_prob, raise stats.z_unlock, or set stats.z_max."
+                    )
+    return errors
+
+
 def discover_capsules(base_dir: Path) -> Dict[str, Path]:
     found: Dict[str, Path] = {}
     if not base_dir.exists():
@@ -579,7 +624,7 @@ def main() -> int:
                 except Exception:
                     pass
 
-    econ_errors = check_economy_containment(full_economy_pool)
+    econ_errors = check_economy_containment(full_economy_pool) + check_world_mass_budget(full_economy_pool)
     # Filter economy errors to capsules in target_map
     for e in econ_errors:
         if any(e.startswith(f"[{cid}]") for cid in target_map):

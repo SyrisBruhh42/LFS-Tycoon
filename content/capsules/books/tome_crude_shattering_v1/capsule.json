@@ -7,7 +7,7 @@
     "rarity": "uncommon"
   },
   "affordances": ["carry", "read_book", "sell"],
-  "tags": ["book", "skill_book", "cleave", "crude"],
+  "tags": ["book", "skill_book", "cleave", "crude", "solves_overkill_waste", "path_skill_book"],
   "stats": {
     "base_value": 80.0,
     "splash_pct": 0.08

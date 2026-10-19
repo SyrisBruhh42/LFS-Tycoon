@@ -2,6 +2,8 @@ class_name Generator3D
 extends RefCounted
 ## 3D Procedural Vein & Biome Generator with Baked Empirical Quantile LUT & Conditional Priority Scaling.
 
+const FALLBACK_BLOCK: String = "blocks/stone"
+
 var catalog: CatalogDB
 var master_seed: int = 1337
 var quantile_lut: PackedFloat32Array = PackedFloat32Array()
@@ -26,15 +28,15 @@ func _init_noises() -> void:
 	_biome_noise.frequency = 1.0 / 32.0
 	_biome_noise.seed = master_seed ^ 0x5A5A5A
 
-	var idx := 0
 	for bid in catalog.block_ids_sorted:
 		var nz := FastNoiseLite.new()
 		nz.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
 		nz.fractal_type = FastNoiseLite.FRACTAL_NONE
 		nz.frequency = 1.0
-		nz.seed = master_seed + (idx + 1) * 7919
+		# Seed derives from the block ID (not its sort index) so adding new capsules
+		# never reshuffles the terrain of existing blocks.
+		nz.seed = int((master_seed + int(String(bid).hash())) & 0x7FFFFFFF)
 		_noises[bid] = nz
-		idx += 1
 
 
 func _build_or_load_quantile_lut() -> void:
@@ -98,7 +100,11 @@ func raw_to_uniform(n: float) -> float:
 
 ## Computes active biome ID at coordinate (x, y, z)
 func get_biome_at(x: int, y: int, z: int) -> String:
-	var best_biome := "biomes/standard_crust"
+	# Active non-default biomes at depth z occupy DISJOINT noise bands (sorted by ID, so
+	# deterministic and independent of load order). Total coverage is capped at 90% so
+	# many biome capsules can coexist without shadowing each other.
+	var active: Array[Dictionary] = []
+	var total_w := 0.0
 	for b_id in catalog.biome_ids:
 		if b_id == "biomes/standard_crust":
 			continue
@@ -107,11 +113,20 @@ func get_biome_at(x: int, y: int, z: int) -> String:
 		var z_min := int(st.get("z_min", 0))
 		var z_max := int(st.get("z_max", 999999))
 		if z >= z_min and z <= z_max:
-			var weight := float(st.get("weight", 0.25))
-			var u := raw_to_uniform(_biome_noise.get_noise_3d(float(x), float(y), float(z)))
-			if u >= 1.0 - weight:
-				return b_id
-	return best_biome
+			var w := maxf(0.0, float(st.get("weight", 0.25)))
+			if w > 0.0:
+				active.append({"id": b_id, "w": w})
+				total_w += w
+	if active.is_empty():
+		return "biomes/standard_crust"
+	var scale := minf(1.0, 0.9 / total_w)
+	var u := raw_to_uniform(_biome_noise.get_noise_3d(float(x), float(y), float(z)))
+	var acc := 0.0
+	for a in active:
+		acc += float(a["w"]) * scale
+		if u >= 1.0 - acc:
+			return String(a["id"])
+	return "biomes/standard_crust"
 
 
 ## Resolves the 2-tuple tier for a block at depth z: floor((z - z_unlock) / l_step)
@@ -134,21 +149,28 @@ func sample_voxel(x: int, y: int, z: int, local_imbalance: float = 0.0, use_biom
 	var remaining_mass := 1.0
 	var chosen_fluid_block := ""
 	var chosen_solid_block := ""
-	var fallback_block := "blocks/stone"
+	# The world-fill block is a FIXED constant — never "whichever block sorts last" —
+	# so newly added block capsules can never hijack the world fill.
+	var fallback_block := FALLBACK_BLOCK
 
-	var n_blocks := catalog.block_ids_sorted.size()
-	for i in n_blocks:
+	for i in catalog.block_ids_sorted.size():
 		var bid: String = catalog.block_ids_sorted[i]
+		if bid == fallback_block:
+			continue
 		var cap: Dictionary = catalog.capsules[bid]
 		var st: Dictionary = cap.get("stats", {})
 		var z_unlock := int(st.get("z_unlock", 0))
-		if z < z_unlock:
+		var z_max := int(st.get("z_max", 2147483647))
+		if z < z_unlock or z > z_max:
 			continue
 
-		var is_last := (i == n_blocks - 1)
-		if is_last and chosen_solid_block == "":
-			chosen_solid_block = bid
-			break
+		var fluid_type := str(st.get("fluid_type", "NONE"))
+		var is_fluid := fluid_type != "NONE"
+		# Once a solid is chosen, keep scanning ONLY for fluid overlays (independent layer).
+		if chosen_solid_block != "" and not is_fluid:
+			continue
+		if is_fluid and chosen_fluid_block != "":
+			continue
 
 		var base_p := float(slider_overrides.get(bid, st.get("spawn_prob", 0.05)))
 		if use_biome_weights and b_weights.has(bid):
@@ -165,23 +187,21 @@ func sample_voxel(x: int, y: int, z: int, local_imbalance: float = 0.0, use_biom
 			continue
 
 		# Conditional probability correction so priority order does not shadow later resources
-		var p_cond := clampf(base_p / maxf(0.0001, remaining_mass), 0.0, 1.0)
+		var p_cond := clampf(base_p / maxf(0.0001, remaining_mass if not is_fluid else 1.0), 0.0, 1.0)
 		var clump_xy := maxf(0.01, float(st.get("clump_xy", 8.0)))
 		var pipe_z := maxf(0.01, float(st.get("pipe_z", 8.0)))
 		var nz: FastNoiseLite = _noises[bid]
 		var raw_n := nz.get_noise_3d(float(x) / clump_xy, float(y) / clump_xy, float(z) / pipe_z)
 		var u := raw_to_uniform(raw_n)
 
-		var fluid_type := str(st.get("fluid_type", "NONE"))
-		if fluid_type != "NONE":
-			if chosen_fluid_block == "" and u >= 1.0 - p_cond:
+		if is_fluid:
+			# Fluids are an independent overlay; a solid substrate is still resolved underneath.
+			if u >= 1.0 - p_cond:
 				chosen_fluid_block = bid
-			# Notice we still resolve a solid substrate underneath fluid pockets!
 		else:
 			remaining_mass = maxf(0.0, remaining_mass - base_p)
 			if u >= 1.0 - p_cond:
 				chosen_solid_block = bid
-				break
 
 	if chosen_solid_block == "":
 		chosen_solid_block = fallback_block

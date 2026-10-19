@@ -7,7 +7,7 @@
     "rarity": "uncommon"
   },
   "affordances": ["carry", "socket_in_tool", "place_on_tile", "sell"],
-  "tags": ["device", "acoustic", "alarm", "stall_guard"],
+  "tags": ["device", "acoustic", "alarm", "stall_guard", "solves_zero_damage_stall", "path_placeable_device", "path_magic_charm"],
   "stats": {
     "base_value": 65.0
   },

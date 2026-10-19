@@ -7,7 +7,7 @@
     "rarity": "rare"
   },
   "affordances": ["carry", "equip_tool", "sell"],
-  "tags": ["tool", "pickaxe", "tinker_forged", "bronze", "cleave"],
+  "tags": ["tool", "pickaxe", "tinker_forged", "bronze", "cleave", "solves_overkill_waste", "path_forge_material"],
   "stats": {
     "tool_type": "PICKAXE",
     "tool_tier": 1,

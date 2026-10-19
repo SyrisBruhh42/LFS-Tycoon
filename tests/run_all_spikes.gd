@@ -53,12 +53,12 @@ func _run_suite() -> void:
 	print("\n--- SPIKE S3: Golden Capsule Load & Reverse Graph Indexing ---")
 	var loaded_count: int = catalog.capsules.size()
 	var quarantine_count: int = catalog.quarantined.size()
-	_assert_true(loaded_count == 17 and quarantine_count == 0,
-		"17/17 Golden Capsules Loaded Cleanly",
+	_assert_true(loaded_count >= 17 and quarantine_count == 0,
+		"All Capsules Load Cleanly (0 quarantined; >=17 golden baseline)",
 		"loaded=%d, quarantined=%d" % [loaded_count, quarantine_count])
 
 	var vayne_items: Array = catalog.vendor_catalog.get("npcs/peddler_vayne", [])
-	_assert_true(vayne_items.size() == 6,
+	_assert_true(vayne_items.size() >= 6,
 		"Backward-Edge Vendor Catalog Populated Without Editing NPC",
 		"npcs/peddler_vayne offers %d capsules" % vayne_items.size())
 
@@ -267,6 +267,39 @@ func _run_suite() -> void:
 	_assert_true(per_inst_us < 50.0 and int(disp_res.get("actions_executed", 0)) == 200,
 		"200 Active Capsule Instances Evaluated Cleanly via Slot-Bound Expressions",
 		"total=%.2f ms (%.2f us/instance), actions=%d" % [float(elapsed_us) / 1000.0, per_inst_us, int(disp_res.get("actions_executed", 0))])
+
+	# ------------------------------------------------------------------
+	# SPIKE S6: Content-Addition Invariance (1000-session safety)
+	# ------------------------------------------------------------------
+	print("\n--- SPIKE S6: Adding a New Block Capsule Never Hijacks or Reshuffles the World ---")
+	var inv_catalog := CatalogDB.new()
+	inv_catalog.load_all("res://content/capsules")
+	var gen_before := Generator3D.new(inv_catalog, 1337)
+	var before_ids: Array[String] = []
+	var n_probe: int = 2500
+	for pi in range(n_probe):
+		before_ids.append(String(gen_before.sample_voxel((pi % 50) * 7, int(pi / 50) * 11, 250, 0.0, false)["solid_id"]))
+	inv_catalog.capsules["blocks/zzz_probe_ore"] = {
+		"affordances": ["mineable_block", "carry", "sell"],
+		"tags": ["block", "ore"],
+		"stats": {"base_hp": 10.0, "spawn_prob": 0.02, "clump_xy": 6.0, "pipe_z": 6.0, "z_unlock": 0, "l_step": 1000, "priority_rank": 999}
+	}
+	inv_catalog.rebuild_indexes()
+	var gen_after := Generator3D.new(inv_catalog, 1337)
+	var changed_non_stone: int = 0
+	var probe_hits: int = 0
+	var stone_after: int = 0
+	for pi in range(n_probe):
+		var after_id: String = String(gen_after.sample_voxel((pi % 50) * 7, int(pi / 50) * 11, 250, 0.0, false)["solid_id"])
+		if after_id == "blocks/zzz_probe_ore":
+			probe_hits += 1
+		if after_id == "blocks/stone":
+			stone_after += 1
+		if before_ids[pi] != "blocks/stone" and after_id != before_ids[pi]:
+			changed_non_stone += 1
+	_assert_true(changed_non_stone == 0 and probe_hits < int(0.06 * n_probe) and float(stone_after) / float(n_probe) > 0.30,
+		"New Last-Ranked Block Neither Hijacks World Fill Nor Alters Existing Ore Placement",
+		"changed_existing=%d, probe_share=%.1f%%, stone_share=%.1f%%" % [changed_non_stone, float(probe_hits) * 100.0 / float(n_probe), float(stone_after) * 100.0 / float(n_probe)])
 
 	# ------------------------------------------------------------------
 	# ATOMIC SAVE / LOAD & DORMANT STUB PRESERVATION (Law L10)

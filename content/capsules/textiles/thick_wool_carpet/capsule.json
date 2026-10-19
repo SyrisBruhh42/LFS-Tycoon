@@ -7,7 +7,7 @@
     "rarity": "uncommon"
   },
   "affordances": ["carry", "place_on_tile", "sell"],
-  "tags": ["textile", "tile_cover", "dampener", "wool"],
+  "tags": ["textile", "tile_cover", "dampener", "wool", "solves_unwanted_splash", "path_field_textile"],
   "stats": {
     "base_value": 40.0,
     "dampen_pct": 0.85,

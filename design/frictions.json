@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "note": "Data only. Edit freely; tools/pick_brief.py reads it. Coverage is measured from capsule tags solves_<friction> and path_<path_type>.",
+  "frictions": {
+    "zero_damage_stall": "Auto-tools burn charge/durability striking blocks they cannot damage (water, hazards, strict-locked blocks).",
+    "overkill_waste": "Damage beyond a block's remaining HP is wasted when it breaks.",
+    "tap_misfires": "Fat-finger taps land on the wrong tile on a small phone screen.",
+    "unwanted_splash": "Secondary/splash damage hurts blocks the player wants left intact.",
+    "auto_tool_runtime": "Auto-tools run out of charge or time and need replacing or feeding.",
+    "tool_wear": "Durability drains and tools eventually break.",
+    "fluid_flooding": "Water and lava pockets block excavation and spread downhill.",
+    "hazard_clearing": "Hazard clusters (obsidian) need perimeter catalysts or special handling.",
+    "depth_awareness": "Hard to read z-depth and plan excavation across the whole sheet.",
+    "haul_capacity": "Carrying, storing and routing loot (backpack vs paired chest).",
+    "market_saturation": "Selling the same ore repeatedly tanks its price.",
+    "wrong_tool_penalty": "Using the wrong tool class on a block is slow.",
+    "slow_early_dps": "Early tools are slow and the early game drags.",
+    "ore_hunting": "Finding veins and knowing what lies beneath a tile.",
+    "backfill_scaffolding": "Raising floors and building scaffolding with backfill.",
+    "grime_cleanliness": "Accumulated grime locks out fussy vendors.",
+    "house_comfort": "Home-base amenities (bed, hearth, pantry) that grant perks, never penalties.",
+    "repair_upkeep": "Maintaining and repairing mechanical or magical tools.",
+    "vendor_access": "Reaching and unlocking better vendors and offers.",
+    "event_helpers": "Aids for emergent events such as the lost-cat chase."
+  },
+  "path_types": {
+    "vendor_disposable": {"archetype": "tool", "namespace": "tools", "example": "tools/peddler_windup_pick", "hint": "An NPC sells a timed or single-use enchanted tool that eventually breaks and vanishes."},
+    "skill_book": {"archetype": "book", "namespace": "books", "example": "books/tome_crude_shattering_v1", "hint": "A bought or found book; level 1 is weak and clumsy, and it may be permanent or timed."},
+    "npc_enchanter": {"archetype": "device", "namespace": "devices", "example": "devices/enchanted_brass_bell", "hint": "An enchanter-service result (rune, scroll, sigil) socketed into any tool you already own, at an exotic cost."},
+    "forge_material": {"archetype": "tool", "namespace": "tools", "example": "tools/tinker_broad_bronze_pick", "hint": "A Tinkers-style tool or part whose properties come from its material and mold."},
+    "field_textile": {"archetype": "textile", "namespace": "textiles", "example": "textiles/thick_wool_carpet", "hint": "A placeable covering or barrier with thickness, wear and a trade-off."},
+    "magic_charm": {"archetype": "device", "namespace": "devices", "example": "devices/enchanted_brass_bell", "hint": "A socketable or carried magical trinket with a clear limiter."},
+    "profession_perk": {"archetype": "upgrade", "namespace": "upgrades", "example": "upgrades/surveyor_chalk_and_stencil", "hint": "A self-taught profession unlock or house amenity that grants a perk."},
+    "consumable_buff": {"archetype": "consumable", "namespace": "consumables", "example": "consumables/sour_spelunker_wine", "hint": "A food, potion or tonic with a timed effect and often a side effect."},
+    "qol_upgrade": {"archetype": "upgrade", "namespace": "upgrades", "example": "upgrades/surveyor_chalk_and_stencil", "hint": "One granular single-function quality-of-life or HUD aid. Never a bundle."},
+    "tool_builtin": {"archetype": "tool", "namespace": "tools", "example": "tools/crude_stone_pick", "hint": "A tool that solves the friction natively, with no add-on required."},
+    "placeable_device": {"archetype": "device", "namespace": "devices", "example": "devices/enchanted_brass_bell", "hint": "A gadget placed on a tile that quietly changes how that tile behaves."},
+    "hired_laborer": {"archetype": "tool", "namespace": "tools", "example": "tools/peddler_windup_pick", "hint": "A purchased laborer or automaton that works on its own timer, decoupled from the player."},
+    "power_source": {"archetype": "device", "namespace": "devices", "example": "devices/enchanted_brass_bell", "hint": "A battery, fuel or reagent that feeds or extends an auto-tool."},
+    "bundle_package": {"archetype": "upgrade", "namespace": "upgrades", "example": "upgrades/surveyor_chalk_and_stencil", "hint": "A very expensive, unlock-gated NPC package that grants several single options at once."}
+  },
+  "world_archetypes": {
+    "block": {"namespace": "blocks", "example": "blocks/copper", "hint": "A new ore, soil or fluid. Keep stats.spawn_prob small (<=0.03) and use z_unlock; the total world mass budget is enforced."},
+    "biome": {"namespace": "biomes", "example": "biomes/sunken_bog", "hint": "A biome is a reference sheet of block weights (biome_weights) with a z range and weight."},
+    "npc": {"namespace": "npcs", "example": "npcs/peddler_vayne", "hint": "A vendor or service NPC. Items point back at it via their own offered_by; never list items inside the NPC."}
+  },
+  "twists": [
+    "Give it exactly one clear limiter: a cost, a duration, a cooldown or a drawback.",
+    "Gate its vendor offer with an unlock_if expression on a declared shared register.",
+    "Make it disposable: it must break or vanish after a bounded amount of use.",
+    "Make it trade speed for safety, or safety for speed.",
+    "Give it a quirky side effect that is mildly annoying but never punishing.",
+    "Make it need a rare or exotic currency block rather than plain copper.",
+    "Make its first level weak and clumsy, with obvious room for a later improved version.",
+    "Make it work only in one situation, but work very well there.",
+    "Make it stack or interact with an existing capsule's tags rather than replacing it.",
+    "Make it permanent but narrow, instead of temporary but broad.",
+    "Make it deliberately inefficient but cheap, for a thrifty player.",
+    "Make it conditional on tile depth, tier or fluid state."
+  ],
+  "flavor_words": [
+    "brass", "bone", "cinder", "lantern", "moss", "salt", "thimble", "ember", "ledger", "tallow",
+    "quill", "gravel", "hearth", "hollow", "iron", "kettle", "loam", "mortar", "nettle", "ochre",
+    "pewter", "quartz", "rivet", "sconce", "tin", "umber", "velvet", "wick", "yarn", "zinc",
+    "badger", "heron", "mole", "newt", "owl", "stoat", "wren", "toad", "beetle", "lark"
+  ]
+}

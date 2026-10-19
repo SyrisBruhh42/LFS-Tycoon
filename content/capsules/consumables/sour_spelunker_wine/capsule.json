@@ -7,7 +7,7 @@
     "rarity": "common"
   },
   "affordances": ["carry", "consume", "sell"],
-  "tags": ["consumable", "drink", "wine", "buff_speed", "drunk_drift"],
+  "tags": ["consumable", "drink", "wine", "buff_speed", "drunk_drift", "solves_slow_early_dps", "path_consumable_buff"],
   "stats": {
     "base_value": 20.0,
     "duration_sec": 180.0,

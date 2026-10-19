@@ -1,38 +1,112 @@
-name: Capsule Gate (G1 Static + Economy + Hostile Corpus)
+name: Capsule Gate
+
+# Straight-live pipeline (Decision D3). No human queue:
+#   PR -> path guard + G1 strict + hostile corpus + Godot G2 (load + spikes) -> auto squash-merge.
+#   Push to main that turns red because of a content-only commit -> auto-revert.
 
 on:
-  push:
-    branches: [ main, "jules/**" ]
   pull_request:
-    branches: [ main ]
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: capsule-gate-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
 
 jobs:
-  validate-capsules:
+  gate:
+    name: G1 (path guard, static lint, hostile corpus)
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
-      - name: Run Gate G1 on Golden & Live Capsules
+      - name: Path guard (pull requests only)
+        if: github.event_name == 'pull_request'
+        run: python3 tools/path_guard.py --base origin/${{ github.base_ref }} --head HEAD
+      - name: G1 strict static lint, economy and world-mass budget
         run: python3 tools/check_capsules.py --strict
+      - name: Hostile corpus must be fully rejected
+        run: python3 tools/check_hostile.py
 
-      - name: Verify Hostile Corpus Rejection (20/20 Must Fail G1)
+  godot:
+    name: G2 (Godot headless load + spikes)
+    runs-on: ubuntu-latest
+    outputs:
+      verdict: ${{ steps.spikes.outputs.verdict }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Godot 4.3
         run: |
-          python3 - << 'EOF'
-          import subprocess, sys
-          from pathlib import Path
-          hostile_root = Path("tests/hostile_capsules/hostile")
-          dirs = sorted([d for d in hostile_root.iterdir() if d.is_dir()])
-          assert len(dirs) == 20, f"Expected 20 hostile capsules, found {len(dirs)}"
-          for d in dirs:
-              res = subprocess.run([sys.executable, "tools/check_capsules.py", "--root", str(d)], capture_output=True, text=True)
-              if res.returncode == 0:
-                  print(f"ERROR: Hostile capsule {d.name} unexpectedly passed G1!")
-                  sys.exit(1)
-          print("All 20/20 hostile capsules rejected by Gate G1.")
-          EOF
+          curl -fsSL --retry 5 --retry-delay 5 -o godot.zip \
+            https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip
+          unzip -q godot.zip
+          sudo mv Godot_v4.3-stable_linux.x86_64 /usr/local/bin/godot
+          godot --version
+      - name: Import project
+        run: godot --headless --path . --import --quit || true
+      - name: Run spike suite
+        id: spikes
+        run: |
+          set +e
+          timeout 240 godot --headless --path . -s tests/run_all_spikes.gd 2>&1 | tee spikes.log
+          if grep -q "VERIFICATION SUMMARY" spikes.log && grep -qE ", 0 FAILED" spikes.log; then
+            echo "verdict=green" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          if grep -q "VERIFICATION SUMMARY" spikes.log; then
+            echo "verdict=red" >> "$GITHUB_OUTPUT"; exit 1
+          fi
+          echo "verdict=infra" >> "$GITHUB_OUTPUT"; exit 1
+
+  automerge:
+    name: Auto-merge (straight live)
+    needs: [gate, godot]
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && !github.event.pull_request.draft
+    runs-on: ubuntu-latest
+    steps:
+      - name: Squash-merge the pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          for i in 1 2 3 4 5; do
+            if gh pr merge "$PR" --repo "$GITHUB_REPOSITORY" --squash --delete-branch; then
+              echo "Merged PR #$PR"; exit 0
+            fi
+            sleep $((i * 10))
+          done
+          echo "::error::Auto-merge failed after retries (likely a slug collision or conflicting change)."
+          exit 1
+
+  revert-on-red:
+    name: Auto-revert red content commit on main
+    needs: [gate, godot]
+    if: always() && github.event_name == 'push' && (needs.gate.result == 'failure' || needs.godot.outputs.verdict == 'red')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Revert the offending content-only commit
+        run: |
+          set -e
+          SHA="${{ github.sha }}"
+          if git log -1 --format=%s "$SHA" | grep -q '^Revert'; then
+            echo "Already a revert; nothing to do."; exit 0
+          fi
+          if git diff --name-only "$SHA^" "$SHA" | grep -qv '^content/capsules/'; then
+            echo "::error::Red commit touches non-content paths; manual fix required (not auto-reverting)."; exit 1
+          fi
+          git config user.name "capsule-guardian"
+          git config user.email "capsule-guardian@users.noreply.github.com"
+          git revert --no-edit "$SHA"
+          git push origin HEAD:main

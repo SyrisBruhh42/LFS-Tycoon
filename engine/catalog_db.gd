@@ -96,6 +96,7 @@ func rebuild_indexes() -> void:
 				"unlock_if": str(offer.get("unlock_if", ""))
 			})
 
+	biome_ids.sort()
 	block_records.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		if a["rank"] != b["rank"]:
 			return int(a["rank"]) < int(b["rank"])

@@ -7,7 +7,7 @@
     "rarity": "rare"
   },
   "affordances": ["carry", "read_book", "sell"],
-  "tags": ["upgrade", "qol", "surveyor", "hud"],
+  "tags": ["upgrade", "qol", "surveyor", "hud", "solves_tap_misfires", "solves_depth_awareness", "path_qol_upgrade"],
   "stats": {
     "base_value": 110.0
   },
