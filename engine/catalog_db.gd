@@ -384,3 +384,4 @@ func _load_json_dict(path: String) -> Dictionary:
 	if j.parse(f.get_as_text()) != OK:
 		return {}
 	return j.data if typeof(j.data) == TYPE_DICTIONARY else {}
+# x
