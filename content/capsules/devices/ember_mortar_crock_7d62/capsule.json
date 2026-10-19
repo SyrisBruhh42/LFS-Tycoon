@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ember-Bone Mortar Crock",
+    "description": "A chipped crock of bone ash and banked embers that Peddler Vayne swears keeps a ledger of sales warm. Each batch of sold ore is ground into a slightly richer lot, until the ash runs out. Cheap, honest and a little smelly.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "kiln",
+    "solves_market_saturation",
+    "path_power_source"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "yield_bonus": 1.08,
+    "batches_max": 12.0
+  },
+  "vars": {
+    "batches_left": 12.0
+  },
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "if": "self.batches_left > 0.0",
+      "value": "self.stats.yield_bonus"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_market_sell",
+      "if": "self.batches_left > 0.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.batches_left",
+          "by": "-1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.batches_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offline": "exact",
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 90
+      }
+    }
+  ]
+}
