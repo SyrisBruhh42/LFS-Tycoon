@@ -113,6 +113,7 @@ def main() -> int:
         ]
     lines += [
         "",
+        "**If the pairing looks odd:** do not re-roll. Find the most inventive coherent link between the friction and the path, and keep the required tags.",
         "**Rules recap:** ease is earned, never given; one limiter minimum; no stamina/mana/health bars; "
         "no instant breaking (>=1s per block holds); edges point backward (declare offered_by / biome_weights "
         "inside YOUR capsule); only existing vocab verbs; never edit another capsule, engine/, vocab/, tools/ or tests/.",
