@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "place_on_tile",
+    "read_book",
+    "consume",
+    "place_in_house",
+    "socket_in_tool",
+    "sell",
+    "backfill_material",
+    "catalyst",
+    "mineable_block",
+    "biome_profile",
+    "npc_vendor"
+  ],
+  "modifiable_stats": [
+    "base_dps",
+    "incoming_damage",
+    "break_time_mult",
+    "wrong_tool_penalty",
+    "cleave_pct",
+    "cleave_radius",
+    "yield_mult",
+    "luck_mult",
+    "drunk_drift_px",
+    "battery_drain_mult",
+    "durability_drain_mult",
+    "min_hp_clamp"
+  ],
+  "modifier_phases": ["base", "add", "mul", "clamp"],
+  "tool_types": ["NONE", "PICKAXE", "SHOVEL", "BUCKET", "DEMOLITION", "CAPTURE_NET"],
+  "offline_modes": ["none", "coarse", "exact"],
+  "expression_functions": [
+    "min",
+    "max",
+    "clamp",
+    "abs",
+    "floor",
+    "ceil",
+    "round",
+    "sqrt",
+    "pow",
+    "sin",
+    "cos",
+    "lerp",
+    "roll"
+  ],
+  "expression_roots": [
+    "self",
+    "tile",
+    "player",
+    "tool",
+    "ctx",
+    "shared"
+  ]
+}

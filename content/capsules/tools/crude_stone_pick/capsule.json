@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Crude Stone Pickaxe",
+    "description": "Basic starter pickaxe. Reliable on stone and shallow copper, with a 75% time penalty on soft dirt.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "equip_tool"],
+  "tags": ["tool", "pickaxe", "starter"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 0,
+    "base_dps": 10.0,
+    "durability_max": 250.0,
+    "is_rechargeable": 1,
+    "base_value": 5.0
+  },
+  "vars": {
+    "durability_left": 250.0
+  },
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}

@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Peddler's 4-Hour Wind-Up Pick",
+    "description": "Disposable clockwork pickaxe sold by Peddler Vayne. Auto-mines a single square for 4 hours (14,400s), burns wind-up tension if stalled on water/hazards, and shatters when depleted.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "equip_tool", "place_on_tile", "sell"],
+  "tags": ["tool", "pickaxe", "automine", "clockwork", "disposable"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 0,
+    "base_dps": 12.0,
+    "charge_max_sec": 14400.0,
+    "durability_max": 1200.0,
+    "is_rechargeable": 0,
+    "base_value": 35.0
+  },
+  "vars": {
+    "charge_left": 14400.0,
+    "durability_left": 1200.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "self.charge_left > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": "-1.0"},
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 15}
+    }
+  ],
+  "offline": "coarse"
+}

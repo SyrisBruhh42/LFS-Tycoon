@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Orphan Spawn Item",
+    "description": "Hostile test fixture",
+    "author": "crucible:s4"
+  },
+  "affordances": [
+    "carry"
+  ],
+  "tags": [
+    "test",
+    "hostile"
+  ],
+  "stats": {
+    "base_value": 10.0
+  },
+  "vars": {
+    "counter": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "blocks/unobtainium_404",
+          "qty": "1"
+        }
+      ]
+    }
+  ],
+  "offline": "none"
+}

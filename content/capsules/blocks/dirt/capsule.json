@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quarry Dirt",
+    "description": "Soft topsoil and packed loam. Easily dug with a Shovel, or used as Backfill to raise over-excavated floor tiles.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["mineable_block", "carry", "sell", "backfill_material"],
+  "tags": ["block", "soil", "dirt", "backfill"],
+  "stats": {
+    "base_hp": 10.0,
+    "base_value": 1.0,
+    "ideal_tool": "SHOVEL",
+    "strict_tool_lock": 0,
+    "z_unlock": 0,
+    "l_step": 1000,
+    "spawn_prob": 0.25,
+    "clump_xy": 8.0,
+    "pipe_z": 6.0,
+    "priority_rank": 90
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}

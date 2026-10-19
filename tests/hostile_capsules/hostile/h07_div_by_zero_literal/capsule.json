@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Literal Divide By Zero",
+    "description": "Hostile test fixture",
+    "author": "crucible:s4"
+  },
+  "affordances": [
+    "carry"
+  ],
+  "tags": [
+    "test",
+    "hostile"
+  ],
+  "stats": {
+    "base_value": 10.0
+  },
+  "vars": {
+    "counter": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "add",
+      "value": "100.0 / 0"
+    }
+  ],
+  "reactions": [],
+  "offline": "none"
+}

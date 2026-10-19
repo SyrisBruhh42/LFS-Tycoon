@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Standard Sedimentary Crust",
+    "description": "Balanced surface and mid-depth quarry strata with standard stone, dirt, and copper beds.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["biome", "crust", "default"],
+  "stats": {
+    "z_min": 0,
+    "z_max": 999999,
+    "weight": 1.0
+  },
+  "biome_weights": {
+    "blocks/dirt": 1.0,
+    "blocks/stone": 1.0,
+    "blocks/copper": 1.0,
+    "blocks/water_aquifer": 1.0,
+    "blocks/lava_pocket": 1.0,
+    "blocks/obsidian_hazard": 1.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}

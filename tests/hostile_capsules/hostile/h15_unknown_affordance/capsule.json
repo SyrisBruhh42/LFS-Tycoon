@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hallucinated Affordance",
+    "description": "Hostile test fixture",
+    "author": "crucible:s4"
+  },
+  "affordances": [
+    "wear_as_hat"
+  ],
+  "tags": [
+    "test",
+    "hostile"
+  ],
+  "stats": {
+    "base_value": 10.0
+  },
+  "vars": {
+    "counter": 0.0
+  },
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}

@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Sunken Peat Bog Strata",
+    "description": "Waterlogged subterranean lens rich in soft dirt, loam, and groundwater aquifers where Shovels and Buckets shine.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["biome", "bog", "wet"],
+  "stats": {
+    "z_min": 40,
+    "z_max": 320,
+    "weight": 0.35
+  },
+  "biome_weights": {
+    "blocks/dirt": 1.8,
+    "blocks/water_aquifer": 2.5,
+    "blocks/copper": 0.7,
+    "blocks/lava_pocket": 0.1
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}

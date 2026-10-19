@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Subterranean Water Pocket",
+    "description": "Pressurized groundwater (3 Buckets / 300 HP). Cannot be mined with picks; siphon downhill into a deeper adjacent pit or scoop with a Bucket.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["mineable_block", "carry", "sell"],
+  "tags": ["block", "fluid", "water"],
+  "stats": {
+    "base_hp": 300.0,
+    "base_value": 15.0,
+    "ideal_tool": "BUCKET",
+    "strict_tool_lock": 1,
+    "fluid_type": "WATER",
+    "initial_fluid_buckets": 3,
+    "z_unlock": 15,
+    "l_step": 1200,
+    "spawn_prob": 0.05,
+    "clump_xy": 5.0,
+    "pipe_z": 4.0,
+    "priority_rank": 20
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}

@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Infinite Damage Loop",
+    "description": "Hostile test fixture",
+    "author": "crucible:s4"
+  },
+  "affordances": [
+    "carry"
+  ],
+  "tags": [
+    "test",
+    "hostile"
+  ],
+  "stats": {
+    "base_value": 10.0
+  },
+  "vars": {
+    "counter": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_damage_dealt",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "self_tile",
+          "amount": "5.0"
+        }
+      ]
+    }
+  ],
+  "offline": "none"
+}

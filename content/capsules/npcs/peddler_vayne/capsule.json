@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Peddler Vayne",
+    "description": "A traveling quarry tinker who sells wind-up disposable tools, wool dampening mats, and chalk survey gear.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["npc_vendor"],
+  "tags": ["npc", "vendor", "town", "peddler"],
+  "stats": {
+    "cleanliness_required": 0.0,
+    "saturation_half_volume": 1000.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}

@@ -1,0 +1,38 @@
+name: Capsule Gate (G1 Static + Economy + Hostile Corpus)
+
+on:
+  push:
+    branches: [ main, "jules/**" ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-capsules:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run Gate G1 on Golden & Live Capsules
+        run: python3 tools/check_capsules.py --strict
+
+      - name: Verify Hostile Corpus Rejection (20/20 Must Fail G1)
+        run: |
+          python3 - << 'EOF'
+          import subprocess, sys
+          from pathlib import Path
+          hostile_root = Path("tests/hostile_capsules/hostile")
+          dirs = sorted([d for d in hostile_root.iterdir() if d.is_dir()])
+          assert len(dirs) == 20, f"Expected 20 hostile capsules, found {len(dirs)}"
+          for d in dirs:
+              res = subprocess.run([sys.executable, "tools/check_capsules.py", "--root", str(d)], capture_output=True, text=True)
+              if res.returncode == 0:
+                  print(f"ERROR: Hostile capsule {d.name} unexpectedly passed G1!")
+                  sys.exit(1)
+          print("All 20/20 hostile capsules rejected by Gate G1.")
+          EOF
