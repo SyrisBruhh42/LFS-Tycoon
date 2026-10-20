@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bone-Owl Brass Monocle",
+    "description": "A self-taught geological profession perk. Wearing this heavy brass monocle with a bone-carved owl lens grants +50% manual tap damage, speeding up standard excavation. However, the narrowed field of vision reduces your gem luck by 25%. Consume to permanently acquire the profession.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "profession",
+    "bone",
+    "brass",
+    "owl",
+    "solves_slow_early_dps",
+    "path_profession_perk"
+  ],
+  "stats": {
+    "base_value": 3000.0,
+    "dps_bonus_pct": 0.5,
+    "luck_penalty_pct": 0.25
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "self.installed == 1.0 and ctx.is_direct_tap == 1",
+      "value": "1.0 + self.stats.dps_bonus_pct"
+    },
+    {
+      "stat": "luck_mult",
+      "phase": "mul",
+      "if": "self.installed == 1.0",
+      "value": "1.0 - self.stats.luck_penalty_pct"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 1500},
+      "unlock_if": "player.max_depth >= 400"
+    }
+  ],
+  "offline": "none"
+}
