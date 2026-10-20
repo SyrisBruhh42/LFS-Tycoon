@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-"""One-shot pre-submit check for content sessions. Mirrors the CI gate (path guard + G1 strict).
+"""One-shot pre-submit check for content sessions. Mirrors the CI gate (path guard + G1 strict + semantic checks).
 
 Usage: python3 tools/preflight.py
 Commit your new capsule first (or stage it), then run this. Exit 0 means safe to submit.
 """
 from __future__ import annotations
 
-import json
 import subprocess
 import sys
 from pathlib import Path
@@ -31,27 +30,35 @@ def main() -> int:
         for ln in dirty:
             print("   " + ln)
 
+    new_files_set: set[str] = set()
+    if have_base:
+        committed_new = subprocess.run(
+            ["git", "diff", "--name-only", "--diff-filter=A", f"{base}...HEAD"],
+            cwd=ROOT, capture_output=True, text=True,
+        ).stdout.splitlines()
+        new_files_set.update(committed_new)
+    untracked = subprocess.run(
+        ["git", "ls-files", "-o", "--exclude-standard"],
+        cwd=ROOT, capture_output=True, text=True,
+    ).stdout.splitlines()
+    new_files_set.update(untracked)
+    staged_new = subprocess.run(
+        ["git", "diff", "--cached", "--name-only", "--diff-filter=A"],
+        cwd=ROOT, capture_output=True, text=True,
+    ).stdout.splitlines()
+    new_files_set.update(staged_new)
+
+    new_capsule_args: list[str] = []
+    for rel in sorted(new_files_set):
+        if rel.startswith("content/capsules/") and rel.endswith("capsule.json"):
+            new_capsule_args.extend(["--new-capsule", rel])
+
     rc = 0
     if have_base:
         rc |= run(sys.executable, "tools/path_guard.py", "--base", base)
     else:
         print("WARN: origin/main not reachable; skipping path guard (CI will enforce it).")
-    rc |= run(sys.executable, "tools/check_capsules.py", "--strict")
-
-    new_files = subprocess.run(
-        ["git", "diff", "--name-only", "--diff-filter=A", f"{base}...HEAD"] if have_base else ["git", "ls-files", "-o", "--exclude-standard"],
-        cwd=ROOT, capture_output=True, text=True,
-    ).stdout.splitlines()
-    for rel in new_files:
-        if rel.startswith("content/capsules/") and rel.endswith("capsule.json"):
-            try:
-                tags = set(json.loads((ROOT / rel).read_text(encoding="utf-8")).get("tags", []))
-            except Exception:
-                continue
-            if not any(t.startswith("solves_") for t in tags) and not any(t.startswith("world_") for t in tags):
-                print(f"WARN: {rel} has no `solves_<friction>` or `world_<kind>` tag; add the brief's required tags so coverage tracking works.")
-            if not any(t.startswith("path_") for t in tags) and not any(t.startswith("world_") for t in tags):
-                print(f"WARN: {rel} has no `path_<type>` tag.")
+    rc |= run(sys.executable, "tools/check_capsules.py", "--strict", *new_capsule_args)
 
     print("PREFLIGHT OK: submit now." if rc == 0 else "PREFLIGHT FAILED: fix the errors above, re-commit, and re-run.")
     return 0 if rc == 0 else 1

@@ -2,6 +2,10 @@ class_name GridManager
 extends RefCounted
 ## Contiguous SoA Quarry State Engine, DPI Integer Scaler (D1 Freeze & Pan),
 ## Persistent HP + 50ms Zero-Spillover Gate, Event-Driven Cellular Fluids & BFS Connected Hazards.
+##
+## Vocabulary wiring contract: every event in vocab/events.json is fired here via `rules.dispatch_event("<event>"`
+## and every modifiable stat is read via `rules.resolve_stat("<stat>"`. tools/check_capsules.py fails G1 when a
+## vocab entry has no call site, so the vocabulary can never again promise behaviour the engine does not deliver.
 
 const PHASE_MINING: int = 0
 const PHASE_REFRESH_GATE: int = 1
@@ -41,10 +45,16 @@ var dynamic_entity_id: PackedInt32Array = PackedInt32Array()
 
 # Active capsule instances on tiles (e.g. wool carpets, stationed auto-tools, bells)
 var tile_attachments: Array = []           # Array[Array[Dictionary]] indexed by cell idx
-var player_equipped_items: Array = []      # Array[Dictionary] (equipped tool, read books, active buffs)
+var tile_block_inst: Array = []            # per-tile live instance of the exposed block capsule ({} unless it has rules)
+var tile_biome_id: PackedStringArray = PackedStringArray()
+var biome_insts: Dictionary = {}           # biome_id -> shared live instance (only for biomes with rules)
+var player_tool: Dictionary = {}           # the tool the player holds; socketed devices live in player_tool["sockets"]
+var player_equipped_items: Array = []      # Array[Dictionary] (consumed buffs, read books/perks; active until destroy_self)
 var inventory: Dictionary = {}             # "capsule_id:tier" -> int count
 var paired_chest_loot: Dictionary = {}     # "capsule_id:tier" -> int count
+var ground_pile: Dictionary = {}           # "capsule_id:tier" -> int count
 var next_instance_uid: int = 1
+var _second_accum: float = 0.0
 
 # Player & Quest state
 var player_max_depth: int = 0
@@ -127,12 +137,20 @@ func _allocate_buffers() -> void:
 	fluid_level.resize(n)
 	dynamic_entity_id.resize(n)
 	tile_attachments.resize(n)
+	tile_block_inst.resize(n)
+	tile_biome_id.resize(n)
 	for i in n:
 		tile_attachments[i] = []
+		tile_block_inst[i] = {}
 
 
 func reset_quarry() -> void:
-	var n := cols * rows
+	biome_insts.clear()
+	for cid in catalog.capsules.keys():
+		var cap: Dictionary = catalog.capsules[cid]
+		var aff: Array = cap.get("affordances", [])
+		if aff.has("biome_profile") and (not cap.get("modifiers", []).is_empty() or not cap.get("reactions", []).is_empty()):
+			biome_insts[str(cid)] = create_capsule_instance(str(cid))
 	for y in rows:
 		for x in cols:
 			var i := idx_of(x, y)
@@ -145,6 +163,7 @@ func reset_quarry() -> void:
 			placed_catalyst_tier[i] = 0
 			dynamic_entity_id[i] = ENTITY_NONE
 			tile_attachments[i] = []
+			tile_block_inst[i] = {}
 			_populate_tile_from_generator(x, y, 0, 0.0)
 
 
@@ -250,21 +269,26 @@ func apply_mining_tick(x: int, y: int, tool_inst: Dictionary, dt: float, is_dire
 
 	var active_insts := _gather_active_instances(i, tool_inst)
 	var env := _build_env(x, y, tool_inst, is_direct_tap, false, 0.0)
+	rules.dispatch_event("on_hold_tick", active_insts, env, self)
 
 	# Check strict tool lock (e.g. hitting Water or Obsidian with a Pickaxe deals 0 damage)
 	if strict_locked and tool_type_str != ideal_tool_str:
 		var stall_res := rules.dispatch_event("on_zero_damage_stall", active_insts, env, self)
-		var inst_vars: Dictionary = tool_inst.get("vars", {})
-		if not bool(stall_res["pause_battery"]) and inst_vars.has("charge_left"):
-			inst_vars["charge_left"] = maxf(0.0, float(inst_vars["charge_left"]) - dt)
-		if not bool(stall_res["pause_durability"]) and inst_vars.has("durability_left"):
-			inst_vars["durability_left"] = maxf(0.0, float(inst_vars["durability_left"]) - 1.0)
+		if not bool(stall_res["pause_battery"]):
+			var bat_mult := clampf(rules.resolve_stat("battery_drain_mult", 1.0, active_insts, env), 0.0, 10.0)
+			if _drain_charge(tool_inst, dt * bat_mult):
+				rules.dispatch_event("on_deplete", [tool_inst], env, self)
+		if not bool(stall_res["pause_durability"]):
+			# Stalled wear is per second of stalling (frame-rate independent), scaled by durability_drain_mult.
+			_wear_tool(tool_inst, dt * _durability_mult(active_insts, env), env)
 		_cleanup_destroyed_attachments(i)
 		return {"broke": false, "damage_dealt": 0.0, "stalled": true, "stall_summary": stall_res}
 
 	# Compute effective DPS with Wrong-Tool Penalty and Modifiers (Law L6)
 	var mod_dps := rules.resolve_stat("base_dps", base_dps, active_insts, env)
-	var penalty := compute_wrong_tool_penalty(tool_type_str, tool_tier_val, ideal_tool_str, req_tier_val)
+	var base_penalty := compute_wrong_tool_penalty(tool_type_str, tool_tier_val, ideal_tool_str, req_tier_val)
+	var penalty := maxf(0.0, rules.resolve_stat("wrong_tool_penalty", base_penalty, active_insts, env))
+	var break_mult := clampf(rules.resolve_stat("break_time_mult", 1.0, active_insts, env), 0.25, 10.0)
 
 	# Tectonic catch-up bonus on shallow tiles
 	var pcts := compute_depth_percentiles()
@@ -272,22 +296,27 @@ func apply_mining_tick(x: int, y: int, tool_inst: Dictionary, dt: float, is_dire
 	if float(depth[i]) < float(pcts["p50"]) and (float(pcts["p90"]) - float(pcts["p10"])) >= 15.0:
 		tectonic_mult += catalog.get_gmst_float("fTectonicCatchupSpeedBonus", 0.25)
 
-	var effective_dps := (mod_dps * tectonic_mult) / (1.0 + penalty)
+	var effective_dps := (mod_dps * tectonic_mult) / (1.0 + penalty) / break_mult
 
-	# Enforce >= 1.0s minimum break pace on virgin blocks (unless already damaged)
-	var min_break_sec := catalog.get_gmst_float("fMinBreakTimeSec", 1.0)
+	# Enforce >= 1.0s minimum break pace on virgin blocks (unless already damaged).
+	# break_time_mult can lengthen the minimum but never shorten it: mining is never instant.
+	var min_break_sec := catalog.get_gmst_float("fMinBreakTimeSec", 1.0) * maxf(1.0, break_mult)
 	var max_dps_for_pace := max_hp[i] / maxf(0.05, min_break_sec)
 	var paced_dps := minf(effective_dps, max_dps_for_pace)
-	var raw_dmg := paced_dps * dt
+	var raw_dmg := maxf(0.0, paced_dps * dt)
 	var excess_overkill_dps := maxf(0.0, effective_dps - paced_dps) * dt
+	rules.dispatch_event("on_damage_calc", active_insts, env, self)
 
-	# Apply incoming_damage modifiers (e.g. Thick Wool Carpet dampener)
-	var final_dmg := rules.resolve_stat("incoming_damage", raw_dmg, active_insts, env)
+	# Apply incoming_damage modifiers (e.g. Thick Wool Carpet dampener). Damage never heals a tile.
+	var final_dmg := maxf(0.0, rules.resolve_stat("incoming_damage", raw_dmg, active_insts, env))
 	if final_dmg < raw_dmg:
 		rules.dispatch_event("on_damage_absorbed", active_insts, env, self)
 
 	damage_accum[i] += final_dmg
-	rules.dispatch_event("on_damage_dealt", active_insts, env, self)
+	if not is_fluid_active:
+		_apply_min_hp_clamp(i, active_insts, env)
+	if final_dmg > 0.0:
+		rules.dispatch_event("on_damage_dealt", active_insts, env, self)
 
 	# Multi-bucket fluid scooping check
 	if is_fluid_active and tool_type_str == "BUCKET":
@@ -320,18 +349,58 @@ func apply_mining_tick(x: int, y: int, tool_inst: Dictionary, dt: float, is_dire
 		if overkill > 0.0:
 			var ok_env := _build_env(x, y, tool_inst, is_direct_tap, false, overkill)
 			rules.dispatch_event("on_overkill", active_insts, ok_env, self)
+			# Engine cleave: cleave_pct of the overkill splashes to neighbours (cleave_radius >= 2 -> 8 neighbours).
+			var cleave := clampf(rules.resolve_stat("cleave_pct", 0.0, active_insts, ok_env), 0.0, 1.0)
+			if cleave > 0.0:
+				var radius := rules.resolve_stat("cleave_radius", 1.0, active_insts, ok_env)
+				apply_secondary_damage(x, y, "neighbors_8" if radius >= 2.0 else "neighbors_4", overkill * cleave, rules.expr_host)
 
-		# Deplete 1 durability on break
-		var tv: Dictionary = tool_inst.get("vars", {})
-		if tv.has("durability_left"):
-			tv["durability_left"] = maxf(0.0, float(tv["durability_left"]) - 1.0)
-			if float(tv["durability_left"]) <= 0.0:
-				rules.dispatch_event("on_deplete", [tool_inst], env, self)
+		# Deplete 1 durability on break, scaled by durability_drain_mult (negative values repair).
+		_wear_tool(tool_inst, _durability_mult(active_insts, env), env)
 
-		_complete_block_break(x, y, tool_inst)
+		_complete_block_break(x, y, tool_inst, is_direct_tap, false)
 
 	_cleanup_destroyed_attachments(i)
 	return {"broke": broke, "damage_dealt": final_dmg}
+
+
+func _durability_mult(active_insts: Array, env: Dictionary) -> float:
+	return clampf(rules.resolve_stat("durability_drain_mult", 1.0, active_insts, env), -3.0, 10.0)
+
+
+## Engine-owned durability: subtracts `amount` (negative repairs), capped to [0, durability_max].
+## Fires on_deplete exactly once when durability crosses to zero.
+func _wear_tool(tool_inst: Dictionary, amount: float, env: Dictionary) -> void:
+	var tv: Dictionary = tool_inst.get("vars", {})
+	if not tv.has("durability_left"):
+		return
+	var before := float(tv["durability_left"])
+	var st: Dictionary = catalog.capsules.get(str(tool_inst.get("capsule_id", "")), {}).get("stats", {})
+	var cap := maxf(before, float(st.get("durability_max", before)))
+	var after := clampf(before - amount, 0.0, cap)
+	tv["durability_left"] = after
+	if before > 0.0 and after <= 0.0:
+		rules.dispatch_event("on_deplete", [tool_inst], env, self)
+
+
+## Engine-owned charge: subtracts `amount` seconds, capped to [0, charge_max_sec]. Returns true when it hits zero.
+func _drain_charge(tool_inst: Dictionary, amount: float) -> bool:
+	var tv: Dictionary = tool_inst.get("vars", {})
+	if not tv.has("charge_left"):
+		return false
+	var before := float(tv["charge_left"])
+	var st: Dictionary = catalog.capsules.get(str(tool_inst.get("capsule_id", "")), {}).get("stats", {})
+	var cap := maxf(before, float(st.get("charge_max_sec", before)))
+	var after := clampf(before - amount, 0.0, cap)
+	tv["charge_left"] = after
+	return before > 0.0 and after <= 0.0
+
+
+## min_hp_clamp: the tile's remaining HP can never be pushed below the resolved value (protective covers).
+func _apply_min_hp_clamp(tile_idx: int, active_insts: Array, env: Dictionary) -> void:
+	var floor_hp := clampf(rules.resolve_stat("min_hp_clamp", 0.0, active_insts, env), 0.0, max_hp[tile_idx])
+	if floor_hp > 0.0:
+		damage_accum[tile_idx] = minf(damage_accum[tile_idx], max_hp[tile_idx] - floor_hp)
 
 
 ## Secondary damage from reactions (e.g. Cleave or Crude Shattering Tome). Never triggers recursive overkill.
@@ -353,21 +422,23 @@ func apply_secondary_damage(origin_x: int, origin_y: int, target_sel: String, am
 		var dummy_tool := {"capsule_id": "", "vars": {}}
 		var active_insts := _gather_active_instances(ti, dummy_tool)
 		var env := _build_env(tx, ty, dummy_tool, false, true, 0.0)
-		var final_dmg := rules.resolve_stat("incoming_damage", amount, active_insts, env)
+		var final_dmg := maxf(0.0, rules.resolve_stat("incoming_damage", amount, active_insts, env))
 		if final_dmg < amount:
 			rules.dispatch_event("on_damage_absorbed", active_insts, env, self)
 		damage_accum[ti] += final_dmg
+		_apply_min_hp_clamp(ti, active_insts, env)
+		if final_dmg > 0.0:
+			rules.dispatch_event("on_damage_dealt", active_insts, env, self)
 		if damage_accum[ti] >= max_hp[ti]:
 			damage_accum[ti] = 0.0
 			phase[ti] = PHASE_REFRESH_GATE
 			gate_timer[ti] = catalog.get_gmst_float("fRefreshGateSec", 0.05)
-			_complete_block_break(tx, ty, dummy_tool)
+			_complete_block_break(tx, ty, dummy_tool, false, true)
 		_cleanup_destroyed_attachments(ti)
 
 
-## Advances refresh gate timers (50ms cooldowns) and stationed auto-tools.
+## Advances refresh gate timers (50ms cooldowns), stationed auto-tools, and fires on_second_tick once per second.
 func step_physics(dt: float) -> void:
-	var n := cols * rows
 	for y in rows:
 		for x in cols:
 			var i := idx_of(x, y)
@@ -389,28 +460,93 @@ func step_physics(dt: float) -> void:
 					if iv.has("charge_left") and float(iv["charge_left"]) <= 0.0:
 						inst["destroyed"] = true
 						continue
-					apply_mining_tick(x, y, inst, dt, false)
-					if phase[i] == PHASE_MINING and iv.has("charge_left"):
-						iv["charge_left"] = maxf(0.0, float(iv["charge_left"]) - dt)
-						if float(iv["charge_left"]) <= 0.0:
-							var env := _build_env(x, y, inst, false, false, 0.0)
+					var tick_res := apply_mining_tick(x, y, inst, dt, false)
+					# Stalled ticks already drained (or paused) charge inside apply_mining_tick.
+					if phase[i] == PHASE_MINING and iv.has("charge_left") and not bool(tick_res.get("stalled", false)):
+						var act := _gather_active_instances(i, inst)
+						var env := _build_env(x, y, inst, false, false, 0.0)
+						var bat_mult := clampf(rules.resolve_stat("battery_drain_mult", 1.0, act, env), 0.0, 10.0)
+						if _drain_charge(inst, dt * bat_mult):
 							rules.dispatch_event("on_deplete", [inst], env, self)
 			_cleanup_destroyed_attachments(i)
+
+	_second_accum += dt
+	var seconds_fired := 0
+	while _second_accum >= 1.0 and seconds_fired < 60:
+		_second_accum -= 1.0
+		seconds_fired += 1
+		_dispatch_second_tick()
+	if seconds_fired >= 60:
+		_second_accum = 0.0  # Long gaps are the offline simulator's job, not a 60+ event burst.
 	rules.flush_deferred_queue(self, 500)
 
 
-func _complete_block_break(x: int, y: int, tool_inst: Dictionary) -> void:
+## on_second_tick reaches every live instance exactly once: player-level (held tool, its sockets, consumed buffs),
+## each tile's attachments (+ their sockets) and reactive block, and each reactive biome.
+func _dispatch_second_tick() -> void:
+	var p_insts := _player_instances()
+	if not p_insts.is_empty():
+		rules.dispatch_event("on_second_tick", p_insts, _build_env_neutral(player_tool), self)
+	for y in rows:
+		for x in cols:
+			var i := idx_of(x, y)
+			var list: Array = []
+			var worker: Dictionary = {}
+			for att in tile_attachments[i]:
+				if bool(att.get("destroyed", false)):
+					continue
+				att["is_covering_current_tile"] = true
+				list.append(att)
+				if worker.is_empty() and catalog.capsules.get(str(att.get("capsule_id", "")), {}).get("tags", []).has("automine"):
+					worker = att
+				for s in att.get("sockets", []):
+					if not bool(s.get("destroyed", false)):
+						s["is_covering_current_tile"] = false
+						list.append(s)
+			var bi: Dictionary = _block_inst_at(i)
+			if not bi.is_empty() and not bool(bi.get("destroyed", false)):
+				bi["is_covering_current_tile"] = true
+				list.append(bi)
+			if not list.is_empty():
+				rules.dispatch_event("on_second_tick", list, _build_env(x, y, worker, false, false, 0.0), self)
+				_cleanup_destroyed_attachments(i)
+	for b_id in biome_insts.keys():
+		var b_inst: Dictionary = biome_insts[b_id]
+		if not bool(b_inst.get("destroyed", false)):
+			rules.dispatch_event("on_second_tick", [b_inst], _build_env_neutral({}), self)
+	_prune_player_items()
+
+
+func _complete_block_break(x: int, y: int, tool_inst: Dictionary, is_direct_tap: bool = false, is_secondary: bool = false) -> void:
 	var i := idx_of(x, y)
 	var old_depth := depth[i]
 	var was_virgin := (old_depth >= max_depth_reached[i])
 	var broken_block_id := catalog.block_int_to_id[base_id[i]]
 	var broken_tier := tier[i]
+	# Capture the broken layer's context (including its block instance) before the tile changes.
+	var broken_insts := _gather_active_instances(i, tool_inst)
+	var broken_env := _build_env(x, y, tool_inst, is_direct_tap, is_secondary, 0.0)
 
 	# High-Water Mark Law (Debate #2 Lock): Only grant virgin ore & roll quests if depth >= max_depth_reached
 	if was_virgin:
 		var route := "paired_chest" if catalog.capsules.get(str(tool_inst.get("capsule_id", "")), {}).get("tags", []).has("automine") else "backpack"
-		grant_inventory_item(broken_block_id, broken_tier, 1, route)
-		player_grime += 1.0
+		if route == "backpack":
+			var chest_pct := clampf(rules.resolve_stat("chest_route_pct", 0.0, broken_insts, broken_env), 0.0, 1.0)
+			if chest_pct > 0.0 and rules.expr_host.roll(chest_pct) > 0.0:
+				route = "paired_chest"
+		# yield_mult scales the drop count (fraction rolled); luck_mult - 1 is the chance of a +1 tier drop.
+		var y_mult := clampf(rules.resolve_stat("yield_mult", 1.0, broken_insts, broken_env), 0.0, 10.0)
+		var qty := int(floor(y_mult))
+		var frac := y_mult - float(qty)
+		if frac > 0.0 and rules.expr_host.roll(frac) > 0.0:
+			qty += 1
+		var luck := clampf(rules.resolve_stat("luck_mult", 1.0, broken_insts, broken_env) - 1.0, 0.0, 1.0)
+		var drop_tier := broken_tier
+		if luck > 0.0 and rules.expr_host.roll(luck) > 0.0:
+			drop_tier += 1
+		grant_inventory_item(broken_block_id, drop_tier, qty, route)
+		var grime_mult := maxf(0.0, rules.resolve_stat("grime_gain_mult", 1.0, broken_insts, broken_env))
+		player_grime += 1.0 * grime_mult
 
 	var new_z := old_depth + 1
 	depth[i] = new_z
@@ -426,17 +562,26 @@ func _complete_block_break(x: int, y: int, tool_inst: Dictionary) -> void:
 		max_hp[i] = 5.0
 		fluid_type[i] = FLUID_NONE
 		fluid_level[i] = 0
+		tile_block_inst[i] = {}
 	else:
 		var imb := compute_local_imbalance(x, y)
 		_populate_tile_from_generator(x, y, new_z, imb)
-		# 0.5% Lost Cat emergent quest injection on virgin layer reveal
+		# 0.5% Lost Cat emergent quest injection on virgin layer reveal (+ cat_lure_bonus)
 		if quest_lost_cat_active and not _any_tile_has_cat():
 			var cat_chance := catalog.get_gmst_float("fLostCatSpawnChance", 0.005)
-			if rules.expr_host.roll(cat_chance) > 0.0:
+			var cat_bonus := maxf(0.0, rules.resolve_stat("cat_lure_bonus", 0.0, broken_insts, broken_env))
+			if rules.expr_host.roll(clampf(cat_chance + cat_bonus, 0.0, 1.0)) > 0.0:
 				dynamic_entity_id[i] = ENTITY_LOST_CAT
 
 	# Event-driven 4-neighbor cellular fluid siphon check
 	_evaluate_fluid_siphon_around(x, y)
+
+	rules.dispatch_event("on_block_break", broken_insts, broken_env, self)
+	var new_insts := _gather_active_instances(i, tool_inst)
+	var new_env := _build_env(x, y, tool_inst, is_direct_tap, is_secondary, 0.0)
+	rules.dispatch_event("on_layer_reveal", new_insts, new_env, self)
+	if int(new_env["tile"]["is_hazard"]) == 1:
+		rules.dispatch_event("on_hazard_expose", new_insts, new_env, self)
 
 
 func _populate_tile_from_generator(x: int, y: int, z: int, local_imb: float) -> void:
@@ -444,6 +589,8 @@ func _populate_tile_from_generator(x: int, y: int, z: int, local_imb: float) -> 
 	var v := generator.sample_voxel(x, y, z, local_imb, true)
 	base_id[i] = int(v["solid_int"])
 	tier[i] = int(v["tier"])
+	tile_biome_id[i] = str(v.get("biome_id", ""))
+	tile_block_inst[i] = {}
 	var fl_str := str(v["fluid_type"])
 	if fl_str == "WATER":
 		fluid_type[i] = FLUID_WATER
@@ -497,6 +644,7 @@ func _siphon_into_basin(bx: int, by: int) -> void:
 		return int(a["order"]) < int(b["order"])
 	)
 
+	var any_flow := false
 	for d_info in donors:
 		var ni: int = d_info["idx"]
 		var incoming_type := fluid_type[ni]
@@ -516,6 +664,9 @@ func _siphon_into_basin(bx: int, by: int) -> void:
 				var obs_st: Dictionary = catalog.capsules["blocks/obsidian_hazard"].get("stats", {})
 				max_hp[bi] = float(obs_st.get("base_hp", 500.0))
 				damage_accum[bi] = 0.0
+				tile_block_inst[bi] = {}
+			var no_tool := {"capsule_id": "", "vars": {}}
+			rules.dispatch_event("on_fluid_contact", _gather_active_instances(bi, no_tool), _build_env(bx, by, no_tool, false, false, 0.0), self)
 			return
 
 		# Volume-conserving downhill transfer
@@ -526,12 +677,17 @@ func _siphon_into_basin(bx: int, by: int) -> void:
 		fluid_type[bi] = incoming_type
 		fluid_level[bi] += transferred
 		max_hp[bi] = float(fluid_level[bi]) * catalog.get_gmst_float("fBucketScoopHp", 100.0)
+		any_flow = any_flow or transferred > 0
 
 		fluid_level[ni] -= transferred
 		if fluid_level[ni] <= 0:
 			fluid_level[ni] = 0
 			fluid_type[ni] = FLUID_NONE
 			_restore_solid_hp_after_drain(ni)
+
+	if any_flow:
+		var flow_tool := {"capsule_id": "", "vars": {}}
+		rules.dispatch_event("on_fluid_flow", _gather_active_instances(bi, flow_tool), _build_env(bx, by, flow_tool, false, false, 0.0), self)
 
 
 func _restore_solid_hp_after_drain(tile_idx: int) -> void:
@@ -542,10 +698,18 @@ func _restore_solid_hp_after_drain(tile_idx: int) -> void:
 
 
 ## Section 5.2A: Backfill System (raises floor depth -= 1 using Dirt/Stone without duplicating ores).
+## Player-initiated backfill fires on_backfill; reaction-driven raises (modify_depth) do not, so they cannot recurse.
 func apply_backfill(x: int, y: int, material_id: String = "blocks/dirt") -> bool:
 	if not in_bounds(x, y):
 		return false
 	var i := idx_of(x, y)
+	if not _raise_floor(i, material_id):
+		return false
+	rules.dispatch_event("on_backfill", _gather_active_instances(i, player_tool), _build_env(x, y, player_tool, true, false, 0.0), self)
+	return true
+
+
+func _raise_floor(i: int, material_id: String) -> bool:
 	if depth[i] <= 0:
 		return false
 	depth[i] -= 1
@@ -555,6 +719,7 @@ func apply_backfill(x: int, y: int, material_id: String = "blocks/dirt") -> bool
 	base_id[i] = int(catalog.block_id_to_int.get(material_id, 0))
 	tier[i] = 0
 	max_hp[i] = 5.0
+	tile_block_inst[i] = {}
 	return true
 
 
@@ -652,18 +817,27 @@ func try_detonate_hazard_at(x: int, y: int) -> Dictionary:
 	for hpt in cluster:
 		var hi := idx_of(hpt.x, hpt.y)
 		var h_id := catalog.block_int_to_id[base_id[hi]]
+		var det_insts := _gather_active_instances(hi, player_tool)
+		var det_env := _build_env(hpt.x, hpt.y, player_tool, true, false, 0.0)
 		grant_inventory_item(h_id, tier[hi], 2, "backpack")
 		depth[hi] += 1
 		if depth[hi] > max_depth_reached[hi]:
 			max_depth_reached[hi] = depth[hi]
 		_populate_tile_from_generator(hpt.x, hpt.y, depth[hi], 0.0)
+		rules.dispatch_event("on_hazard_detonate", det_insts, det_env, self)
+		var rev_insts := _gather_active_instances(hi, player_tool)
+		var rev_env := _build_env(hpt.x, hpt.y, player_tool, true, false, 0.0)
+		rules.dispatch_event("on_layer_reveal", rev_insts, rev_env, self)
+		if int(rev_env["tile"]["is_hazard"]) == 1:
+			rules.dispatch_event("on_hazard_expose", rev_insts, rev_env, self)
 
 	return {"detonated": true, "shattered_count": cluster.size(), "perimeter_count": perimeter.size()}
 
 
 ## Section 7.2: Safe Drunk Touch Drift Coordinate Offset
 func apply_drunk_touch_offset(touch_px: Vector2, time_sec: float) -> Vector2:
-	var amp := float(rules.shared_registers.get("active_drunk_drift_px", 0.0))
+	var base_amp := float(rules.shared_registers.get("active_drunk_drift_px", 0.0))
+	var amp := maxf(0.0, rules.resolve_stat("drunk_drift_px", base_amp, _player_instances(), _build_env_neutral(player_tool)))
 	if amp <= 0.0:
 		return touch_px
 	var dx := sin(1.7 * time_sec + cos(0.8 * time_sec))
@@ -677,6 +851,8 @@ func grant_inventory_item(item_id: String, item_tier: int, qty: int, route: Stri
 	var key := "%s:%d" % [item_id, item_tier]
 	if route == "paired_chest":
 		paired_chest_loot[key] = int(paired_chest_loot.get(key, 0)) + qty
+	elif route == "ground_pile":
+		ground_pile[key] = int(ground_pile.get(key, 0)) + qty
 	else:
 		inventory[key] = int(inventory.get(key, 0)) + qty
 
@@ -695,20 +871,320 @@ func can_satisfy_requirement(req_base_id: String, req_tier: int, req_qty: int) -
 	return false
 
 
-func _gather_active_instances(tile_idx: int, tool_inst: Dictionary) -> Array:
+## Discrete player tap on tile (fires on_tap before hold mining).
+func tap_tile(x: int, y: int, tool_inst: Dictionary) -> void:
+	if not in_bounds(x, y):
+		return
+	if not tool_inst.is_empty():
+		player_tool = tool_inst
+	var i := idx_of(x, y)
+	rules.dispatch_event("on_tap", _gather_active_instances(i, tool_inst), _build_env(x, y, tool_inst, true, false, 0.0), self)
+	_cleanup_destroyed_attachments(i)
+
+
+## Equip/unequip player tool or accessory, firing on_unequip / on_equip.
+func equip_tool_instance(tool_inst: Dictionary) -> void:
+	if not player_tool.is_empty() and str(player_tool.get("capsule_id", "")) != "":
+		rules.dispatch_event("on_unequip", [player_tool], _build_env_neutral(player_tool), self)
+	player_tool = tool_inst
+	if not player_tool.is_empty() and str(player_tool.get("capsule_id", "")) != "":
+		rules.dispatch_event("on_equip", [player_tool], _build_env_neutral(player_tool), self)
+
+
+func equip_item(inst: Dictionary) -> void:
+	if inst.is_empty():
+		return
+	player_equipped_items.append(inst)
+	rules.dispatch_event("on_equip", [inst], _build_env_neutral(player_tool), self)
+
+
+func unequip_item(inst: Dictionary) -> void:
+	var idx := player_equipped_items.find(inst)
+	if idx >= 0:
+		player_equipped_items.remove_at(idx)
+		rules.dispatch_event("on_unequip", [inst], _build_env_neutral(player_tool), self)
+
+
+## Consume a consumable/book capsule instance, firing on_consume (and equipping temporary buff if not destroyed).
+func consume_capsule(inst: Dictionary) -> bool:
+	if inst.is_empty():
+		return false
+	var cid := str(inst.get("capsule_id", ""))
+	var cap: Dictionary = catalog.capsules.get(cid, {})
+	var aff: Array = cap.get("affordances", [])
+	if not aff.has("consume") and not aff.has("read_book"):
+		return false
+	var env := _build_env_neutral(player_tool)
+	var list := _player_instances()
+	if not list.has(inst):
+		list.push_front(inst)
+	rules.dispatch_event("on_consume", list, env, self)
+	if not bool(inst.get("destroyed", false)) and not player_equipped_items.has(inst):
+		var mods: Array = cap.get("modifiers", [])
+		var has_ongoing: bool = not mods.is_empty()
+		if not has_ongoing:
+			for r in cap.get("reactions", []):
+				if str(r.get("when", "")) != "on_consume":
+					has_ongoing = true
+					break
+		if has_ongoing:
+			player_equipped_items.append(inst)
+	_prune_player_items()
+	return true
+
+
+## Player hub / house / wash / market lifecycle hooks.
+func enter_house() -> void:
+	rules.dispatch_event("on_enter_house", _player_instances(), _build_env_neutral(player_tool), self)
+	_prune_player_items()
+
+
+func sleep_in_house() -> void:
+	player_is_rested = true
+	rules.dispatch_event("on_sleep", _player_instances(), _build_env_neutral(player_tool), self)
+	_prune_player_items()
+
+
+func wash_grime() -> void:
+	player_grime = 0.0
+	rules.dispatch_event("on_wash", _player_instances(), _build_env_neutral(player_tool), self)
+	_prune_player_items()
+
+
+func sell_to_market(item_id: String, item_tier: int, qty: int) -> int:
+	if qty <= 0:
+		return 0
+	var key := "%s:%d" % [item_id, item_tier]
+	var have := int(inventory.get(key, 0))
+	var sold := mini(have, qty)
+	if sold <= 0:
+		return 0
+	inventory[key] = have - sold
+	if int(inventory[key]) <= 0:
+		inventory.erase(key)
+	var st: Dictionary = catalog.capsules.get(item_id, {}).get("stats", {})
+	var unit_val := int(max(1, int(st.get("value_base", 1)) * int(pow(2.0, float(item_tier)))))
+	var insts := _player_instances()
+	var env := _build_env_neutral(player_tool)
+	var val_mult := maxf(0.0, rules.resolve_stat("market_value_mult", 1.0, insts, env))
+	var gold := int(round(float(sold * unit_val) * val_mult))
+	rules.shared_registers["gold_earned_total"] = float(rules.shared_registers.get("gold_earned_total", 0.0)) + float(gold)
+	rules.dispatch_event("on_market_sell", insts, env, self)
+	_prune_player_items()
+	return gold
+
+
+func get_vendor_unlock_depth(vendor_capsule_id: String) -> int:
+	var st: Dictionary = catalog.capsules.get(vendor_capsule_id, {}).get("stats", {})
+	var base_unlock := float(st.get("unlock_depth", 0))
+	var disc := rules.resolve_stat("vendor_depth_discount", 0.0, _player_instances(), _build_env_neutral(player_tool))
+	return maxi(0, int(round(base_unlock - disc)))
+
+
+## RuleEngine action hooks for consume_item, modify_depth, modify_fluid, transform_tile.
+func action_consume_item(item_id: String, min_tier: int, qty: int) -> bool:
+	if qty <= 0 or item_id == "":
+		return false
+	if not can_satisfy_requirement(item_id, min_tier, qty):
+		return false
+	var remaining := qty
+	var prefix := item_id + ":"
+	var matching_keys: Array[String] = []
+	for k in inventory.keys():
+		var ks := str(k)
+		if ks.begins_with(prefix):
+			var t_val := int(ks.split(":")[1])
+			if t_val >= min_tier and int(inventory[ks]) > 0:
+				matching_keys.append(ks)
+	matching_keys.sort_custom(func(a: String, b: String) -> bool:
+		return int(a.split(":")[1]) < int(b.split(":")[1])
+	)
+	for ks in matching_keys:
+		if remaining <= 0:
+			break
+		var have := int(inventory.get(ks, 0))
+		var take := mini(have, remaining)
+		inventory[ks] = have - take
+		remaining -= take
+		if int(inventory[ks]) <= 0:
+			inventory.erase(ks)
+	return true
+
+
+func action_modify_depth(ox: int, oy: int, sel: String, delta: int, material_id: String, rng_host: Object) -> void:
+	if delta == 0:
+		return
+	var coords := _resolve_target_coords(ox, oy, sel, rng_host)
+	for pt in coords:
+		var i := idx_of(pt.x, pt.y)
+		if delta < 0:
+			var steps := mini(-delta, depth[i])
+			for _s in steps:
+				_raise_floor(i, material_id)
+			_evaluate_fluid_siphon_around(pt.x, pt.y)
+		else:
+			var new_z := depth[i] + delta
+			depth[i] = new_z
+			if new_z > max_depth_reached[i]:
+				max_depth_reached[i] = new_z
+			if new_z > player_max_depth:
+				player_max_depth = new_z
+			if depth[i] < max_depth_reached[i]:
+				base_id[i] = int(catalog.block_id_to_int.get("blocks/dirt", 0))
+				tier[i] = 0
+				max_hp[i] = 5.0
+				damage_accum[i] = 0.0
+				fluid_type[i] = FLUID_NONE
+				fluid_level[i] = 0
+				tile_block_inst[i] = {}
+			else:
+				_populate_tile_from_generator(pt.x, pt.y, new_z, compute_local_imbalance(pt.x, pt.y))
+				damage_accum[i] = 0.0
+			_evaluate_fluid_siphon_around(pt.x, pt.y)
+
+
+func action_modify_fluid(ox: int, oy: int, sel: String, fl_str: String, delta_lvl: int, rng_host: Object) -> void:
+	var max_buckets := catalog.get_gmst_int("fMaxFluidBucketsPerTile", 9)
+	var scoop_hp := catalog.get_gmst_float("fBucketScoopHp", 100.0)
+	var coords := _resolve_target_coords(ox, oy, sel, rng_host)
+	for pt in coords:
+		var i := idx_of(pt.x, pt.y)
+		if fl_str == "NONE" or (delta_lvl < 0 and fluid_level[i] + delta_lvl <= 0):
+			if fluid_level[i] > 0:
+				fluid_level[i] = 0
+				fluid_type[i] = FLUID_NONE
+				_restore_solid_hp_after_drain(i)
+			continue
+		var target_type := fluid_type[i]
+		if fl_str == "WATER":
+			target_type = FLUID_WATER
+		elif fl_str == "LAVA":
+			target_type = FLUID_LAVA
+		if fluid_level[i] > 0 and fluid_type[i] != FLUID_NONE and target_type != FLUID_NONE and fluid_type[i] != target_type and delta_lvl > 0:
+			fluid_level[i] = 0
+			fluid_type[i] = FLUID_NONE
+			if catalog.block_id_to_int.has("blocks/obsidian_hazard"):
+				base_id[i] = int(catalog.block_id_to_int["blocks/obsidian_hazard"])
+				var obs_st: Dictionary = catalog.capsules["blocks/obsidian_hazard"].get("stats", {})
+				max_hp[i] = float(obs_st.get("base_hp", 500.0))
+				damage_accum[i] = 0.0
+				tile_block_inst[i] = {}
+			var no_tool := {"capsule_id": "", "vars": {}}
+			rules.dispatch_event("on_fluid_contact", _gather_active_instances(i, no_tool), _build_env(pt.x, pt.y, no_tool, false, false, 0.0), self)
+			continue
+		var new_lvl := clampi(fluid_level[i] + delta_lvl, 0, max_buckets)
+		if new_lvl <= 0:
+			fluid_level[i] = 0
+			fluid_type[i] = FLUID_NONE
+			_restore_solid_hp_after_drain(i)
+		else:
+			if target_type == FLUID_NONE:
+				target_type = FLUID_WATER
+			fluid_type[i] = target_type
+			fluid_level[i] = new_lvl
+			max_hp[i] = float(new_lvl) * scoop_hp
+			damage_accum[i] = 0.0
+		_evaluate_fluid_siphon_around(pt.x, pt.y)
+
+
+func action_transform_tile(ox: int, oy: int, sel: String, block_id: String, set_tier: int, rng_host: Object) -> void:
+	if not catalog.block_id_to_int.has(block_id):
+		return
+	var blk_int := int(catalog.block_id_to_int[block_id])
+	var st: Dictionary = catalog.capsules.get(block_id, {}).get("stats", {})
+	var base_hp_val := float(st.get("base_hp", 10.0))
+	var coords := _resolve_target_coords(ox, oy, sel, rng_host)
+	for pt in coords:
+		var i := idx_of(pt.x, pt.y)
+		base_id[i] = blk_int
+		if set_tier >= 0:
+			tier[i] = set_tier
+		tile_block_inst[i] = {}
+		if fluid_level[i] <= 0:
+			max_hp[i] = base_hp_val * pow(1.8, float(tier[i]))
+			damage_accum[i] = 0.0
+
+
+func _block_inst_at(tile_idx: int) -> Dictionary:
+	var blk_id := catalog.block_int_to_id[base_id[tile_idx]]
+	var cap: Dictionary = catalog.capsules.get(blk_id, {})
+	if cap.is_empty():
+		return {}
+	if cap.get("modifiers", []).is_empty() and cap.get("reactions", []).is_empty():
+		return {}
+	var cur: Dictionary = tile_block_inst[tile_idx]
+	if cur.is_empty() or str(cur.get("capsule_id", "")) != blk_id or bool(cur.get("destroyed", false)):
+		cur = create_capsule_instance(blk_id)
+		tile_block_inst[tile_idx] = cur
+	return cur
+
+
+func _player_instances() -> Array:
 	var out: Array = []
-	if not tool_inst.is_empty() and str(tool_inst.get("capsule_id", "")) != "":
-		tool_inst["is_covering_current_tile"] = false
-		out.append(tool_inst)
+	if not player_tool.is_empty() and str(player_tool.get("capsule_id", "")) != "" and not bool(player_tool.get("destroyed", false)):
+		player_tool["is_covering_current_tile"] = false
+		out.append(player_tool)
+		for s in player_tool.get("sockets", []):
+			if s is Dictionary and not bool(s.get("destroyed", false)):
+				s["is_covering_current_tile"] = false
+				out.append(s)
 	for eq in player_equipped_items:
 		if not bool(eq.get("destroyed", false)):
 			eq["is_covering_current_tile"] = false
 			out.append(eq)
+			for s in eq.get("sockets", []):
+				if s is Dictionary and not bool(s.get("destroyed", false)):
+					s["is_covering_current_tile"] = false
+					out.append(s)
+	return out
+
+
+func _prune_player_items() -> void:
+	for k in range(player_equipped_items.size() - 1, -1, -1):
+		if bool(player_equipped_items[k].get("destroyed", false)):
+			player_equipped_items.remove_at(k)
+
+
+func _gather_active_instances(tile_idx: int, tool_inst: Dictionary) -> Array:
+	var out: Array = []
+	if not tool_inst.is_empty() and str(tool_inst.get("capsule_id", "")) != "" and not bool(tool_inst.get("destroyed", false)):
+		tool_inst["is_covering_current_tile"] = false
+		out.append(tool_inst)
+		for s in tool_inst.get("sockets", []):
+			if s is Dictionary and not bool(s.get("destroyed", false)):
+				s["is_covering_current_tile"] = false
+				out.append(s)
+	for eq in player_equipped_items:
+		if not bool(eq.get("destroyed", false)):
+			eq["is_covering_current_tile"] = false
+			out.append(eq)
+			for s in eq.get("sockets", []):
+				if s is Dictionary and not bool(s.get("destroyed", false)):
+					s["is_covering_current_tile"] = false
+					out.append(s)
 	for att in tile_attachments[tile_idx]:
 		if not bool(att.get("destroyed", false)):
 			att["is_covering_current_tile"] = true
 			out.append(att)
+			for s in att.get("sockets", []):
+				if s is Dictionary and not bool(s.get("destroyed", false)):
+					s["is_covering_current_tile"] = true
+					out.append(s)
+	var blk_inst := _block_inst_at(tile_idx)
+	if not blk_inst.is_empty() and not bool(blk_inst.get("destroyed", false)):
+		blk_inst["is_covering_current_tile"] = true
+		out.append(blk_inst)
+	var b_id := tile_biome_id[tile_idx]
+	if b_id != "" and biome_insts.has(b_id):
+		var b_inst: Dictionary = biome_insts[b_id]
+		if not bool(b_inst.get("destroyed", false)):
+			b_inst["is_covering_current_tile"] = true
+			out.append(b_inst)
 	return out
+
+
+func _build_env_neutral(tool_inst: Dictionary) -> Dictionary:
+	return _build_env(0, 0, tool_inst, false, false, 0.0)
 
 
 func _build_env(x: int, y: int, tool_inst: Dictionary, is_direct_tap: bool, is_secondary: bool, overkill: float) -> Dictionary:
@@ -761,18 +1237,26 @@ func _resolve_target_coords(ox: int, oy: int, sel: String, rng_host: Object) -> 
 			if in_bounds(ox + d.x, oy + d.y):
 				out.append(Vector2i(ox + d.x, oy + d.y))
 		if sel == "random_neighbor_4" and not out.is_empty():
-			var pick_idx := int(rng_host.call("roll", 0.5)) % out.size()
+			var pick_idx := int(rng_host.call("pick_index", out.size()))
 			return [out[pick_idx]]
 		elif sel == "shallowest_neighbor_4" and not out.is_empty():
 			out.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
 				return depth[idx_of(a.x, a.y)] < depth[idx_of(b.x, b.y)]
 			)
 			return [out[0]]
-	elif sel == "neighbors_8":
+	elif sel == "neighbors_8" or sel == "random_neighbor_8" or sel == "shallowest_neighbor_8":
 		for dy in range(-1, 2):
 			for dx in range(-1, 2):
 				if (dx != 0 or dy != 0) and in_bounds(ox + dx, oy + dy):
 					out.append(Vector2i(ox + dx, oy + dy))
+		if sel == "random_neighbor_8" and not out.is_empty():
+			var pick_idx := int(rng_host.call("pick_index", out.size()))
+			return [out[pick_idx]]
+		elif sel == "shallowest_neighbor_8" and not out.is_empty():
+			out.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+				return depth[idx_of(a.x, a.y)] < depth[idx_of(b.x, b.y)]
+			)
+			return [out[0]]
 	elif sel == "row":
 		for xx in cols:
 			out.append(Vector2i(xx, oy))
@@ -812,3 +1296,4 @@ func _cleanup_destroyed_attachments(tile_idx: int) -> void:
 	for k in range(arr.size() - 1, -1, -1):
 		if bool(arr[k].get("destroyed", false)):
 			arr.remove_at(k)
+

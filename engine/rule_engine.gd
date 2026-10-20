@@ -6,15 +6,27 @@ extends RefCounted
 class SafeExprHost extends RefCounted:
 	var rng_state: int = 0x1E3779B97F4A7C15
 
-	func roll(prob: float) -> float:
+	func _next_u() -> float:
 		# Deterministic SplitMix64 step (63-bit signed-safe hex constants)
 		rng_state = (rng_state + 0x1E3779B97F4A7C15) & 0x7FFFFFFFFFFFFFFF
 		var z := rng_state
 		z = ((z ^ (z >> 30)) * 0x3F58476D1CE4E5B9) & 0x7FFFFFFFFFFFFFFF
 		z = ((z ^ (z >> 27)) * 0x14D049BB133111EB) & 0x7FFFFFFFFFFFFFFF
 		z = z ^ (z >> 31)
-		var u := float(z & 0xFFFFFF) / float(0x1000000)
-		return 1.0 if u < prob else 0.0
+		return float(z & 0xFFFFFF) / float(0x1000000)
+
+	func roll(prob: float) -> float:
+		return 1.0 if _next_u() < prob else 0.0
+
+	## Uniform deterministic index in [0, n). Used by random_* target selectors.
+	func pick_index(n: int) -> int:
+		if n <= 0:
+			return 0
+		return mini(n - 1, int(_next_u() * float(n)))
+
+	## Converts a boolean comparison result into 1.0 / 0.0 when used inside arithmetic.
+	func _b(cond: Variant) -> float:
+		return 1.0 if bool(cond) else 0.0
 
 
 var catalog: CatalogDB
@@ -37,6 +49,8 @@ var _cascade_depth: int = 0
 var _max_cascade_depth: int = 4
 var _frame_budget_us: int = 1500
 var _dot_regex: RegEx
+var _arith_cmp_left_regex: RegEx
+var _arith_cmp_right_regex: RegEx
 
 
 func _init(p_catalog: CatalogDB, seed_val: int = 1337) -> void:
@@ -46,6 +60,10 @@ func _init(p_catalog: CatalogDB, seed_val: int = 1337) -> void:
 	_frame_budget_us = catalog.get_gmst_int("fFrameReactionBudgetUs", 1500)
 	_dot_regex = RegEx.new()
 	_dot_regex.compile("\\b(self\\.stats|self|tile|player|tool|ctx|shared)\\.([a-zA-Z0-9_]+)")
+	_arith_cmp_left_regex = RegEx.new()
+	_arith_cmp_left_regex.compile("([\\+\\-\\*/]\\s*)\\(([^()]+?(?:>=|<=|==|!=|>|<)[^()]+?)\\)")
+	_arith_cmp_right_regex = RegEx.new()
+	_arith_cmp_right_regex.compile("\\(([^()]+?(?:>=|<=|==|!=|>|<)[^()]+?)\\)(\\s*[\\+\\-\\*/])")
 	reset_shared_registers()
 
 
@@ -78,6 +96,9 @@ func compile_expr(raw_expr: String) -> Dictionary:
 			input_names.append(slot_name)
 			slot_specs.append({"scope": scope, "key": key})
 		rewritten = rewritten.replace(full, slot_name)
+
+	rewritten = _arith_cmp_left_regex.sub(rewritten, "$1_b($2)", true)
+	rewritten = _arith_cmp_right_regex.sub(rewritten, "_b($1)$2", true)
 
 	var expr := Expression.new()
 	var err := expr.parse(rewritten, input_names)
@@ -139,7 +160,8 @@ func eval_expr(raw_expr: String, instance: Dictionary, env: Dictionary) -> float
 	return f_val
 
 
-## Law L6: Evaluates a modifiable stat across active capsule instances in deterministic order (base -> add -> mul -> clamp).
+## Law L6: Evaluates a modifiable stat across active capsule instances in deterministic order
+## (base -> add -> mul -> floor/clamp). `clamp` is an upper cap, `floor` is a lower bound.
 func resolve_stat(stat_name: String, base_value: float, active_instances: Array, env: Dictionary) -> float:
 	var val_base := base_value
 	var val_add := 0.0
@@ -148,6 +170,8 @@ func resolve_stat(stat_name: String, base_value: float, active_instances: Array,
 	var clamp_max := INF
 
 	for inst in active_instances:
+		if bool(inst.get("destroyed", false)):
+			continue
 		var cap_id := str(inst.get("capsule_id", ""))
 		if runtime_quarantined.has(cap_id) or not catalog.capsules.has(cap_id):
 			continue
@@ -175,10 +199,17 @@ func resolve_stat(stat_name: String, base_value: float, active_instances: Array,
 				val_add += m_val
 			elif phase == "mul":
 				val_mul *= m_val
-			elif phase == "clamp":
+			elif phase == "floor":
 				clamp_min = maxf(clamp_min, m_val)
+			elif phase == "clamp":
+				clamp_max = minf(clamp_max, m_val)
 
-	return clampf((val_base + val_add) * val_mul, clamp_min, clamp_max)
+	var out := (val_base + val_add) * val_mul
+	if clamp_min > -INF:
+		out = maxf(out, clamp_min)
+	if clamp_max < INF:
+		out = minf(out, clamp_max)
+	return out
 
 
 ## Law L1/L7/L8: Dispatches an event to all active capsule instances with cascade depth and frame time budget guards.
@@ -203,6 +234,8 @@ func dispatch_event(
 	var t_start := Time.get_ticks_usec()
 
 	for inst in active_instances:
+		if bool(inst.get("destroyed", false)):
+			continue
 		var cap_id := str(inst.get("capsule_id", ""))
 		if runtime_quarantined.has(cap_id) or not catalog.capsules.has(cap_id):
 			continue
@@ -268,9 +301,7 @@ func _execute_action(act_obj: Dictionary, inst: Dictionary, env: Dictionary, gri
 		var dmg := eval_expr(str(act_obj.get("amount", "0.0")), inst, env)
 		if dmg > 0.0 and grid_host != null and grid_host.has_method("apply_secondary_damage"):
 			var target_sel := str(act_obj.get("target", "self_tile"))
-			var origin_x := int(env.get("tile", {}).get("x", 0))
-			var origin_y := int(env.get("tile", {}).get("y", 0))
-			grid_host.call("apply_secondary_damage", origin_x, origin_y, target_sel, dmg, expr_host)
+			grid_host.call("apply_secondary_damage", _origin_x(env), _origin_y(env), target_sel, dmg, expr_host)
 	elif act == "emit_alert":
 		alerts_emitted.append({
 			"channel": str(act_obj.get("channel", "house_bell")),
@@ -299,6 +330,34 @@ func _execute_action(act_obj: Dictionary, inst: Dictionary, env: Dictionary, gri
 			var tier := int(round(eval_expr(str(act_obj.get("tier", "0")), inst, env))) if act_obj.has("tier") else 0
 			var route := str(act_obj.get("route", "backpack"))
 			grid_host.call("grant_inventory_item", item_id, tier, qty, route)
+	elif act == "consume_item":
+		if grid_host != null and grid_host.has_method("action_consume_item"):
+			var c_qty := int(round(eval_expr(str(act_obj.get("qty", "1")), inst, env)))
+			var c_tier := int(round(eval_expr(str(act_obj.get("tier", "0")), inst, env))) if act_obj.has("tier") else 0
+			grid_host.call("action_consume_item", str(act_obj.get("item", "")), c_tier, c_qty)
+	elif act == "modify_depth":
+		if grid_host != null and grid_host.has_method("action_modify_depth"):
+			var d_delta := int(round(eval_expr(str(act_obj.get("delta", "0")), inst, env)))
+			var mat_id := str(act_obj.get("material", "blocks/dirt"))
+			grid_host.call("action_modify_depth", _origin_x(env), _origin_y(env), str(act_obj.get("target", "self_tile")), d_delta, mat_id, expr_host)
+	elif act == "modify_fluid":
+		if grid_host != null and grid_host.has_method("action_modify_fluid"):
+			var f_delta := int(round(eval_expr(str(act_obj.get("delta_level", "0")), inst, env)))
+			grid_host.call("action_modify_fluid", _origin_x(env), _origin_y(env), str(act_obj.get("target", "self_tile")),
+				str(act_obj.get("fluid_type", "NONE")), f_delta, expr_host)
+	elif act == "transform_tile":
+		if grid_host != null and grid_host.has_method("action_transform_tile"):
+			var t_tier := int(round(eval_expr(str(act_obj.get("tier", "-1")), inst, env))) if act_obj.has("tier") else -1
+			grid_host.call("action_transform_tile", _origin_x(env), _origin_y(env), str(act_obj.get("target", "self_tile")),
+				str(act_obj.get("block", "")), t_tier, expr_host)
+
+
+func _origin_x(env: Dictionary) -> int:
+	return int(env.get("tile", {}).get("x", -1))
+
+
+func _origin_y(env: Dictionary) -> int:
+	return int(env.get("tile", {}).get("y", -1))
 
 
 func _quarantine_instance(inst: Dictionary, reason: String) -> void:

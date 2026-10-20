@@ -78,12 +78,23 @@ func rebuild_indexes() -> void:
 	block_int_to_id.clear()
 	block_id_to_int.clear()
 
+	const CORE_BLOCKS := {
+		"blocks/obsidian_hazard": true,
+		"blocks/lava_pocket": true,
+		"blocks/water_aquifer": true,
+		"blocks/quartz_vein": true,
+		"blocks/copper": true,
+		"blocks/dirt": true,
+		"blocks/stone": true
+	}
 	var block_records: Array[Dictionary] = []
 	for cap_id in capsules.keys():
 		var data: Dictionary = capsules[cap_id]
 		var affs: Array = data.get("affordances", [])
 		if affs.has("mineable_block"):
-			block_records.append({"id": cap_id, "rank": int(data.get("stats", {}).get("priority_rank", 50))})
+			var raw_rank := int(data.get("stats", {}).get("priority_rank", 100))
+			var eff_rank := raw_rank if CORE_BLOCKS.has(cap_id) else maxi(100, raw_rank)
+			block_records.append({"id": cap_id, "rank": eff_rank})
 		if affs.has("biome_profile"):
 			biome_ids.append(cap_id)
 		for offer in data.get("offered_by", []):

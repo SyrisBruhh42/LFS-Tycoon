@@ -23,6 +23,88 @@
     "vendor_access": "Reaching and unlocking better vendors and offers.",
     "event_helpers": "Aids for emergent events such as the lost-cat chase."
   },
+  "compatibility": {
+    "zero_damage_stall": {
+      "paths": ["npc_enchanter", "magic_charm", "placeable_device", "qol_upgrade", "tool_builtin", "power_source"],
+      "mechanics": "React to `on_zero_damage_stall` with `pause_tool` (`pause_durability` / `pause_battery`) and/or `ring_bell`, or lower `battery_drain_mult` / `durability_drain_mult` when `tile.is_strict_locked == 1`."
+    },
+    "overkill_waste": {
+      "paths": ["skill_book", "npc_enchanter", "forge_material", "magic_charm", "profession_perk", "tool_builtin"],
+      "mechanics": "React to `on_block_break` when `tool.overkill_damage > 0` and apply `deal_splash_damage` (using `tool.overkill_damage * factor`) to `neighbors_4`, `random_neighbor_4`, or `shallowest_neighbor_4`."
+    },
+    "tap_misfires": {
+      "paths": ["field_textile", "magic_charm", "profession_perk", "consumable_buff", "qol_upgrade", "placeable_device"],
+      "mechanics": "Reduce `drunk_drift_px` (`mul` < 1.0 or `clamp`), or clamp `min_hp_clamp` (e.g. `base` 1.0 when `ctx.is_direct_tap == 1`) so accidental taps cannot finish breaking a protected tile."
+    },
+    "unwanted_splash": {
+      "paths": ["field_textile", "npc_enchanter", "magic_charm", "placeable_device", "qol_upgrade"],
+      "mechanics": "When `ctx.is_secondary_damage == 1` (or `ctx.is_direct_tap == 0`), reduce `incoming_damage` (`mul` < 1.0, e.g. 0.15) or set `min_hp_clamp` (`base` >= 1.0) so splash damage never breaks the tile."
+    },
+    "auto_tool_runtime": {
+      "paths": ["vendor_disposable", "npc_enchanter", "placeable_device", "hired_laborer", "power_source", "bundle_package"],
+      "mechanics": "Reduce `battery_drain_mult` (`mul` < 1.0), or provide an `automine` tool with generous `charge_left`, or react to `on_second_tick` / `on_offline_catchup`."
+    },
+    "tool_wear": {
+      "paths": ["vendor_disposable", "npc_enchanter", "forge_material", "magic_charm", "profession_perk", "consumable_buff", "tool_builtin"],
+      "mechanics": "Reduce `durability_drain_mult` (`mul` < 1.0) so tools lose less durability per swing, or craft a high-durability tool."
+    },
+    "fluid_flooding": {
+      "paths": ["vendor_disposable", "field_textile", "magic_charm", "tool_builtin", "placeable_device", "hired_laborer"],
+      "mechanics": "Use a `BUCKET` tool, or react to `on_fluid_contact`, `on_fluid_flow`, `on_zero_damage_stall`, or `on_second_tick` (when `tile.fluid_level > 0`) with `modify_fluid` (`fluid_type: \"NONE\"`, `delta_level: -1`). Note: solid blocks never break while `tile.fluid_level > 0`."
+    },
+    "hazard_clearing": {
+      "paths": ["vendor_disposable", "npc_enchanter", "forge_material", "magic_charm", "tool_builtin", "placeable_device"],
+      "mechanics": "Include `catalyst` affordance for perimeter detonation, or react to `on_hazard_expose` / `on_hazard_detonate`, or boost `base_dps` / `incoming_damage` when `tile.is_hazard == 1`."
+    },
+    "depth_awareness": {
+      "paths": ["skill_book", "magic_charm", "profession_perk", "qol_upgrade", "placeable_device", "bundle_package"],
+      "mechanics": "Use `reveal_contour` on `on_equip`, `on_tap`, or `on_layer_reveal`, and/or grant a precision `luck_mult` or `break_time_mult` bonus on deep or uneven strata."
+    },
+    "haul_capacity": {
+      "paths": ["magic_charm", "profession_perk", "qol_upgrade", "placeable_device", "hired_laborer", "bundle_package"],
+      "mechanics": "Increase `chest_route_pct` (`add` 0.25..1.0) so mined ore routes directly to `paired_chest`, or spawn bonus routed loot into `paired_chest` on `on_block_break`."
+    },
+    "market_saturation": {
+      "paths": ["skill_book", "magic_charm", "profession_perk", "consumable_buff", "qol_upgrade", "bundle_package"],
+      "mechanics": "Increase `market_value_mult` (`mul` > 1.0 or `add` > 0.0), or react to `on_market_sell` to grant bonus value or refine raw ore."
+    },
+    "wrong_tool_penalty": {
+      "paths": ["skill_book", "npc_enchanter", "forge_material", "magic_charm", "profession_perk", "consumable_buff", "tool_builtin"],
+      "mechanics": "Reduce `wrong_tool_penalty` (`mul` < 1.0, e.g. 0.5) so off-class tools suffer less slowdown."
+    },
+    "slow_early_dps": {
+      "paths": ["vendor_disposable", "skill_book", "forge_material", "consumable_buff", "tool_builtin", "hired_laborer", "power_source"],
+      "mechanics": "Boost `base_dps` (`add` or `mul` > 1.0), increase `incoming_damage` (`mul` > 1.0), or lower `break_time_mult` (`mul` < 1.0) at shallow depth (`tile.depth < 300`)."
+    },
+    "ore_hunting": {
+      "paths": ["skill_book", "npc_enchanter", "magic_charm", "profession_perk", "consumable_buff", "qol_upgrade", "placeable_device"],
+      "mechanics": "Increase `luck_mult` (`add` > 0.0 or `mul` > 1.0) and/or `yield_mult` (`mul` >= 1.0), or trigger `reveal_contour` on `on_layer_reveal`."
+    },
+    "backfill_scaffolding": {
+      "paths": ["field_textile", "magic_charm", "profession_perk", "qol_upgrade", "tool_builtin", "placeable_device"],
+      "mechanics": "Include `backfill_material` affordance, or react to `on_backfill` with `modify_depth` / `spawn_item`, or boost mining speed on backfilled tiles (`tile.depth < tile.max_depth_reached`)."
+    },
+    "grime_cleanliness": {
+      "paths": ["field_textile", "magic_charm", "profession_perk", "consumable_buff", "qol_upgrade", "placeable_device"],
+      "mechanics": "Reduce `grime_gain_mult` (`mul` < 1.0), or grant a clean-player bonus (`player.grime < 10`) after `on_wash`."
+    },
+    "house_comfort": {
+      "paths": ["field_textile", "magic_charm", "profession_perk", "consumable_buff", "qol_upgrade", "bundle_package"],
+      "mechanics": "Include `place_in_house` affordance; react to `on_enter_house` or `on_sleep`, or grant positive buffs (`base_dps`, `luck_mult`, `yield_mult`) when `player.is_rested == 1`."
+    },
+    "repair_upkeep": {
+      "paths": ["npc_enchanter", "forge_material", "magic_charm", "profession_perk", "consumable_buff", "power_source"],
+      "mechanics": "Reduce `durability_drain_mult` or `battery_drain_mult` (`mul` < 1.0), or react to `on_block_break` / `on_second_tick` by consuming common stone/copper (`consume_item`) to restore `self.durability_left` or `self.charge_left`."
+    },
+    "vendor_access": {
+      "paths": ["skill_book", "magic_charm", "profession_perk", "qol_upgrade", "bundle_package"],
+      "mechanics": "Increase `vendor_depth_discount` (`add` > 0) or update `shared.reputation_vayne` / `shared.gold_earned_total` via `set_shared_var` on `on_market_sell` or `on_block_break`."
+    },
+    "event_helpers": {
+      "paths": ["field_textile", "magic_charm", "consumable_buff", "qol_upgrade", "tool_builtin", "placeable_device"],
+      "mechanics": "Increase `cat_lure_bonus` (`add` 0.01..0.05) or use a `CAPTURE_NET` tool or `ring_bell` reaction on `on_layer_reveal`."
+    }
+  },
   "path_types": {
     "vendor_disposable": {"archetype": "tool", "namespace": "tools", "example": "tools/peddler_windup_pick", "hint": "An NPC sells a timed or single-use enchanted tool that eventually breaks and vanishes."},
     "skill_book": {"archetype": "book", "namespace": "books", "example": "books/tome_crude_shattering_v1", "hint": "A bought or found book; level 1 is weak and clumsy, and it may be permanent or timed."},
@@ -40,28 +122,28 @@
     "bundle_package": {"archetype": "upgrade", "namespace": "upgrades", "example": "upgrades/surveyor_chalk_and_stencil", "hint": "A very expensive, unlock-gated NPC package that grants several single options at once."}
   },
   "world_archetypes": {
-    "block": {"namespace": "blocks", "example": "blocks/copper", "hint": "A new ore, soil or fluid. Keep stats.spawn_prob small (<=0.03) and use z_unlock; the total world mass budget is enforced."},
-    "biome": {"namespace": "biomes", "example": "biomes/sunken_bog", "hint": "A biome is a reference sheet of block weights (biome_weights) with a z range and weight."},
-    "npc": {"namespace": "npcs", "example": "npcs/peddler_vayne", "hint": "A vendor or service NPC. Items point back at it via their own offered_by; never list items inside the NPC."}
+    "block": {"namespace": "blocks", "example": "blocks/copper", "hint": "A new ore, soil or hazard stratum. Keep stats.spawn_prob small (<=0.03), set z_unlock, base_hp, value_base, and ideal_tool; never add offered_by to a natural block unless a vendor explicitly sells raw blocks."},
+    "biome": {"namespace": "biomes", "example": "biomes/sunken_bog", "hint": "A biome is a subterranean stratum with stats (z_min, z_max, biome_weight) and biome_weights referencing existing blocks. Never add offered_by to a biome."},
+    "npc": {"namespace": "npcs", "example": "npcs/peddler_vayne", "hint": "A vendor or service NPC with affordances [\"npc_vendor\"] and stats.unlock_depth. Items point back at it via their own offered_by; NEVER put offered_by inside an NPC capsule."}
   },
   "twists": [
-    "Give it exactly one clear limiter: a cost, a duration, a cooldown or a drawback.",
+    "Give it one clear limiter: a cost, a bounded charge/durability, or a situational condition.",
     "Gate its vendor offer with an unlock_if expression on a declared shared register.",
-    "Make it disposable: it must break or vanish after a bounded amount of use.",
-    "Make it trade speed for safety, or safety for speed.",
-    "Give it a quirky side effect that is mildly annoying but never punishing.",
-    "Make it need a rare or exotic currency block rather than plain copper.",
-    "Make its first level weak and clumsy, with obvious room for a later improved version.",
-    "Make it work only in one situation, but work very well there.",
-    "Make it stack or interact with an existing capsule's tags rather than replacing it.",
-    "Make it permanent but narrow, instead of temporary but broad.",
-    "Make it deliberately inefficient but cheap, for a thrifty player.",
-    "Make it conditional on tile depth, tier or fluid state."
+    "Make it disposable: it wears down after a bounded amount of use (`durability_left` or `charge_left`).",
+    "Make it trade speed for precision, or precision for speed.",
+    "Give it a mild situational trade-off that rewards thoughtful placement.",
+    "Price it in a deeper or rarer block (such as `blocks/quartz_vein` or `blocks/copper` tier 1+) rather than dirt.",
+    "Make it an early-tier apprentice version with modest numbers and clear identity.",
+    "Make it specialize strongly in deep strata (`tile.depth >= 500`) or high-tier rock (`tile.tier >= 1`).",
+    "Make it synergize with rested state (`player.is_rested == 1`) or clean hands (`player.grime < 15`).",
+    "Make it permanent while carried or placed in the house, with a focused single-stat effect.",
+    "Make it thrifty and reliable for an early-game miner.",
+    "Make it conditional on tile depth, tier, hazard state, or fluid level."
   ],
   "flavor_words": [
-    "brass", "bone", "cinder", "lantern", "moss", "salt", "thimble", "ember", "ledger", "tallow",
-    "quill", "gravel", "hearth", "hollow", "iron", "kettle", "loam", "mortar", "nettle", "ochre",
-    "pewter", "quartz", "rivet", "sconce", "tin", "umber", "velvet", "wick", "yarn", "zinc",
-    "badger", "heron", "mole", "newt", "owl", "stoat", "wren", "toad", "beetle", "lark"
+    "brass", "basalt", "cinder", "lantern", "bismuth", "salt", "bellows", "ember", "ledger", "tallow",
+    "quill", "gravel", "hearth", "hollow", "iron", "kettle", "loam", "mortar", "calcite", "ochre",
+    "pewter", "quartz", "rivet", "sconce", "tin", "umber", "crucible", "wick", "flint", "zinc",
+    "galena", "gasket", "mica", "plumb", "pumice", "slag", "vitriol", "shale", "anvil", "chisel"
   ]
 }

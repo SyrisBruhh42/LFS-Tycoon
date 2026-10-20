@@ -27,9 +27,14 @@
     "drunk_drift_px",
     "battery_drain_mult",
     "durability_drain_mult",
-    "min_hp_clamp"
+    "min_hp_clamp",
+    "chest_route_pct",
+    "market_value_mult",
+    "grime_gain_mult",
+    "cat_lure_bonus",
+    "vendor_depth_discount"
   ],
-  "modifier_phases": ["base", "add", "mul", "clamp"],
+  "modifier_phases": ["base", "add", "mul", "floor", "clamp"],
   "tool_types": ["NONE", "PICKAXE", "SHOVEL", "BUCKET", "DEMOLITION", "CAPTURE_NET"],
   "offline_modes": ["none", "coarse", "exact"],
   "expression_functions": [

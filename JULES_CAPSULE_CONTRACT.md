@@ -113,7 +113,35 @@ Always check `vocab/*.json` for the authoritative machine-readable definitions.
 * `destroy_self`: `{"act": "destroy_self"}`
 * `transmute_self`: `{"act": "transmute_self", "into": "<namespace>/<slug>"}`
 
-### 3.3 Allowed Expression Functions & Variables (Law L4 & L7)
+### 3.3 Modifiable Stats & Phase Directionality (`modifiers[]` — `vocab/affordances.json`)
+* **Modifier Phases** (evaluated in deterministic order):
+  1. `"base"`: Overrides the starting base value (highest-value `"base"` wins).
+  2. `"add"`: Added to the base value (`(base + sum(add))`).
+  3. `"mul"`: Multiplies the running total (`* prod(mul)`). Use `0.75` for a 25% reduction, `1.25` for a 25% boost. Never use negative multipliers.
+  4. `"floor"`: Lower bound (`max(val, floor)`).
+  5. `"clamp"`: Upper ceiling (`min(val, clamp)`).
+* **Modifiable Stat Reference**:
+  * `base_dps` (default tool DPS): Higher = faster mining. Boost with `"add"` (`> 0`) or `"mul"` (`> 1.0`).
+  * `incoming_damage` (damage dealt **to the tile**):
+    * **Higher (`"mul" > 1.0`)** = block takes MORE damage (shatters faster).
+    * **Lower (`"mul" < 1.0`)** = block takes LESS damage (protective dampening, e.g., carpets absorbing splash when `ctx.is_secondary_damage == 1`).
+  * `break_time_mult` (default `1.0`): Multiplier on effective mining speed (`eff_dps / break_time_mult`). **Lower (`"mul" < 1.0`)** = faster breaks; **Higher (`"mul" > 1.0`)** = slower breaks.
+  * `wrong_tool_penalty` (default penalty when tool class mismatches block): **Lower (`"mul" < 1.0`)** = reduces off-class penalty.
+  * `cleave_pct` (default `0.0`): Fraction (`0.0..1.0`) of direct damage splashed to neighbors on hit.
+  * `cleave_radius` (default `1.0`): `1` = 4-neighbors (`neighbors_4`), `>= 2` = 8-neighbors (`neighbors_8`).
+  * `yield_mult` (default `1.0`): Scales virgin ore drop count (`1.25` = 1 guaranteed + 25% chance of a 2nd drop). **Never set `<= 0`** unless paired with a non-dirt `spawn_item` reaction.
+  * `luck_mult` (default `1.0`): `luck_mult - 1.0` is the probability (`0.0..1.0`) that a mined virgin block drops at `tier + 1`.
+  * `drunk_drift_px` (default `0.0`): Touch drift amplitude in pixels. **Lower (`"mul" < 1.0` or `"clamp"`)** = steadies aim; **Higher (`"add" > 0`)** = wobblier aim.
+  * `battery_drain_mult` (default `1.0`): Rate at which `charge_left` drains. **Lower (`"mul" < 1.0`)** = battery lasts longer.
+  * `durability_drain_mult` (default `1.0`): Rate at which `durability_left` drains per swing. **Lower (`"mul" < 1.0`)** = tool wears slower.
+  * `min_hp_clamp` (default `0.0`): Minimum HP floor left on a tile (`> 0` prevents a hit or splash from finishing off the block).
+  * `chest_route_pct` (default `0.0`): Probability (`0.0..1.0`) that hand-mined virgin drops route directly to `paired_chest` instead of `backpack`.
+  * `market_value_mult` (default `1.0`): Multiplier on gold earned when selling items (`> 1.0` = higher sale payout).
+  * `grime_gain_mult` (default `1.0`): Multiplier on grime accumulated per broken block (`< 1.0` = stay cleaner longer).
+  * `cat_lure_bonus` (default `0.0`): Additive bonus (`0.01..0.05`) to the Lost Cat emergent spawn roll on virgin layer reveal.
+  * `vendor_depth_discount` (default `0.0`): Reduces the `unlock_depth` required to access NPC vendors.
+
+### 3.4 Allowed Expression Functions & Variables (Law L4 & L7)
 * **Allowed Functions**: `min(a,b)`, `max(a,b)`, `clamp(x,lo,hi)`, `abs(x)`, `floor(x)`, `ceil(x)`, `round(x)`, `sqrt(x)`, `pow(a,b)`, `sin(x)`, `cos(x)`, `lerp(a,b,t)`, `roll(prob)`.
 * **Forbidden**: `randf()`, `randi()`, `OS`, `Engine`, `FileAccess`, `DirAccess`, `ClassDB`, any `__` attribute.
 * **Allowed Context Scopes**:
@@ -127,7 +155,8 @@ Always check `vocab/*.json` for the authoritative machine-readable definitions.
 
 ---
 
-## 4. Verification Checklist Before Committing
-1. Run `python3 tools/check_capsules.py --strict`
-2. Ensure zero warnings and zero errors.
-3. Verify `git status` shows changes ONLY inside your new `content/capsules/<namespace>/<slug>/` directory.
+## 4. Key Physics Invariants & Verification Checklist
+1. **Fluid Strict-Lock**: While `tile.fluid_level > 0`, non-`BUCKET` tools deal `0` damage and trigger `on_zero_damage_stall`. Solid blocks never fire `on_block_break` while flooded.
+2. **Backward Edges Only**: Items declare `offered_by` pointing to `npcs/*`. Never put `offered_by` inside `npcs/*`, `biomes/*`, or natural `blocks/*`.
+3. **Run `python3 tools/preflight.py`** before submitting and ensure it prints `PREFLIGHT OK: submit now.`
+

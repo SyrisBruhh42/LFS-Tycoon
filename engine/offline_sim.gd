@@ -52,6 +52,18 @@ static func simulate_offline(grid: GridManager, away_seconds: float) -> Dictiona
 							tools_stalled += 1
 							break
 			grid._cleanup_destroyed_attachments(i)
+			if not grid.tile_attachments[i].is_empty():
+				var catchup_env := grid._build_env(x, y, grid.player_tool, false, false, 0.0)
+				catchup_env["ctx"]["dt"] = away_seconds
+				grid.rules.dispatch_event("on_offline_catchup", grid.tile_attachments[i], catchup_env, grid, false)
+				grid._cleanup_destroyed_attachments(i)
+
+	var p_insts := grid._player_instances()
+	if not p_insts.is_empty():
+		var p_env := grid._build_env_neutral(grid.player_tool)
+		p_env["ctx"]["dt"] = away_seconds
+		grid.rules.dispatch_event("on_offline_catchup", p_insts, p_env, grid, false)
+		grid._prune_player_items()
 
 	var elapsed_ms := float(Time.get_ticks_usec() - t0_us) / 1000.0
 	return {

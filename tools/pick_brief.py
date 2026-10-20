@@ -2,10 +2,10 @@
 """Prints a unique, coverage-weighted design brief for ONE autonomous content session.
 
 Every session runs the same prompt; this script is what makes them diverge. It reads the live capsules,
-measures how many already solve each (friction x solution-path) cell via the tags
+measures how many already solve each compatible (friction x solution-path) cell via the tags
 `solves_<friction>` and `path_<path_type>`, then samples under-served cells with a random seed.
 
-Usage: python3 tools/pick_brief.py [--seed N]
+Usage: python3 tools/pick_brief.py [--seed N] [--json]
 """
 from __future__ import annotations
 
@@ -52,28 +52,30 @@ def main() -> int:
 
     design = json.loads(DESIGN.read_text(encoding="utf-8"))
     frictions: dict[str, str] = design["frictions"]
+    compat: dict[str, dict] = design.get("compatibility", {})
     path_types: dict[str, dict] = design["path_types"]
     caps = load_capsules()
 
     friction_count = {f: 0 for f in frictions}
     path_count = {p: 0 for p in path_types}
     cell_count: dict[tuple[str, str], int] = {}
-    by_friction: dict[str, list[str]] = {f: [] for f in frictions}
+    by_friction_names: dict[str, list[str]] = {f: [] for f in frictions}
     ns_count: dict[str, int] = {}
     for cid, data in caps.items():
         ns_count[cid.split("/")[0]] = ns_count.get(cid.split("/")[0], 0) + 1
         tags = set(data.get("tags", []))
+        name = str(data.get("meta", {}).get("name", cid))
         fs = [f for f in frictions if f"solves_{f}" in tags]
         ps = [p for p in path_types if f"path_{p}" in tags]
         for f in fs:
             friction_count[f] += 1
-            by_friction[f].append(cid)
+            by_friction_names[f].append(name)
             for p in ps:
                 cell_count[(f, p)] = cell_count.get((f, p), 0) + 1
         for p in ps:
             path_count[p] += 1
 
-    flavor = rng.sample(design["flavor_words"], 3)
+    flavor = rng.sample(design["flavor_words"], 2)
     suffix = "%04x" % rng.randrange(0x10000)
     rarity = rng.choices([r for r, _ in RARITIES], weights=[w for _, w in RARITIES], k=1)[0]
     band = rng.choices(BANDS, weights=BAND_WEIGHTS, k=1)[0]
@@ -89,16 +91,26 @@ def main() -> int:
             "**Mode:** WORLD-BUILDING",
             f"**Archetype:** `{kind}`   **Namespace:** `{w['namespace']}`",
             f"**Capsule id:** `{w['namespace']}/<descriptive_slug>_{suffix}`  (slug MUST end with `_{suffix}`)",
-            f"**Imitate:** `{w['example']}`   **Rarity:** {rarity}",
+            f"**Imitate structure of:** `{w['example']}`   **Rarity:** {rarity}",
             f"**Guidance:** {w['hint']}",
-            f"**Inspiration words:** {', '.join(flavor)}",
-            f"**Twist:** {twist}",
+            f"**Optional motif words (use 0-1 if fitting, never force):** {', '.join(flavor)}",
             "**Tags to include:** `world_" + kind + "` plus descriptive tags.",
+            "",
+            "**World-building rules recap:**",
+            "- Do NOT include `offered_by` on `block`, `biome`, or `npc` capsules.",
+            "- If `block`: include `mineable_block` (and `carry`, `sell` if collectible), `stats` (`base_hp`, `value_base`, `spawn_prob` <= 0.03, `z_unlock`, `ideal_tool`), and `biome_weights`.",
+            "- If `biome`: include `biome_profile`, `stats` (`z_min`, `z_max`, `biome_weight`), and `biome_weights` mapping existing `blocks/*` ids to weights.",
+            "- If `npc`: include `npc_vendor` and `stats` (`unlock_depth`); never list items or `offered_by` inside an NPC.",
+            "- Never edit another capsule, `engine/`, `vocab/`, `tools/` or `tests/`.",
         ]
     else:
         fk = weighted_choice(rng, sorted(frictions), friction_count)
-        pk = weighted_choice(rng, sorted(path_types), {p: cell_count.get((fk, p), 0) for p in path_types})
+        raw_allowed = compat.get(fk, {}).get("paths", sorted(path_types))
+        allowed_paths = [p for p in raw_allowed if p in path_types] or sorted(path_types)
+        pk = weighted_choice(rng, allowed_paths, {p: cell_count.get((fk, p), 0) for p in allowed_paths})
         pt = path_types[pk]
+        mech_hint = compat.get(fk, {}).get("mechanics", "")
+        existing_names = by_friction_names[fk][-6:]
         meta = {"mode": "solution", "label": f"{fk} via {pk}", "friction": fk, "path": pk}
         lines += [
             "**Mode:** SOLUTION",
@@ -106,21 +118,23 @@ def main() -> int:
             f"**Solution path:** `{pk}` — {pt['hint']}",
             f"**Archetype:** `{pt['archetype']}`   **Namespace:** `{pt['namespace']}`",
             f"**Capsule id:** `{pt['namespace']}/<descriptive_slug>_{suffix}`  (slug MUST end with `_{suffix}`)",
-            f"**Imitate:** `{pt['example']}`",
+            f"**Imitate structure of:** `{pt['example']}`",
             f"**Rarity:** {rarity}   **Era:** {band[0]} ({band[1]})",
-            f"**Inspiration words:** {', '.join(flavor)}",
+        ]
+        if mech_hint:
+            lines.append(f"**Mechanical hook hint:** {mech_hint}")
+        lines += [
+            f"**Optional motif words (use 0-1 if fitting, never force):** {', '.join(flavor)}",
             f"**Twist:** {twist}",
             f"**Required tags:** `solves_{fk}`, `path_{pk}` (plus descriptive tags).",
-            f"**Existing solutions to this friction (do not duplicate):** "
-            + (", ".join(f"`{c}`" for c in by_friction[fk]) or "none yet"),
+            f"**Existing concept names for this friction (do not duplicate concept):** "
+            + (", ".join(f'"{n}"' for n in existing_names) or "none yet"),
+            "",
+            "**Rules recap:** ease is earned, never given; include at least one working modifier or reaction that genuinely eases the friction; "
+            "one clear limiter (cost, durability/charge, or condition); never set `yield_mult <= 0` unless spawning a real non-dirt item; "
+            "edges point backward (declare `offered_by` inside YOUR item capsule pointing to an existing `npcs/*` vendor); "
+            "never edit another capsule, `engine/`, `vocab/`, `tools/` or `tests/`.",
         ]
-    lines += [
-        "",
-        "**If the pairing looks odd:** do not re-roll. Find the most inventive coherent link between the friction and the path, and keep the required tags.",
-        "**Rules recap:** ease is earned, never given; one limiter minimum; no stamina/mana/health bars; "
-        "no instant breaking (>=1s per block holds); edges point backward (declare offered_by / biome_weights "
-        "inside YOUR capsule); only existing vocab verbs; never edit another capsule, engine/, vocab/, tools/ or tests/.",
-    ]
     if args.json:
         print(json.dumps({"suffix": suffix, **meta, "markdown": "\n".join(lines)}))
     else:

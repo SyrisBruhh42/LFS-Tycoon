@@ -317,3 +317,78 @@ func _run_suite() -> void:
 	_assert_true(save_ok and bool(load_res.get("ok", false)) and int(load_res.get("dormant_stubs_preserved", 0)) >= 1,
 		"Atomic Save/Load Round-Trip Preserves Quarry & Dormant Capsule Stubs",
 		"dormant_stubs_preserved=%d" % int(load_res.get("dormant_stubs_preserved", 0)))
+
+	# ------------------------------------------------------------------
+	# SPIKE S7: Wired Vocab Hooks, Actions & Full-Catalog Behavioral Sweep
+	# ------------------------------------------------------------------
+	print("\n--- SPIKE S7: Wired Vocab Hooks, Actions & Full-Catalog Behavioral Sweep ---")
+	grid.reset_quarry()
+	grid.player_equipped_items.clear()
+	grid.inventory.clear()
+	grid.paired_chest_loot.clear()
+
+	# 1. Verify min_hp_clamp prevents accidental break, and yield_mult + chest_route_pct route doubled drops
+	catalog.capsules["devices/zzz_test_clamp_and_yield"] = {
+		"affordances": ["place_on_tile"],
+		"tags": ["device"],
+		"stats": {},
+		"vars": {"clamp_active": 1.0},
+		"modifiers": [
+			{"stat": "min_hp_clamp", "phase": "base", "if": "self.clamp_active == 1", "value": "2.0"},
+			{"stat": "yield_mult", "phase": "mul", "value": "2.0"},
+			{"stat": "chest_route_pct", "phase": "base", "value": "1.0"}
+		],
+		"reactions": []
+	}
+	_set_tile(grid, 3, 3, "blocks/dirt", 5) # 10 HP
+	var test_dev: Dictionary = grid.create_capsule_instance("devices/zzz_test_clamp_and_yield")
+	grid.attach_capsule_to_tile(3, 3, test_dev)
+	var r_clamped: Dictionary = grid.apply_mining_tick(3, 3, pick_inst, 5.0, true)
+	var hp_left_clamped: float = grid.max_hp[grid.idx_of(3, 3)] - grid.damage_accum[grid.idx_of(3, 3)]
+	test_dev["vars"]["clamp_active"] = 0.0
+	var r_unclamped: Dictionary = grid.apply_mining_tick(3, 3, pick_inst, 1.0, true)
+	var chest_dirt: int = int(grid.paired_chest_loot.get("blocks/dirt:0", 0))
+	catalog.capsules.erase("devices/zzz_test_clamp_and_yield")
+	_assert_true(not bool(r_clamped.get("broke", false)) and is_equal_approx(hp_left_clamped, 2.0) and bool(r_unclamped.get("broke", false)) and chest_dirt == 2,
+		"min_hp_clamp Protects Tile & yield_mult + chest_route_pct Route Doubled Loot",
+		"clamped_hp=%.1f, chest_dirt=%d" % [hp_left_clamped, chest_dirt])
+
+	# 2. Verify action_consume_item, action_modify_depth, action_modify_fluid, action_transform_tile & hub hooks
+	grid.grant_inventory_item("blocks/copper", 1, 5, "backpack")
+	var consumed_ok: bool = grid.action_consume_item("blocks/copper", 0, 3)
+	var rem_copper: int = int(grid.inventory.get("blocks/copper:1", 0))
+	_set_tile(grid, 4, 4, "blocks/stone", 5)
+	grid.action_modify_depth(4, 4, "self_tile", -1, "blocks/dirt", rules.expr_host)
+	var z_after_raise: int = grid.depth[grid.idx_of(4, 4)]
+	grid.action_modify_fluid(4, 4, "self_tile", "WATER", 2, rules.expr_host)
+	var fl_after_add: int = grid.fluid_level[grid.idx_of(4, 4)]
+	grid.action_modify_fluid(4, 4, "self_tile", "NONE", -2, rules.expr_host)
+	grid.action_transform_tile(4, 4, "self_tile", "blocks/copper", 2, rules.expr_host)
+	var blk_after_tf: String = catalog.block_int_to_id[grid.base_id[grid.idx_of(4, 4)]]
+	grid.sleep_in_house()
+	grid.wash_grime()
+	var gold_earned: int = grid.sell_to_market("blocks/copper", 1, 2)
+	_assert_true(consumed_ok and rem_copper == 2 and z_after_raise == 4 and fl_after_add == 2 and blk_after_tf == "blocks/copper" and grid.player_is_rested and gold_earned > 0,
+		"RuleEngine Action Handlers (consume_item, modify_depth, modify_fluid, transform_tile) & Hub Hooks Execute Cleanly",
+		"rem_copper=%d, z=%d, fluid=%d, block=%s, gold=%d" % [rem_copper, z_after_raise, fl_after_add, blk_after_tf, gold_earned])
+
+	# 3. Full-Catalog Behavioral Sweep: evaluate every modifier & reaction across all loaded capsules
+	rules.runtime_quarantined.clear()
+	var sweep_env: Dictionary = grid._build_env(2, 2, pick_inst, true, false, 5.0)
+	var evaluated_caps: int = 0
+	for cid in catalog.capsules.keys():
+		var inst: Dictionary = grid.create_capsule_instance(str(cid))
+		inst["is_covering_current_tile"] = true
+		for st_name in catalog.vocab_affordances.get("modifiable_stats", []):
+			rules.resolve_stat(str(st_name), 1.0, [inst], sweep_env)
+		var cap_rx: Array = catalog.capsules[cid].get("reactions", [])
+		for rx in cap_rx:
+			var ev_name := str(rx.get("on", ""))
+			if ev_name != "":
+				rules.dispatch_event(ev_name, [inst], sweep_env, grid, false)
+		evaluated_caps += 1
+	_assert_true(rules.runtime_quarantined.is_empty() and evaluated_caps >= 17,
+		"Full-Catalog Behavioral Sweep (0 Runtime Expression Quarantines Across All Capsules)",
+		"evaluated=%d, runtime_quarantined=%d %s" % [evaluated_caps, rules.runtime_quarantined.size(), str(rules.runtime_quarantined) if not rules.runtime_quarantined.is_empty() else ""])
+
+

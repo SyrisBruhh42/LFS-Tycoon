@@ -576,6 +576,157 @@ def check_world_mass_budget(capsules: Dict[str, Dict[str, Any]]) -> List[str]:
     return errors
 
 
+def check_engine_vocab_wiring(vocab: Dict[str, Any]) -> List[str]:
+    """Ensures every canonical event, action, and modifiable stat in vocab/ is wired in engine/*.gd."""
+    errors: List[str] = []
+    engine_dir = ROOT / "engine"
+    sources = []
+    for gd_name in ("grid_manager.gd", "rule_engine.gd", "offline_sim.gd"):
+        gd_path = engine_dir / gd_name
+        if gd_path.exists():
+            sources.append(gd_path.read_text(encoding="utf-8"))
+    if not sources:
+        return errors
+    combined = "\n".join(sources)
+
+    for ev in vocab["events"]["events"]:
+        if f'"{ev}"' not in combined:
+            errors.append(f"[engine/vocab] Event '{ev}' in vocab/events.json is not wired in engine/*.gd.")
+    for act in vocab["actions"]["actions"].keys():
+        if f'"{act}"' not in combined:
+            errors.append(f"[engine/vocab] Action '{act}' in vocab/actions.json is not wired in engine/*.gd.")
+    for st in vocab["affordances"]["modifiable_stats"]:
+        if f'"{st}"' not in combined:
+            errors.append(f"[engine/vocab] Modifiable stat '{st}' in vocab/affordances.json is not wired in engine/*.gd.")
+    return errors
+
+
+def validate_semantic_quality(cap_id: str, data: Dict[str, Any]) -> List[str]:
+    """Forward-only semantic & physics lints enforced on newly added capsules."""
+    errors: List[str] = []
+    ns = cap_id.split("/", 1)[0] if "/" in cap_id else ""
+    affordances = set(data.get("affordances", []) if isinstance(data.get("affordances"), list) else [])
+    tags = set(data.get("tags", []) if isinstance(data.get("tags"), list) else [])
+    stats = data.get("stats", {}) if isinstance(data.get("stats"), dict) else {}
+    modifiers = data.get("modifiers", []) if isinstance(data.get("modifiers"), list) else []
+    reactions = data.get("reactions", []) if isinstance(data.get("reactions"), list) else []
+    offered_by = data.get("offered_by", []) if isinstance(data.get("offered_by"), list) else []
+
+    # 1. World archetypes (npcs, biomes, natural blocks) must not declare offered_by
+    if ns in ("npcs", "biomes") and offered_by:
+        errors.append(
+            f"[{cap_id}] Semantic error: '{ns}/*' world capsules must not declare 'offered_by' "
+            f"(Hint: remove 'offered_by'; items point to NPCs via 'offered_by', never inside '{ns}/*')."
+        )
+    elif ns == "blocks" and offered_by and not (affordances & {"catalyst", "backfill_material"}):
+        errors.append(
+            f"[{cap_id}] Semantic error: natural 'blocks/*' strata must not declare 'offered_by' "
+            f"(Hint: remove 'offered_by' from natural blocks)."
+        )
+
+    # 2. Every offered_by vendor must be an npcs/* capsule
+    for o_idx, offer in enumerate(offered_by):
+        if isinstance(offer, dict):
+            vendor = str(offer.get("vendor", ""))
+            if vendor and not vendor.startswith("npcs/"):
+                errors.append(
+                    f"[{cap_id}] Semantic error: offered_by[{o_idx}].vendor '{vendor}' is not an NPC vendor "
+                    f"(Hint: use an 'npcs/*' vendor such as 'npcs/peddler_vayne')."
+                )
+
+    # 3. Per-block spawn_prob cap for new blocks so a single block cannot consume the world mass budget
+    if ns == "blocks" and str(stats.get("fluid_type", "NONE")) == "NONE":
+        try:
+            sp = float(stats.get("spawn_prob", 0.02))
+            if sp > 0.03:
+                errors.append(
+                    f"[{cap_id}] Semantic error: new block stats.spawn_prob ({sp}) exceeds 0.03 cap "
+                    f"(Hint: set 'stats.spawn_prob' <= 0.03 so the world mass budget stays balanced)."
+                )
+        except (TypeError, ValueError):
+            pass
+
+    # 4. Reject yield_mult <= 0 unless paired with a non-dirt/stone spawn_item reaction
+    has_real_spawn = False
+    for rx in reactions:
+        if isinstance(rx, dict):
+            for act in rx.get("do", []) if isinstance(rx.get("do"), list) else []:
+                if isinstance(act, dict) and act.get("act") == "spawn_item":
+                    if str(act.get("item", "")) not in ("blocks/dirt", "blocks/stone", ""):
+                        has_real_spawn = True
+    for m_idx, mod in enumerate(modifiers):
+        if not isinstance(mod, dict):
+            continue
+        st_name = str(mod.get("stat", ""))
+        ph_name = str(mod.get("phase", ""))
+        val_str = str(mod.get("value", "")).strip()
+        try:
+            num_val = float(val_str)
+        except ValueError:
+            num_val = None
+        if st_name == "yield_mult" and ph_name in ("base", "mul", "clamp") and num_val is not None and num_val <= 0.0 and not has_real_spawn:
+            errors.append(
+                f"[{cap_id}] Semantic error: modifiers[{m_idx}] sets 'yield_mult' to {val_str} without a non-dirt 'spawn_item' reaction, "
+                f"destroying all mined ore drops (Hint: use 'yield_mult' > 0, or add a 'spawn_item' reaction that grants a real ore/item)."
+            )
+        if st_name.endswith("_mult") and ph_name == "mul" and num_val is not None and num_val < 0.0:
+            errors.append(
+                f"[{cap_id}] Semantic error: modifiers[{m_idx}] applies a negative multiplier ({val_str}) to '{st_name}' "
+                f"(Hint: use a positive multiplier like '0.75' for a 25% reduction or '1.25' for a 25% boost)."
+            )
+
+    # 5. Reject unreachable tile.fluid_level > 0 conditions inside on_block_break
+    for r_idx, rx in enumerate(reactions):
+        if not isinstance(rx, dict):
+            continue
+        if rx.get("on") == "on_block_break":
+            conds = [str(rx.get("if", ""))] + [
+                str(a.get("if", "")) for a in (rx.get("do", []) if isinstance(rx.get("do"), list) else []) if isinstance(a, dict)
+            ]
+            for c_str in conds:
+                if "tile.fluid_level" in c_str and not any(tok in c_str for tok in ("== 0", "<= 0", "< 1")):
+                    errors.append(
+                        f"[{cap_id}] Semantic error: reactions[{r_idx}] ('on_block_break') checks 'tile.fluid_level > 0', which is unreachable "
+                        f"because fluid strict-locks solid blocks from breaking (Hint: trigger on 'on_zero_damage_stall', 'on_fluid_contact', or 'on_second_tick' instead)."
+                    )
+                    break
+
+    # 6. Non-world capsules must have at least one active gameplay effect (not just self-decay)
+    if ns not in ("blocks", "biomes", "npcs") and not ("equip_tool" in affordances and "base_dps" in stats):
+        has_effect = len(modifiers) > 0
+        if not has_effect:
+            for rx in reactions:
+                if not isinstance(rx, dict):
+                    continue
+                for act in rx.get("do", []) if isinstance(rx.get("do"), list) else []:
+                    if not isinstance(act, dict):
+                        continue
+                    act_name = str(act.get("act", ""))
+                    var_name = str(act.get("var", ""))
+                    if act_name == "destroy_self":
+                        continue
+                    if act_name in ("var_add", "var_set") and var_name in ("self.charge_left", "self.durability_left"):
+                        continue
+                    has_effect = True
+                    break
+        if not has_effect:
+            errors.append(
+                f"[{cap_id}] Semantic error: item has no active gameplay modifier or non-decay reaction "
+                f"(Hint: add at least one 'modifiers' entry or a gameplay action in 'reactions' that eases the target friction)."
+            )
+
+    # 7. Required brief coverage tags
+    has_solution_tags = any(t.startswith("solves_") for t in tags) and any(t.startswith("path_") for t in tags)
+    has_world_tag = any(t.startswith("world_") for t in tags)
+    if not (has_solution_tags or has_world_tag):
+        errors.append(
+            f"[{cap_id}] Semantic error: missing required brief coverage tags in 'tags' "
+            f"(Hint: include both 'solves_<friction>' and 'path_<path_type>' for solution capsules, or 'world_<kind>' for world-building capsules)."
+        )
+
+    return errors
+
+
 def discover_capsules(base_dir: Path) -> Dict[str, Path]:
     found: Dict[str, Path] = {}
     if not base_dir.exists():
@@ -587,10 +738,25 @@ def discover_capsules(base_dir: Path) -> Dict[str, Path]:
     return found
 
 
+def _extract_cap_id_from_relpath(rel_or_id: str) -> str:
+    s = rel_or_id.strip().replace("\\", "/")
+    if s.startswith("content/capsules/"):
+        parts = s.split("/")
+        if len(parts) >= 4:
+            return f"{parts[2]}/{parts[3]}"
+    return s
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate LFS-Tycoon capsules (Gate G1 & Static G3).")
     parser.add_argument("--dir", type=Path, default=DEFAULT_CAPSULES_DIR, help="Capsules root directory")
     parser.add_argument("--strict", action="store_true", help="Exit non-zero on any error")
+    parser.add_argument(
+        "--new-capsule",
+        action="append",
+        default=[],
+        help="Capsule id or relative path of a newly added capsule to run forward-only semantic quality lints on.",
+    )
     args = parser.parse_args()
 
     vocab = load_vocab()
@@ -605,13 +771,25 @@ def main() -> int:
     target_map = discover_capsules(args.dir)
     known_ids = set(canonical_map.keys()) | set(target_map.keys())
 
+    new_cap_ids: Set[str] = {_extract_cap_id_from_relpath(x) for x in args.new_capsule if x.strip()}
+    added_txt = ROOT / "added.txt"
+    if args.dir == DEFAULT_CAPSULES_DIR and added_txt.exists():
+        for ln in added_txt.read_text(encoding="utf-8").splitlines():
+            if ln.strip().startswith("content/capsules/") and ln.strip().endswith("capsule.json"):
+                new_cap_ids.add(_extract_cap_id_from_relpath(ln))
+
     all_errors: List[str] = []
+    if args.dir == DEFAULT_CAPSULES_DIR:
+        all_errors.extend(check_engine_vocab_wiring(vocab))
+
     parsed_capsules: Dict[str, Dict[str, Any]] = {}
 
     for cap_id, cap_path in target_map.items():
         errs, data = validate_single_capsule(cap_id, cap_path, vocab, known_ids, expr_linter)
         if data is not None:
             parsed_capsules[cap_id] = data
+            if cap_id in new_cap_ids:
+                errs.extend(validate_semantic_quality(cap_id, data))
         all_errors.extend(errs)
 
     # Load canonical capsules too for cross-capsule economy checks
@@ -642,3 +820,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
