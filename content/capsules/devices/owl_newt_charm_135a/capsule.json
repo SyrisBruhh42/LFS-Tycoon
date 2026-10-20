@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Nettle-Owl Charm",
+    "description": "An owl-eyed charm steeped in newt and nettle extract. While carried or socketed, it devours your standard mining yield so your backpack stays empty, transmuting the debris into pure copper teleported directly to your paired chest. Crumbles to dust after 100 transmutations.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "magic_charm", "disposable", "transmuter", "solves_haul_capacity", "path_magic_charm"],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "charges_used": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "value": "0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {"act": "spawn_item", "item": "blocks/copper", "qty": "1", "route": "paired_chest"},
+        {"act": "var_add", "var": "self.charges_used", "by": "1.0"},
+        {"act": "emit_alert", "channel": "hud_chime", "tag": "charm_broken", "if": "self.charges_used >= 100.0"},
+        {"act": "destroy_self", "if": "self.charges_used >= 100.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/dirt": 120}
+    }
+  ],
+  "offline": "exact"
+}
