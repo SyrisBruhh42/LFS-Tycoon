@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Iron Ledger Lantern",
+    "description": "An intricately wrought iron lantern serving as an automatic ledger for deep merchants. Instead of a temporary buff, it is permanent but narrow: when socketed in a tool, striking an impassable hazard transmutes the resulting shockwaves into copper straight to your ledger, draining the lantern's active balance.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "place_on_tile", "sell"],
+  "tags": ["device", "lantern", "ledger", "iron", "solves_vendor_access", "path_magic_charm"],
+  "stats": {
+    "base_value": 1500.0
+  },
+  "vars": {
+    "current_balance": 1000.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "if": "tile.is_hazard == 1 and self.current_balance >= 10.0",
+      "do": [
+        {"act": "spawn_item", "item": "blocks/copper", "qty": "10", "route": "backpack"},
+        {"act": "var_add", "var": "self.current_balance", "by": "-10.0"},
+        {"act": "emit_alert", "channel": "hud_chime", "tag": "ledger_deposit"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/stone": 2000},
+      "unlock_if": "player.max_depth >= 40"
+    }
+  ],
+  "offline": "exact"
+}
