@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Shale Bellows Pick",
+    "description": "A clever tool forged from layered shale that blasts compressed air when stalled by flooded rocks. Clears fluid but takes heavy wear doing so. Specializes in hard ore.",
+    "author": "jules:autonomous",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "equip_tool"],
+  "tags": ["tool", "pickaxe", "starter", "solves_fluid_flooding", "path_tool_builtin", "bellows", "shale"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 15.0,
+    "durability_max": 300.0,
+    "is_rechargeable": 1,
+    "base_value": 20.0
+  },
+  "vars": {
+    "durability_left": 300.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "if": "tile.fluid_level > 0 and tile.tier >= 1",
+      "do": [
+        {"act": "modify_fluid", "target": "self_tile", "fluid_type": "NONE", "delta_level": "-1"},
+        {"act": "var_add", "var": "self.durability_left", "by": "-5.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50}
+    }
+  ],
+  "offline": "none"
+}
