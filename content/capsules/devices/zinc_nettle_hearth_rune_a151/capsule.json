@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Zinc Nettle Hearth Rune",
+    "description": "An enchanter's rune socketed into your tool. Returning to the House warms its core, granting 50 faster strikes in the quarry before it cools off and needs another hearth visit.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "gadget", "rune", "zinc", "nettle", "hearth", "solves_house_comfort", "path_npc_enchanter"],
+  "stats": {
+    "base_value": 120.0
+  },
+  "vars": {
+    "strikes_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "add",
+      "if": "self.strikes_left > 0.0",
+      "value": "2.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_enter_house",
+      "do": [
+        {"act": "var_set", "var": "self.strikes_left", "value": "50.0"}
+      ]
+    },
+    {
+      "on": "on_damage_dealt",
+      "if": "self.strikes_left > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.strikes_left", "by": "-1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 100},
+      "unlock_if": "shared.house_bell_ringing > 0.0"
+    }
+  ],
+  "offline": "exact"
+}
