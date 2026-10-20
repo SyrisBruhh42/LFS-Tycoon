@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Moss Lark Pick",
+    "description": "An experimental mid-tier pickaxe wrapped in ochre moss. It suffers no durability drain on impact, solving tool wear natively, but its structural integrity is bound strictly to the moss. After 600 strikes, the moss withers and the tool vanishes instantly.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_tool_wear",
+    "path_tool_builtin",
+    "disposable",
+    "lark",
+    "moss",
+    "ochre"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 2,
+    "base_dps": 18.0,
+    "is_rechargeable": 0,
+    "base_value": 350.0
+  },
+  "vars": {
+    "strikes_used": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": "0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_damage_dealt",
+      "do": [
+        {"act": "var_add", "var": "self.strikes_used", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.strikes_used >= 600.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 300},
+      "unlock_if": "player.max_depth >= 10"
+    }
+  ],
+  "offline": "coarse"
+}
