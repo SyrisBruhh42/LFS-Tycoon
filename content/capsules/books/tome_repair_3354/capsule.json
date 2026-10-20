@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "The Mole's Thimble-Bound Almanac",
+    "description": "A rough, gravel-dusted manual bound in thimble-stamped leather. Reading it permanently reduces the durability wear of your manual strikes by 15%, but the cautious, clumsy approach makes you 5% slower to break blocks.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "book",
+    "skill_book",
+    "solves_repair_upkeep",
+    "path_skill_book",
+    "repair",
+    "crude",
+    "thimble",
+    "gravel",
+    "mole"
+  ],
+  "stats": {
+    "base_value": 150.0
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "add",
+      "if": "self.is_learned >= 1.0 and ctx.is_direct_tap == 1",
+      "value": "-0.15"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "add",
+      "if": "self.is_learned >= 1.0 and ctx.is_direct_tap == 1",
+      "value": "0.05"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_learned",
+          "value": "1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/cinder_gravel_61a3": 300,
+        "blocks/copper": 200
+      },
+      "unlock_if": "shared.quarry_resonance_charge >= 100.0"
+    }
+  ],
+  "offline": "none"
+}
