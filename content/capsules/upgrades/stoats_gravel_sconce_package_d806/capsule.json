@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Stoat's Gravel-Sconce Package",
+    "description": "An expensive, heavy-duty logistics bundle from Stoat Co. Unpacking it installs the Gravel-Sconce stall guard (which immediately pauses tools and rings a chime on striking zero-damage hazards), unlocks HUD durability bars, and enables the target loupe. Drawback: the bulky retrofit permanently increases battery drain by 25% across all tools.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "consume", "sell"],
+  "tags": ["upgrade", "stoat", "gravel", "sconce", "hud", "stall_guard", "solves_zero_damage_stall", "path_bundle_package"],
+  "stats": {
+    "base_value": 2000.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "add",
+      "if": "self.installed > 0.0",
+      "value": "0.25"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"},
+        {"act": "set_ui_flag", "flag": "hud_durability_bars", "enabled": true},
+        {"act": "set_ui_flag", "flag": "hud_target_loupe", "enabled": true}
+      ]
+    },
+    {
+      "on": "on_zero_damage_stall",
+      "if": "self.installed > 0.0",
+      "do": [
+        {"act": "emit_alert", "channel": "hud_chime", "tag": "stall_impassable"},
+        {"act": "stall_tool", "pause_battery": true, "pause_durability": true}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 2000},
+      "unlock_if": "player.max_depth >= 50"
+    }
+  ],
+  "offline": "exact"
+}
