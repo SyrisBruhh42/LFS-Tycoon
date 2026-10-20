@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Wren's Badger Wine",
+    "description": "A potent brew that lets you break down obsidian hazards by turning them to stone for 60 seconds, but induces a heavy touch drift. A strange badger on the label winks at you.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "drink",
+    "wine",
+    "solves_hazard_clearing",
+    "path_consumable_buff",
+    "badger",
+    "lark",
+    "wren"
+  ],
+  "stats": {
+    "base_value": 30.0,
+    "duration_sec": 60.0,
+    "drift_px": 50.0
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "drunk_drift_px",
+      "phase": "add",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.drift_px"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.active_sec_left", "value": "self.stats.duration_sec"},
+        {"act": "var_set", "var": "shared.active_drunk_drift_px", "value": "self.stats.drift_px"}
+      ]
+    },
+    {
+      "on": "on_zero_damage_stall",
+      "if": "self.active_sec_left > 0.0 and tile.is_hazard == 1",
+      "do": [
+        {"act": "transform_tile", "target": "self_tile", "block": "blocks/stone"},
+        {"act": "emit_alert", "channel": "hud_chime", "tag": "hazard_cleared"}
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "self.active_sec_left > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.active_sec_left", "by": "-1.0"},
+        {"act": "var_set", "var": "shared.active_drunk_drift_px", "value": "0.0", "if": "self.active_sec_left <= 0.0"},
+        {"act": "destroy_self", "if": "self.active_sec_left <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 50
+      }
+    }
+  ],
+  "offline": "none"
+}
