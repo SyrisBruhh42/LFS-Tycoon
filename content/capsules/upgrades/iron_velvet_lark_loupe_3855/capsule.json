@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Iron-Velvet Lark Loupe",
+    "description": "A delicate, velvet-lined surveyor's glass that temporarily enables the HUD Target Loupe and softly chimes when tapping any ore vein. The fragile iron mechanism degrades with each tap, shattering after 250 uses.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "surveyor",
+    "hud",
+    "lark",
+    "iron",
+    "velvet",
+    "disposable",
+    "solves_ore_hunting",
+    "path_qol_upgrade"
+  ],
+  "stats": {
+    "base_value": 85.0,
+    "max_uses": 250.0
+  },
+  "vars": {
+    "uses_left": 250.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_tap",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_target_loupe", "enabled": true},
+        {"act": "emit_alert", "channel": "hud_chime", "tag": "vein_scanned", "if": "tile.tier > 0"},
+        {"act": "var_add", "var": "self.uses_left", "by": "-1.0"},
+        {"act": "set_ui_flag", "flag": "hud_target_loupe", "enabled": false, "if": "self.uses_left <= 0"},
+        {"act": "destroy_self", "if": "self.uses_left <= 0"}
+      ]
+    },
+    {
+      "on": "on_market_sell",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_target_loupe", "enabled": false}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50},
+      "unlock_if": "player.max_depth >= 5"
+    }
+  ],
+  "offline": "none"
+}
