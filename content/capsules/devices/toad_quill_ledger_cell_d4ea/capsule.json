@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Toad-Quill Ledger Cell",
+    "description": "An early-era cell forged from toad extracts and quill shavings, serving as a disposable power source for auto-tools. It significantly slows battery drain but wears out after 250 charges. When fully depleted, it emits an acoustic house bell alarm like the Enchanted Brass Bell.",
+    "author": "core:jules",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "place_on_tile", "sell"],
+  "tags": ["device", "battery", "disposable", "power_source", "path_power_source", "solves_tap_misfires", "acoustic", "alarm", "toad", "quill", "ledger"],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "charges_used": 0.0,
+    "is_active": 1.0
+  },
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "if": "self.is_active > 0",
+      "value": "0.2"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_damage_dealt",
+      "if": "self.is_active > 0",
+      "do": [
+        {"act": "var_add", "var": "self.charges_used", "by": "1.0"},
+        {"act": "var_set", "var": "self.is_active", "value": "1.0 - (self.charges_used >= 250.0)"}
+      ]
+    },
+    {
+      "on": "on_damage_dealt",
+      "if": "self.charges_used >= 250.0",
+      "do": [
+        {"act": "emit_alert", "channel": "house_bell", "tag": "stall_impassable"},
+        {"act": "var_add", "var": "shared.house_bell_ringing", "by": "1.0"},
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 30}
+    }
+  ],
+  "offline": "exact"
+}
