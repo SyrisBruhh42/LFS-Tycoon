@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Toad Mortar Badger Rune",
+    "description": "An enchanted badger rune etched with a toad mortar sigil. Socketed into a tool, it neutralizes the speed penalty for using the wrong tool class, but grinds itself to dust after 50 mismatched blocks broken.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "rune",
+    "enchantment",
+    "toad",
+    "mortar",
+    "badger",
+    "solves_wrong_tool_penalty",
+    "path_npc_enchanter"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "charges_left": 50.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": "0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {"act": "var_add", "var": "self.charges_left", "by": "-1.0"},
+        {"act": "destroy_self", "if": "self.charges_left <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 80
+      },
+      "unlock_if": "shared.quarry_resonance_charge >= 50.0"
+    }
+  ],
+  "offline": "exact"
+}
