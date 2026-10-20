@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Iron Owl Wick Charm",
+    "description": "An iron charm shaped like an owl with a faintly glowing wick. When socketed or carried, it reduces tool wear by half in wet or flooded areas, consuming its own essence over 100 wet blocks.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "charm",
+    "iron",
+    "owl",
+    "wick",
+    "path_magic_charm",
+    "solves_tool_wear"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "max_wet_blocks": 100.0,
+    "durability_drain_mult": 0.5
+  },
+  "vars": {
+    "wet_blocks_mined": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "tile.fluid_level > 0.0",
+      "value": "self.stats.durability_drain_mult"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "tile.fluid_level > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.wet_blocks_mined", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.wet_blocks_mined >= self.stats.max_wet_blocks"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50}
+    }
+  ],
+  "offline": "exact"
+}
