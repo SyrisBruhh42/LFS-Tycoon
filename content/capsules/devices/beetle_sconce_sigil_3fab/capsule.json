@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Beetle Sconce Sigil",
+    "description": "An enchanted sigil depicting a mole and a beetle scurrying through a sconce. Socketed into a tool, its magic revels in your grime, dramatically increasing mining speed when you are filthy (bypassing the need for fussy vendors), but heavily increasing durability wear and scolding you with chimes.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "sigil",
+    "sconce",
+    "beetle",
+    "mole",
+    "acoustic",
+    "solves_grime_cleanliness",
+    "path_npc_enchanter"
+  ],
+  "stats": {
+    "base_value": 1500.0
+  },
+  "vars": {
+    "scolds_emitted": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "player.grime > 50.0",
+      "value": "3.0"
+    },
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "player.grime > 50.0",
+      "value": "2.5"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "player.grime > 80.0",
+      "do": [
+        {"act": "emit_alert", "channel": "house_bell", "tag": "grime_scold"},
+        {"act": "var_add", "var": "self.scolds_emitted", "by": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 1500
+      },
+      "unlock_if": "shared.quarry_resonance_charge > 500.0"
+    }
+  ],
+  "offline": "exact"
+}
