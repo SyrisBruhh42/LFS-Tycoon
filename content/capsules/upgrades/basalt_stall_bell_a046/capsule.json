@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Basalt Stall Bell",
+    "description": "A heavy, enchanted basalt bell that automatically pauses auto-tools and rings a warning when striking unbreakable obstacles like water or obsidian. Cracks over time from use.",
+    "author": "jules",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["upgrade", "qol", "disposable", "solves_zero_damage_stall", "path_qol_upgrade", "basalt", "bell"],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {
+    "installed": 0.0,
+    "cracks": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "if": "self.installed > 0.0 and tile.is_strict_locked == 1.0",
+      "value": "0.0"
+    },
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.installed > 0.0 and tile.is_strict_locked == 1.0",
+      "value": "0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    },
+    {
+      "on": "on_zero_damage_stall",
+      "if": "self.installed > 0.0",
+      "do": [
+        {"act": "emit_alert", "channel": "house_bell", "tag": "stall_impassable"},
+        {"act": "stall_tool", "pause_battery": true, "pause_durability": true},
+        {"act": "var_add", "var": "self.cracks", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.cracks >= 100.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 300}
+    }
+  ],
+  "offline": "none"
+}
