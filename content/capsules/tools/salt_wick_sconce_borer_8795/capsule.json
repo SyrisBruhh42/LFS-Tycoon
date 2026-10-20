@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Salt-Wick Sconce Borer",
+    "description": "A rare clockwork sconce fueled by a slow-burning salt wick. When placed on a precious ore vein, it forms a crystalline shield that completely absorbs all secondary splash damage, while rapidly mining the ore beneath it. If placed on ordinary rock or dirt, the wick sputters helplessly, wasting its 30-minute lifespan without mining.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "drone",
+    "automine",
+    "disposable",
+    "clockwork",
+    "solves_unwanted_splash",
+    "path_hired_laborer",
+    "salt",
+    "wick",
+    "sconce"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 2,
+    "base_value": 300.0,
+    "dampen_pct": 1.0,
+    "charge_max_sec": 1800.0,
+    "durability_max": 100.0
+  },
+  "vars": {
+    "charge_left": 1800.0,
+    "durability_left": 100.0
+  },
+  "modifiers": [
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "if": "tile.covered_by_self and ctx.is_direct_tap == 0 and tile.tier > 0",
+      "value": "1.0 - self.stats.dampen_pct"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "self.charge_left > 0.0 and tile.covered_by_self",
+      "do": [
+        {"act": "deal_damage", "target": "self_tile", "amount": "25.0", "if": "tile.tier > 0"},
+        {"act": "var_add", "var": "self.charge_left", "by": "-1.0"},
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    },
+    {
+      "on": "on_damage_absorbed",
+      "if": "tile.covered_by_self",
+      "do": [
+        {"act": "var_add", "var": "self.durability_left", "by": "-1.0"},
+        {"act": "destroy_self", "if": "self.durability_left <= 0.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 300},
+      "unlock_if": "player.max_depth >= 30"
+    }
+  ],
+  "offline": "exact"
+}
