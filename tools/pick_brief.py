@@ -46,6 +46,7 @@ def weighted_choice(rng: random.Random, items: list[str], counts: dict[str, int]
 def main() -> int:
     ap = argparse.ArgumentParser(description="Print a unique design brief for one content session.")
     ap.add_argument("--seed", type=int, default=None, help="Deterministic seed (default: OS entropy).")
+    ap.add_argument("--json", action="store_true", help="Emit JSON {suffix, mode, label, markdown} for the factory dispatcher.")
     args = ap.parse_args()
     rng = random.Random(args.seed) if args.seed is not None else random.SystemRandom()
 
@@ -83,6 +84,7 @@ def main() -> int:
         world = design["world_archetypes"]
         kind = weighted_choice(rng, sorted(world), {k: ns_count.get(v["namespace"], 0) for k, v in world.items()})
         w = world[kind]
+        meta = {"mode": "world", "label": f"world/{kind}"}
         lines += [
             "**Mode:** WORLD-BUILDING",
             f"**Archetype:** `{kind}`   **Namespace:** `{w['namespace']}`",
@@ -97,6 +99,7 @@ def main() -> int:
         fk = weighted_choice(rng, sorted(frictions), friction_count)
         pk = weighted_choice(rng, sorted(path_types), {p: cell_count.get((fk, p), 0) for p in path_types})
         pt = path_types[pk]
+        meta = {"mode": "solution", "label": f"{fk} via {pk}", "friction": fk, "path": pk}
         lines += [
             "**Mode:** SOLUTION",
             f"**Friction to ease:** `{fk}` — {frictions[fk]}",
@@ -118,7 +121,10 @@ def main() -> int:
         "no instant breaking (>=1s per block holds); edges point backward (declare offered_by / biome_weights "
         "inside YOUR capsule); only existing vocab verbs; never edit another capsule, engine/, vocab/, tools/ or tests/.",
     ]
-    print("\n".join(lines))
+    if args.json:
+        print(json.dumps({"suffix": suffix, **meta, "markdown": "\n".join(lines)}))
+    else:
+        print("\n".join(lines))
     return 0
 
 

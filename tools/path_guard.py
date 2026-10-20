@@ -47,7 +47,10 @@ def main() -> int:
         if status != "A":
             errors.append(f"{path}: status '{status}' not allowed (content sessions may only ADD files).")
             continue
-        size = (ROOT / path).stat().st_size if (ROOT / path).exists() else 0
+        try:
+            size = int(git("cat-file", "-s", f"{args.head}:{path}").strip())
+        except (subprocess.CalledProcessError, ValueError):
+            size = 0
         if CAPSULE_RE.match(path):
             capsules += 1
             if size > MAX_CAPSULE_BYTES:

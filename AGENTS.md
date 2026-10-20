@@ -13,13 +13,13 @@ a pull request that passes the gates is merged automatically, and a red content 
 Your job each session: add **one** new, well-designed capsule (up to 3 only if one idea truly needs a small family).
 
 1. **Sync.** `git fetch origin main && git rebase origin/main` (run `git fetch --unshallow origin || true` first if the clone is shallow).
-2. **Get your brief.** `python3 tools/pick_brief.py` prints a randomized, coverage-weighted assignment (friction to ease, solution path, archetype, id suffix, era, rarity, twist). Follow it. Do not re-roll it.
+2. **Get your brief.** If your task prompt already contains a `SESSION DESIGN BRIEF` (the automated factory always includes one), that is your assignment. Otherwise run `python3 tools/pick_brief.py` to get a randomized, coverage-weighted one. Follow it, use its exact id suffix, and never re-roll it. Apply any "Recent gate failures to avoid" listed in the prompt.
 3. **Learn the ground.** `python3 tools/generate_context.py`, then read `AI_CONTEXT_MANIFEST.md`, the brief's `Imitate:` capsule, and [JULES_CAPSULE_CONTRACT.md](JULES_CAPSULE_CONTRACT.md). Existing solutions to your friction are listed in the brief: be meaningfully different.
 4. **Scaffold.** `python3 tools/new_capsule.py --id <namespace>/<slug>_<suffix> --archetype <archetype> --name "Display Name"` using the brief's id (the slug MUST end with the brief's 4-hex suffix; this prevents collisions between parallel sessions).
 5. **Design and edit** only your own `capsule.json`. Include the brief's required tags (`solves_<friction>`, `path_<type>`, or `world_<kind>`). Write a vivid `meta.description` in the game's voice.
 6. **Commit** (message: `content: add <id>`), then **verify:** `python3 tools/preflight.py`. Fix every error it reports, re-commit, re-run. It must print `PREFLIGHT OK`.
    * If a clever mechanic will not validate after 5 honest attempts, **simplify the design** (fewer reactions, plain modifiers) and ship that. Never ship nothing, never touch shared files to force a pass.
-7. **Submit** by pushing your branch and opening a pull request. The gate merges it automatically. Final reply: just the capsule id(s).
+7. **Submit** by opening a pull request (in automated sessions the pull request is created for you when you finish). The gate verifies it against trusted tools from `main` and merges it automatically; failures are closed and fed back to future sessions as lessons. Final reply: just the capsule id(s).
 
 If a design genuinely needs a verb the vocabulary lacks, still ship your best vocabulary-legal capsule, and optionally add `proposals/<slug>_<suffix>.md` (<=16 KB) describing the missing verb. Proposals are allowed additions; vocabulary edits are not.
 
@@ -41,7 +41,7 @@ If a design genuinely needs a verb the vocabulary lacks, still ship your best vo
 
 ## 3. NON-NEGOTIABLE LAWS (zero merge conflicts)
 
-1. **Additions only (L2/L4).** A session may only ADD new files under its own `content/capsules/<namespace>/<slug>/` (and optional `proposals/`). Never edit or delete anything else: not other capsules, not `engine/`, `vocab/`, `tools/`, `tests/`, `design/`, `.github/`. The path guard rejects violations and the PR will not merge.
+1. **Additions only (L2/L4).** A session may only ADD new files under its own `content/capsules/<namespace>/<slug>/` (and optional `proposals/`). Never edit or delete anything else: not other capsules, not `engine/`, `vocab/`, `tools/`, `tests/`, `design/`, `factory/`, `.github/`. The path guard rejects violations and the PR will not merge.
 2. **Path-derived identity (L2).** Do not add an `"id"` that disagrees with the folder path. The ID is always `<namespace>/<slug>`.
 3. **Edges point backward (L3).** Sold by an NPC or spawned in a biome? Declare `offered_by` (with `vendor`, `price`, optional `unlock_if`) or `biome_weights` inside YOUR capsule. Never edit the NPC or biome.
 4. **Closed verbs, open composition (L1).** Only events in `vocab/events.json`, actions in `vocab/actions.json`, and affordances/stats in `vocab/affordances.json`. Every `shared.*` register you reference must already be declared in `vocab/shared_vars.json`.

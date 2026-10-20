@@ -1,112 +1,187 @@
 name: Capsule Gate
 
-# Straight-live pipeline (Decision D3). No human queue:
-#   PR -> path guard + G1 strict + hostile corpus + Godot G2 (load + spikes) -> auto squash-merge.
-#   Push to main that turns red because of a content-only commit -> auto-revert.
+# Straight-live pipeline (Decision D3), hardened against AI tampering.
+#
+#  * Pull requests run under `pull_request_target`: the workflow file AND every tool/engine/vocab file
+#    come from trusted `main`. The PR contributes data only (its newly added capsule files are overlaid onto
+#    main). A PR that edits the validator, the vocab or this workflow is rejected by the path guard, and
+#    could not influence the checks anyway.
+#  * One job per PR (one billed minute): path guard -> overlay -> G1 strict -> hostile corpus -> Godot G2 ->
+#    squash-merge pinned to the exact tested commit. On failure a report comment is posted (the factory
+#    harvests it as lessons) and the PR is labelled `gate-failed`.
+#  * Pushes to main, a nightly audit and manual runs re-verify main. A red content-only push is reverted
+#    automatically; anything else opens a `factory:pause` issue, which pauses the factory and notifies you.
 
 on:
-  pull_request:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
     branches: [main]
   push:
     branches: [main]
+  schedule:
+    - cron: "17 7 * * *"
+  workflow_dispatch:
 
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
-concurrency:
-  group: capsule-gate-${{ github.event.pull_request.number || github.sha }}
-  cancel-in-progress: true
+env:
+  GODOT_URL: https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip
+  GODOT_BIN: /home/runner/godot/Godot_v4.3-stable_linux.x86_64
 
 jobs:
-  gate:
-    name: G1 (path guard, static lint, hostile corpus)
+  pr-gate:
+    name: Capsule gate
+    if: github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: pr-gate-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    env:
+      PR: ${{ github.event.pull_request.number }}
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      BASE_REF: ${{ github.event.pull_request.base.ref }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out trusted base (tools, vocab, engine, tests come from main)
+        uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.base.ref }}
           fetch-depth: 0
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-      - name: Path guard (pull requests only)
-        if: github.event_name == 'pull_request'
-        run: python3 tools/path_guard.py --base origin/${{ github.base_ref }} --head HEAD
+          persist-credentials: false
+
+      - name: Fetch PR head as data
+        run: |
+          git fetch --no-tags origin "+refs/pull/${PR}/head:refs/remotes/pr/head"
+          git cat-file -e "${HEAD_SHA}^{commit}"
+
+      - name: Path guard (additions inside new capsule folders only)
+        run: python3 tools/path_guard.py --base "origin/${BASE_REF}" --head "${HEAD_SHA}" 2>&1 | tee -a report.txt; exit "${PIPESTATUS[0]}"
+
+      - name: Overlay the PR's new files onto trusted main
+        run: |
+          git diff --name-only --diff-filter=A "origin/${BASE_REF}...${HEAD_SHA}" > added.txt
+          cat added.txt
+          xargs -r -a added.txt git checkout "${HEAD_SHA}" --
+
       - name: G1 strict static lint, economy and world-mass budget
-        run: python3 tools/check_capsules.py --strict
-      - name: Hostile corpus must be fully rejected
-        run: python3 tools/check_hostile.py
+        run: python3 tools/check_capsules.py --strict 2>&1 | tee -a report.txt; exit "${PIPESTATUS[0]}"
 
-  godot:
-    name: G2 (Godot headless load + spikes)
-    runs-on: ubuntu-latest
-    outputs:
-      verdict: ${{ steps.spikes.outputs.verdict }}
-    steps:
-      - uses: actions/checkout@v4
+      - name: Hostile corpus must still be fully rejected
+        run: python3 tools/check_hostile.py 2>&1 | tee -a report.txt; exit "${PIPESTATUS[0]}"
+
+      - name: Cache Godot 4.3
+        id: godot-cache
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/godot
+          key: godot-4.3-stable-linux-x86_64
+
       - name: Install Godot 4.3
+        if: steps.godot-cache.outputs.cache-hit != 'true'
         run: |
-          curl -fsSL --retry 5 --retry-delay 5 -o godot.zip \
-            https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip
-          unzip -q godot.zip
-          sudo mv Godot_v4.3-stable_linux.x86_64 /usr/local/bin/godot
-          godot --version
-      - name: Import project
-        run: godot --headless --path . --import --quit || true
-      - name: Run spike suite
-        id: spikes
-        run: |
-          set +e
-          timeout 240 godot --headless --path . -s tests/run_all_spikes.gd 2>&1 | tee spikes.log
-          if grep -q "VERIFICATION SUMMARY" spikes.log && grep -qE ", 0 FAILED" spikes.log; then
-            echo "verdict=green" >> "$GITHUB_OUTPUT"; exit 0
-          fi
-          if grep -q "VERIFICATION SUMMARY" spikes.log; then
-            echo "verdict=red" >> "$GITHUB_OUTPUT"; exit 1
-          fi
-          echo "verdict=infra" >> "$GITHUB_OUTPUT"; exit 1
+          mkdir -p /home/runner/godot
+          curl -fsSL --retry 5 --retry-delay 5 -o /tmp/godot.zip "$GODOT_URL"
+          unzip -q /tmp/godot.zip -d /home/runner/godot
 
-  automerge:
-    name: Auto-merge (straight live)
-    needs: [gate, godot]
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && !github.event.pull_request.draft
-    runs-on: ubuntu-latest
-    steps:
-      - name: Squash-merge the pull request
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR: ${{ github.event.pull_request.number }}
+      - name: G2 Godot headless load + spike suite
         run: |
+          "$GODOT_BIN" --headless --path . --import --quit >/dev/null 2>&1 || true
+          set +e
+          timeout 240 "$GODOT_BIN" --headless --path . -s tests/run_all_spikes.gd > spikes.log 2>&1
+          grep -aE '\[FAIL\]|VERIFICATION SUMMARY' spikes.log | tee -a report.txt
+          grep -aq ", 0 FAILED" spikes.log
+
+      - name: Squash-merge the exact tested commit
+        run: |
+          if [ "$(gh pr view "$PR" -R "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft)" = "true" ]; then
+            gh pr ready "$PR" -R "$GITHUB_REPOSITORY"
+          fi
           for i in 1 2 3 4 5; do
-            if gh pr merge "$PR" --repo "$GITHUB_REPOSITORY" --squash --delete-branch; then
-              echo "Merged PR #$PR"; exit 0
+            if gh pr merge "$PR" -R "$GITHUB_REPOSITORY" --squash --delete-branch --match-head-commit "$HEAD_SHA"; then
+              echo "Merged PR #$PR at $HEAD_SHA"; exit 0
             fi
             sleep $((i * 10))
           done
-          echo "::error::Auto-merge failed after retries (likely a slug collision or conflicting change)."
+          echo "MERGE FAILED: could not merge after retries (head moved, slug collision or conflict)." | tee -a report.txt
           exit 1
 
-  revert-on-red:
-    name: Auto-revert red content commit on main
-    needs: [gate, godot]
-    if: always() && github.event_name == 'push' && (needs.gate.result == 'failure' || needs.godot.outputs.verdict == 'red')
+      - name: Report failure on the PR
+        if: failure()
+        run: |
+          {
+            echo "<!-- capsule-gate-report -->"
+            echo "### Capsule gate failed"
+            echo ""
+            echo '```'
+            grep -aE '^(ERROR:|PATH GUARD|FAILED:|MERGE FAILED|  \[FAIL\])' report.txt | head -40 || true
+            echo '```'
+            echo "Fix: edit only your own new capsule folder, run \`python3 tools/preflight.py\` until it prints PREFLIGHT OK."
+          } > comment.md
+          gh pr comment "$PR" -R "$GITHUB_REPOSITORY" --body-file comment.md || true
+          gh label create gate-failed -R "$GITHUB_REPOSITORY" --color D93F0B --force >/dev/null 2>&1 || true
+          gh pr edit "$PR" -R "$GITHUB_REPOSITORY" --add-label gate-failed || true
+
+  main-guard:
+    name: Main guard
+    if: github.event_name != 'pull_request_target'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
-          fetch-depth: 0
-      - name: Revert the offending content-only commit
+          fetch-depth: 2
+
+      - name: G1 strict static lint
+        run: python3 tools/check_capsules.py --strict
+
+      - name: Hostile corpus
+        run: python3 tools/check_hostile.py
+
+      - name: Cache Godot 4.3
+        id: godot-cache
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/godot
+          key: godot-4.3-stable-linux-x86_64
+
+      - name: Install Godot 4.3
+        if: steps.godot-cache.outputs.cache-hit != 'true'
         run: |
-          set -e
-          SHA="${{ github.sha }}"
-          if git log -1 --format=%s "$SHA" | grep -q '^Revert'; then
-            echo "Already a revert; nothing to do."; exit 0
+          mkdir -p /home/runner/godot
+          curl -fsSL --retry 5 --retry-delay 5 -o /tmp/godot.zip "$GODOT_URL"
+          unzip -q /tmp/godot.zip -d /home/runner/godot
+
+      - name: G2 Godot headless load + spike suite
+        run: |
+          "$GODOT_BIN" --headless --path . --import --quit >/dev/null 2>&1 || true
+          set +e
+          timeout 240 "$GODOT_BIN" --headless --path . -s tests/run_all_spikes.gd > spikes.log 2>&1
+          grep -aE '\[FAIL\]|VERIFICATION SUMMARY' spikes.log
+          grep -aq ", 0 FAILED" spikes.log
+
+      - name: On red, revert content-only push or pause the factory
+        if: failure()
+        run: |
+          SHA="${GITHUB_SHA}"
+          if [ "${GITHUB_EVENT_NAME}" = "push" ] \
+             && ! git log -1 --format=%s "$SHA" | grep -q '^Revert' \
+             && ! git diff --name-only "${SHA}^" "$SHA" | grep -qv '^content/capsules/'; then
+            git config user.name "capsule-guardian"
+            git config user.email "capsule-guardian@users.noreply.github.com"
+            git revert --no-edit "$SHA"
+            git push origin HEAD:main
+            echo "Reverted red content-only commit $SHA."
+            exit 0
           fi
-          if git diff --name-only "$SHA^" "$SHA" | grep -qv '^content/capsules/'; then
-            echo "::error::Red commit touches non-content paths; manual fix required (not auto-reverting)."; exit 1
+          gh label create "factory:pause" -R "$GITHUB_REPOSITORY" --color B60205 --force >/dev/null 2>&1 || true
+          if [ -z "$(gh issue list -R "$GITHUB_REPOSITORY" --label factory:pause --state open --json number --jq '.[].number')" ]; then
+            gh issue create -R "$GITHUB_REPOSITORY" --label "factory:pause" \
+              --title "Factory paused: main is red (${GITHUB_EVENT_NAME})" \
+              --body "Main guard failed on ${SHA}: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}. The Jules factory will not dispatch while this issue is open. Fix main, then close this issue to resume."
           fi
-          git config user.name "capsule-guardian"
-          git config user.email "capsule-guardian@users.noreply.github.com"
-          git revert --no-edit "$SHA"
-          git push origin HEAD:main
