@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder Toad Bog",
+    "description": "A sweltering subterranean marsh where ancient amphibian tallows mix with volcanic ash. Shovels are effective here, but the heat causes tools to degrade faster in fluid.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "biome",
+    "world_biome",
+    "bog",
+    "wet",
+    "cinder",
+    "toad"
+  ],
+  "stats": {
+    "z_min": 80,
+    "z_max": 400,
+    "weight": 0.30
+  },
+  "biome_weights": {
+    "blocks/dirt": 1.5,
+    "blocks/water_aquifer": 2.0,
+    "blocks/stone": 1.2,
+    "blocks/copper": 0.5
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "add",
+      "if": "tile.fluid_level > 0",
+      "value": "1.5"
+    }
+  ],
+  "reactions": [],
+  "offline": "none"
+}
