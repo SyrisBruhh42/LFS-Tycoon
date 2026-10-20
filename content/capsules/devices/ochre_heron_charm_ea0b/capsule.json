@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Heron Charm",
+    "description": "A soft velvet pouch containing a carved ochre heron. When socketed or carried, it allows any tool to be used without penalty when mining flooded tiles, but the magic wanes after 75 blocks.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "charm", "solves_wrong_tool_penalty", "path_magic_charm", "ochre", "heron", "velvet"],
+  "stats": {
+    "base_value": 60.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "if": "tile.fluid_level > 0",
+      "value": "0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "tile.fluid_level > 0",
+      "do": [
+        {"act": "var_add", "var": "self.wear", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.wear >= 75.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/dirt": 60}
+    }
+  ],
+  "offline": "exact"
+}
