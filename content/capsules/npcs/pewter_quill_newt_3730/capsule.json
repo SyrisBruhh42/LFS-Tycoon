@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Quill Newt",
+    "description": "An amphibious scholar with a pewter quill. Deals in forbidden, volatile speed-mining catalysts that often compromise safety dampeners.",
+    "author": "jules:pewter_newt",
+    "rarity": "common"
+  },
+  "affordances": ["npc_vendor"],
+  "tags": ["npc", "vendor", "town", "newt", "quill", "pewter", "world_npc"],
+  "stats": {
+    "cleanliness_required": 10.0,
+    "saturation_half_volume": 1200.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
