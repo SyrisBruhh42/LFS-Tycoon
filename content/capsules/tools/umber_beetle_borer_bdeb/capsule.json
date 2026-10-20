@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Umber Beetle Clockwork Borer",
+    "description": "Disposable demolition tool sold by Peddler Vayne. Auto-mines a single square for 2 hours (7200s), but its umber beetle mechanism only functions at depths 30 and below. Shatters when depleted.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "equip_tool", "place_on_tile", "sell"],
+  "tags": ["tool", "demolition", "automine", "clockwork", "disposable", "solves_hazard_clearing", "path_vendor_disposable", "beetle", "umber"],
+  "stats": {
+    "tool_type": "DEMOLITION",
+    "tool_tier": 1,
+    "base_dps": 20.0,
+    "charge_max_sec": 7200.0,
+    "durability_max": 600.0,
+    "is_rechargeable": 0,
+    "base_value": 45.0
+  },
+  "vars": {
+    "charge_left": 7200.0,
+    "durability_left": 600.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "tile.depth < 30",
+      "value": "0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "self.charge_left > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": "-1.0"},
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50}
+    }
+  ],
+  "offline": "coarse"
+}
