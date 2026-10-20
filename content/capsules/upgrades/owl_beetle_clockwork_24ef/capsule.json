@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Owl & Beetle Clockwork Discipline",
+    "description": "A complex, self-taught mental discipline studying the slow persistence of the beetle and the silent patience of the owl. When installed, you subconsciously optimize your automated tool routines, radically throttling their battery drain, but at a permanent cost to overall tool speed. A reliable, albeit slow, solution to running out of charge.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "profession_perk",
+    "owl",
+    "beetle",
+    "solves_auto_tool_runtime",
+    "path_profession_perk"
+  ],
+  "stats": {
+    "base_value": 750.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "if": "self.installed > 0.0",
+      "value": "0.15"
+    },
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "self.installed > 0.0",
+      "value": "0.40"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 300
+      },
+      "unlock_if": "player.max_depth >= 20"
+    }
+  ],
+  "offline": "none"
+}
