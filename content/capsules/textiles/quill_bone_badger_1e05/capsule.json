@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quill-Bone Badger Mat",
+    "description": "A thick, prickly mat woven from badgers' shed fur and hollow bones. Tapping it directly forces dirt up from below, lifting the floor 1 level at the cost of 5.0 wear. Its prickly quills scrape the surface so loudly it constantly rings the house bell when used.",
+    "author": "jules:session",
+    "rarity": "rare",
+    "era": "early"
+  },
+  "affordances": ["carry", "place_on_tile", "sell"],
+  "tags": [
+    "textile",
+    "tile_cover",
+    "badger",
+    "bone",
+    "quill",
+    "solves_backfill_scaffolding",
+    "path_field_textile"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "wear_max": 50.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_tap",
+      "if": "tile.covered_by_self and ctx.is_direct_tap == 1",
+      "do": [
+        {"act": "modify_depth", "target": "self_tile", "delta": "-1"},
+        {"act": "var_add", "var": "self.wear", "by": "5.0"},
+        {"act": "var_set", "var": "shared.house_bell_ringing", "value": "1.0"},
+        {"act": "destroy_self", "if": "self.wear >= self.stats.wear_max"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/dirt": 50}
+    }
+  ],
+  "offline": "exact"
+}
