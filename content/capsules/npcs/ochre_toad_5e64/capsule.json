@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Toad",
+    "description": "A rare amphibian that offers fiery wares to those who have rung the house bell enough.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "npc_vendor"
+  ],
+  "tags": [
+    "npc",
+    "vendor",
+    "world_npc",
+    "toad",
+    "cinder",
+    "ochre"
+  ],
+  "stats": {
+    "cleanliness_required": 0.0,
+    "saturation_half_volume": 1000.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 100
+      },
+      "unlock_if": "shared.house_bell_ringing > 0.0"
+    }
+  ],
+  "offline": "none"
+}
