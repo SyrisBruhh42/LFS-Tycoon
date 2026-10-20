@@ -53,9 +53,10 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Fetch PR head as data
+      - name: Fetch PR head as data (token scoped to this one command, never persisted)
         run: |
-          git fetch --no-tags origin "+refs/pull/${PR}/head:refs/remotes/pr/head"
+          AUTH="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c http.https://github.com/.extraheader="$AUTH" fetch --no-tags origin "+refs/pull/${PR}/head:refs/remotes/pr/head"
           git cat-file -e "${HEAD_SHA}^{commit}"
 
       - name: Path guard (additions inside new capsule folders only)
@@ -117,8 +118,10 @@ jobs:
             echo "### Capsule gate failed"
             echo ""
             echo '```'
-            grep -aE '^(ERROR:|PATH GUARD|FAILED:|MERGE FAILED|  \[FAIL\])' report.txt | head -40 || true
+            grep -aE '^(ERROR:|PATH GUARD|FAILED:|MERGE FAILED|  \[FAIL\])' report.txt 2>/dev/null | head -40 \
+              || echo "INFRA: the gate failed before validation ran (not a content error)."
             echo '```'
+            echo "Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
             echo "Fix: edit only your own new capsule folder, run \`python3 tools/preflight.py\` until it prints PREFLIGHT OK."
           } > comment.md
           gh pr comment "$PR" -R "$GITHUB_REPOSITORY" --body-file comment.md || true

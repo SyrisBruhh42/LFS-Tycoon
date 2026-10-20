@@ -191,17 +191,22 @@ def normalize_error(line: str) -> str:
     return line.strip()[:220]
 
 
-def harvest_lessons(cfg: dict, pr_url: str, state: dict) -> None:
+def harvest_lessons(cfg: dict, pr_url: str, state: dict) -> bool:
+    """Records the gate's content errors as lessons. Returns True if the failure was infrastructure, not content."""
     try:
         data = json.loads(gh("pr", "view", pr_url, "--json", "comments"))
     except (RuntimeError, ValueError):
-        return
+        return False
     for c in reversed(data.get("comments", [])):
-        if GATE_MARKER in c.get("body", ""):
-            errs = [normalize_error(l) for l in c["body"].splitlines()
+        body = c.get("body", "")
+        if GATE_MARKER in body:
+            if "INFRA:" in body:
+                return True
+            errs = [normalize_error(l) for l in body.splitlines()
                     if l.startswith(("ERROR:", "PATH GUARD:", "FAILED:", "  [FAIL]"))]
             state["lessons"] = (state.get("lessons", []) + errs[:8])[-60:]
-            return
+            return False
+    return False
 
 
 def reconcile(cfg: dict, state: dict, dry: bool) -> None:
@@ -267,7 +272,13 @@ def reconcile(cfg: dict, state: dict, dry: bool) -> None:
             checks = [c for c in pr.get("statusCheckRollup", []) or [] if c.get("name") == cfg["gate_check_name"]]
             concl = (checks[-1].get("conclusion") or "") if checks else ""
             if concl in ("FAILURE", "TIMED_OUT", "STARTUP_FAILURE"):
-                harvest_lessons(cfg, rec["pr"], state)
+                if harvest_lessons(cfg, rec["pr"], state):
+                    # Gate infrastructure broke, not the capsule: keep the PR open for a re-run after the fix.
+                    # These still count toward the failure breaker, so a systemic CI outage pauses the factory.
+                    rec["outcome"] = "failed:gate_infra"
+                    rec["finished"] = iso(now())
+                    log("session_finished", session=sid, outcome=rec["outcome"], pr=rec["pr"])
+                    continue
                 rec["outcome"] = "failed:gate"
                 if not dry:
                     gh("pr", "edit", rec["pr"], "--add-label", FAIL_LABEL, check=False)
