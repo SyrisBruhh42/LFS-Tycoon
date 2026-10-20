@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ember Loam Ledger",
+    "description": "An ashen logbook recording tool strain. Studying it teaches you to strike more safely, permanently reducing tool wear at the cost of slightly slower mining speed.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["upgrade", "ledger", "solves_house_comfort", "solves_tool_wear", "path_qol_upgrade"],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": "1.0 - (0.25 * self.installed)"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": "1.0 + (0.15 * self.installed)"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/dirt": 50, "blocks/copper": 30}
+    }
+  ],
+  "offline": "none"
+}
