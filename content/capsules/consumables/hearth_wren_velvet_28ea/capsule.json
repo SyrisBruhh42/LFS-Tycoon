@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hearth-Wren Velvet Tonic",
+    "description": "A cheap, syrupy brew that makes the HUD Target Loupe flicker to life when tapping near ores for 5 minutes. Its velvet-like texture dulls the senses, halving manual mining speed. Thrifty, but painstakingly slow.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "drink",
+    "tonic",
+    "hearth",
+    "wren",
+    "velvet",
+    "solves_ore_hunting",
+    "path_consumable_buff"
+  ],
+  "stats": {
+    "base_value": 20.0,
+    "duration_sec": 300.0,
+    "speed_mult": 0.5
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0 and ctx.is_direct_tap == 1",
+      "value": "self.stats.speed_mult"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec"
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "self.active_sec_left > 0.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.active_sec_left",
+          "by": "-1.0"
+        },
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_target_loupe",
+          "enabled": false,
+          "if": "self.active_sec_left <= 0.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.active_sec_left <= 0.0"
+        }
+      ]
+    },
+    {
+      "on": "on_tap",
+      "if": "self.active_sec_left > 0.0",
+      "do": [
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_target_loupe",
+          "enabled": true
+        },
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "vein_scanned",
+          "if": "tile.tier > 0"
+        }
+      ]
+    },
+    {
+      "on": "on_market_sell",
+      "do": [
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_target_loupe",
+          "enabled": false
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/dirt": 35
+      }
+    }
+  ],
+  "offline": "none"
+}
