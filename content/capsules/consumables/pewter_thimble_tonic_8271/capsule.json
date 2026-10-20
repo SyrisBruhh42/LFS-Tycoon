@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Thimble Tonic",
+    "description": "A bitter sensory draught from a pewter thimble. For 2 minutes, time dilates if you fat-finger a hazard: breaking a hazard tile takes 10x longer and triggers the ledger stall alarm, giving you time to abort. Side effect: intense focus doubles your durability drain.",
+    "author": "core:jules",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "consume", "sell"],
+  "tags": [
+    "consumable",
+    "drink",
+    "tonic",
+    "solves_tap_misfires",
+    "path_consumable_buff",
+    "acoustic",
+    "alarm",
+    "ledger",
+    "pewter",
+    "thimble"
+  ],
+  "stats": {
+    "base_value": 40.0,
+    "duration_sec": 120.0,
+    "hazard_slowdown": 10.0,
+    "wear_penalty": 2.0
+  },
+  "vars": {
+    "active_sec_left": -1.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0 and tile.is_hazard == 1 and ctx.is_direct_tap == 1",
+      "value": "self.stats.hazard_slowdown"
+    },
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.wear_penalty"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.active_sec_left", "value": "self.stats.duration_sec"},
+        {"act": "set_ui_flag", "flag": "hud_target_loupe", "enabled": true}
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "self.active_sec_left > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.active_sec_left", "by": "-1.0"}
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "self.active_sec_left == 0.0",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    },
+    {
+      "on": "on_damage_dealt",
+      "if": "self.active_sec_left > 0.0 and tile.is_hazard == 1 and ctx.is_direct_tap == 1",
+      "do": [
+        {"act": "emit_alert", "channel": "house_bell", "tag": "stall_impassable"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 35}
+    }
+  ],
+  "offline": "none"
+}
