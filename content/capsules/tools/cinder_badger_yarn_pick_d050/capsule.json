@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder Yarn Shovel-Pick",
+    "description": "A crude hybrid of a pickaxe and shovel bound with cinder yarn. It is terribly clumsy to use on everything, but because it never knows what it's supposed to be hitting, it suffers no wrong-tool penalties. Eventually breaks.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "cinder",
+    "badger",
+    "yarn",
+    "thrifty",
+    "disposable",
+    "solves_wrong_tool_penalty",
+    "path_vendor_disposable"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 0,
+    "base_dps": 6.0,
+    "durability_max": 200.0,
+    "is_rechargeable": 0,
+    "base_value": 30.0
+  },
+  "vars": {
+    "durability_left": 200.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": "0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 20
+      }
+    }
+  ],
+  "offline": "coarse"
+}
