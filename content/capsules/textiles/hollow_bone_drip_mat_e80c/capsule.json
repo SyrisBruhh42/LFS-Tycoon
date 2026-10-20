@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hollow Bone Drip Mat",
+    "description": "A porous mat woven from hollow bone splinters. Laid over a square, it absorbs the shock of auto-tools striking impassable fluids, completely pausing both battery and durability drain. However, the brittle bones snap under the stress, fraying completely after 25 stalled strikes.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "textile",
+    "tile_cover",
+    "stall_guard",
+    "bone",
+    "solves_zero_damage_stall",
+    "path_field_textile"
+  ],
+  "stats": {
+    "base_value": 120.0,
+    "wear_max": 25.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "if": "tile.covered_by_self and tile.fluid_level > 0",
+      "do": [
+        {
+          "act": "stall_tool",
+          "pause_battery": true,
+          "pause_durability": true
+        },
+        {
+          "act": "var_add",
+          "var": "self.wear",
+          "by": "1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.wear >= self.stats.wear_max"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 900
+      },
+      "unlock_if": "player.max_depth >= 40"
+    }
+  ],
+  "offline": "exact"
+}
