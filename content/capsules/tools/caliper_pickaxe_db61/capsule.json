@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bone-Handled Brass Caliper Pick",
+    "description": "A cheap, brittle pick with a brass caliper integrated into its heavy bone handle. It displays the exact depth gauge on your HUD when equipped, but mining with it is painfully slow.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_depth_awareness",
+    "path_forge_material",
+    "bone",
+    "brass",
+    "thrifty"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 2,
+    "base_dps": 8.0,
+    "durability_max": 200.0,
+    "is_rechargeable": 1,
+    "base_value": 150.0
+  },
+  "vars": {
+    "durability_left": 200.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_depth_calipers",
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_depth_calipers",
+          "enabled": false
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 150
+      }
+    }
+  ],
+  "offline": "coarse"
+}
