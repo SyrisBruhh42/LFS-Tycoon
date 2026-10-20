@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Wren's Hearth Yarn",
+    "description": "A magical, ever-unraveling ball of yarn that grants perfect depth awareness. Socketed or carried, it ensures depth calipers are visible on your HUD. However, the constantly shedding yarn makes your grip slip slightly when mining, and leaves a speck of dirt in your bag at every new depth layer.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "yarn",
+    "hearth",
+    "wren",
+    "solves_depth_awareness",
+    "path_magic_charm",
+    "hud",
+    "magic_charm"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "drunk_drift_px",
+      "phase": "add",
+      "value": "4.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_depth_calipers",
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_depth_calipers",
+          "enabled": false
+        }
+      ]
+    },
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "blocks/dirt",
+          "qty": "1",
+          "route": "backpack"
+        },
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "yarn_layer_drop"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 250
+      },
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ],
+  "offline": "exact"
+}
