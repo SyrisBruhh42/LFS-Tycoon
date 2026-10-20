@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Zinc-Plated Tallow Wren",
+    "description": "A clever wren cast in zinc and fueled by tallow. When placed on a tile, it slows battery drain for auto-tools working the tile. Its tallow supply slowly burns away over time, acting as its limiter.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "tallow",
+    "wren",
+    "zinc",
+    "solves_auto_tool_runtime",
+    "path_placeable_device"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": "0.15",
+      "if": "tile.covered_by_self"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_hold_tick",
+      "if": "tile.covered_by_self",
+      "do": [
+        {"act": "var_add", "var": "self.wear", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.wear >= 300.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 1500
+      },
+      "unlock_if": "shared.global_cleave_bonus_pct >= 0.1"
+    }
+  ],
+  "offline": "exact"
+}
