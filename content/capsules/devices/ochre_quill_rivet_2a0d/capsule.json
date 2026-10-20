@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Quill Rivet",
+    "description": "An enchanted rivet of ochre and quill. When your tool stalls against flooding fluids, the magic boils the fluid away instantly but violently damages a random neighboring tile in exchange for this rapid clearance.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "rivet",
+    "quill",
+    "ochre",
+    "solves_fluid_flooding",
+    "path_npc_enchanter"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "if": "tile.fluid_level > 0.0",
+      "do": [
+        {"act": "modify_fluid", "target": "self_tile", "fluid_type": "NONE", "delta_level": "-1"},
+        {"act": "deal_damage", "target": "random_neighbor_4", "amount": "50.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/lark_newt_rivet_ore_a337": 1000},
+      "unlock_if": "player.max_depth >= 40"
+    }
+  ],
+  "offline": "exact"
+}
