@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Umber-Zinc Yarn Bundle",
+    "description": "A very expensive, unlock-gated yarn bundle that significantly reduces tool wear and prevents mis-tap penalties. Bound with raw zinc and umber threads.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "bundle",
+    "yarn",
+    "umber",
+    "zinc",
+    "solves_tool_wear",
+    "path_bundle_package"
+  ],
+  "stats": {
+    "base_value": 60.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": "1.0 - (0.75 * self.installed)"
+    },
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": "1.0 - (0.5 * self.installed)"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": "1.0"
+        },
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_durability_bars",
+          "enabled": true
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/lark_newt_rivet_ore_a337": 20
+      },
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ],
+  "offline": "none"
+}
