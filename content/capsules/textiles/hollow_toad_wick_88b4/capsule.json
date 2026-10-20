@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hollow Toad Wick Cover",
+    "description": "A field hearth woven from hollow toad wick. Provides home-base comfort, increasing block yield by 50% on the covered tile, but frays after 15 strikes.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "textile",
+    "tile_cover",
+    "hearth",
+    "solves_house_comfort",
+    "path_field_textile"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "yield_bonus": 1.5,
+    "wear_max": 15.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "if": "tile.covered_by_self",
+      "value": "self.stats.yield_bonus"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_damage_dealt",
+      "if": "tile.covered_by_self",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.wear",
+          "by": "1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.wear >= self.stats.wear_max"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/lava_pocket": 2
+      }
+    }
+  ],
+  "offline": "exact"
+}
