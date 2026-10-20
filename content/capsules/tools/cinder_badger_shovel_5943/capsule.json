@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder-Forged Badger Shovel",
+    "description": "Forged with cinder and badger-claw mold. Lifts broken blocks from beneath to raise floors, backfilling the space, but only when deep enough (depth >= 50).",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "shovel",
+    "tinker_forged",
+    "cinder",
+    "badger",
+    "solves_backfill_scaffolding",
+    "path_forge_material"
+  ],
+  "stats": {
+    "tool_type": "SHOVEL",
+    "tool_tier": 3,
+    "base_dps": 45.0,
+    "durability_max": 1500.0,
+    "is_rechargeable": 1,
+    "base_value": 800.0
+  },
+  "vars": {
+    "durability_left": 1500.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "tile.depth >= 50 and ctx.is_secondary_damage == 0",
+      "do": [
+        {
+          "act": "modify_depth",
+          "target": "self_tile",
+          "delta": "-1"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 300,
+        "blocks/stone": 300
+      },
+      "unlock_if": "player.max_depth >= 50"
+    }
+  ],
+  "offline": "coarse"
+}
