@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hollow Brass Newt",
+    "description": "A hollow brass automaton shaped like a newt. You can wind it up to mine a tile for 3 hours, and as it works, air whistles through its hollow body, producing a steam whistle that pauses emergent events like lost cats.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "equip_tool", "place_on_tile", "sell"],
+  "tags": ["tool", "pickaxe", "automine", "disposable", "brass", "newt", "hollow", "solves_event_helpers", "path_hired_laborer"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 18.0,
+    "charge_max_sec": 10800.0,
+    "durability_max": 2500.0,
+    "is_rechargeable": 0,
+    "base_value": 45.0
+  },
+  "vars": {
+    "charge_left": 10800.0,
+    "durability_left": 2500.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "self.charge_left > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": "-1.0"},
+        {"act": "emit_alert", "if": "tile.covered_by_self", "channel": "hud_chime", "tag": "steam_whistle"},
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50}
+    }
+  ],
+  "offline": "coarse"
+}
