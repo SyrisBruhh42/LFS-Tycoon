@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ember Wren Kettle Pick",
+    "description": "A copper pickaxe integrated with an ember kettle shaped like a wren. The internal embers slowly burn away over 2 hours while auto-mining, but it siphons thermal energy back into its kettle when stalling against wet tiles or fluids, keeping it running longer as long as it has something cool to temper against. Shatters when depleted.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "equip_tool", "place_on_tile", "sell"],
+  "tags": ["tool", "pickaxe", "automine", "kettle", "disposable", "ember", "wren", "solves_auto_tool_runtime", "path_vendor_disposable"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 9.5,
+    "charge_max_sec": 7200.0,
+    "durability_max": 900.0,
+    "is_rechargeable": 0,
+    "base_value": 45.0
+  },
+  "vars": {
+    "charge_left": 7200.0,
+    "durability_left": 900.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "self.charge_left > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": "-1.0"},
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    },
+    {
+      "on": "on_zero_damage_stall",
+      "if": "tile.fluid_level > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": "5.0"}
+      ]
+    },
+    {
+      "on": "on_damage_dealt",
+      "if": "tile.fluid_level > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": "1.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 25}
+    }
+  ],
+  "offline": "coarse"
+}
