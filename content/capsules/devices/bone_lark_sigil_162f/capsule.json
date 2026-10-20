@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bone Lark Sigil",
+    "description": "An enchanter's sigil carved from wren and lark bone. When socketed into an automated tool, it radically throttles the mechanism to a crawl, saving tremendous amounts of battery charge at the cost of almost all its speed. A poor miner's solution to overnight battery drain.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "rune",
+    "bone",
+    "lark",
+    "wren",
+    "solves_auto_tool_runtime",
+    "path_npc_enchanter"
+  ],
+  "stats": {
+    "base_value": 450.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": "0.10"
+    },
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "value": "0.20"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 400
+      },
+      "unlock_if": "player.max_depth >= 20"
+    }
+  ],
+  "offline": "exact"
+}
