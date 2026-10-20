@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Umber Hearth",
+    "description": "Deep, scorched seams where ancient kettle-cinder strata bake the earth. Yields less when mining due to intense heat, acting as a natural limiter.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["world_biome", "hearth", "kettle", "umber", "heat_source"],
+  "stats": {
+    "z_min": 100,
+    "z_max": 800,
+    "weight": 0.4
+  },
+  "biome_weights": {
+    "blocks/lava_pocket": 2.5,
+    "blocks/stone": 1.2,
+    "blocks/obsidian_hazard": 0.8
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "if": "tile.is_hazard",
+      "value": "0.5"
+    }
+  ],
+  "reactions": [],
+  "offline": "none"
+}
