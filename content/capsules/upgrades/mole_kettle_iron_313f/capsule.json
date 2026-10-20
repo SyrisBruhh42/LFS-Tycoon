@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mole's Iron Kettle Suite",
+    "description": "An expensive, heavy iron kettle bundle for the hearth. When installed in your house, this amenity bundle offers supreme comfort when resting from deep excavations. It grants multiple single options at once: a massive boost to mining speed at deep depths when rested, greatly reduced incoming damage, and improved luck. Does not penalize normal speed.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "amenity",
+    "kettle",
+    "iron",
+    "mole",
+    "solves_house_comfort",
+    "path_bundle_package"
+  ],
+  "stats": {
+    "base_value": 150.0,
+    "deep_comfort_bonus": 0.5,
+    "damage_reduction": 0.25,
+    "luck_bonus": 0.2
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "self.installed > 0.0 and tile.depth > 50 and player.is_rested > 0.0",
+      "value": "1.0 + self.stats.deep_comfort_bonus"
+    },
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "if": "self.installed > 0.0 and tile.depth > 50 and player.is_rested > 0.0",
+      "value": "1.0 - self.stats.damage_reduction"
+    },
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "if": "self.installed > 0.0 and tile.depth > 50 and player.is_rested > 0.0",
+      "value": "self.stats.luck_bonus"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_enter_house",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": "1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 150
+      }
+    }
+  ],
+  "offline": "none"
+}
