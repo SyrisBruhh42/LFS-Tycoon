@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder Mole Wick Stratum",
+    "description": "A hot, smoky underground stratum that smells faintly of burnt wick and cinder gravel. The fumes make you slightly dizzy, but the soft earth is easy to dig.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "biome",
+    "world_biome",
+    "cinder",
+    "mole",
+    "wick"
+  ],
+  "stats": {
+    "z_min": 60,
+    "z_max": 400,
+    "weight": 0.4
+  },
+  "biome_weights": {
+    "blocks/cinder_gravel_61a3": 2.0,
+    "blocks/dirt": 1.5,
+    "blocks/lava_pocket": 0.3
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "drunk_drift_px",
+      "phase": "add",
+      "value": "12.0"
+    }
+  ],
+  "reactions": [],
+  "offline": "none"
+}
