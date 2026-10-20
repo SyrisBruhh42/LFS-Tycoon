@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lark Newt Rivet",
+    "description": "A fragile sedimentary deposit containing copper. It breaks entirely after yielding a few chunks.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "block",
+    "ore",
+    "world_block",
+    "lark",
+    "newt",
+    "rivet",
+    "disposable"
+  ],
+  "stats": {
+    "base_hp": 25.0,
+    "base_value": 8.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 10,
+    "l_step": 1000,
+    "spawn_prob": 0.03,
+    "clump_xy": 6.0,
+    "pipe_z": 6.0,
+    "priority_rank": 50,
+    "wear_max": 5.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "biome_weights": {
+    "biomes/standard_crust": 1.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_tap",
+      "do": [
+        {"act": "var_add", "var": "self.wear", "by": "1.0"},
+        {"act": "spawn_item", "item": "blocks/copper", "qty": "1"},
+        {"act": "deal_damage", "target": "self_tile", "amount": "9999.0", "if": "self.wear >= self.stats.wear_max"}
+      ]
+    }
+  ],
+  "offline": "none"
+}
