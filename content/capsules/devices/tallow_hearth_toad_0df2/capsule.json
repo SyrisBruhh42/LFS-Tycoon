@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tallow Hearth Toad",
+    "description": "A greasy amphibian idol carved from hearth-wax. Socketed into a tool, its tallow melts only under extreme duress: when striking a volatile hazard block, it vigorously re-greases your mechanism, heavily repairing its durability instead of wearing it down. Useless on safe blocks.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "enchantment",
+    "tallow",
+    "toad",
+    "hearth",
+    "solves_repair_upkeep",
+    "path_npc_enchanter"
+  ],
+  "stats": {
+    "base_value": 120.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "tile.is_hazard == 1.0",
+      "value": "-3.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 100
+      }
+    }
+  ],
+  "offline": "exact"
+}
