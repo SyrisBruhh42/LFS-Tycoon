@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bronze Plumb Chisel",
+    "description": "A clever bronze chisel built with a plumb mechanism that automatically clears water from deep tiles. However, due to its unwieldy plumb bob, your aim drifts considerably while swinging it. Disappears after it clears enough water.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "equip_tool", "place_in_house", "sell"],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "bronze",
+    "disposable",
+    "plumb",
+    "chisel",
+    "solves_fluid_flooding",
+    "path_vendor_disposable"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 0,
+    "base_dps": 18.0,
+    "durability_max": 200.0,
+    "is_rechargeable": 0,
+    "base_value": 45.0
+  },
+  "vars": {
+    "durability_left": 200.0,
+    "water_cleared": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "drunk_drift_px",
+      "phase": "add",
+      "value": "24.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "if": "tile.fluid_level > 0",
+      "do": [
+        {"act": "modify_fluid", "target": "self_tile", "fluid_type": "NONE", "delta_level": "-1"},
+        {"act": "var_add", "var": "self.water_cleared", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.water_cleared >= 50.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 30}
+    }
+  ],
+  "offline": "exact"
+}
