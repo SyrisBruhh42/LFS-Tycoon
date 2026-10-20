@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Nettle-Kettle Charm",
+    "description": "A heron-shaped nettle kettle trinket. When a tool strikes impassable water or lava, it safely boils away one fluid level, but releases noxious steam that permanently decreases your active mining speed multiplier. Breaks after 10 boils.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "charm",
+    "kettle",
+    "solves_fluid_flooding",
+    "path_magic_charm"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "max_uses": 10.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "if": "tile.fluid_level > 0.0",
+      "do": [
+        {"act": "modify_fluid", "target": "self_tile", "fluid_type": "NONE", "delta_level": "-1"},
+        {"act": "var_add", "var": "shared.active_buff_speed_mult", "by": "-0.05"},
+        {"act": "var_add", "var": "self.activations", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.activations >= self.stats.max_uses"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 35}
+    }
+  ],
+  "offline": "exact"
+}
