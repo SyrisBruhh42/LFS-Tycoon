@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lark's Nettle Discipline",
+    "description": "A focused breathing exercise taught by Lark. It zeroes out your wine-induced drunk drift so you tap exactly where you mean to, but requires intense concentration which slightly slows your breaking speed. You must be slightly inebriated to understand its teachings.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_tap_misfires",
+    "path_profession_perk",
+    "lark",
+    "nettle",
+    "kettle"
+  ],
+  "stats": {
+    "base_value": 60.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "drunk_drift_px",
+      "phase": "clamp",
+      "if": "self.installed > 0.0",
+      "value": "0.0"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "self.installed > 0.0",
+      "value": "1.15"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"},
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true},
+        {"act": "set_ui_flag", "flag": "hud_chess_grid", "enabled": true}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 250},
+      "unlock_if": "shared.active_drunk_drift_px > 0.0"
+    }
+  ],
+  "offline": "none"
+}
