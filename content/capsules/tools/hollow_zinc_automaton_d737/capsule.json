@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hollow Iron-Zinc Automaton",
+    "description": "A heavy hollow iron automaton with zinc gears. Stationed on a tile, it tirelessly extracts block after block, converting excess basic materials into rare ore values, letting you step away and mitigating local market saturation.",
+    "author": "jules",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "equip_tool", "place_on_tile", "sell"],
+  "tags": ["tool", "pickaxe", "automine", "clockwork", "iron", "zinc", "disposable", "solves_market_saturation", "path_hired_laborer"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 2,
+    "base_dps": 18.0,
+    "charge_max_sec": 21600.0,
+    "durability_max": 3000.0,
+    "is_rechargeable": 0,
+    "base_value": 250.0
+  },
+  "vars": {
+    "charge_left": 21600.0,
+    "durability_left": 3000.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "self.charge_left > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": "-1.0"},
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/obsidian_hazard": 2, "blocks/lava_pocket": 5},
+      "unlock_if": "player.max_depth >= 50"
+    }
+  ],
+  "offline": "coarse"
+}
