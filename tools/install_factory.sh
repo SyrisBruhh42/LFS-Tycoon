@@ -31,9 +31,11 @@ GH_BIN="$(command -v gh)"; [[ -n "$GH_BIN" ]] || { echo "gh CLI not found"; exit
 
 if [[ ! -d "$MIRROR/.git" ]]; then
   mkdir -p "$(dirname "$MIRROR")"
-  git clone -q "https://github.com/$REPO_SLUG.git" "$MIRROR" -c credential.helper= -c "credential.helper=!$GH_BIN auth git-credential"
+  git -c credential.helper= -c "credential.helper=!$GH_BIN auth git-credential" clone -q "https://github.com/$REPO_SLUG.git" "$MIRROR"
 fi
-git -C "$MIRROR" config credential.helper ""
+# Repo-local helpers only: an empty entry resets inherited helpers, then gh supplies the token from your keyring.
+git -C "$MIRROR" config --unset-all credential.helper 2>/dev/null || true
+git -C "$MIRROR" config --add credential.helper ""
 git -C "$MIRROR" config --add credential.helper "!$GH_BIN auth git-credential"
 git -C "$MIRROR" fetch -q origin main && git -C "$MIRROR" reset -q --hard origin/main
 
