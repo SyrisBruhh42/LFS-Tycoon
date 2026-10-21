@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Salt Drip Mat",
+    "description": "A coarse mat woven with crystalline fibers. Absorbs excess fluid down to dry stone before crumbling away.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "textile",
+    "tile_cover",
+    "solves_fluid_flooding",
+    "path_field_textile"
+  ],
+  "stats": {
+    "base_value": 450.0,
+    "wear_max": 25.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "tile.covered_by_self and tile.fluid_level > 0.0",
+      "do": [
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": "-1.0"
+        },
+        {
+          "act": "var_add",
+          "var": "self.wear",
+          "by": "1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.wear >= self.stats.wear_max"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 150
+      },
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ],
+  "offline": "exact"
+}
