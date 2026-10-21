@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mica Infused Drip Mat",
+    "description": "A heavy textile threaded with crushed mica. Lay it over flooded quarry squares to passively drain water and lava over time. When carried or placed in the house, its stiff backing slightly slows your tool swings.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "place_on_tile", "place_in_house", "sell"],
+  "tags": ["textile", "tile_cover", "mica", "solves_fluid_flooding", "path_field_textile"],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": "1.10"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "tile.covered_by_self and tile.fluid_level > 0.0",
+      "do": [
+        {"act": "modify_fluid", "target": "self_tile", "fluid_type": "NONE", "delta_level": "-1.0"},
+        {"act": "var_add", "var": "self.wear", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.wear >= 20.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50}
+    }
+  ],
+  "offline": "exact"
+}
