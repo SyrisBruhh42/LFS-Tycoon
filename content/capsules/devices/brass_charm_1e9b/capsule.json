@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Brass Charm",
+    "description": "A brass charm etched with sharp patterns. When socketed or carried, it reduces the wrong tool penalty so off-class tools suffer less slowdown. However, the charm draws on the tool's essence, losing durability with every block broken and destroying itself after 60 blocks.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "charm", "solves_wrong_tool_penalty", "path_magic_charm", "brass"],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "charges_left": 60.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": "0.5"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {"act": "var_add", "var": "self.charges_left", "by": "-1.0"},
+        {"act": "destroy_self", "if": "self.charges_left <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50}
+    }
+  ],
+  "offline": "exact"
+}
