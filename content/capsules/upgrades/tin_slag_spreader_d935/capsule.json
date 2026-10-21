@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Slag Spreader",
+    "description": "A self-taught profession perk passed down by slag recyclers. It grants you the rough intuition to channel a portion of your wasted overkill strike directly into the four surrounding blocks, fracturing them passively.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "profession_perk",
+    "solves_overkill_waste",
+    "path_profession_perk",
+    "slag"
+  ],
+  "stats": {
+    "base_value": 600.0,
+    "splash_pct": 0.2
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "if": "self.installed >= 1.0 and tool.overkill_damage > 0.0 and ctx.is_secondary_damage == 0",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "neighbors_4",
+          "amount": "tool.overkill_damage * self.stats.splash_pct"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 150
+      }
+    }
+  ],
+  "offline": "none"
+}
