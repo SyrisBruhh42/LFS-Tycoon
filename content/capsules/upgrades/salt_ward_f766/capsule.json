@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Salt Ward",
+    "description": "A coarse lump of salt wrapped in copper wire. Hangs on the belt and absorbs ambient grime, keeping you presentable to fussy vendors for longer.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "consume", "sell"],
+  "tags": ["upgrade", "qol", "salt", "solves_grime_cleanliness", "path_qol_upgrade"],
+  "stats": {
+    "base_value": 35.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "grime_gain_mult",
+      "phase": "mul",
+      "value": "0.5",
+      "if": "self.installed == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/dirt": 50},
+      "unlock_if": "shared.global_cleave_bonus_pct >= 0.0"
+    }
+  ],
+  "offline": "none"
+}
