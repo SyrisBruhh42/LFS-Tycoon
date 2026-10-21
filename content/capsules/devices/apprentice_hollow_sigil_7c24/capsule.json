@@ -16,7 +16,7 @@
     {
       "stat": "durability_drain_mult",
       "phase": "mul",
-      "amount": 0.8
+      "value": "0.8"
     }
   ],
   "reactions": [],
