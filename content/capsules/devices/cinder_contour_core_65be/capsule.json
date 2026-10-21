@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder Contour Core",
+    "description": "A quiet core of cinder and brass, placed on a tile. Its internal chimes vibrate to reveal strata depth calipers and contour lines, easing depth awareness on uneven ground. However, its delicate mechanism requires an active hazard in the tile to calibrate.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_depth_awareness",
+    "path_placeable_device"
+  ],
+  "stats": {
+    "base_value": 3500.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "if": "tile.is_hazard > 0.0",
+      "value": "0.15"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true, "if": "tile.is_hazard > 0.0"},
+        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": true, "if": "tile.is_hazard > 0.0"}
+      ]
+    },
+    {
+      "on": "on_tap",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true, "if": "tile.is_hazard > 0.0"},
+        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": true, "if": "tile.is_hazard > 0.0"}
+      ]
+    },
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true, "if": "tile.is_hazard > 0.0"},
+        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": true, "if": "tile.is_hazard > 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 2500},
+      "unlock_if": "tool.tier >= 4.0"
+    }
+  ],
+  "offline": "exact"
+}
