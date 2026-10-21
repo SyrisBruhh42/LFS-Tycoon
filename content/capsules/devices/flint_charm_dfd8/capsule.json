@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Deep-Strata Flint Charm",
+    "description": "A flint magic charm that steadies the hand. At depths of 500 or more, it clamps misclicks and drunk drift to 0, though the intense focus slightly slows block breaking time.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "magic_charm",
+    "flint",
+    "solves_tap_misfires",
+    "path_magic_charm"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "drunk_drift_px",
+      "phase": "mul",
+      "if": "tile.depth >= 500",
+      "value": "0.0"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "tile.depth >= 500",
+      "value": "1.2"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 35}
+    }
+  ],
+  "offline": "exact"
+}
