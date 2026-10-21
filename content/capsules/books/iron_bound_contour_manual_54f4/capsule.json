@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Iron-Bound Contour Manual",
+    "description": "A heavy iron-bound book detailing advanced surveying techniques. Reading it trains you to recognize deep strata, enabling precise caliper depth displays whenever a new layer is revealed, and granting a 15% mining speed bonus when excavating at depths past 10m.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "book",
+    "skill_book",
+    "solves_depth_awareness",
+    "path_skill_book",
+    "iron"
+  ],
+  "stats": {
+    "base_value": 350.0
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": "0.85",
+      "if": "self.is_learned >= 1.0 and tile.depth >= 10.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_learned",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "on": "on_layer_reveal",
+      "if": "self.is_learned >= 1.0",
+      "do": [
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_depth_calipers",
+          "enabled": true
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 150
+      }
+    }
+  ],
+  "offline": "none"
+}
