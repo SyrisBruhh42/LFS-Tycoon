@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Crucible Warming Hearth",
+    "description": "A sturdy hearth inspired by the eternal flames of deep crucibles. It provides a sanctuary of deep rest, rewarding you with improved luck when mining while well-rested.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_house_comfort",
+    "path_qol_upgrade"
+  ],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "if": "player.is_rested == 1",
+      "value": "0.3"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {
+        "blocks/copper": 35
+      }
+    }
+  ],
+  "offline": "none"
+}
