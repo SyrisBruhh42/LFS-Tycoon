@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Apprentice Tallow Lens",
+    "description": "A crude lens fueled by slow-burning tallow. Placed on a tile, its greasy glow subtly increases mining luck. As you dig deeper beneath it, each new layer revealed consumes its tallow, outlining the immediate contour until the wax is spent.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "place_on_tile", "sell"],
+  "tags": ["device", "gadget", "tallow", "solves_ore_hunting", "path_placeable_device"],
+  "stats": {
+    "base_value": 30.0
+  },
+  "vars": {
+    "tallow_left": 10.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": "0.15",
+      "if": "tile.covered_by_self"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true, "if": "tile.covered_by_self"},
+        {"act": "var_add", "var": "self.tallow_left", "by": "-1.0", "if": "tile.covered_by_self"},
+        {"act": "destroy_self", "if": "self.tallow_left <= 0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 35
+      }
+    }
+  ],
+  "offline": "exact"
+}
