@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Brass Charm",
+    "description": "A thrifty trinket fashioned from brass wire. Carried in your pack, it provides a brief aura of cleanliness after washing. Being so cheaply made, it eventually snaps after a few washes.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "sell"],
+  "tags": ["device", "solves_grime_cleanliness", "path_magic_charm"],
+  "stats": {
+    "base_value": 25.0
+  },
+  "vars": {
+    "washes_left": 10.0,
+    "clean_bonus_active": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "grime_gain_mult",
+      "phase": "mul",
+      "if": "self.clean_bonus_active > 0.0",
+      "value": "0.2"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_wash",
+      "if": "player.grime < 10.0",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.clean_bonus_active",
+          "value": "300.0"
+        },
+        {
+          "act": "var_add",
+          "var": "self.washes_left",
+          "by": "-1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.washes_left <= 0.0"
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "self.clean_bonus_active > 0.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.clean_bonus_active",
+          "by": "-1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 30}
+    }
+  ],
+  "offline": "none"
+}
