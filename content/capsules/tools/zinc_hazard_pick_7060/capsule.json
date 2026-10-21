@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Zinc-Coated Catalyst Pick",
+    "description": "A heavy, zinc-coated pickaxe designed for clearing volatile pockets. Serves as a perimeter catalyst for hazardous clusters, boosting its damage heavily against exposed hazards, but suffers from rapid wear when striking ordinary stone.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "equip_tool", "catalyst", "sell"],
+  "tags": ["tool", "pickaxe", "solves_hazard_clearing", "path_forge_material"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 22.0,
+    "durability_max": 250.0,
+    "is_rechargeable": 1,
+    "base_value": 75.0,
+    "durability_drain_mult": 2.0
+  },
+  "vars": {
+    "durability_left": 250.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "tile.is_hazard == 1.0",
+      "value": "2.5"
+    },
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "tile.is_hazard == 0.0",
+      "value": "2.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/anvil_smith_73cd",
+      "price": {"blocks/copper": 30}
+    }
+  ],
+  "offline": "none"
+}
