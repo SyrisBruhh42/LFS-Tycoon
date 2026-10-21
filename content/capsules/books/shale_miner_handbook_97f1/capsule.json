@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Shale Miner's Handbook",
+    "description": "A thrifty and reliable early-game guide. Reading it teaches a technique that lowers break time multiplier by 20% at shallow depths (above 300m).",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["book", "skill_book", "solves_slow_early_dps", "path_skill_book", "shale"],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "self.is_learned >= 1.0 and tile.depth < 300.0",
+      "value": "0.8"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {"act": "var_set", "var": "self.is_learned", "value": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 300},
+      "unlock_if": "player.max_depth >= 10"
+    }
+  ],
+  "offline": "none"
+}
