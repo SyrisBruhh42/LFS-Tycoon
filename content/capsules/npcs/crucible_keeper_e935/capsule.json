@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Crucible Keeper",
+    "description": "A mysterious figure wrapped in soot-stained leathers who tends the eternal flames of the deep. They offer rare smelting aids and heat-resistant gear to those brave enough to reach the lower thermal layers.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "npc_vendor"
+  ],
+  "tags": [
+    "npc",
+    "vendor",
+    "world_npc",
+    "crucible"
+  ],
+  "stats": {
+    "unlock_depth": 30.0,
+    "cleanliness_required": 0.0,
+    "saturation_half_volume": 1000.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
