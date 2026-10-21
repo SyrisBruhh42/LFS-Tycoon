@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Brass Mortar",
+    "description": "A heavy brass mortar paste. Consuming it coats your hands and tools in a protective resin, significantly reducing durability and battery drain for 5 minutes. If you are well rested, the resin binds even tighter, halving the drain further.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "solves_repair_upkeep",
+    "path_consumable_buff"
+  ],
+  "stats": {
+    "base_value": 450.0,
+    "duration_sec": 300.0
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0 and player.is_rested == 0",
+      "value": "0.6"
+    },
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0 and player.is_rested == 0",
+      "value": "0.6"
+    },
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0 and player.is_rested == 1",
+      "value": "0.3"
+    },
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0 and player.is_rested == 1",
+      "value": "0.3"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec"
+        },
+        {
+          "act": "destroy_self"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 300
+      }
+    }
+  ],
+  "offline": "none"
+}
