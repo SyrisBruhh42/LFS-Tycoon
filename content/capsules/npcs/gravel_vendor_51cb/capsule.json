@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "The Gravel Vendor",
+    "description": "An automated trading outpost buried in the depths, offering specialized mining instruments in exchange for resources.",
+    "author": "jules:autonomous",
+    "rarity": "common"
+  },
+  "affordances": ["npc_vendor"],
+  "tags": ["world_npc", "vendor", "npc"],
+  "stats": {
+    "unlock_depth": 5.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
