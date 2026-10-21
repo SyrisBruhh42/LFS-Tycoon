@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Prospector's Charter",
+    "description": "An official charter bound in sturdy leather and sealed with pewter. Teaches a disciplined approach to excavation: mining takes 20% longer, but chance to find rare ores is increased by 30% and ore yield is increased by 10%.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "consume", "sell"],
+  "tags": ["upgrade", "profession", "solves_ore_hunting", "path_profession_perk", "pewter"],
+  "stats": {
+    "base_value": 140.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": "1.2",
+      "if": "self.installed > 0.0"
+    },
+    {
+      "stat": "luck_mult",
+      "phase": "mul",
+      "value": "1.3",
+      "if": "self.installed > 0.0"
+    },
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "value": "1.1",
+      "if": "self.installed > 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/pewter_quill_newt_3730",
+      "price": {"blocks/copper": 50}
+    }
+  ],
+  "offline": "none"
+}
