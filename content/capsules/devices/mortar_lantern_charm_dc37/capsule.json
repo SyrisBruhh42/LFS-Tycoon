@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mortar Lantern Charm",
+    "description": "A miniature brass lantern filled with glowing mortar. When placed in the house or carried, its soothing light provides a boost to mining speed and fortune, but only when you are fully rested or clean.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_house_comfort",
+    "path_magic_charm",
+    "lantern",
+    "mortar"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "magic_charge": 20.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "add",
+      "value": "15.0",
+      "if": "player.is_rested == 1.0 and self.magic_charge > 0.0"
+    },
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": "0.15",
+      "if": "player.is_rested == 1.0 and self.magic_charge > 0.0"
+    },
+    {
+      "stat": "yield_mult",
+      "phase": "add",
+      "value": "0.10",
+      "if": "player.grime < 15.0 and self.magic_charge > 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_sleep",
+      "do": [
+        {"act": "var_add", "var": "self.magic_charge", "by": "-1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 80}
+    }
+  ],
+  "offline": "exact"
+}
