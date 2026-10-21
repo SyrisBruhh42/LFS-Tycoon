@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Flint Tonic",
+    "description": "A gritty draft. Reduces grime accumulation slightly, helping keep early-tier miners presentable to fussy vendors, but leaves a lingering chalky aftertaste that dulls cleaving strikes.",
+    "author": "core:jules",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "drink",
+    "potion",
+    "solves_grime_cleanliness",
+    "path_consumable_buff"
+  ],
+  "stats": {
+    "base_value": 150.0,
+    "duration_sec": 300.0,
+    "grime_gain_mult": 0.75
+  },
+  "vars": {
+    "active_sec_left": -1.0
+  },
+  "modifiers": [
+    {
+      "stat": "grime_gain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.grime_gain_mult"
+    },
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "0.9"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.active_sec_left <= 0.0",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec"
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "self.active_sec_left > 0.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.active_sec_left",
+          "by": "-1.0"
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "self.active_sec_left == 0.0",
+      "do": [
+        {
+          "act": "destroy_self"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 150
+      }
+    }
+  ],
+  "offline": "none"
+}
