@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Apprentice Cinder Pick",
+    "description": "A fragile, cinder-tempered starter pick sold by Peddler Vayne. It rapidly carves through shallow strata but shatters quickly under sustained use.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "disposable",
+    "solves_slow_early_dps",
+    "path_vendor_disposable"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 0,
+    "base_dps": 12.0,
+    "durability_max": 250.0,
+    "is_rechargeable": 0,
+    "base_value": 25.0
+  },
+  "vars": {
+    "durability_left": 250.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": "0.6",
+      "if": "tile.depth < 300.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 20}
+    }
+  ],
+  "offline": "coarse"
+}
