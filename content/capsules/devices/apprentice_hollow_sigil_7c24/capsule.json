@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Apprentice Hollow Sigil",
+    "description": "A beginner's enchantment sigil, inscribed with a hollow motif. When socketed into a tool, it reduces the tool's durability drain slightly.",
+    "author": "core:jules",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "sigil", "hollow", "enchantment", "solves_tool_wear", "path_npc_enchanter"],
+  "stats": {
+    "base_value": 40.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "amount": 0.8
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 80}
+    }
+  ],
+  "offline": "exact"
+}
