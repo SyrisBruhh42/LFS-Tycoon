@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Umber Merchant Endorsement Bundle",
+    "description": "A very expensive, heavy bundle of umber permits. Keeping this in your pack or house permanently reduces the depth requirements to unlock new vendors by 25 levels.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "place_in_house", "sell"],
+  "tags": [
+    "upgrade",
+    "umber",
+    "solves_vendor_access",
+    "path_bundle_package"
+  ],
+  "stats": {
+    "base_value": 450.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "value": "25.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 300},
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ],
+  "offline": "none"
+}
