@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hearth Resonance",
+    "description": "A refined profession perk that attunes your strikes to the deep earth's frequency. When breaking a block, the excess force is focused and channeled into an adjacent shallow block, saving time and energy.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "profession_perk",
+    "solves_overkill_waste",
+    "path_profession_perk"
+  ],
+  "stats": {
+    "base_value": 750.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "if": "self.installed >= 1.0 and tool.overkill_damage > 0.0 and ctx.is_secondary_damage == 0",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": "tool.overkill_damage * 0.5"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "unlock_if": "player.max_depth >= 15",
+      "price": {
+        "blocks/copper": 500
+      }
+    }
+  ],
+  "offline": "none"
+}
