@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Prospector's Glass",
+    "description": "A crude pewter lens that hums with magic. When socketed into a tool, it slightly increases your luck and outlines nearby ores when uncovering a new layer. However, the brittle glass cracks with use.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "pewter",
+    "disposable",
+    "solves_ore_hunting",
+    "path_magic_charm"
+  ],
+  "stats": {
+    "base_value": 30.0
+  },
+  "vars": {
+    "charge_left": 50.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": "0.15"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true},
+        {"act": "var_add", "var": "self.charge_left", "by": "-1.0"}
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "do": [
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/dirt": 150}
+    }
+  ],
+  "offline": "exact"
+}
