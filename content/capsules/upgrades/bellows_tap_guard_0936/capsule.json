@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bellows Tap Guard",
+    "description": "A sturdy bellows mechanism attached to your primary tool. It prevents accidental direct taps from completely breaking a block by enforcing a 1 HP minimum, giving you a chance to realize your mistake before destroying something valuable.",
+    "author": "autonomous:content_developer",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "consume", "sell"],
+  "tags": ["upgrade", "qol", "bellows", "solves_tap_misfires", "path_qol_upgrade"],
+  "stats": {
+    "base_value": 350.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "add",
+      "if": "self.installed > 0.0 and ctx.is_direct_tap == 1",
+      "value": "1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 300},
+      "unlock_if": "shared.quarry_resonance_charge > 50.0"
+    }
+  ],
+  "offline": "none"
+}
