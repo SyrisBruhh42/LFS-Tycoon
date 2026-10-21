@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bismuth Pick",
+    "description": "A heavy mid-tier pickaxe infused with bismuth. Its durable composition heavily resists wear, but its heft causes it to drain battery reserves significantly faster.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_tool_wear",
+    "path_tool_builtin"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 2,
+    "base_dps": 18.0,
+    "durability_max": 800.0,
+    "is_rechargeable": 1,
+    "base_value": 120.0
+  },
+  "vars": {
+    "durability_left": 800.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": "0.4"
+    },
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": "1.8"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/anvil_smith_73cd",
+      "price": {
+        "blocks/copper": 150
+      },
+      "unlock_if": "player.max_depth >= 20"
+    }
+  ],
+  "offline": "coarse"
+}
