@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bismuth Sigil",
+    "description": "An enchanter-crafted sigil carved into bismuth. When socketed into a tool, it greatly reduces secondary splash damage on non-targeted tiles, preventing unwanted destruction.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_unwanted_splash",
+    "path_npc_enchanter"
+  ],
+  "stats": {
+    "base_value": 4500.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "value": "0.15",
+      "if": "ctx.is_secondary_damage == 1.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 900},
+      "unlock_if": "shared.global_cleave_bonus_pct > 0.0"
+    }
+  ],
+  "offline": "exact"
+}
