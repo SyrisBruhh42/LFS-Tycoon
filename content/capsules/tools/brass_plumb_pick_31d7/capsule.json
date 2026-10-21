@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Brass Plumb Auto-Pick",
+    "description": "An automated pickaxe featuring a heavy brass plumb that stops striking when it hits impenetrable rock or fluids.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_zero_damage_stall",
+    "path_tool_builtin"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 12.0,
+    "durability_max": 200.0,
+    "is_rechargeable": 1,
+    "base_value": 45.0
+  },
+  "vars": {
+    "durability_left": 200.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {
+          "act": "stall_tool",
+          "pause_battery": "1",
+          "pause_durability": "1",
+          "if": "tile.is_strict_locked == 1.0"
+        },
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "stall",
+          "if": "tile.is_strict_locked == 1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 30
+      }
+    }
+  ],
+  "offline": "coarse"
+}
