@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Enchanted Slag Charm",
+    "description": "A socketable or carried magical trinket formed of glowing slag. When near hazards, it pulses with resonance, boosting base DPS significantly against hazard tiles. Exposing new hazard tiles drains its energy until it shatters.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell", "catalyst"],
+  "tags": ["device", "gadget", "solves_hazard_clearing", "path_magic_charm", "slag"],
+  "stats": {
+    "base_value": 150.0
+  },
+  "vars": {
+    "durability_left": 20.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "tile.is_hazard == 1.0",
+      "value": "1.5"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_hazard_expose",
+      "do": [
+        {"act": "var_add", "var": "self.durability_left", "by": "-1.0"},
+        {"act": "deal_damage", "target": "self_tile", "amount": "15.0"},
+        {"act": "destroy_self", "if": "self.durability_left <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/bone_sconce_wick_2a5c",
+      "price": {"blocks/copper": 950},
+      "unlock_if": "tool.tier >= 4.0"
+    }
+  ],
+  "offline": "exact"
+}
