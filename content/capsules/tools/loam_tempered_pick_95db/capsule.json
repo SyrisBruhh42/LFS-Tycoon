@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Loam-Tempered Pick",
+    "description": "A forged pickaxe packed with dense loam to absorb shocks. Swings drain half the normal durability.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "equip_tool", "sell"],
+  "tags": ["tool", "pickaxe", "tinker_forged", "loam", "solves_tool_wear", "path_forge_material"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 22.0,
+    "durability_max": 800.0,
+    "is_rechargeable": 1,
+    "base_value": 80.0
+  },
+  "vars": {
+    "durability_left": 800.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": "0.5"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/dirt": 120
+      },
+      "unlock_if": "shared.house_bell_ringing > 0.0"
+    }
+  ],
+  "offline": "none"
+}
