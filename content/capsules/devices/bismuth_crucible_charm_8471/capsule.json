@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bismuth Crucible Charm",
+    "description": "An early-game charm made of scrap bismuth. When placed in the house, sleeping in the house fills it with 15 rested charges. While equipped or in the house and charges remain, each mined block consumes a charge to grant a modest luck and base yield boost.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "charm",
+    "bismuth",
+    "magic_charm",
+    "solves_house_comfort",
+    "path_magic_charm"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "charges": 0.0,
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "if": "self.charges > 0.0",
+      "value": "0.1"
+    },
+    {
+      "stat": "yield_mult",
+      "phase": "add",
+      "if": "self.charges > 0.0",
+      "value": "0.1"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_enter_house",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "on": "on_sleep",
+      "if": "self.installed > 0.0",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.charges",
+          "value": "15.0"
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "if": "self.charges > 0.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.charges",
+          "by": "-1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/dirt": 50
+      }
+    }
+  ],
+  "offline": "exact"
+}
