@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quartz Focus Sigil",
+    "description": "A refined quartz sigil that hums with energy. When socketed into a tool, its crystalline resonance dramatically slows battery drain, making it highly thrifty for early-game auto-tools.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_auto_tool_runtime",
+    "path_npc_enchanter",
+    "gadget"
+  ],
+  "stats": {
+    "base_value": 350.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": "0.3"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 300
+      },
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ],
+  "offline": "exact"
+}
