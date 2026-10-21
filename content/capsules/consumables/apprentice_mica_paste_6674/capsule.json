@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Apprentice Mica Paste",
+    "description": "An apprentice-grade paste that drastically reduces tool wear when applied, but makes swings feel a bit sluggish for 2 minutes.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "consume", "sell"],
+  "tags": ["consumable", "solves_tool_wear", "path_consumable_buff"],
+  "stats": {
+    "base_value": 25.0,
+    "duration_sec": 120.0
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "0.75"
+    },
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "0.9"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.active_sec_left", "value": "self.stats.duration_sec"},
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/dirt": 25}
+    }
+  ],
+  "offline": "none"
+}
