@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mortar Haul Bot",
+    "description": "Disposable clockwork bot sold by Peddler Vayne. Auto-mines a single square for 2 hours (7,200s), routing ore and deeper drops to your paired chest.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "equip_tool", "place_on_tile", "sell"],
+  "tags": ["tool", "pickaxe", "automine", "disposable", "solves_haul_capacity", "path_hired_laborer"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 0,
+    "base_dps": 10.0,
+    "charge_max_sec": 7200.0,
+    "durability_max": 1200.0,
+    "is_rechargeable": 0,
+    "base_value": 35.0
+  },
+  "vars": {
+    "charge_left": 7200.0,
+    "durability_left": 1200.0
+  },
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "if": "tile.tier > 0.0",
+      "phase": "add",
+      "value": "1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "self.charge_left > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": "-1.0"},
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 20}
+    }
+  ],
+  "offline": "coarse"
+}
