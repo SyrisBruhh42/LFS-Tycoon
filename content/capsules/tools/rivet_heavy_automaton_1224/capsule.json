@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Heavy Rivet Automaton",
+    "description": "A disposable heavy-duty clockwork automaton. Auto-mines a single square for 8 hours (28,800s), but shatters entirely when its charge depletes.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "automine",
+    "clockwork",
+    "disposable",
+    "solves_auto_tool_runtime",
+    "path_hired_laborer",
+    "rivet"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 4,
+    "base_dps": 45.0,
+    "charge_max_sec": 28800.0,
+    "durability_max": 3000.0,
+    "is_rechargeable": 0,
+    "base_value": 250.0
+  },
+  "vars": {
+    "charge_left": 28800.0,
+    "durability_left": 3000.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "self.charge_left > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": "-1.0"},
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {"blocks/copper": 900},
+      "unlock_if": "player.max_depth >= 40"
+    }
+  ],
+  "offline": "coarse"
+}
