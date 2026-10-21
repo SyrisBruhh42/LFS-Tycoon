@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Crucible Sigil",
+    "description": "An enchanted sigil steeped in arcane fire. When socketed into a tool, it massively reduces wear, making early-game mining much thriftier. After enduring 300 heavy strikes, it loses its binding and shatters.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "enchantment", "sigil", "crucible", "solves_repair_upkeep", "path_npc_enchanter"],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "durability_left": 300.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": "0.15"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {"act": "var_add", "var": "self.durability_left", "by": "-1.0"},
+        {"act": "destroy_self", "if": "self.durability_left <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {"blocks/copper": 50}
+    }
+  ],
+  "offline": "exact"
+}
