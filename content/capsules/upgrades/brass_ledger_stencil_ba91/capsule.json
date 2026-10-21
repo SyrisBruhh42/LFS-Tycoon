@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Brass Ledger Stencil",
+    "description": "A heavy brass stencil that stamps origin seals onto your mined ores. Increases market value to combat saturation, but its weight drains more stamina or durability when breaking blocks on its active column. Must be thoughtfully placed.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "brass",
+    "solves_market_saturation",
+    "path_qol_upgrade"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "add",
+      "value": "0.35",
+      "if": "tile.covered_by_self"
+    },
+    {
+      "stat": "durability_drain_mult",
+      "phase": "add",
+      "value": "0.1",
+      "if": "tile.covered_by_self"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 100}
+    }
+  ],
+  "offline": "none"
+}
