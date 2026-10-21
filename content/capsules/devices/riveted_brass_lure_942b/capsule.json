@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Riveted Brass Lure",
+    "description": "A heavy, rivet-reinforced brass gadget placed on a square. When a deep layer is revealed (Depth >= 500), it resonates and rings an acoustic bell, attracting lost cats.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "rivet",
+    "solves_event_helpers",
+    "path_placeable_device"
+  ],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "if": "tile.depth >= 500",
+      "value": "0.05"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "emit_alert", "channel": "house_bell", "tag": "lure_chime", "if": "tile.depth >= 500"},
+        {"act": "var_add", "var": "shared.house_bell_ringing", "by": "1.0", "if": "tile.depth >= 500"},
+        {"act": "var_add", "var": "self.activations", "by": "1.0", "if": "tile.depth >= 500"},
+        {"act": "destroy_self", "if": "self.activations >= 20.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 900},
+      "unlock_if": "player.max_depth >= 500"
+    }
+  ],
+  "offline": "exact"
+}
