@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pumice Rune of Shattering",
+    "description": "An enchanted pumice rune that can be socketed into any tool. When the tool breaks a block, the explosive force of the overkill damage is splashed to the 4 shallowest neighbors. The fragile pumice cracks after 30 activations.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_overkill_waste",
+    "path_npc_enchanter"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "tool.overkill_damage > 0.0",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": "tool.overkill_damage * 0.8"
+        },
+        {
+          "act": "var_add",
+          "var": "self.activations",
+          "by": "1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.activations >= 30.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {
+        "blocks/copper": 50
+      }
+    }
+  ],
+  "offline": "exact"
+}
