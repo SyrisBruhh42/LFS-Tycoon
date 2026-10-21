@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Vitriol Splash Dampener",
+    "description": "An alchemical vitriol coating that trades raw excavation speed for pinpoint precision. Splash damage is reduced to a harmless trickle, but all mining actions take 25% longer.",
+    "author": "jules:00e2",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["upgrade", "qol", "surveyor", "solves_unwanted_splash", "path_qol_upgrade"],
+  "stats": {
+    "base_value": 350.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "if": "self.installed > 0.0 and ctx.is_secondary_damage == 1.0",
+      "value": "0.15"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "self.installed > 0.0",
+      "value": "1.25"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 350}
+    }
+  ],
+  "offline": "none"
+}
