@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Zinc Kettle Contour Manual",
+    "description": "A dense surveyor's tome self-published out of the Zinc Kettle foundry. Unlocks HUD target loupe and chalk lines, and grants a precision luck bonus when analyzing deep or uneven strata.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "profession_perk",
+    "solves_depth_awareness",
+    "path_profession_perk",
+    "zinc",
+    "kettle"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "mul",
+      "value": "1.25",
+      "if": "self.installed > 0.0 and (tile.depth > 10.0 or tile.hp != tile.max_hp)"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"},
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true},
+        {"act": "set_ui_flag", "flag": "hud_target_loupe", "enabled": true}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50},
+      "unlock_if": "shared.quarry_resonance_charge > 50"
+    }
+  ],
+  "offline": "none"
+}
