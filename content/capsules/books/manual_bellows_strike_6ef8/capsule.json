@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Apprentice's Bellows Strike Manual",
+    "description": "A beginner's manual teaching a forceful, rhythmic strike like a smith's bellows. It grants a 30% boost to base DPS at shallow depths, but the clumsy exertion causes tools to wear 20% faster. A cheap, dirty way to speed up early digging.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "book",
+    "skill_book",
+    "solves_slow_early_dps",
+    "path_skill_book",
+    "bellows",
+    "crude"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "dps_boost": 1.3,
+    "wear_penalty": 1.2
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "self.is_learned >= 1.0 and tile.depth < 300",
+      "value": "self.stats.dps_boost"
+    },
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.is_learned >= 1.0 and tile.depth < 300",
+      "value": "self.stats.wear_penalty"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_learned",
+          "value": "1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 30}
+    }
+  ],
+  "offline": "none"
+}
