@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Plumb Valerian Drops",
+    "description": "A heavy, plumb-scented tincture that heavily attracts quarry cats, but slows the drinker's reflexes.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "food",
+    "solves_event_helpers",
+    "path_consumable_buff"
+  ],
+  "stats": {
+    "base_value": 30.0,
+    "duration_sec": 300.0,
+    "lure_bonus": 0.03,
+    "speed_penalty": 0.85
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.lure_bonus"
+    },
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.speed_penalty"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec"
+        },
+        {
+          "act": "destroy_self"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/dirt": 50
+      }
+    }
+  ],
+  "offline": "none"
+}
