@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Slag Gasket Router",
+    "description": "A resilient slag gasket and routing assembly that redirects a portion of mined ore directly into your paired chest, freeing up vital hauling capacity.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_haul_capacity",
+    "path_profession_perk"
+  ],
+  "stats": {
+    "base_value": 50.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": "0.35"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 30
+      },
+      "unlock_if": "global_cleave_bonus_pct >= 0.0"
+    }
+  ],
+  "offline": "none"
+}
