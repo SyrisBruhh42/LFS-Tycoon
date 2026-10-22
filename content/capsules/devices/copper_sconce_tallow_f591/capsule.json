@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Copper Tallow Sconce",
+    "description": "A reliable wall-mounted light fueled by tallow. When placed on a deeper tile (depth > 10), it significantly slows battery drain for auto-tools working the tile. The tallow naturally burns out after prolonged use.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "tallow",
+    "copper",
+    "solves_auto_tool_runtime",
+    "path_power_source"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": "0.20",
+      "if": "tile.covered_by_self and tile.depth > 10"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "do": [
+        {"act": "var_add", "var": "self.wear", "by": "1.0", "if": "tile.covered_by_self and tile.depth > 10"},
+        {"act": "destroy_self", "if": "self.wear >= 600.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "blocks/copper": 300
+      }
+    }
+  ],
+  "offline": "exact"
+}
