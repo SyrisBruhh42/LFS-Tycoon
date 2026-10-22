@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Basalt Bargainer's Ledger (Vol. I)",
+    "description": "A heavy ledger with a basalt cover. Carrying it grants a 15% discount on depth-dependent vendor prices, giving a thrifty early-game miner a reliable path to better gear.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "sell"],
+  "tags": ["book", "skill_book", "solves_vendor_access", "path_skill_book"],
+  "stats": {
+    "base_value": 50.0,
+    "discount_val": 0.15
+  },
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "value": "self.stats.discount_val"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 250},
+      "unlock_if": "tool.tier >= 2.0"
+    }
+  ],
+  "offline": "none"
+}
