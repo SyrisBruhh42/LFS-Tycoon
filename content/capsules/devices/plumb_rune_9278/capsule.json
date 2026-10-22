@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Plumb Rune",
+    "description": "An enchanted sigil socketed into your tool. Weakens incoming splash damage so surrounding tiles stay intact, but depletes after 20 secondary strikes.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "solves_unwanted_splash", "path_npc_enchanter"],
+  "stats": {
+    "base_value": 30.0
+  },
+  "vars": {
+    "splashes_buffered": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "value": "1.0",
+      "if": "ctx.is_secondary_damage == 1"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_damage_absorbed",
+      "do": [
+        {"act": "var_add", "var": "self.splashes_buffered", "by": "1.0", "if": "ctx.is_secondary_damage == 1"},
+        {"act": "destroy_self", "if": "self.splashes_buffered >= 20.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 30}
+    }
+  ],
+  "offline": "exact"
+}
