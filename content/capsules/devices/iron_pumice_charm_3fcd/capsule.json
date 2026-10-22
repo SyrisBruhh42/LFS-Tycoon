@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Iron Pumice Charm",
+    "description": "A socketable iron and pumice trinket that hums near the core. In deep strata (Z >= 500), it greatly reduces the wear of your tools, saving durability.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_repair_upkeep",
+    "path_magic_charm"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": "0.1",
+      "if": "tile.depth >= 500.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 50
+      }
+    }
+  ],
+  "offline": "exact"
+}
