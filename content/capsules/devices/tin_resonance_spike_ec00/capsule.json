@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tin Resonance Spike",
+    "description": "A tuning spike made of cheap tin that can be placed on a tile or socketed into a tool. When near hazards, it resonates to drastically increase incoming damage to hazard blocks. The soft tin bends easily, and exposing too many new hazards will shatter it.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "socket_in_tool", "place_on_tile", "sell", "catalyst"],
+  "tags": ["device", "gadget", "tin", "solves_hazard_clearing", "path_placeable_device"],
+  "stats": {
+    "base_value": 35.0
+  },
+  "vars": {
+    "durability_left": 5.0
+  },
+  "modifiers": [
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "if": "tile.is_hazard == 1.0",
+      "value": "3.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_hazard_expose",
+      "do": [
+        {"act": "var_add", "var": "self.durability_left", "by": "-1.0"},
+        {"act": "destroy_self", "if": "self.durability_left <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 30}
+    }
+  ],
+  "offline": "exact"
+}
