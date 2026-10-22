@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Abyssal Sconce",
+    "description": "A deep-forged sconce that holds a sputtering flame. When an auto-tool uselessly strikes an impassable hazard or strict-locked ore in the deep strata, it emits a sharp flare to pause battery drain and tool wear.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "socket_in_tool", "place_on_tile", "sell"],
+  "tags": ["device", "sconce", "stall_guard", "solves_zero_damage_stall", "path_power_source"],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "flares": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {"act": "stall_tool", "pause_battery": true, "pause_durability": true, "if": "tile.depth >= 500"},
+        {"act": "emit_alert", "channel": "house_bell", "tag": "stall_impassable", "if": "tile.depth >= 500"},
+        {"act": "var_add", "var": "self.flares", "by": "1.0", "if": "tile.depth >= 500"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 75}
+    }
+  ],
+  "offline": "exact"
+}
