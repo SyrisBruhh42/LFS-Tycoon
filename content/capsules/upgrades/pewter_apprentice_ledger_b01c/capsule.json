@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Apprentice Ledger",
+    "description": "A crude pewter-bound ledger for aspiring traders. Grants a modest discount to vendor depth requirements while carried, but dulls with each market transaction.",
+    "author": "jules:autonomous",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "ledger",
+    "pewter",
+    "solves_vendor_access",
+    "path_qol_upgrade"
+  ],
+  "stats": {
+    "base_value": 30.0
+  },
+  "vars": {
+    "uses_left": 50.0
+  },
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "value": "5.0",
+      "if": "self.uses_left > 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_market_sell",
+      "do": [
+        {"act": "var_add", "var": "self.uses_left", "by": "-1.0", "if": "self.uses_left > 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 50
+      }
+    }
+  ],
+  "offline": "none"
+}
