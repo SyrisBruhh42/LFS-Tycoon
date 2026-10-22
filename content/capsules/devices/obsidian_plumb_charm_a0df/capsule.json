@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Plumb Charm",
+    "description": "A heavy, socketable plumb-bob that resonates with excess force. When breaking a block with overkill damage, it directs 80% of that wasted energy into a shallow neighbor, but wears down after 150 uses.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "place_on_tile", "sell"],
+  "tags": ["device", "disposable", "solves_overkill_waste", "path_magic_charm"],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "durability_left": 150.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": "tool.overkill_damage * 0.8",
+          "if": "tool.overkill_damage > 0.0 and ctx.is_direct_tap == 1"
+        },
+        {
+          "act": "var_add",
+          "var": "self.durability_left",
+          "by": "-1.0",
+          "if": "tool.overkill_damage > 0.0 and ctx.is_direct_tap == 1"
+        }
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {
+          "act": "destroy_self"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 250},
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ],
+  "offline": "exact"
+}
