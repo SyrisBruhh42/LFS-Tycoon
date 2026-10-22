@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Umber Salt Net",
+    "description": "A coarse net dusted with umber salt. When placed on a tile, it gently aids in lost-cat captures by boosting lure appeal before fraying after 30 reveals.",
+    "author": "core:jules",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "textile",
+    "tile_cover",
+    "solves_event_helpers",
+    "path_field_textile"
+  ],
+  "stats": {
+    "base_value": 30.0,
+    "wear_max": 30.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "if": "tile.covered_by_self",
+      "value": "0.03"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "if": "tile.covered_by_self",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.wear",
+          "by": "1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.wear >= self.stats.wear_max"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 50
+      },
+      "unlock_if": "shared.house_bell_ringing >= 0.0"
+    }
+  ]
+}
