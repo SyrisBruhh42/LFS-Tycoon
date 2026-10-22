@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Anvil-Smith's Haggling Ledger",
+    "description": "A dense, soot-stained book bound in heavy iron. Studying it teaches you to haggle aggressively and mine with reckless momentum: you gain a vendor depth discount and swing 10% faster, but your strikes lose precision, causing your aim to drift.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell",
+    "consume"
+  ],
+  "tags": [
+    "book",
+    "skill_book",
+    "solves_vendor_access",
+    "path_skill_book",
+    "anvil"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "discount_val": 1.0,
+    "speed_boost": -0.10,
+    "drift_penalty": 16.0
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "value": "self.stats.discount_val * self.is_learned"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "add",
+      "value": "self.stats.speed_boost * self.is_learned"
+    },
+    {
+      "stat": "drunk_drift_px",
+      "phase": "add",
+      "value": "self.stats.drift_penalty * self.is_learned"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_learned",
+          "value": "1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 100
+      }
+    }
+  ],
+  "offline": "none"
+}
