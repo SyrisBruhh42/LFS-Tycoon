@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Anvil Pickaxe",
+    "description": "Forged on a hearty anvil, this heavy tool grants momentum to well-rested delvers. It excels when carving through previously backfilled scaffolding.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell",
+    "backfill_material"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_backfill_scaffolding",
+    "path_tool_builtin",
+    "anvil",
+    "copper"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 14.0,
+    "durability_max": 400.0,
+    "is_rechargeable": 1,
+    "base_value": 30.0
+  },
+  "vars": {
+    "durability_left": 400.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "value": "1.3",
+      "if": "player.is_rested == 1"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": "0.6",
+      "if": "tile.depth < tile.max_depth_reached"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/anvil_smith_73cd",
+      "price": {
+        "blocks/copper": 80
+      }
+    }
+  ],
+  "offline": "coarse"
+}
