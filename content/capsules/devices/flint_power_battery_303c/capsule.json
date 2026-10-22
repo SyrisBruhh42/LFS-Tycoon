@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Flint Igniter Battery",
+    "description": "An intense power cell that rapidly accelerates tool performance. Highly effective in shallow depths, but truly shines when breaking deep strata, at the cost of vastly increased battery drain.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "battery", "solves_slow_early_dps", "path_power_source"],
+  "stats": {
+    "base_value": 350.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "value": "1.5",
+      "if": "tile.depth < 300.0"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": "0.4",
+      "if": "tile.depth >= 500.0"
+    },
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": "2.5"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 500},
+      "unlock_if": "tool.tier >= 2.0"
+    }
+  ],
+  "offline": "exact"
+}
