@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tallow Route Ledger",
+    "description": "A tallow-stained record book that can be placed on a tile or attached to a tool socket. When working a tile covered by this ledger, it magically routes 40% of excavated ore directly to your paired chest, but reduces overall mining yields by 20%, trading precision for routing speed.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "socket_in_tool", "place_on_tile", "sell"],
+  "tags": ["device", "solves_haul_capacity", "path_placeable_device"],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "if": "tile.covered_by_self",
+      "phase": "add",
+      "value": "0.4"
+    },
+    {
+      "stat": "yield_mult",
+      "if": "tile.covered_by_self",
+      "phase": "mul",
+      "value": "0.8"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 100}
+    }
+  ],
+  "offline": "exact"
+}
