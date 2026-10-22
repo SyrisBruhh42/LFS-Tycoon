@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Slag Router",
+    "description": "An enchanted pewter device. When placed on a tile, it quietly routes 35% of the extracted ore straight to your paired chest. Only functions deep down, where the pressure allows its magic to work.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_haul_capacity",
+    "path_placeable_device"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": "0.35",
+      "if": "tile.depth >= 50.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 30
+      }
+    }
+  ],
+  "offline": "exact"
+}
