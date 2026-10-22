@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bellows Sconce Guard",
+    "description": "A clever bellows-powered sconce that steadies the hand. When placed on a tile or carried, it firmly clamps drunk touch drift to a manageable level, keeping accidental fat-finger taps from shattering the wrong stone.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "place_in_house", "place_on_tile", "sell"],
+  "tags": ["device", "bellows", "sconce", "solves_tap_misfires", "path_placeable_device"],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "drunk_drift_px",
+      "phase": "clamp",
+      "value": "10.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 100}
+    }
+  ],
+  "offline": "none"
+}
