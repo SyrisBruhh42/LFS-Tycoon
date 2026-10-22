@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Broker's Ledger",
+    "description": "An expensive ledger filled with exclusive market contracts, dramatically increasing the sale value of mined goods at the cost of being highly priced in rarer ores.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell",
+    "consume"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_market_saturation",
+    "path_bundle_package",
+    "chisel",
+    "pewter",
+    "market"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "add",
+      "value": "0.5 * self.installed"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 30}
+    }
+  ],
+  "offline": "none"
+}
