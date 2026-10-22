@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Shale Spall Pick",
+    "description": "A crude but brutally effective pick whose shale head naturally cleaves into sharper edges as it wears. Dramatically faster at shallow depths.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "equip_tool", "sell"],
+  "tags": ["tool", "pickaxe", "tinker_forged", "shale", "solves_slow_early_dps", "path_forge_material"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 2,
+    "base_dps": 40.0,
+    "durability_max": 1500.0,
+    "is_rechargeable": 1,
+    "base_value": 250.0
+  },
+  "vars": {
+    "durability_left": 1500.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": "0.6",
+      "if": "tile.depth < 300.0"
+    }
+  ],
+  "reactions": [],
+  "offline": "none",
+  "offered_by": [
+    {
+      "vendor": "npcs/anvil_smith_73cd",
+      "price": {
+        "blocks/copper": 250
+      }
+    }
+  ]
+}
