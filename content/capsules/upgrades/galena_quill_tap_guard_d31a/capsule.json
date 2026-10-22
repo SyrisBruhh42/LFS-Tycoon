@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Galena Quill Tap Guard",
+    "description": "An exquisite quill guard crafted from heavy galena. Provides rigid support when directly tapping blocks, completely preventing accidental destruction by clamping minimum HP to 1.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "galena",
+    "quill",
+    "solves_tap_misfires",
+    "path_qol_upgrade"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "value": "1.0",
+      "if": "self.installed > 0.0 and ctx.is_direct_tap == 1"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/pewter_quill_newt_3730",
+      "price": {"blocks/copper": 350},
+      "unlock_if": "tool.tier >= 2.0"
+    }
+  ],
+  "offline": "none"
+}
