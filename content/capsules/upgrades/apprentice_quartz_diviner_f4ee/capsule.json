@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Apprentice Quartz Diviner",
+    "description": "An early-tier apprentice divining lens crafted from flawed quartz. Once installed, it triggers a faint HUD chalk contour when layers are revealed, mildly assisting in spotting valuable strata, while its resonance slightly increases your mining luck.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "quartz",
+    "solves_ore_hunting",
+    "path_qol_upgrade"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": "0.15",
+      "if": "self.installed == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_chalk_lines",
+          "enabled": true,
+          "if": "self.installed == 1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 900
+      },
+      "unlock_if": "tool.tier >= 4.0"
+    }
+  ],
+  "offline": "none"
+}
