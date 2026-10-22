@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mica-Quill Auto-Pick",
+    "description": "An early-game auto-pick with a delicate mica quill mechanism. Thrifty and reliable, it pauses durability drain and emits a chime when striking strict-locked tiles.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "mica",
+    "quill",
+    "solves_zero_damage_stall",
+    "path_tool_builtin"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 2,
+    "base_dps": 18.0,
+    "durability_max": 400.0,
+    "is_rechargeable": 1,
+    "base_value": 35.0
+  },
+  "vars": {
+    "durability_left": 400.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {
+          "act": "stall_tool",
+          "pause_battery": "1",
+          "pause_durability": "1",
+          "if": "tile.is_strict_locked == 1.0"
+        },
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "stall",
+          "if": "tile.is_strict_locked == 1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/pewter_quill_newt_3730",
+      "price": {
+        "blocks/stone": 350,
+        "blocks/copper": 150
+      },
+      "unlock_if": "player.tool_tier >= 1"
+    }
+  ],
+  "offline": "coarse"
+}
