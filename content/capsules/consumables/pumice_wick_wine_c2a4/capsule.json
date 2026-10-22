@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pumice Wick Wine",
+    "description": "A potent brew that steadies the hand. When active, it caps direct tap minimum HP to prevent accidental breakages, though it heavily drains your tool durability.",
+    "author": "core:jules",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "consume", "sell"],
+  "tags": ["consumable", "drink", "wine", "solves_tap_misfires", "path_consumable_buff", "pumice", "wick"],
+  "stats": {
+    "base_value": 45.0,
+    "charge_max": 20.0
+  },
+  "vars": {
+    "is_active": 0.0,
+    "charge_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "if": "self.is_active == 1.0 and self.charge_left > 0.0 and ctx.is_direct_tap == 1",
+      "value": "1.0"
+    },
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.is_active == 1.0 and self.charge_left > 0.0",
+      "value": "2.5"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": "1.0"},
+        {"act": "var_set", "var": "self.charge_left", "value": "self.stats.charge_max"}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": "-1.0", "if": "self.is_active == 1.0 and self.charge_left > 0.0"},
+        {"act": "destroy_self", "if": "self.is_active == 1.0 and self.charge_left <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50}
+    }
+  ],
+  "offline": "none"
+}
