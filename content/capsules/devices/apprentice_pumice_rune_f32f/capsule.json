@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Apprentice Pumice Rune",
+    "description": "An early-tier enchanter's rune, carved on coarse pumice. When socketed into a tool, it slightly boosts luck, helping reveal ores that lie hidden nearby.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "rune",
+    "pumice",
+    "enchantment",
+    "solves_ore_hunting",
+    "path_npc_enchanter"
+  ],
+  "stats": {
+    "base_value": 30.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": "0.15"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/dirt": 50
+      }
+    }
+  ],
+  "offline": "exact"
+}
