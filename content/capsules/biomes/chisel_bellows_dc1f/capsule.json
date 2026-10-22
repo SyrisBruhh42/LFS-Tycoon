@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Chisel Depths Strata",
+    "description": "A dense subterranean expanse forged by ancient heat and pressure. Ideal for testing your sturdy chisels.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "biome",
+    "world_biome",
+    "chisel"
+  ],
+  "stats": {
+    "z_min": 100,
+    "z_max": 500,
+    "biome_weight": 0.40
+  },
+  "biome_weights": {
+    "blocks/stone": 1.5,
+    "blocks/cinder_gravel_61a3": 2.0,
+    "blocks/copper": 0.8,
+    "blocks/obsidian_hazard": 0.2
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
