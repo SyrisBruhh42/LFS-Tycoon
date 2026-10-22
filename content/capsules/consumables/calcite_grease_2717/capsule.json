@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Apprentice Calcite Grease",
+    "description": "An early-tier compound made from crushed calcite. Applying it to your gear slows wear temporarily, but its thick consistency slightly increases stamina drain.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "solves_repair_upkeep",
+    "path_consumable_buff"
+  ],
+  "stats": {
+    "base_value": 35.0,
+    "duration_sec": 300.0,
+    "drain_mult": 0.85,
+    "sluggish_penalty": 1.10
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.drain_mult"
+    },
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.drain_mult"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.sluggish_penalty"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec"
+        },
+        {
+          "act": "destroy_self"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/stone": 1200
+      },
+      "unlock_if": "tool.tier >= 4.0"
+    }
+  ],
+  "offline": "none"
+}
