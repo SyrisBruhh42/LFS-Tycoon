@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pumice Lift-Jack",
+    "description": "A light but sturdy mechanical lift-jack made of hardened pumice. When placed on a square and backfilled, it springs upward, lifting the floor by 1 depth automatically. Extremely effective deep down (depth >= 500), but breaks after 15 uses.",
+    "author": "jules:session",
+    "rarity": "common",
+    "era": "early"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_backfill_scaffolding",
+    "path_placeable_device",
+    "pumice"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_backfill",
+      "if": "tile.covered_by_self and tile.depth >= 500.0",
+      "do": [
+        {"act": "modify_depth", "target": "self_tile", "delta": "-1.0"},
+        {"act": "var_add", "var": "self.wear", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.wear >= 15.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 30}
+    }
+  ],
+  "offline": "exact"
+}
