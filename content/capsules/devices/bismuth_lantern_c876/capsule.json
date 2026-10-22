@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bismuth Lantern",
+    "description": "A heavy, angular lantern radiating a dampening field. When placed on a tile deep underground or on high-tier rock, it absorbs the shockwaves of nearby explosions, ensuring the tile takes no secondary damage. Must be purchased from the Rivet Smith.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_unwanted_splash",
+    "path_placeable_device",
+    "lantern",
+    "bismuth"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "value": "1.0",
+      "if": "tile.covered_by_self and ctx.is_secondary_damage == 1 and (tile.depth >= 500.0 or tile.tier >= 1.0)"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "blocks/copper": 300
+      }
+    }
+  ],
+  "offline": "exact"
+}
