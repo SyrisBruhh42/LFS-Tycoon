@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ledger Crucible",
+    "description": "A heavy, brass-lined crucible placed directly on a tile. Its sheer mass anchors the block, causing any incoming secondary splash damage to deal 0 damage. However, it slows down direct mining on that tile slightly.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_unwanted_splash",
+    "path_placeable_device",
+    "crucible"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "value": "0.0",
+      "if": "tile.covered_by_self and ctx.is_secondary_damage == 1.0"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": "1.25",
+      "if": "tile.covered_by_self and ctx.is_secondary_damage == 0.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {"blocks/copper": 100}
+    }
+  ],
+  "offline": "exact"
+}
