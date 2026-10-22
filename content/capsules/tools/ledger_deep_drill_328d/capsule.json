@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ledger's Abyssal Lantern Pick",
+    "description": "An experimental heavy mining tool supplied by Peddler Vayne. Originally intended as a diving weight, this dense tool shatters easily on shallow rock but resonates and multiplies mining speed when deep underground (depth >= 500). Once its tension spring snaps, it is destroyed.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "equip_tool", "sell"],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "disposable",
+    "ledger",
+    "lantern",
+    "solves_slow_early_dps",
+    "path_vendor_disposable"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 4,
+    "base_dps": 18.0,
+    "durability_max": 2500.0,
+    "is_rechargeable": 0,
+    "base_value": 0.0
+  },
+  "vars": {
+    "durability_left": 2500.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "value": "3.0",
+      "if": "tile.depth >= 500"
+    },
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "value": "0.5",
+      "if": "tile.depth < 500"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_damage_dealt",
+      "do": [
+        {"act": "var_add", "var": "self.durability_left", "by": "-1.0"},
+        {"act": "destroy_self", "if": "self.durability_left <= 0.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 900},
+      "unlock_if": "tool.tier >= 4.0"
+    }
+  ],
+  "offline": "coarse"
+}
