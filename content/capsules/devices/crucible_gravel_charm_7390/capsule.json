@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Crucible Gravel Charm",
+    "description": "A trinket made of compacted, heat-tempered cinder gravel. When carried, socketed, or placed in the house, it drastically dampens the shock of secondary impacts, reducing unwanted splash damage so you don't break the tiles you want intact.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "crucible",
+    "gravel",
+    "solves_unwanted_splash",
+    "path_magic_charm"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "value": "0.15",
+      "if": "ctx.is_direct_tap == 0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {"blocks/copper": 300}
+    }
+  ],
+  "offline": "exact"
+}
