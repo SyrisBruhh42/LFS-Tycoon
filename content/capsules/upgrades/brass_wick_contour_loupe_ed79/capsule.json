@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Brass Wick Contour Loupe",
+    "description": "A refined brass loupe with an enduring wick, unlocking HUD Depth Calipers. Also grants a 15% speed bonus when breaking deep strata (depth >= 50).",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "hud",
+    "solves_depth_awareness",
+    "path_qol_upgrade"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": "0.85",
+      "if": "tile.depth >= 50.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": true}
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": false}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 75
+      }
+    }
+  ],
+  "offline": "none"
+}
