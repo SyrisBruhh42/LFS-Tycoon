@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Rivet Catalyst",
+    "description": "A socketable or placeable gadget that vibrates with intense resonance when near hazards. It multiplies incoming damage against hazards, trading precision for pure clearing speed. The heavy vibrations degrade the catalyst over time.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "socket_in_tool", "place_on_tile", "sell", "catalyst"],
+  "tags": ["device", "gadget", "solves_hazard_clearing", "path_placeable_device", "ochre", "rivet"],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "if": "tile.is_hazard == 1.0",
+      "value": "2.5"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_hazard_expose",
+      "do": [
+        {"act": "var_add", "var": "self.wear", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.wear >= 20.0"}
+      ]
+    },
+    {
+      "on": "on_hazard_detonate",
+      "do": [
+        {"act": "var_add", "var": "self.wear", "by": "5.0"},
+        {"act": "destroy_self", "if": "self.wear >= 20.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 80}
+    }
+  ],
+  "offline": "exact"
+}
