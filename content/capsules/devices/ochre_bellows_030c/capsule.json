@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Bellows",
+    "description": "A socketable or carried magical trinket. When an auto-tool strikes an impassable fluid or hazard, it pauses tool durability and battery loss, but consumes a bit of its own charge. It breaks after 100 uses.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "charm", "magic_charm", "solves_zero_damage_stall", "path_magic_charm"],
+  "stats": {
+    "base_value": 45.0,
+    "wear_max": 100.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {"act": "stall_tool", "pause_battery": true, "pause_durability": true},
+        {"act": "var_add", "var": "self.wear", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.wear >= self.stats.wear_max"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ochre_toad_5e64",
+      "price": {"blocks/copper": 30}
+    }
+  ],
+  "offline": "exact"
+}
