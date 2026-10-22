@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Deep Gasket Battery",
+    "description": "A heavy casing lined with reinforced gaskets. Designed to withstand the immense pressure of the deep strata, it significantly extends the runtime of any auto-tool socketed with it, provided the tool is operating deep enough.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "battery",
+    "solves_auto_tool_runtime",
+    "path_power_source"
+  ],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "if": "tile.depth >= 500.0",
+      "value": "0.50"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "blocks/copper": 100
+      }
+    }
+  ],
+  "offline": "none"
+}
