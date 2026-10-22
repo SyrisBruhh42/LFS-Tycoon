@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Iron-Loam Carpet",
+    "description": "A heavy carpet woven from iron threads and packed loam. It is an excellent surface for cats to nap on, slightly increasing the chance of discovering a lost cat. The trade-off is its heavy, muddy nature which increases the time required to break the tile underneath it. Disintegrates into dirt after enduring 15 tile breaks.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "textile",
+    "tile_cover",
+    "solves_event_helpers",
+    "path_field_textile",
+    "iron",
+    "loam"
+  ],
+  "stats": {
+    "base_value": 35.0,
+    "wear_max": 15.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "if": "tile.covered_by_self",
+      "value": "0.02"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "tile.covered_by_self",
+      "value": "1.2"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "tile.covered_by_self",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.wear",
+          "by": "1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.wear >= self.stats.wear_max"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 35
+      }
+    }
+  ],
+  "offline": "exact"
+}
