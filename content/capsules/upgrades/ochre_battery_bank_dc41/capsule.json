@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Salt Battery Bank",
+    "description": "An expensive, heavy bundle of ochre-cured salt batteries. Carrying this package halves the battery drain of early-tier auto-tools, and slightly reduces their durability drain, though it only works for basic machinery.",
+    "author": "jules",
+    "rarity": "epic"
+  },
+  "affordances": ["carry", "sell"],
+  "tags": ["upgrade", "bundle", "battery", "solves_auto_tool_runtime", "path_bundle_package"],
+  "stats": {
+    "base_value": 150.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": "0.5",
+      "if": "tool.tier <= 1.0"
+    },
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": "0.8",
+      "if": "tool.tier <= 1.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 150},
+      "unlock_if": "shared.quarry_resonance_charge >= 5.0"
+    }
+  ],
+  "offline": "none"
+}
