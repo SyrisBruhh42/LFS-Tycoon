@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Galena Pick",
+    "description": "A thrifty and reliable pick for early-game miners. Forged from dense galena, it channels excess force into nearby rock to spread the labor.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_overkill_waste",
+    "path_forge_material"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 18.0,
+    "durability_max": 400.0,
+    "is_rechargeable": 1,
+    "base_value": 30.0
+  },
+  "vars": {
+    "durability_left": 400.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "if": "tool.overkill_damage > 0.0 and ctx.is_direct_tap == 1",
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": "tool.overkill_damage * 0.4"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/anvil_smith_73cd",
+      "price": {
+        "blocks/copper": 35
+      }
+    }
+  ],
+  "offline": "none"
+}
