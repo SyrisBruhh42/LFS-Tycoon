@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Rivet Scrubber Discipline",
+    "description": "A self-taught technique to vigorously scrub your overalls while washing. You accumulate 20% less grime over time, allowing you to deal with fussy vendors longer. The technique requires effort, slightly reducing your baseline mining speed.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "profession_perk",
+    "solves_grime_cleanliness",
+    "path_profession_perk",
+    "rivet",
+    "thrifty"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "grime_gain_mult",
+      "phase": "mul",
+      "if": "self.installed > 0.0",
+      "value": "0.8"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "self.installed > 0.0",
+      "value": "1.1"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {"blocks/copper": 35}
+    }
+  ],
+  "offline": "none"
+}
