@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Kettle Broker's Ledger",
+    "description": "A heavy iron ledger smelling of old loam. When studied in your house, it reveals specialized arbitrage techniques for deep strata ore, boosting their market value by 40%.",
+    "author": "core:jules",
+    "rarity": "common"
+  },
+  "affordances": ["read_book", "carry", "sell"],
+  "tags": ["upgrade", "solves_market_saturation", "path_profession_perk"],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "add",
+      "value": "0.40",
+      "if": "tile.depth >= 500.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 100}
+    }
+  ],
+  "offline": "none"
+}
