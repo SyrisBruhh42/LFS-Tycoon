@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Iron Drilling Primer",
+    "description": "A heavy iron-bound book detailing early quarry techniques. Simply keeping it in your pocket or on a shelf at home grants a 15% bonus to your base damage, provided you are working shallow layers (depth < 300).",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "place_in_house", "sell"],
+  "tags": ["book", "skill_book", "solves_slow_early_dps", "path_skill_book", "iron"],
+  "stats": {
+    "base_value": 50.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "value": "1.15",
+      "if": "tile.depth < 300.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50}
+    }
+  ],
+  "offline": "none"
+}
