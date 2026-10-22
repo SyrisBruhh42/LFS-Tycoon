@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quill Survey Manual",
+    "description": "A fragile survey manual written with a quill. When read, teaches you to use `hud_depth_calipers` and provides a minor break time boost on deep strata, but expires after you discover 100 new layers.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "book",
+    "skill_book",
+    "solves_depth_awareness",
+    "path_skill_book",
+    "quill"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "is_learned": 0.0,
+    "uses_left": 100.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": "0.95",
+      "if": "self.is_learned >= 1.0 and tile.depth >= 15.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_learned",
+          "value": "1.0",
+          "if": "self.is_learned == 0.0"
+        },
+        {
+          "act": "var_set",
+          "var": "self.uses_left",
+          "value": "100.0",
+          "if": "self.is_learned == 0.0"
+        }
+      ]
+    },
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_depth_calipers",
+          "enabled": true,
+          "if": "self.is_learned >= 1.0"
+        },
+        {
+          "act": "var_add",
+          "var": "self.uses_left",
+          "by": "-1.0",
+          "if": "self.is_learned >= 1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.is_learned >= 1.0 and self.uses_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/pewter_quill_newt_3730",
+      "price": {
+        "blocks/dirt": 120
+      }
+    }
+  ],
+  "offline": "none"
+}
