@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hollow Ledger Primer",
+    "description": "A hollow ledger filled with notes on avoiding market saturation. Reading it grants a 15% market value bonus, but the advice wears thin after 60 sales.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["book", "skill_book", "solves_market_saturation", "path_skill_book"],
+  "stats": {
+    "base_value": 50.0
+  },
+  "vars": {
+    "is_learned": 0.0,
+    "charge_left": 60.0
+  },
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "mul",
+      "value": "1.15",
+      "if": "self.is_learned >= 1.0 and self.charge_left > 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {"act": "var_set", "var": "self.is_learned", "value": "1.0"}
+      ]
+    },
+    {
+      "on": "on_market_sell",
+      "if": "self.is_learned >= 1.0 and self.charge_left > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": "-1.0"}
+      ]
+    },
+    {
+      "on": "on_market_sell",
+      "if": "self.is_learned >= 1.0 and self.charge_left <= 0.0",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 30
+      }
+    }
+  ],
+  "offline": "none"
+}
