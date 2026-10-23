@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Brass Tinkerer",
+    "description": "A tinkering maestro stationed by a warm forge, ready to craft contraptions from brass and heat.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "npc_vendor"
+  ],
+  "tags": [
+    "npc",
+    "vendor",
+    "world_npc"
+  ],
+  "stats": {
+    "unlock_depth": 10.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
