@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lantern Shale Contour Loupe",
+    "description": "A focused shale lens that projects contour lines into the quarry void, granting a precision luck bonus on deep or uneven strata.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["upgrade", "solves_depth_awareness", "path_profession_perk", "shale"],
+  "stats": {
+    "base_value": 50.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "mul",
+      "value": 1.25,
+      "if": "self.installed == 1.0 and (tile.depth > 10.0 or tile.hp != tile.max_hp)"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": 1.0},
+        {"act": "set_ui_flag", "flag": "hud_target_loupe", "enabled": true}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50},
+      "unlock_if": "shared.quarry_resonance_charge > 10.0"
+    }
+  ],
+  "offline": "none"
+}
