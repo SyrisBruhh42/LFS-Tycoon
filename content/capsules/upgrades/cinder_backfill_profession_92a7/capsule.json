@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder Backfill Lore",
+    "description": "A self-taught cinder backfill profession amenity. When placed in your house, this manual grants a boost to mining speed on backfilled tiles.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "profession_perk",
+    "solves_backfill_scaffolding",
+    "path_profession_perk"
+  ],
+  "stats": {
+    "base_value": 80.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "value": "1.5",
+      "if": "tile.depth < tile.max_depth_reached"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/dirt": 150
+      }
+    }
+  ],
+  "offline": "none"
+}
