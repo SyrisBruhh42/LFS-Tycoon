@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bismuth Broad Pick",
+    "description": "A Tinkers-style broad pick forged with heavy bismuth that shatters shallow rock easily but slows down deeper in the strata.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "tinker_forged",
+    "bismuth",
+    "solves_slow_early_dps",
+    "path_forge_material"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 4,
+    "base_dps": 15.0,
+    "durability_max": 1200.0,
+    "is_rechargeable": 1,
+    "base_value": 900.0
+  },
+  "vars": {
+    "durability_left": 1200.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "tile.depth < 300.0",
+      "value": 2.0
+    }
+  ],
+  "reactions": [],
+  "offline": "coarse",
+  "offered_by": [
+    {
+      "vendor": "npcs/bismuth_broker_af6a",
+      "price": {
+        "blocks/copper": 900
+      },
+      "unlock_if": "player.max_depth >= 150"
+    }
+  ]
+}
