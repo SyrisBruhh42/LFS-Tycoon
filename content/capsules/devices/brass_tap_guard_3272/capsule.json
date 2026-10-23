@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Brass Tap Guard",
+    "description": "A clever brass gadget placed directly on a tile. Its internal mechanism restricts tool movement, ensuring accidental direct taps cannot deal the final blow to break the protected tile.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_tap_misfires",
+    "path_placeable_device",
+    "brass"
+  ],
+  "stats": {
+    "base_value": 200.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "value": 1.0,
+      "if": "tile.covered_by_self and ctx.is_direct_tap == 1"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 300
+      },
+      "unlock_if": "shared.quarry_resonance_charge > 0.0"
+    }
+  ],
+  "offline": "exact"
+}
