@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Calcite Assayer's Charm",
+    "description": "A socketable or carried magical trinket of calcite and iron. It increases market value, helping you get a better price when selling goods. However, its magic depends on the depth at which the sale is negotiated, reducing value when higher up. Wear occurs on every sale, eventually exhausting the charm.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "charm",
+    "solves_market_saturation",
+    "path_magic_charm",
+    "disposable"
+  ],
+  "stats": {
+    "base_value": 30.0
+  },
+  "vars": {
+    "wear": 0.0,
+    "is_active": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "add",
+      "if": "self.is_active == 1.0",
+      "value": "max(0.0, 0.5 - (max(0.0, 50.0 - tile.depth) * 0.01))"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": "1.0"}
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": "0.0"}
+      ]
+    },
+    {
+      "on": "on_market_sell",
+      "do": [
+        {"act": "var_add", "var": "self.wear", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.wear >= 30.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 30}
+    }
+  ],
+  "offline": "none"
+}
