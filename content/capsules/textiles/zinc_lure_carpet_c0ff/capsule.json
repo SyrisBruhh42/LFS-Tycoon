@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Zinc-Weighted Lure Carpet",
+    "description": "A heavy woven rug laced with zinc dust. Its scent lures wandering lost cats out of the dark. The zinc weight makes breaking the underlying block slightly slower. Fraying occurs after 15 strikes.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "textile",
+    "tile_cover",
+    "solves_event_helpers",
+    "path_field_textile",
+    "zinc",
+    "cat_lure"
+  ],
+  "stats": {
+    "base_value": 35.0,
+    "wear_max": 15.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "if": "tile.covered_by_self",
+      "value": 0.03
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "tile.covered_by_self",
+      "value": 1.1
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "tile.covered_by_self",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.wear",
+          "by": "1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.wear >= self.stats.wear_max"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 35
+      }
+    }
+  ],
+  "offline": "exact"
+}
