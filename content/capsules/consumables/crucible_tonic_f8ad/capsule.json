@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Crucible Tonic",
+    "description": "A heavy, warming tonic brewed in a deep crucible. When consumed, its effects last 5 minutes. If the miner is well rested, it grants a +50% yield bonus when mining deep strata or high-tier rock.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell",
+    "place_in_house"
+  ],
+  "tags": [
+    "consumable",
+    "food",
+    "drink",
+    "tonic",
+    "crucible",
+    "solves_house_comfort",
+    "path_consumable_buff"
+  ],
+  "stats": {
+    "base_value": 40.0,
+    "duration_sec": 300.0,
+    "yield_bonus": 0.5
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "add",
+      "if": "self.active_sec_left > 0.0 and player.is_rested == 1.0 and (tile.depth >= 500.0 or tile.tier >= 1.0)",
+      "value": "self.stats.yield_bonus"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec"
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "self.active_sec_left > 0.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.active_sec_left",
+          "by": "-1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.active_sec_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {
+        "blocks/copper": 150
+      }
+    }
+  ],
+  "offline": "none"
+}
