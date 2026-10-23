@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hearth Crafting Desk",
+    "description": "A heavy crafting table carved from warm stone, meant for the house. It imparts the Hearth Profession, granting sturdy tools that drain durability much slower when well-rested.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_tool_wear",
+    "path_profession_perk"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "player.is_rested == 1.0",
+      "value": 0.6
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 250
+      }
+    }
+  ]
+}
