@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Flint Router",
+    "description": "A placeable routing gadget. When resting on deep stone, its internal mechanisms engage to seamlessly route a portion of your excavated ore straight back to your paired chest.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "place_on_tile", "sell"],
+  "tags": ["device", "solves_haul_capacity", "path_placeable_device"],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "if": "tile.depth >= 50.0",
+      "phase": "add",
+      "value": 0.5
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 40}
+    }
+  ]
+}
