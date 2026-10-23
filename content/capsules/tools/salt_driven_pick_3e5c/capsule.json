@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Salt-Driven Pick",
+    "description": "Disposable salt-powered automaton pickaxe sold by Basalt Kettle. Auto-mines for 5 hours (18,000s). Stalls when encountering wet tiles, and crumbles to dust when depleted.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "automine",
+    "disposable",
+    "salt",
+    "solves_auto_tool_runtime",
+    "path_hired_laborer"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 12.0,
+    "charge_max_sec": 18000.0,
+    "durability_max": 1500.0,
+    "is_rechargeable": 0,
+    "base_value": 50.0
+  },
+  "vars": {
+    "charge_left": 18000.0,
+    "durability_left": 1500.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "tile.fluid_level > 0.0",
+      "do": [
+        {"act": "stall_tool", "pause_battery": true, "pause_durability": true}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/basalt_kettle_6ec2",
+      "price": {"blocks/copper": 60}
+    }
+  ],
+  "offline": "coarse"
+}
