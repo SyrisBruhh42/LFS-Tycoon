@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Iron Battery",
+    "description": "An experimental iron cell. When an equipped tool strikes an impassable fluid or hazard, it drains a charge from this battery to instantly halt the tool, preserving its durability and ringing the house bell.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_zero_damage_stall",
+    "path_power_source",
+    "iron"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "charges": 50.0,
+    "is_active": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": "1.0"}
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": "0.0"}
+      ]
+    },
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {"act": "stall_tool", "pause_battery": true, "pause_durability": true, "if": "self.is_active == 1.0"},
+        {"act": "emit_alert", "channel": "house_bell", "tag": "stall_impassable", "if": "self.is_active == 1.0"},
+        {"act": "var_add", "var": "self.charges", "by": "-1.0", "if": "self.is_active == 1.0"},
+        {"act": "destroy_self", "if": "self.charges == 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/brass_tinkerer_c020",
+      "price": {
+        "blocks/copper": 60,
+        "blocks/dirt": 50
+      },
+      "unlock_if": "global_cleave_bonus_pct >= 0.0"
+    }
+  ],
+  "offline": "exact"
+}
