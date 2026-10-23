@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lantern Pick",
+    "description": "Forged in the style of a lantern. This disposable pick wears out after a bounded amount of use, but loses significantly less durability per swing.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "tinker_forged",
+    "solves_tool_wear",
+    "path_forge_material"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 2,
+    "base_dps": 15.0,
+    "durability_max": 250.0,
+    "is_rechargeable": 0,
+    "base_value": 300.0
+  },
+  "vars": {
+    "durability_left": 250.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "add",
+      "value": -0.6
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_deplete",
+      "do": [
+        {
+          "act": "destroy_self"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 300
+      },
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ],
+  "offline": "none"
+}
