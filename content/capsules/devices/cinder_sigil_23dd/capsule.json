@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder Sigil",
+    "description": "An enchanter-forged sigil that reduces battery drain while mining. The internal charge records usage and it rapidly shatters when its charge is fully consumed.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "sigil",
+    "enchantment",
+    "disposable",
+    "cinder",
+    "solves_auto_tool_runtime",
+    "path_npc_enchanter"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "charge_max_sec": 7200.0,
+    "is_rechargeable": 0
+  },
+  "vars": {
+    "is_active": 0.0,
+    "charge_left": 7200.0
+  },
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "self.is_active == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_active",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_active",
+          "value": "0.0"
+        }
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {
+          "act": "destroy_self"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 60
+      }
+    }
+  ],
+  "offline": "none"
+}
