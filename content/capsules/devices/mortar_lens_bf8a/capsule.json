@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mortar Lens",
+    "description": "A crude mortar lens that hums with magic when placed on dry ground. Its ambient field increases luck, aiding in ore discovery. The brittle glass cracks with use.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "mortar",
+    "solves_ore_hunting",
+    "path_placeable_device"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "is_rechargeable": 0.0
+  },
+  "vars": {
+    "charge_left": 25.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": 0.2,
+      "if": "tile.fluid_level == 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 150}
+    }
+  ],
+  "offline": "exact"
+}
