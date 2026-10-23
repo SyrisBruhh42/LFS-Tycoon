@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tin Crucible Cleaner",
+    "description": "A refined tin wash-basin from the Crucible Keeper. It grants a grime resistance buff when you start your day freshly washed, but the soft tin slowly corrodes over a dozen washes.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "solves_grime_cleanliness",
+    "path_profession_perk"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "charge_left": 12.0
+  },
+  "modifiers": [
+    {
+      "stat": "grime_gain_mult",
+      "phase": "mul",
+      "if": "player.grime < 10.0",
+      "value": "0.8"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_wash",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.charge_left",
+          "by": "-1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.charge_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {
+        "blocks/dirt": 45
+      }
+    }
+  ],
+  "offline": "none"
+}
