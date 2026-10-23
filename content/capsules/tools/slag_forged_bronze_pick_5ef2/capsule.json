@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Slag-Forged Bronze Pick",
+    "description": "Forged from a blend of bronze and rugged slag gravel. The hardened structure heavily resists wear and tear during intense mining.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "equip_tool", "sell"],
+  "tags": ["tool", "pickaxe", "tinker_forged", "bronze", "slag", "gravel", "solves_tool_wear", "path_forge_material"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 25.0,
+    "durability_max": 800.0,
+    "is_rechargeable": 1,
+    "base_value": 150.0
+  },
+  "vars": {
+    "durability_left": 800.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": "0.5"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/anvil_smith_73cd",
+      "price": {
+        "blocks/copper": 100
+      },
+      "unlock_if": "shared.global_cleave_bonus_pct >= 0.0"
+    }
+  ],
+  "offline": "none"
+}
