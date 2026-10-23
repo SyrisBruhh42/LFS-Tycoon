@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Shale Balm",
+    "description": "A gritty, chalk-like tonic that reduces the chance of tap misfires. Its effect strengthens when well rested, clamping damage on misclicks so protected tiles aren't accidentally shattered. Tastes awful.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "consume", "sell"],
+  "tags": ["consumable", "potion", "shale", "solves_tap_misfires", "path_consumable_buff"],
+  "stats": {
+    "base_value": 50.0,
+    "duration_sec": 300.0,
+    "clamp_val": 1.0,
+    "drift_mult": 0.5,
+    "grime_val": 0.5
+  },
+  "vars": {
+    "active_sec_left": -1.0
+  },
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "clamp",
+      "if": "self.active_sec_left > 0.0 and ctx.is_direct_tap == 1.0 and player.is_rested == 1.0",
+      "value": "self.stats.clamp_val"
+    },
+    {
+      "stat": "drunk_drift_px",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.drift_mult"
+    },
+    {
+      "stat": "grime_gain_mult",
+      "phase": "add",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.grime_val"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.active_sec_left", "value": "self.stats.duration_sec"}
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "do": [
+        {"act": "var_add", "var": "self.active_sec_left", "by": "-1.0", "if": "self.active_sec_left > 0.0"},
+        {"act": "destroy_self", "if": "self.active_sec_left == 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 25}
+    }
+  ]
+}
