@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hearth Cushion",
+    "description": "A cozy, heat-retaining cushion to place by your bed. It grants you a stroke of luck after resting. Wears out after 15 nights of sleep.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "hearth",
+    "solves_house_comfort",
+    "path_qol_upgrade"
+  ],
+  "stats": {
+    "base_value": 35.0
+  },
+  "vars": {
+    "charge_left": 15.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "if": "self.charge_left > 0.0",
+      "value": "0.15"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_sleep",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.charge_left",
+          "by": "-1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.charge_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 30
+      }
+    }
+  ],
+  "offline": "none"
+}
