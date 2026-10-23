@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Apprentice Miner's Quartz Desk",
+    "description": "A sturdy house amenity with embedded quartz crystals that resonate with earthly materials. Placing this desk in your home helps you adapt and study non-standard tools, reducing the severe slowdown when using the wrong tool for a block.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "profession_perk",
+    "solves_wrong_tool_penalty",
+    "path_profession_perk",
+    "quartz"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": "0.5"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 75
+      }
+    }
+  ],
+  "offline": "none"
+}
