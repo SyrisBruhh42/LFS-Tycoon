@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lantern Tonic",
+    "description": "A dark, glowing draught favored by deep-delvers. Doubles mining speed in the deep strata or high-tier rock, but makes you more vulnerable to damage everywhere for a time.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "food",
+    "solves_slow_early_dps",
+    "path_consumable_buff"
+  ],
+  "stats": {
+    "base_value": 20.0,
+    "duration_sec": 240.0,
+    "dps_boost": 2.0,
+    "damage_penalty": 1.5
+  },
+  "vars": {
+    "active_sec_left": -1.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0 and (tile.depth >= 500.0 or tile.tier >= 1.0)",
+      "value": "self.stats.dps_boost"
+    },
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.damage_penalty"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec"
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.active_sec_left",
+          "by": "-1.0",
+          "if": "self.active_sec_left > 0.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.active_sec_left == 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {
+        "blocks/copper": 30
+      }
+    }
+  ],
+  "offline": "none"
+}
