@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Heavy Plumb Bob",
+    "description": "A weighted plumb that hums when socketed. When you unearth a new layer, it highlights nearby contours, granting a boost to luck. It drains with use and will shatter once its magic is exhausted.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "charm",
+    "solves_ore_hunting",
+    "path_magic_charm"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "charge_left": 25.0,
+    "is_active": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": 0.15,
+      "if": "self.is_active == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": 1.0}
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": 0.0}
+      ]
+    },
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": -1.0, "if": "self.is_active == 1.0"}
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "do": [
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 80}
+    }
+  ],
+  "offline": "exact"
+}
