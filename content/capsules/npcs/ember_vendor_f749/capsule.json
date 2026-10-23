@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ember Vendor",
+    "description": "A soot-stained merchant offering warm wares, hot tonics, and the tools necessary for venturing into the fiery depths.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "npc_vendor"
+  ],
+  "tags": [
+    "npc",
+    "vendor",
+    "town",
+    "ember",
+    "world_npc"
+  ],
+  "stats": {
+    "cleanliness_required": 0.0,
+    "saturation_half_volume": 1000.0,
+    "unlock_depth": 25.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
