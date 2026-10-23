@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Wick Lure",
+    "description": "A clever burning wick contraption that emits a sharp steam whistle when uncovering deeper layers, convincing the lost cat that an active lure is near. Only works deep underground.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "sell", "consume"],
+  "tags": ["upgrade", "qol", "wick", "solves_event_helpers", "path_qol_upgrade"],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "if": "self.installed == 1.0 and tile.depth >= 150",
+      "value": "0.04"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    },
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "emit_alert", "channel": "hud_chime", "tag": "steam_whistle", "if": "self.installed == 1.0 and tile.depth >= 150"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50}
+    }
+  ],
+  "offline": "none"
+}
