@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Slag Kettle Contour Charm",
+    "description": "A fragile charm shaped like a tiny slag kettle. When carried or socketed, it highlights depth contours on the HUD using hud_depth_calipers, making excavation planning effortless. It fractures slightly every time a layer is revealed.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "solves_depth_awareness", "path_magic_charm"],
+  "stats": {
+    "base_value": 50.0
+  },
+  "vars": {
+    "durability_left": 150.0,
+    "is_active": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": "1.0"},
+        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": true}
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": "0.0"},
+        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": false}
+      ]
+    },
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "var_add", "var": "self.durability_left", "by": "-1.0", "if": "self.is_active == 1.0"},
+        {"act": "destroy_self", "if": "self.durability_left <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50}
+    }
+  ],
+  "offline": "exact"
+}
