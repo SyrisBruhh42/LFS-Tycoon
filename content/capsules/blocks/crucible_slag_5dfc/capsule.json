@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Crucible Slag",
+    "description": "Hardened, glassy byproduct of intense underground heat. Difficult to mine but valuable to specific artisans.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "world_block",
+    "block",
+    "hazard",
+    "slag"
+  ],
+  "stats": {
+    "base_hp": 45.0,
+    "value_base": 30.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 150,
+    "l_step": 1000,
+    "spawn_prob": 0.02,
+    "clump_xy": 8.0,
+    "pipe_z": 4.0,
+    "priority_rank": 60
+  },
+  "vars": {},
+  "biome_weights": {
+    "biomes/standard_crust": 0.5
+  },
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
