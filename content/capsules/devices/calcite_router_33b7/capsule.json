@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Apprentice Calcite Router",
+    "description": "An early-tier router fashioned with a vibrating calcite core. When socketed into a tool or placed on a tile, it quietly shuttles 30% of excavated ore directly to your paired chest.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "socket_in_tool", "place_on_tile", "sell"],
+  "tags": ["device", "solves_haul_capacity", "path_placeable_device"],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.3
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/brass_tinkerer_c020",
+      "price": {
+        "blocks/copper": 250
+      },
+      "unlock_if": "tool.tier >= 2.0"
+    }
+  ],
+  "offline": "exact"
+}
