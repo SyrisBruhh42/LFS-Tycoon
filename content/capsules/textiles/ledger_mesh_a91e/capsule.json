@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ledger Mesh",
+    "description": "A heavy mesh barrier placed over a block. Trades mining speed for precision, preventing stray taps from fully breaking the block by setting its minimum HP threshold to 1.0 on a direct hit. The mesh snaps after 50 accidental strikes.",
+    "author": "core:jules",
+    "rarity": "epic"
+  },
+  "affordances": ["carry", "place_on_tile", "sell"],
+  "tags": ["textile", "tile_cover", "solves_tap_misfires", "path_field_textile"],
+  "stats": {
+    "base_value": 80.0,
+    "wear_max": 50.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "if": "tile.covered_by_self and ctx.is_direct_tap == 1",
+      "value": "1.0"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "tile.covered_by_self",
+      "value": "1.5"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "if": "tile.covered_by_self",
+      "do": [
+        {"act": "var_add", "var": "self.wear", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.wear >= self.stats.wear_max"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 100}
+    }
+  ]
+}
