@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Umber-Forged Pickaxe",
+    "description": "Forged in the umber depths, this pickaxe thrives under immense pressure. Mining deep strata causes it to consume common stone from your pack to hone its edge.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "equip_tool", "sell"],
+  "tags": ["tool", "pickaxe", "umber", "solves_repair_upkeep", "path_forge_material"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 22.0,
+    "durability_max": 400.0,
+    "is_rechargeable": 1,
+    "base_value": 85.0
+  },
+  "vars": {
+    "durability_left": 400.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "tile.depth >= 500",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/stone",
+          "qty": 1.0
+        },
+        {
+          "act": "var_add",
+          "var": "self.durability_left",
+          "by": "1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {
+        "blocks/copper": 50.0
+      }
+    }
+  ],
+  "offline": "none"
+}
