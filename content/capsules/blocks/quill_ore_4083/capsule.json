@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quill Ore",
+    "description": "A peculiar ore marked by sharp, quill-like crystal extrusions. Often found piercing through dense bedrock.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["mineable_block", "carry", "sell", "catalyst"],
+  "tags": ["world_block", "block", "ore", "metal", "quill"],
+  "stats": {
+    "base_hp": 32.0,
+    "value_base": 15.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 15,
+    "spawn_prob": 0.02,
+    "clump_xy": 6.0,
+    "pipe_z": 6.0,
+    "priority_rank": 50,
+    "l_step": 1000
+  },
+  "vars": {},
+  "biome_weights": {
+    "biomes/standard_crust": 1.0
+  },
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
