@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Gasket",
+    "description": "An earthy ring of rubber, placed on a tile to form a seal against subterranean muck. When you mine on the tile, it enforces perfect precision and heavily suppresses grime accumulation, making it ideal for deep, dirty work where clean presentation is needed, but slowing your mining speed considerably.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gasket",
+    "solves_grime_cleanliness",
+    "path_placeable_device"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "grime_gain_mult",
+      "phase": "mul",
+      "value": 0.1,
+      "if": "tile.covered_by_self"
+    },
+    {
+      "stat": "drunk_drift_px",
+      "phase": "clamp",
+      "value": 0.0,
+      "if": "tile.covered_by_self"
+    },
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "tile.covered_by_self"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "tile.covered_by_self",
+      "do": [
+        {"act": "var_add", "var": "self.wear", "by": 1.0},
+        {"act": "destroy_self", "if": "self.wear >= 30.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/dirt": 100
+      }
+    }
+  ],
+  "offline": "exact"
+}
