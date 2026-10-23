@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Basalt Automaton",
+    "description": "A remarkably thrifty automaton forged into a sturdy basalt pick. Slowly ticks away to auto-mine a single square over many hours without draining your own stamina.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "automine",
+    "clockwork",
+    "disposable",
+    "solves_auto_tool_runtime",
+    "path_hired_laborer",
+    "basalt"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 4,
+    "base_dps": 15.0,
+    "charge_max_sec": 28800.0,
+    "durability_max": 2400.0,
+    "is_rechargeable": 0,
+    "base_value": 900.0
+  },
+  "vars": {
+    "charge_left": 28800.0,
+    "durability_left": 2400.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "self.charge_left > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": "-1.0"},
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {
+        "blocks/copper": 900
+      },
+      "unlock_if": "tool.tier >= 4.0"
+    }
+  ],
+  "offline": "coarse"
+}
