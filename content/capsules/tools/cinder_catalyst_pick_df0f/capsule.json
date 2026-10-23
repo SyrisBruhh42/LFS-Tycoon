@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder Catalyst Pick",
+    "description": "A sturdy tool favored in the deep heat. By injecting reactive cinder materials on impact, it makes quick work of hardened hazard clusters, though its volatile strikes make it clumsy and slow for ordinary digging.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell",
+    "catalyst"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_hazard_clearing",
+    "path_tool_builtin"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 12.0,
+    "durability_max": 300.0,
+    "is_rechargeable": 1,
+    "base_value": 75.0
+  },
+  "vars": {
+    "durability_left": 300.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "tile.is_hazard == 1.0",
+      "value": "2.5"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "tile.is_hazard == 0.0",
+      "value": "1.75"
+    }
+  ],
+  "reactions": [],
+  "offline": "coarse",
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {
+        "blocks/copper": 75
+      }
+    }
+  ]
+}
