@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Anvil Comfort Rug",
+    "description": "A thick, reassuring rug woven with heavy threads. Resting near it focuses the mind, granting improved resource yields for the day. Wears out after 30 nights.",
+    "author": "core:jules",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "textile",
+    "amenity",
+    "anvil",
+    "solves_house_comfort",
+    "path_field_textile"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "yield_bonus": 0.20,
+    "wear_max": 30.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "add",
+      "if": "player.is_rested == 1.0",
+      "value": "self.stats.yield_bonus"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_sleep",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.wear",
+          "by": 1.0
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.wear >= self.stats.wear_max"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 300
+      }
+    }
+  ]
+}
