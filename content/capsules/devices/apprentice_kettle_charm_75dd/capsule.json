@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Apprentice Kettle Charm",
+    "description": "A modest trinket resembling a tiny flint kettle. It subtly catches the eye of deep-quarry merchants, projecting a bit more authority than the bearer possesses. The fragile flint wears away with each sale.",
+    "author": "jules:autonomous",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "charm", "kettle", "flint", "solves_vendor_access", "path_magic_charm"],
+  "stats": {
+    "base_value": 30.0,
+    "durability_max": 25.0
+  },
+  "vars": {
+    "durability_left": 25.0
+  },
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "value": 15.0,
+      "if": "tool.tier <= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_market_sell",
+      "do": [
+        {"act": "var_add", "var": "self.durability_left", "by": "-1.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 35}
+    }
+  ],
+  "offline": "exact"
+}
