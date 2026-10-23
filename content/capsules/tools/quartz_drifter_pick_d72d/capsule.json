@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quartz Drifter Pick",
+    "description": "A crude, unstable clockwork pickaxe infused with quartz. It mines rapidly and runs for a long time on a single wind, but the chaotic quartz core causes severe drift, trading precision for speed.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "equip_tool", "place_on_tile", "sell"],
+  "tags": ["tool", "pickaxe", "automine", "quartz", "disposable", "solves_auto_tool_runtime", "path_vendor_disposable"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 18.0,
+    "charge_max_sec": 28800.0,
+    "durability_max": 2000.0,
+    "is_rechargeable": 0,
+    "base_value": 75.0
+  },
+  "vars": {
+    "charge_left": 28800.0,
+    "durability_left": 2000.0
+  },
+  "modifiers": [
+    {
+      "stat": "drunk_drift_px",
+      "phase": "add",
+      "value": 12.0
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 75}
+    }
+  ],
+  "offline": "coarse"
+}
