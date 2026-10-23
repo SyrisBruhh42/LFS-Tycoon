@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mica Plumb Drone",
+    "description": "A mechanical automaton of mica and plumb. When carried in your backpack or placed in the house, it routes 25% of mined ores directly to your paired chest.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "solves_haul_capacity",
+    "path_hired_laborer",
+    "mica",
+    "plumb"
+  ],
+  "stats": {
+    "tool_type": "NONE",
+    "tool_tier": 0,
+    "base_value": 40.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.25
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 30
+      }
+    }
+  ],
+  "offline": "coarse"
+}
