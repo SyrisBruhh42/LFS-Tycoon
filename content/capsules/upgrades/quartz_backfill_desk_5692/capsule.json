@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quartz Backfill Desk",
+    "description": "A quartz-inlaid drafting desk for your home. Its arcane angles inspire rapid backfill excavation, but the intense focus required makes your hands tremble, slightly reducing tapping precision overall.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "profession_perk",
+    "solves_backfill_scaffolding",
+    "path_profession_perk",
+    "amenity"
+  ],
+  "stats": {
+    "base_value": 450.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": "0.3",
+      "if": "tile.depth < tile.max_depth_reached"
+    },
+    {
+      "stat": "drunk_drift_px",
+      "phase": "add",
+      "value": "15.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 300
+      },
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ],
+  "offline": "none"
+}
