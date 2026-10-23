@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hearth Ledger",
+    "description": "An old ledger found by the hearth. Keeping it nearby or in your home reminds you of true market value.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "ledger",
+    "hearth",
+    "solves_market_saturation",
+    "path_consumable_buff"
+  ],
+  "stats": {
+    "market_value_mult": 1.25
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "mul",
+      "value": "self.stats.market_value_mult"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/dirt": 50
+      }
+    }
+  ],
+  "offline": "none"
+}
