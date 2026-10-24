@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ember Routing Package",
+    "description": "A soot-stained contraption of interlocking ember gears. It redirects an additional 50% of mined material directly into your paired chest, but causes intense friction that wears your tools 15% faster.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_haul_capacity",
+    "path_bundle_package"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.50,
+      "if": "self.installed == 1.0"
+    },
+    {
+      "stat": "durability_drain_mult",
+      "phase": "add",
+      "value": 0.15,
+      "if": "self.installed == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": 1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ember_vendor_f749",
+      "price": {
+        "blocks/copper": 300
+      },
+      "unlock_if": "player.max_depth >= 25.0"
+    }
+  ]
+}
