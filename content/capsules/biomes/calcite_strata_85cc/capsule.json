@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Calcite Strata",
+    "description": "A dense subterranean layer formed of compressed calcite and hollow stone. Its brittle nature invites precise mining.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "world_biome",
+    "calcite",
+    "strata"
+  ],
+  "stats": {
+    "z_min": 100,
+    "z_max": 400,
+    "biome_weight": 0.3
+  },
+  "biome_weights": {
+    "blocks/stone": 1.2,
+    "blocks/hollow_stone_b96c": 0.8,
+    "blocks/copper": 0.4
+  }
+}
