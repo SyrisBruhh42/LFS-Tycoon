@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Anvil Wick Sigil",
+    "description": "An enchanted sigil forged by an anvil smith and sealed with a hot wick. When socketed, its magic reinforces nearby blocks so that splash damage never breaks them, though it inevitably wears away from the repeated stress.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "enchantment", "sigil", "solves_unwanted_splash", "path_npc_enchanter", "anvil", "wick"],
+  "stats": {
+    "base_value": 45.0,
+    "is_rechargeable": 0.0
+  },
+  "vars": {
+    "charge_left": 100.0
+  },
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "value": 1.0,
+      "if": "ctx.is_secondary_damage == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/anvil_smith_73cd",
+      "price": {"blocks/copper": 80}
+    }
+  ],
+  "offline": "exact"
+}
