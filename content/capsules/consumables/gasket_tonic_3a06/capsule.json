@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Gasket Tonic",
+    "description": "A gasket tonic consumable buff with a timed effect and a side effect. Reduces durability drain mult so tools lose less durability per swing. Synergizes with rested state.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "drink",
+    "tonic",
+    "gasket",
+    "solves_tool_wear",
+    "path_consumable_buff"
+  ],
+  "stats": {
+    "base_value": 30.0,
+    "duration_sec": 300.0,
+    "durability_drain_mult": 0.5,
+    "speed_penalty_mult": 0.85
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.durability_drain_mult"
+    },
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0 and player.is_rested == 1.0",
+      "value": 0.5
+    },
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.speed_penalty_mult"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec"
+        },
+        {
+          "act": "destroy_self"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 200
+      }
+    }
+  ],
+  "offline": "none"
+}
