@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Shale Scrubber Manual",
+    "description": "A manual detailing a method to deeply scrub off grime immediately after washing, using shale dust. It significantly slows grime accumulation for the rest of the day, provided you start out clean. However, the abrasive dust clings to your gear, slightly increasing wear on tools when digging near the surface.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_grime_cleanliness",
+    "path_qol_upgrade",
+    "shale"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "grime_gain_mult",
+      "phase": "mul",
+      "if": "self.installed > 0.0 and player.grime < 10.0",
+      "value": 0.6
+    },
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.installed > 0.0 and tile.depth < 100.0",
+      "value": 1.2
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": 1.0}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50}
+    }
+  ],
+  "offline": "none"
+}
