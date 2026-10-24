@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Flint Backfill Mat",
+    "description": "A rough mat woven from thick fibers and embedded with flint shards. When laid down, it doubles backfill efficiency (raising the floor further) by catching dirt and debris, but the tough flint fibers make mining the tile 30% slower as a trade-off. It degrades after 15 backfills.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "textile",
+    "tile_cover",
+    "flint",
+    "solves_backfill_scaffolding",
+    "path_field_textile"
+  ],
+  "stats": {
+    "base_value": 40.0,
+    "wear_max": 15.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "tile.covered_by_self",
+      "value": 1.3
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_backfill",
+      "if": "tile.covered_by_self",
+      "do": [
+        {
+          "act": "modify_depth",
+          "target": "self_tile",
+          "delta": -1.0
+        },
+        {
+          "act": "var_add",
+          "var": "self.wear",
+          "by": 1.0
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.wear >= self.stats.wear_max"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 30
+      }
+    }
+  ],
+  "offline": "exact"
+}
