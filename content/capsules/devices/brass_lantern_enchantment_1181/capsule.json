@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Brass Lantern Enchantment",
+    "description": "An enchanted brass lantern sigil socketed into a tool. When the tool hits a strict-locked block it can't mine, the lantern rings softly and pauses durability drain, consuming some of its own charge instead. Disintegrates when depleted.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "enchantment", "lantern", "solves_zero_damage_stall", "path_npc_enchanter", "disposable"],
+  "stats": {
+    "base_value": 400.0,
+    "is_rechargeable": 0.0
+  },
+  "vars": {
+    "charge_left": 150.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {"act": "stall_tool", "pause_battery": 0.0, "pause_durability": 1.0, "if": "tile.is_strict_locked == 1.0"},
+        {"act": "emit_alert", "channel": "house_bell", "tag": "stall_impassable"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 950},
+      "unlock_if": "tool.tier >= 4.0"
+    }
+  ],
+  "offline": "none"
+}
