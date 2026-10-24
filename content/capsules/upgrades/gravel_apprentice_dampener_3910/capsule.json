@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Apprentice Gravel Dampener",
+    "description": "A modest, gravel-packed dampening sheath for early tools. It reduces secondary splash damage by 75% (x0.25 multiplier) to help preserve nearby tiles, but its rough, clumsy design slightly increases tool wear.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_unwanted_splash",
+    "path_qol_upgrade",
+    "gravel"
+  ],
+  "stats": {
+    "base_value": 35.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "if": "self.installed > 0.0 and ctx.is_secondary_damage == 1.0",
+      "value": 0.25
+    },
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.installed > 0.0",
+      "value": 1.15
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": 1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_vendor_51cb",
+      "price": {
+        "blocks/dirt": 50
+      },
+      "unlock_if": "tool.tier >= 0.0"
+    }
+  ],
+  "offline": "none"
+}
