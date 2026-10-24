@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Loam Catalyst",
+    "description": "A dense block of packed loam laced with reactive salts. Socket it into a tool or place it near a hazard to significantly magnify detonation impacts. It crumbles to dust after a few heavy shocks, but it's cheap and reliable for early-game miners.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell",
+    "catalyst"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "catalyst",
+    "loam",
+    "solves_hazard_clearing",
+    "path_placeable_device"
+  ],
+  "stats": {
+    "base_value": 30.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "if": "tile.is_hazard == 1.0",
+      "value": 3.0
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_hazard_expose",
+      "do": [
+        {"act": "var_add", "var": "self.wear", "by": 1.0},
+        {"act": "destroy_self", "if": "self.wear >= 12.0"}
+      ]
+    },
+    {
+      "on": "on_hazard_detonate",
+      "do": [
+        {"act": "var_add", "var": "self.wear", "by": 3.0},
+        {"act": "destroy_self", "if": "self.wear >= 12.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/dirt": 50}
+    }
+  ],
+  "offline": "exact"
+}
