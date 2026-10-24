@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lantern Smith",
+    "description": "An eccentric artisan who crafts durable glowing lanterns from deep-earth quartz, illuminating the path for weary miners.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "npc_vendor"
+  ],
+  "tags": [
+    "world_npc",
+    "npc",
+    "vendor",
+    "lantern",
+    "quartz"
+  ],
+  "stats": {
+    "unlock_depth": 50.0,
+    "cleanliness_required": 0.0,
+    "saturation_half_volume": 1000.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": []
+}
