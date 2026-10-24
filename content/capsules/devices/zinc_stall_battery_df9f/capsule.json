@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Zinc Stall-Battery",
+    "description": "A socketable zinc battery. When an auto-tool hits a strict-locked block it can't mine, the battery pauses the tool's power and durability drain, burning a bit of its own charge instead. Degrades into dust when fully depleted.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "battery",
+    "power_source",
+    "solves_zero_damage_stall",
+    "path_power_source",
+    "zinc",
+    "disposable"
+  ],
+  "stats": {
+    "base_value": 350.0,
+    "is_rechargeable": 0.0
+  },
+  "vars": {
+    "charge_left": 100.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {"act": "stall_tool", "pause_battery": true, "pause_durability": true, "if": "tile.is_strict_locked == 1.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 300},
+      "unlock_if": "tool.tier >= 2.0"
+    }
+  ],
+  "offline": "exact"
+}
