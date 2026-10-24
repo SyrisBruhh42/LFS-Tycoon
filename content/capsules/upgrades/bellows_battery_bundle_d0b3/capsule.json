@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bellows Battery Package",
+    "description": "An expensive bundle of battery options. Carrying this package reduces the battery drain of mid-tier auto-tools when you are fully rested.",
+    "author": "core:ground_zero",
+    "rarity": "epic"
+  },
+  "affordances": ["carry", "sell"],
+  "tags": ["upgrade", "bundle", "battery", "solves_auto_tool_runtime", "path_bundle_package", "bellows"],
+  "stats": {
+    "base_value": 750.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "tool.tier <= 3.0 and player.is_rested == 1.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 500}
+    }
+  ]
+}
