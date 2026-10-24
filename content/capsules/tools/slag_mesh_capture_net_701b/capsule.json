@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Slag-Mesh Capture Net",
+    "description": "A capture net woven with coarse slag threads. It chimes when uncovering new layers, effectively luring lost cats out of hiding.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "equip_tool"],
+  "tags": ["tool", "net", "solves_event_helpers", "path_tool_builtin", "slag"],
+  "stats": {
+    "tool_type": "CAPTURE_NET",
+    "tool_tier": 1,
+    "base_dps": 5.0,
+    "durability_max": 120.0,
+    "is_rechargeable": 0,
+    "base_value": 45.0
+  },
+  "vars": {
+    "durability_left": 120.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "value": "0.03"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "lure_ring"
+        }
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {
+          "act": "destroy_self"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 85
+      }
+    }
+  ],
+  "offline": "none"
+}
