@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quartz Resonance Lens",
+    "description": "An enchanted quartz lens designed for socketing. When rested, its crystalline resonance sharply increases your yield when mining and draws faint chalk outlines over hidden veins as layers are revealed. However, the fragile quartz eventually shatters from the strain.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_ore_hunting",
+    "path_npc_enchanter",
+    "quartz",
+    "lens"
+  ],
+  "stats": {
+    "base_value": 450.0,
+    "is_rechargeable": 0
+  },
+  "vars": {
+    "charge_left": 80.0
+  },
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "value": 1.5,
+      "if": "player.is_rested == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true, "if": "player.is_rested == 1.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/bismuth_broker_af6a",
+      "price": {
+        "blocks/copper": 450
+      },
+      "unlock_if": "tool.tier >= 2.0"
+    }
+  ],
+  "offline": "exact"
+}
