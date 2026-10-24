@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Rivet Assayer",
+    "description": "A seasoned specialist who evaluates rare metals and provides unique rivet components and appraisal devices to diligent miners.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["npc_vendor"],
+  "tags": ["world_npc", "npc", "vendor", "assayer", "rivet"],
+  "stats": {
+    "unlock_depth": 35.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
