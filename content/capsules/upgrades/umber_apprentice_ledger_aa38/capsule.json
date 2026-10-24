@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Umber Apprentice Ledger",
+    "description": "An early-tier logbook bound in umber cloth. Studying its modest lessons unlocks an apprentice-level profession perk, moderately increasing your luck when mining while well-rested.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "apprentice",
+    "umber",
+    "ledger",
+    "solves_house_comfort",
+    "path_profession_perk"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "if": "player.is_rested == 1.0",
+      "value": 0.15
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 75
+      }
+    }
+  ]
+}
