@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Sconce & Cinder Technique",
+    "description": "A self-taught profession manual detailing Sconce & Cinder techniques. Trades striking speed for meticulous tool preservation, reducing durability drain on early tools at the cost of slower mining.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "profession_perk",
+    "solves_repair_upkeep",
+    "path_profession_perk"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "self.installed >= 1.0 and tool.tier <= 1.0"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": 1.3,
+      "if": "self.installed >= 1.0 and tool.tier <= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": 1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 75
+      }
+    }
+  ]
+}
