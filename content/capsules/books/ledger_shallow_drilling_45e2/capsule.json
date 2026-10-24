@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ledger of Shallow Drilling",
+    "description": "A book detailing early quarry techniques. When placed in your house, its teachings increase base DPS in shallow depth (depth < 300), but increase incoming damage.",
+    "author": "core:ground_zero",
+    "rarity": "rare",
+    "era": "early"
+  },
+  "affordances": ["carry", "place_in_house", "sell"],
+  "tags": ["book", "skill_book", "ledger", "solves_slow_early_dps", "path_skill_book"],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "tile.depth < 300.0",
+      "value": 1.4
+    },
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "if": "tile.depth < 300.0",
+      "value": 1.2
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50}
+    }
+  ]
+}
