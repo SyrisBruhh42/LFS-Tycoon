@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Crucible Wash",
+    "description": "A potent solvent from the Crucible Keeper. Drastically reduces grime accumulation for 15 minutes, but the harsh fumes decrease your mining damage.",
+    "author": "core:jules",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "potion",
+    "solves_grime_cleanliness",
+    "path_consumable_buff",
+    "crucible"
+  ],
+  "stats": {
+    "base_value": 300.0,
+    "duration_sec": 900.0,
+    "grime_gain_mult": 0.5,
+    "speed_mult": 0.8
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "grime_gain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.grime_gain_mult"
+    },
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.speed_mult"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec"
+        },
+        {
+          "act": "destroy_self"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {
+        "blocks/cinder_ore_1db2": 250
+      }
+    }
+  ]
+}
