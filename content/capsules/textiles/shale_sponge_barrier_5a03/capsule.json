@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Shale Sponge Barrier",
+    "description": "A dense weave of shale fibers and absorbent materials. When placed over a tile, it permanently drains fluid pockets (like water and lava), preventing flooding at the cost of blocking your own access until removed.",
+    "author": "core:jules",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "textile",
+    "tile_cover",
+    "dampener",
+    "shale",
+    "solves_fluid_flooding",
+    "path_field_textile"
+  ],
+  "stats": {
+    "base_value": 30.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "if": "tile.covered_by_self",
+      "value": "0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "tile.covered_by_self and tile.fluid_level > 0.0",
+      "do": [
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": -1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/dirt": 50
+      }
+    }
+  ]
+}
