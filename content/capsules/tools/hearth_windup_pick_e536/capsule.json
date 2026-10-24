@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hearth Wind-Up Pick",
+    "description": "A disposable hearth-powered pickaxe that automates your mining while emitting a warm glow that extends the charge of nearby automatic systems. Runs on its internal heat for 2 hours (7,200s), but shatters when depleted.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "automine",
+    "hearth",
+    "disposable",
+    "solves_auto_tool_runtime",
+    "path_vendor_disposable"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 0,
+    "base_dps": 12.0,
+    "charge_max_sec": 7200.0,
+    "durability_max": 600.0,
+    "is_rechargeable": 0,
+    "base_value": 25.0
+  },
+  "vars": {
+    "charge_left": 7200.0,
+    "durability_left": 600.0,
+    "is_active": 1.0
+  },
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "self.is_active == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": 1.0}
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": 0.0}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ember_vendor_f749",
+      "price": {"blocks/copper": 20}
+    }
+  ],
+  "offline": "coarse"
+}
