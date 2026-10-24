@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Stone Anvil Sconce",
+    "description": "Forged in the depths, this rugged anvil-sconce tool handles off-class blocks better than normal when tackling hazards, mitigating the wrong tool penalty.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "demolition",
+    "sconce",
+    "anvil",
+    "stone",
+    "tinker_forged",
+    "solves_wrong_tool_penalty",
+    "path_forge_material"
+  ],
+  "stats": {
+    "tool_type": "DEMOLITION",
+    "tool_tier": 0,
+    "base_dps": 12.0,
+    "wrong_tool_forgiveness": 0.5,
+    "durability_max": 250.0,
+    "is_rechargeable": 1,
+    "base_value": 45.0
+  },
+  "vars": {
+    "durability_left": 250.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "if": "tile.is_hazard == 1.0",
+      "value": "self.stats.wrong_tool_forgiveness"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "blocks/dirt": 50
+      }
+    }
+  ],
+  "offline": "none"
+}
