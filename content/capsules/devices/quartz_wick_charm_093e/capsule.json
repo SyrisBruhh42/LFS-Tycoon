@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quartz-Wick Charm",
+    "description": "A socketable magical trinket containing a burning quartz core. It triples the base damage dealt to hazards. However, the volatile magic burns its wick away with every hazard detonated.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell", "catalyst"],
+  "tags": ["device", "solves_hazard_clearing", "path_magic_charm"],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "tile.is_hazard == 1.0",
+      "value": 3.0
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_hazard_detonate",
+      "do": [
+        {"act": "var_add", "var": "self.wear", "by": 1.0},
+        {"act": "destroy_self", "if": "self.wear >= 20.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 45}
+    }
+  ]
+}
