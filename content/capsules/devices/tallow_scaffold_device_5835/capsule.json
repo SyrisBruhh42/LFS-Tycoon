@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tallow Scaffold Device",
+    "description": "A clever gadget coated in tallow. When placed near your worksite, it quietly assists your rested backfilling efforts by slightly raising the adjacent ground, forming natural scaffolds. It degrades and crumbles after 25 uses.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "socket_in_tool", "place_on_tile", "sell"],
+  "tags": ["device", "gadget", "tallow", "scaffold", "solves_backfill_scaffolding", "path_placeable_device"],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "uses": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_backfill",
+      "if": "player.is_rested == 1.0",
+      "do": [
+        {"act": "modify_depth", "target": "shallowest_neighbor_4", "delta": -1.0},
+        {"act": "var_add", "var": "self.uses", "by": 1.0},
+        {"act": "destroy_self", "if": "self.uses >= 25.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 30}
+    }
+  ],
+  "offline": "exact"
+}
