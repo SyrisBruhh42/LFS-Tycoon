@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Calcite Pick",
+    "description": "A reliable early-era pickaxe infused with calcite. Its strange resonance helps you adapt to off-class blocks. Keep it in your pack or place it in your home to permanently lessen wrong-tool penalties.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_wrong_tool_penalty",
+    "path_tool_builtin",
+    "calcite"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 12.0,
+    "durability_max": 300.0,
+    "is_rechargeable": 1,
+    "base_value": 80.0
+  },
+  "vars": {
+    "durability_left": 300.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": 0.5
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 80
+      }
+    }
+  ],
+  "offline": "none"
+}
