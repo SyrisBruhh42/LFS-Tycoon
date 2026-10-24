@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Brass Merchant Endorsement Bundle",
+    "description": "A heavy bundle of brass-stamped merchant ledgers. Keep them in your pack or place them on a tile to permanently ease depth restrictions on deeper vendors. If placed on a tile to free up inventory, they become an obstacle, significantly increasing the time required to mine that specific tile.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "brass",
+    "solves_vendor_access",
+    "path_bundle_package"
+  ],
+  "stats": {
+    "base_value": 150.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "value": 30.0
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": 2.5
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 120
+      }
+    }
+  ],
+  "offline": "none"
+}
