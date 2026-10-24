@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Brass-Bound Contour Manual",
+    "description": "A heavy manual bound in brass that helps read the Z-depth and plan excavations.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["book", "skill_book", "contour", "brass", "solves_depth_awareness", "path_skill_book"],
+  "stats": {
+    "base_value": 80.0
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {"act": "var_set", "var": "self.is_learned", "value": 1.0}
+      ]
+    },
+    {
+      "on": "on_layer_reveal",
+      "if": "self.is_learned == 1.0",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50}
+    }
+  ],
+  "offline": "none"
+}
