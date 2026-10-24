@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Loam Chisel Charm",
+    "description": "A socketable or carried magical trinket that reduces tap misfires. When equipped, it restricts a direct tap from destroying dry tiles, protecting them from fat-finger taps.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "magic_charm",
+    "loam",
+    "chisel",
+    "solves_tap_misfires",
+    "path_magic_charm"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "is_rechargeable": 0.0
+  },
+  "vars": {
+    "is_active": 0.0,
+    "charge_left": 500.0
+  },
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "value": 1.0,
+      "if": "self.is_active == 1.0 and ctx.is_direct_tap == 1.0 and tile.fluid_level == 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_active",
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_active",
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {
+          "act": "destroy_self"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 30
+      }
+    }
+  ],
+  "offline": "exact"
+}
