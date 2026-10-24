@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Discipline",
+    "description": "An unlockable technique taught by focused artisans. It centers the mind to reduce trembling, reducing drunk drift so you tap exactly where you mean to, and strictly preventing accidental block destruction by clamping minimum HP. You must be rested to utilize its teachings.",
+    "author": "autonomous:content_developer",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "profession",
+    "pewter",
+    "solves_tap_misfires",
+    "path_profession_perk"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "drunk_drift_px",
+      "phase": "mul",
+      "if": "self.installed > 0.0 and player.is_rested == 1.0",
+      "value": 0.5
+    },
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "if": "self.installed > 0.0 and player.is_rested == 1.0 and ctx.is_direct_tap == 1.0",
+      "value": 1.0
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": 1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/pewter_quill_newt_3730",
+      "price": {
+        "blocks/copper": 75
+      }
+    }
+  ],
+  "offline": "none"
+}
