@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Thrifty Ochre Demolition Charm",
+    "description": "A cheap, socketable ochre trinket that dramatically boosts damage to hardened hazards. It uses a thrifty design, but its delicate core shatters after several volatile detonations.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "catalyst", "sell"],
+  "tags": ["device", "magic_charm", "solves_hazard_clearing", "path_magic_charm"],
+  "stats": {
+    "base_value": 35.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "tile.is_hazard == 1.0",
+      "value": 3.0
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_hazard_detonate",
+      "do": [
+        {"act": "var_add", "var": "self.wear", "by": 1.0},
+        {"act": "destroy_self", "if": "self.wear >= 12.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 30}
+    }
+  ],
+  "offline": "exact"
+}
