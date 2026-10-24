@@ -46,6 +46,23 @@ static func serialize_state(grid: GridManager) -> Dictionary:
 				"vars": inst.get("vars", {}).duplicate(true)
 			})
 
+	var owned_out: Array[Dictionary] = []
+	for inst in grid.player_owned_capsules:
+		if not bool(inst.get("destroyed", false)):
+			owned_out.append({
+				"uid": int(inst.get("uid", 0)),
+				"capsule_id": str(inst.get("capsule_id", "")),
+				"vars": inst.get("vars", {}).duplicate(true)
+			})
+
+	var tool_out: Dictionary = {}
+	if not grid.player_tool.is_empty() and str(grid.player_tool.get("capsule_id", "")) != "" and not bool(grid.player_tool.get("destroyed", false)):
+		tool_out = {
+			"uid": int(grid.player_tool.get("uid", 0)),
+			"capsule_id": str(grid.player_tool.get("capsule_id", "")),
+			"vars": grid.player_tool.get("vars", {}).duplicate(true)
+		}
+
 	return {
 		"save_schema": SAVE_SCHEMA_VERSION,
 		"seed": grid.generator.master_seed,
@@ -59,6 +76,8 @@ static func serialize_state(grid: GridManager) -> Dictionary:
 		"shared_registers": grid.rules.shared_registers.duplicate(true),
 		"ui_flags": grid.rules.ui_flags.duplicate(true),
 		"equipped": eq_out,
+		"owned_capsules": owned_out,
+		"active_tool": tool_out,
 		"tiles": tiles_out
 	}
 
@@ -146,6 +165,33 @@ static func restore_state(grid: GridManager, data: Dictionary) -> Dictionary:
 			"dormant_stub": is_dormant
 		})
 		grid.next_instance_uid = maxi(grid.next_instance_uid, int(eq.get("uid", 0)) + 1)
+
+	grid.player_owned_capsules.clear()
+	for ow in data.get("owned_capsules", []):
+		var cid := str(ow.get("capsule_id", ""))
+		var is_dormant := not grid.catalog.capsules.has(cid) or grid.catalog.quarantined.has(cid)
+		if is_dormant:
+			dormant_stubs += 1
+		grid.player_owned_capsules.append({
+			"uid": int(ow.get("uid", grid.next_instance_uid)),
+			"capsule_id": cid,
+			"vars": ow.get("vars", {}).duplicate(true),
+			"destroyed": false,
+			"dormant_stub": is_dormant
+		})
+		grid.next_instance_uid = maxi(grid.next_instance_uid, int(ow.get("uid", 0)) + 1)
+
+	var act_t: Dictionary = data.get("active_tool", {})
+	if not act_t.is_empty() and str(act_t.get("capsule_id", "")) != "":
+		var t_cid := str(act_t.get("capsule_id", ""))
+		grid.player_tool = {
+			"uid": int(act_t.get("uid", grid.next_instance_uid)),
+			"capsule_id": t_cid,
+			"vars": act_t.get("vars", {}).duplicate(true),
+			"destroyed": false,
+			"dormant_stub": not grid.catalog.capsules.has(t_cid) or grid.catalog.quarantined.has(t_cid)
+		}
+		grid.next_instance_uid = maxi(grid.next_instance_uid, int(act_t.get("uid", 0)) + 1)
 
 	var tiles_in: Array = data.get("tiles", [])
 	var n := mini(grid.cols * grid.rows, tiles_in.size())

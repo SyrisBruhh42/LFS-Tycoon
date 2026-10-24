@@ -50,6 +50,7 @@ var tile_biome_id: PackedStringArray = PackedStringArray()
 var biome_insts: Dictionary = {}           # biome_id -> shared live instance (only for biomes with rules)
 var player_tool: Dictionary = {}           # the tool the player holds; socketed devices live in player_tool["sockets"]
 var player_equipped_items: Array = []      # Array[Dictionary] (consumed buffs, read books/perks; active until destroy_self)
+var player_owned_capsules: Array = []      # Array[Dictionary] (purchased/owned tools, devices, consumables, books in player stash)
 var inventory: Dictionary = {}             # "capsule_id:tier" -> int count
 var paired_chest_loot: Dictionary = {}     # "capsule_id:tier" -> int count
 var ground_pile: Dictionary = {}           # "capsule_id:tier" -> int count
@@ -981,6 +982,100 @@ func get_vendor_unlock_depth(vendor_capsule_id: String) -> int:
 	return maxi(0, int(round(base_unlock - disc)))
 
 
+## Evaluates whether a vendor offer can currently be purchased by the player.
+func can_buy_vendor_offer(vendor_id: String, offer: Dictionary) -> Dictionary:
+	var req_depth := get_vendor_unlock_depth(vendor_id)
+	if player_max_depth < req_depth:
+		return {"can_buy": false, "reason": "Requires Z >= %d" % req_depth}
+	var unlock_expr := str(offer.get("unlock_if", "")).strip_edges()
+	if unlock_expr != "":
+		var dummy_inst := {"capsule_id": str(offer.get("capsule_id", "")), "vars": {}}
+		if rules.eval_expr(unlock_expr, dummy_inst, _build_env_neutral(player_tool)) <= 0.0:
+			return {"can_buy": false, "reason": "Locked (%s)" % unlock_expr}
+	var price: Dictionary = offer.get("price", {})
+	for curr_id in price.keys():
+		var req_qty := int(price[curr_id])
+		if req_qty > 0 and not can_satisfy_requirement(str(curr_id), 0, req_qty):
+			var c_name := str(catalog.capsules.get(str(curr_id), {}).get("meta", {}).get("name", str(curr_id)))
+			return {"can_buy": false, "reason": "Need %d %s" % [req_qty, c_name]}
+	return {"can_buy": true, "reason": "Available"}
+
+
+## Purchases an offer from an NPC vendor (or grants it directly if free_grant is true), instantiating and routing the capsule.
+func buy_vendor_offer(vendor_id: String, offer: Dictionary, free_grant: bool = false) -> Dictionary:
+	if not free_grant:
+		var chk := can_buy_vendor_offer(vendor_id, offer)
+		if not bool(chk.get("can_buy", false)):
+			return {"ok": false, "reason": str(chk.get("reason", "Cannot buy"))}
+		var price: Dictionary = offer.get("price", {})
+		for curr_id in price.keys():
+			var req_qty := int(price[curr_id])
+			if req_qty > 0:
+				action_consume_item(str(curr_id), 0, req_qty)
+
+	var cap_id := str(offer.get("capsule_id", ""))
+	if not catalog.capsules.has(cap_id):
+		return {"ok": false, "reason": "Unknown capsule " + cap_id}
+	var inst := create_capsule_instance(cap_id)
+	player_owned_capsules.append(inst)
+
+	var cap: Dictionary = catalog.capsules[cap_id]
+	var affs: Array = cap.get("affordances", [])
+	if affs.has("equip_tool") and (player_tool.is_empty() or str(player_tool.get("capsule_id", "")) == ""):
+		equip_tool_instance(inst)
+	elif affs.has("place_in_house") or (affs.has("carry") and not affs.has("equip_tool") and not affs.has("place_on_tile") and not affs.has("consume") and not affs.has("read_book")):
+		equip_item(inst)
+
+	return {"ok": true, "instance": inst}
+
+
+## Sockets a socket_in_tool capsule instance into the target tool (default: active player_tool).
+func socket_capsule_into_tool(socket_inst: Dictionary, target_tool: Dictionary = {}) -> bool:
+	var tool_ref: Dictionary = player_tool if target_tool.is_empty() else target_tool
+	if tool_ref.is_empty() or socket_inst.is_empty():
+		return false
+	var cid := str(socket_inst.get("capsule_id", ""))
+	var affs: Array = catalog.capsules.get(cid, {}).get("affordances", [])
+	if not affs.has("socket_in_tool"):
+		return false
+	if not tool_ref.has("sockets") or typeof(tool_ref["sockets"]) != TYPE_ARRAY:
+		tool_ref["sockets"] = []
+	var sockets_arr: Array = tool_ref["sockets"]
+	if not sockets_arr.has(socket_inst):
+		sockets_arr.append(socket_inst)
+	rules.dispatch_event("on_equip", [socket_inst], _build_env_neutral(tool_ref), self)
+	return true
+
+
+## Transfers all auto-mined / routed items from paired_chest_loot into the player's main backpack inventory.
+func claim_paired_chest() -> int:
+	var total_claimed := 0
+	for k in paired_chest_loot.keys():
+		var qty := int(paired_chest_loot[k])
+		if qty > 0:
+			inventory[k] = int(inventory.get(k, 0)) + qty
+			total_claimed += qty
+	paired_chest_loot.clear()
+	return total_claimed
+
+
+## Sells all mined blocks in the player's backpack to the market and returns total gold earned.
+func sell_all_inventory_ores() -> int:
+	var total_gold := 0
+	var keys := inventory.keys().duplicate()
+	for k in keys:
+		var ks := str(k)
+		var parts := ks.split(":")
+		if parts.size() == 2:
+			var item_id := parts[0]
+			var t_val := int(parts[1])
+			var qty := int(inventory.get(ks, 0))
+			if qty > 0:
+				total_gold += sell_to_market(item_id, t_val, qty)
+	return total_gold
+
+
+
 ## RuleEngine action hooks for consume_item, modify_depth, modify_fluid, transform_tile.
 func action_consume_item(item_id: String, min_tier: int, qty: int) -> bool:
 	if qty <= 0 or item_id == "":
@@ -1143,6 +1238,9 @@ func _prune_player_items() -> void:
 	for k in range(player_equipped_items.size() - 1, -1, -1):
 		if bool(player_equipped_items[k].get("destroyed", false)):
 			player_equipped_items.remove_at(k)
+	for k in range(player_owned_capsules.size() - 1, -1, -1):
+		if bool(player_owned_capsules[k].get("destroyed", false)):
+			player_owned_capsules.remove_at(k)
 
 
 func _gather_active_instances(tile_idx: int, tool_inst: Dictionary) -> Array:
