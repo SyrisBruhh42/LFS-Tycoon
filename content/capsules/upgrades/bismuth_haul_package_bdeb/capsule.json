@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bismuth Hauling Package",
+    "description": "An incredibly heavy yet effective package sealed with bismuth. Dramatically improves paired chest routing, but the thick seal makes mining slightly slower when tackling hazardous rock.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "read_book", "sell", "consume"],
+  "tags": ["upgrade", "qol", "solves_haul_capacity", "path_bundle_package"],
+  "stats": {
+    "base_value": 60.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.85,
+      "if": "self.installed == 1.0"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "add",
+      "value": 0.2,
+      "if": "self.installed == 1.0 and tile.is_hazard == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": 1.0}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 140}
+    }
+  ]
+}
