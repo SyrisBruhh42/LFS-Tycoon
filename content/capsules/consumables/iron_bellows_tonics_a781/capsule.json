@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Iron Bellows Tonic",
+    "description": "Reduces tool wear permanently while placed in the house. Has a singular focused effect on durability.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "potion",
+    "tonic",
+    "bellows",
+    "iron",
+    "solves_tool_wear",
+    "path_consumable_buff"
+  ],
+  "stats": {
+    "base_value": 80.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": 0.75
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/lantern_smith_fb67",
+      "price": {"blocks/copper": 80}
+    }
+  ],
+  "offline": "none"
+}
