@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Gravel Wick Vendor",
+    "description": "A vendor specializing in gravel and wick materials.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "npc_vendor"
+  ],
+  "tags": [
+    "world_npc",
+    "npc",
+    "vendor",
+    "gravel"
+  ],
+  "stats": {
+    "unlock_depth": 20.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
