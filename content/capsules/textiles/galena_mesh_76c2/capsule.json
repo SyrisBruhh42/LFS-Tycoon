@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Galena Mesh Dam",
+    "description": "A heavy mesh of woven galena fibers. When placed, it absorbs invading fluids (draining water and lava levels on contact), preventing floods in your quarry. The intense heavy material slows down mining globally when carried or placed in your house, applying a 20% penalty to your general break time.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell",
+    "place_in_house"
+  ],
+  "tags": [
+    "textile",
+    "tile_cover",
+    "galena",
+    "solves_fluid_flooding",
+    "path_field_textile"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "break_time_penalty": 1.2
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": "self.stats.break_time_penalty"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_fluid_contact",
+      "if": "tile.covered_by_self and tile.fluid_level > 0.0",
+      "do": [
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": -1.0
+        }
+      ]
+    },
+    {
+      "on": "on_fluid_flow",
+      "if": "tile.covered_by_self and tile.fluid_level > 0.0",
+      "do": [
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": -1.0
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "tile.covered_by_self and tile.fluid_level > 0.0",
+      "do": [
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": -1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 100
+      }
+    }
+  ]
+}
