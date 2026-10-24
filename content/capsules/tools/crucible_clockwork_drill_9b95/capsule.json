@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Crucible Clockwork Drill",
+    "description": "A heavy, disposable clockwork drill designed for deep strata. It auto-mines with high endurance. Excels against high-tier rock.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "equip_tool", "place_on_tile", "sell"],
+  "tags": ["tool", "pickaxe", "automine", "clockwork", "disposable", "crucible", "solves_auto_tool_runtime", "path_vendor_disposable"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 18.0,
+    "charge_max_sec": 21600.0,
+    "durability_max": 2500.0,
+    "is_rechargeable": 0,
+    "base_value": 85.0
+  },
+  "vars": {
+    "charge_left": 21600.0,
+    "durability_left": 2500.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "value": 1.5,
+      "if": "tile.depth >= 500.0 or tile.tier >= 1.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {"blocks/copper": 80}
+    }
+  ]
+}
