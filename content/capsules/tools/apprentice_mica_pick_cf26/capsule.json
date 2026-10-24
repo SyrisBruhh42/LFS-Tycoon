@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Apprentice Mica-Flecked Pickaxe",
+    "description": "An early-tier apprentice pickaxe with mica fleck reinforcement. Its resilient structure grants a steady reduction in wear when digging through standard soft earth, giving tinkers longer runs before returning.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "mica",
+    "tinker_forged",
+    "apprentice",
+    "solves_repair_upkeep",
+    "path_forge_material"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 12.0,
+    "durability_max": 400.0,
+    "is_rechargeable": 1,
+    "base_value": 35.0
+  },
+  "vars": {
+    "durability_left": 400.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "tile.tier == 0",
+      "value": 0.3
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "blocks/copper": 80
+      }
+    }
+  ]
+}
