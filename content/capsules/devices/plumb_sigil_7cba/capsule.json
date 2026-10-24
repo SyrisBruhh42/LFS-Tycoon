@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Plumb Enchanter Sigil",
+    "description": "A heavy enchanter's sigil set in plumb. Socketed into a tool, its magic guides the swing, halving the time penalty for striking mismatched materials.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "magic",
+    "sigil",
+    "solves_wrong_tool_penalty",
+    "path_npc_enchanter"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": 0.5
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/brass_tinkerer_c020",
+      "price": {
+        "blocks/copper": 300
+      },
+      "unlock_if": "shared.global_cleave_bonus_pct >= 0.0"
+    }
+  ],
+  "offline": "none"
+}
