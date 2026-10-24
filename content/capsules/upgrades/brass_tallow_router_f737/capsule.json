@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Brass-Tallow Routing Package",
+    "description": "An exquisite kit of brass gears and tallow-lubricated channels. Dramatically improves your capacity by automatically routing most gathered materials directly to your paired chest, at the cost of slight inefficiency.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["upgrade", "qol", "solves_haul_capacity", "path_bundle_package"],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.5,
+      "if": "self.installed == 1.0"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "add",
+      "value": 0.1,
+      "if": "self.installed == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": 1.0}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 900},
+      "unlock_if": "shared.quarry_resonance_charge >= 50.0"
+    }
+  ]
+}
