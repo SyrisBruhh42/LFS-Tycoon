@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mica and Salt Merchant",
+    "description": "A traveling merchant specializing in rare mica formations and purified rock salt.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "npc_vendor"
+  ],
+  "tags": [
+    "world_npc",
+    "npc",
+    "vendor",
+    "mica",
+    "salt"
+  ],
+  "stats": {
+    "unlock_depth": 50.0,
+    "cleanliness_required": 0.0,
+    "saturation_half_volume": 1000.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": []
+}
