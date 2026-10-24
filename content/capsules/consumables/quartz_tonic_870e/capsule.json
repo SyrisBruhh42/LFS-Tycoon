@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quartz Tonic",
+    "description": "A potent draft brewed by the Ember Vendor. Significantly boosts mining speed near the surface, but makes the user clumsy, raising incoming damage as a side-effect.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "food",
+    "solves_slow_early_dps",
+    "path_consumable_buff",
+    "quartz"
+  ],
+  "stats": {
+    "base_value": 200.0,
+    "duration_sec": 300.0,
+    "speed_mult": 2.0,
+    "damage_mult": 1.5
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0 and tile.depth < 300.0",
+      "value": "self.stats.speed_mult"
+    },
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.damage_mult"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec"
+        },
+        {
+          "act": "destroy_self"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ember_vendor_f749",
+      "price": {
+        "blocks/copper": 200
+      }
+    }
+  ]
+}
