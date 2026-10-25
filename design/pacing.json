@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "description": "Data-driven pacing oracle contract and per-bracket tool DPS budgets for LFS-Tycoon (StrataPaper). Checked by Law L15 (tools/check_capsules.py) and Spike S11 (tests/run_all_spikes.gd).",
+  "frontier_growth": {
+    "min_step_above_frontier": 40,
+    "max_step_above_frontier": 120,
+    "hard_law_l14_max_step": 150,
+    "bracket_open_min_offers": 12,
+    "bracket_open_min_vendors": 2
+  },
+  "column_pacing_checkpoints": [
+    {
+      "z": 50,
+      "target_seconds": 65.0,
+      "min_factor": 0.4,
+      "max_factor": 2.2,
+      "assumed_tool_dps": 15.0
+    },
+    {
+      "z": 150,
+      "target_seconds": 145.0,
+      "min_factor": 0.4,
+      "max_factor": 2.2,
+      "assumed_tool_dps": 32.0
+    },
+    {
+      "z": 400,
+      "target_seconds": 340.0,
+      "min_factor": 0.4,
+      "max_factor": 2.2,
+      "assumed_tool_dps": 55.0
+    },
+    {
+      "z": 800,
+      "target_seconds": 680.0,
+      "min_factor": 0.4,
+      "max_factor": 2.2,
+      "assumed_tool_dps": 85.0
+    },
+    {
+      "z": 1400,
+      "target_seconds": 1250.0,
+      "min_factor": 0.4,
+      "max_factor": 2.2,
+      "assumed_tool_dps": 135.0
+    },
+    {
+      "z": 2200,
+      "target_seconds": 2100.0,
+      "min_factor": 0.4,
+      "max_factor": 2.2,
+      "assumed_tool_dps": 210.0
+    }
+  ],
+  "bracket_dps_budgets": {
+    "bracket_1": {
+      "min_dps": 2.0,
+      "max_dps": 120.0
+    },
+    "bracket_2": {
+      "min_dps": 18.0,
+      "max_dps": 180.0
+    },
+    "bracket_3": {
+      "min_dps": 35.0,
+      "max_dps": 280.0
+    },
+    "bracket_4": {
+      "min_dps": 65.0,
+      "max_dps": 420.0
+    },
+    "bracket_5": {
+      "min_dps": 110.0,
+      "max_dps": 650.0
+    }
+  }
+}

@@ -824,6 +824,43 @@ func _reason_label(txt: String) -> Label:
 	return why
 
 
+func _make_inline_selector(items: Array[String], selected_idx: int, on_select: Callable) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var n := maxi(1, items.size())
+
+	var prev_btn := Button.new()
+	prev_btn.text = "◀"
+	prev_btn.custom_minimum_size = Vector2(MIN_TOUCH, MIN_TOUCH)
+	prev_btn.focus_mode = Control.FOCUS_NONE
+	prev_btn.pressed.connect(func() -> void:
+		on_select.call((selected_idx - 1 + items.size()) % n)
+	)
+	row.add_child(prev_btn)
+
+	var curr_btn := Button.new()
+	curr_btn.text = items[clampi(selected_idx, 0, items.size() - 1)] if not items.is_empty() else ""
+	curr_btn.clip_text = true
+	curr_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	curr_btn.custom_minimum_size = Vector2(MIN_TOUCH, MIN_TOUCH)
+	curr_btn.focus_mode = Control.FOCUS_NONE
+	curr_btn.pressed.connect(func() -> void:
+		on_select.call((selected_idx + 1) % n)
+	)
+	row.add_child(curr_btn)
+
+	var next_btn := Button.new()
+	next_btn.text = "▶"
+	next_btn.custom_minimum_size = Vector2(MIN_TOUCH, MIN_TOUCH)
+	next_btn.focus_mode = Control.FOCUS_NONE
+	next_btn.pressed.connect(func() -> void:
+		on_select.call((selected_idx + 1) % n)
+	)
+	row.add_child(next_btn)
+
+	return row
+
+
 func _build_shop_drawer() -> void:
 	_drawer_title.text = "SHOP (%d vendors)" % catalog.vendor_catalog.size()
 
@@ -831,11 +868,9 @@ func _build_shop_drawer() -> void:
 	var filter_row := VBoxContainer.new()
 	_drawer_body.add_child(filter_row)
 
-	var v_opt := OptionButton.new()
-	v_opt.clip_text = true
-	v_opt.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var vendor_ids: Array[String] = ["ALL"]
-	v_opt.add_item("All Vendors (%d)" % catalog.vendor_catalog.size())
+	var vendor_labels: Array[String] = ["All Vendors (%d)" % catalog.vendor_catalog.size()]
+	var v_selected := 0
 	var sorted_vendors := catalog.vendor_catalog.keys()
 	sorted_vendors.sort()
 	for vid in sorted_vendors:
@@ -844,29 +879,27 @@ func _build_shop_drawer() -> void:
 		var v_name := str(catalog.capsules.get(v_str, {}).get("meta", {}).get("name", v_str))
 		var req_z := grid.get_vendor_unlock_depth(v_str)
 		var count: int = catalog.vendor_catalog[v_str].size()
-		v_opt.add_item("%s (Z≥%d) [%d]" % [v_name, req_z, count])
+		vendor_labels.append("%s (Z≥%d) [%d]" % [v_name, req_z, count])
 		if v_str == shop_vendor_filter:
-			v_opt.selected = vendor_ids.size() - 1
-	v_opt.item_selected.connect(func(idx: int) -> void:
+			v_selected = vendor_ids.size() - 1
+	filter_row.add_child(_make_inline_selector(vendor_labels, v_selected, func(idx: int) -> void:
 		shop_vendor_filter = vendor_ids[clampi(idx, 0, vendor_ids.size() - 1)]
 		shop_page_offset = 0
 		_refresh_drawer()
-	)
-	filter_row.add_child(v_opt)
+	))
 
-	var c_opt := OptionButton.new()
-	c_opt.clip_text = true
 	var cats := ["ALL", "tools", "devices", "upgrades", "consumables", "books", "textiles"]
+	var cat_labels: Array[String] = []
+	var c_selected := 0
 	for c_idx in cats.size():
-		c_opt.add_item("Cat: " + cats[c_idx].capitalize())
+		cat_labels.append("Cat: " + cats[c_idx].capitalize())
 		if cats[c_idx] == shop_category_filter:
-			c_opt.selected = c_idx
-	c_opt.item_selected.connect(func(idx: int) -> void:
+			c_selected = c_idx
+	filter_row.add_child(_make_inline_selector(cat_labels, c_selected, func(idx: int) -> void:
 		shop_category_filter = cats[clampi(idx, 0, cats.size() - 1)]
 		shop_page_offset = 0
 		_refresh_drawer()
-	)
-	filter_row.add_child(c_opt)
+	))
 
 	# Filter Row 2: Search Box
 	var search_row := HBoxContainer.new()
@@ -1036,21 +1069,19 @@ func _build_forge_drawer() -> void:
 	var filter_row := HBoxContainer.new()
 	_drawer_body.add_child(filter_row)
 
-	var d_opt := OptionButton.new()
-	d_opt.clip_text = true
-	d_opt.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var disc_labels: Array[String] = []
+	var d_selected := 0
 	for d_idx in disc_specs.size():
 		var spec_entry: Array = disc_specs[d_idx]
-		d_opt.add_item(str(spec_entry[1]))
+		disc_labels.append(str(spec_entry[1]))
 		if str(spec_entry[0]) == forge_discipline_filter:
-			d_opt.selected = d_idx
-	d_opt.item_selected.connect(func(idx: int) -> void:
+			d_selected = d_idx
+	filter_row.add_child(_make_inline_selector(disc_labels, d_selected, func(idx: int) -> void:
 		var clamped := clampi(idx, 0, disc_specs.size() - 1)
 		forge_discipline_filter = str(disc_specs[clamped][0])
 		forge_page_offset = 0
 		_refresh_drawer()
-	)
-	filter_row.add_child(d_opt)
+	))
 
 	var sorted_vendors := catalog.vendor_catalog.keys()
 	sorted_vendors.sort()

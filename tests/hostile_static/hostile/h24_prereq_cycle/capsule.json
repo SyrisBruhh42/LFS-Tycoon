@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hostile Self-Gated Skill Bracket",
+    "description": "Hostile test fixture violating Law L13 prerequisite DAG and skill_bracket namespace rules.",
+    "author": "crucible:s6"
+  },
+  "affordances": [
+    "carry",
+    "read_book"
+  ],
+  "tags": [
+    "upgrade",
+    "skill_bracket",
+    "solves_slow_mining",
+    "path_skill_unlock",
+    "hostile"
+  ],
+  "stats": {
+    "base_value": 50.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": "0.9"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 10,
+        "hostile/h24_prereq_cycle": 1
+      }
+    }
+  ],
+  "offline": "none"
+}

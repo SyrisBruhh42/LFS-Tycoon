@@ -14,3 +14,10 @@ Every 9 autonomous content sessions, you are invoked on the 10th session to audi
    - Include at least one working modifier or reaction that mechanically interacts with the assigned stratum ore or progression path.
 4. **Optional Enterprise Audit Note:** You may also add a concise markdown audit report at `proposals/steward_review_<suffix>.md` (`<= 8 KB`) summarizing how the past 9 capsules, skill brackets, and lore themes connect and how your Keystone Connector strengthens the crafting graph.
 5. **Verify & Ship:** Commit your work, run `python3 tools/preflight.py` until it prints `PREFLIGHT OK`, and open the pull request.
+
+## 5. Required Machine-Checkable Audit Footer
+Include the following machine-checkable HTML comment block at the end of your PR description (and in your `proposals/steward_review_<suffix>.md` if created) with the exact IDs connected in your Keystone Connector capsule:
+```markdown
+<!-- steward-audit: {"mode": "steward_1_in_10", "orphan_ores_connected": ["blocks/..."], "vendor_targeted": "npcs/...", "skill_bracket_linked": "upgrades/...", "bracket_tier": "bracket_1", "theme": "theme_..."} -->
+```
+

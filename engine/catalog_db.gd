@@ -10,6 +10,8 @@ var vocab_shared_vars: Dictionary = {}
 
 var capsules: Dictionary = {}              # cap_id -> Dictionary (validated capsule record)
 var quarantined: Dictionary = {}           # cap_id -> String (reason for quarantine)
+var manifest_hashes: Dictionary = {}       # cap_id -> {"sha256": String, "bytes": int}
+var rollback_log: Dictionary = {}          # cap_id -> String (reason an update to existing capsule was rolled back)
 var vendor_catalog: Dictionary = {}        # vendor_id -> Array[Dictionary] (reverse index)
 var block_ids_sorted: PackedStringArray = PackedStringArray()
 var biome_ids: PackedStringArray = PackedStringArray()
@@ -33,11 +35,15 @@ func load_all(capsules_root: String = "res://content/capsules") -> void:
 
 	capsules.clear()
 	quarantined.clear()
+	rollback_log.clear()
 	vendor_catalog.clear()
 	block_ids_sorted.clear()
 	biome_ids.clear()
 	block_int_to_id.clear()
 	block_id_to_int.clear()
+
+	if capsules_root == "res://content/capsules":
+		load_manifest("res://content/capsule_manifest.json")
 
 	load_directory_into_catalog(capsules_root)
 	if capsules_root == "res://content/capsules" and DirAccess.dir_exists_absolute("user://live_capsules"):
@@ -45,15 +51,68 @@ func load_all(capsules_root: String = "res://content/capsules") -> void:
 	rebuild_indexes()
 
 
-func load_directory_into_catalog(capsules_root: String) -> void:
+func load_manifest(manifest_path: String = "res://content/capsule_manifest.json") -> bool:
+	var d := _load_json_dict(manifest_path)
+	if d.has("capsules") and typeof(d["capsules"]) == TYPE_DICTIONARY:
+		manifest_hashes = d["capsules"]
+		return not manifest_hashes.is_empty()
+	return false
+
+
+func verify_file_sha256(file_path: String, expected_sha256: String) -> bool:
+	if expected_sha256 == "":
+		return true
+	var actual := FileAccess.get_sha256(file_path)
+	return actual != "" and actual.to_lower() == expected_sha256.to_lower()
+
+
+func register_dormant_stub(cap_id: String) -> Dictionary:
+	if capsules.has(cap_id):
+		return capsules[cap_id]
+	var stub := {
+		"id": cap_id,
+		"schema": 1,
+		"_dormant_stub": true,
+		"meta": {
+			"name": "Dormant: " + cap_id,
+			"description": "Dormant capsule stub preserved for save compatibility."
+		},
+		"affordances": ["carry"],
+		"tags": ["dormant_stub"],
+		"stats": {"base_value": 1.0},
+		"vars": {},
+		"modifiers": [],
+		"reactions": [],
+		"offered_by": [],
+		"offline": "none"
+	}
+	capsules[cap_id] = stub
+	return stub
+
+
+func load_directory_into_catalog(capsules_root: String, enforce_manifest: bool = false) -> void:
+	var snapshot_capsules: Dictionary = capsules.duplicate(true)
 	var raw_candidates: Dictionary = _discover_capsule_files(capsules_root)
-	# First pass: structural, syntax, and local expression safety
+	# First pass: optional manifest hash check + structural, syntax, and local expression safety
 	var stage1: Dictionary = {}
 	for cap_id in raw_candidates.keys():
 		var path: String = raw_candidates[cap_id]
+		if enforce_manifest and not manifest_hashes.is_empty():
+			var exp_sha := str(manifest_hashes.get(cap_id, {}).get("sha256", ""))
+			if exp_sha == "" or not verify_file_sha256(path, exp_sha):
+				var m_err := "Manifest SHA-256 mismatch"
+				quarantined[cap_id] = m_err
+				if snapshot_capsules.has(cap_id):
+					capsules[cap_id] = snapshot_capsules[cap_id]
+					rollback_log[cap_id] = m_err
+				continue
 		var res: Dictionary = _parse_and_validate_local(cap_id, path)
 		if res.has("error"):
-			quarantined[cap_id] = str(res["error"])
+			var err_str := str(res["error"])
+			quarantined[cap_id] = err_str
+			if snapshot_capsules.has(cap_id):
+				capsules[cap_id] = snapshot_capsules[cap_id]
+				rollback_log[cap_id] = err_str
 		else:
 			stage1[cap_id] = res["data"]
 
@@ -64,13 +123,17 @@ func load_directory_into_catalog(capsules_root: String) -> void:
 	for k in stage1.keys():
 		known_ids[k] = true
 
-	# Second pass: backward references and Law L11 economy containment
+	# Second pass: backward references and Law L11/L13 economy containment
 	for cap_id in stage1.keys():
 		var data: Dictionary = stage1[cap_id]
 		var ref_err: String = _validate_references_and_economy(cap_id, data, known_ids, stage1)
 		if ref_err != "":
 			quarantined[cap_id] = ref_err
+			if snapshot_capsules.has(cap_id):
+				capsules[cap_id] = snapshot_capsules[cap_id]
+				rollback_log[cap_id] = ref_err
 		else:
+			data["_dormant_stub"] = false
 			capsules[cap_id] = data
 
 
@@ -296,6 +359,8 @@ func _validate_references_and_economy(cap_id: String, data: Dictionary, known_id
 		var price: Dictionary = offer.get("price", {})
 		var cost_val := 0.0
 		for curr_id in price.keys():
+			if str(curr_id) == cap_id:
+				return "Law L13: Self-referential price '%s' cannot require itself" % cap_id
 			if not known_ids.has(str(curr_id)):
 				return "Orphan currency reference '%s'" % str(curr_id)
 			var c_cap: Dictionary = capsules.get(str(curr_id), stage1.get(str(curr_id), {}))

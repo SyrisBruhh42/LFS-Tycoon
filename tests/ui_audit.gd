@@ -21,9 +21,29 @@ func _initialize() -> void:
 		out_dir = args[0]
 	DirAccess.make_dir_recursive_absolute(out_dir)
 	var report: Array = []
+	var all_ok := true
 	for i in SIZES.size():
-		report.append(await _audit_size(SIZES[i], DPIS[i], out_dir))
+		var res := await _audit_size(SIZES[i], DPIS[i], out_dir)
+		report.append(res)
+		if int(res.get("scroll_before", -1)) != 600 or int(res.get("scroll_after_refresh", -2)) != int(res.get("scroll_before", -1)):
+			all_ok = false
+		var drawers_dict: Dictionary = res.get("drawers", {})
+		for d_key in drawers_dict.keys():
+			var dm: Dictionary = drawers_dict[d_key]
+			if int(dm.get("buttons_under_7_5mm", 0)) != 0:
+				all_ok = false
+			if int(dm.get("buttons_overflowing_x", 0)) != 0:
+				all_ok = false
+			if int(dm.get("option_buttons", 0)) != 0:
+				all_ok = false
+			if not bool(dm.get("font_ok", false)):
+				all_ok = false
 	print("UI_AUDIT_JSON " + JSON.stringify(report))
+	if not all_ok:
+		print("UI_AUDIT_FAILED")
+		quit(1)
+		return
+	print("UI_AUDIT_PASS")
 	quit(0)
 
 
@@ -50,7 +70,10 @@ func _audit_size(sz: Vector2i, dpi: int, out_dir: String) -> Dictionary:
 		var small := 0
 		var min_h := 99999.0
 		var overflow := 0
+		var opt_count := 0
 		for b in buttons:
+			if b is OptionButton:
+				opt_count += 1
 			if not b.is_visible_in_tree():
 				continue
 			vis += 1
@@ -77,6 +100,7 @@ func _audit_size(sz: Vector2i, dpi: int, out_dir: String) -> Dictionary:
 			"min_font_mm": min_font * mm_per_px,
 			"font_ok": min_font * mm_per_px >= MIN_FONT_MM,
 			"buttons_overflowing_x": overflow,
+			"option_buttons": opt_count,
 		}
 	# Scroll-focus retention: scroll the forge drawer, trigger the same refresh a button press performs.
 	scene.call("_set_active_drawer", "forge")

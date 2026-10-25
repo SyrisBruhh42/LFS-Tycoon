@@ -168,6 +168,17 @@ jobs:
           grep -aE '\[FAIL\]|VERIFICATION SUMMARY' spikes.log
           grep -aq ", 0 FAILED" spikes.log
 
+      - name: G3 Rendered UI focus & touch-target audit (when scenes/ or engine/ changed)
+        run: |
+          if git diff --name-only HEAD~1 HEAD 2>/dev/null | grep -qE '^(scenes/|engine/|tests/ui_audit\.gd)'; then
+            sudo apt-get update -qq && sudo apt-get install -y -qq xvfb libgl1-mesa-dri >/dev/null 2>&1 || true
+            xvfb-run -a "$GODOT_BIN" --path . -s tests/ui_audit.gd > ui_audit.log 2>&1
+            tail -n 20 ui_audit.log
+            grep -aq "UI_AUDIT_PASS" ui_audit.log
+          else
+            echo "No scenes/ or engine/ changes; skipping rendered UI audit."
+          fi
+
       - name: On red, revert content-only push or pause the factory
         if: failure()
         run: |

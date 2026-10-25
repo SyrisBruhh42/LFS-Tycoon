@@ -516,6 +516,166 @@ func _run_suite() -> void:
 		"Input Focus Routing: Open Drawer Owns Input & Clears Held Press; HUD Bands Never Reach the Quarry",
 		"owner_closed=%s, owner_open=%s, mid_world=%s, top_hud=%s, dock_hud=%s, clears_hold=%s" % [owner_closed, owner_open, str(mid_is_world), str(top_is_hud), str(dock_is_hud), str(drawer_clears_hold)])
 
+	# ------------------------------------------------------------------
+	# SPIKE S11: Data-Driven Column Pacing Oracle (design/pacing.json)
+	# ------------------------------------------------------------------
+	print("\n--- SPIKE S11: Data-Driven Column Pacing Oracle (design/pacing.json) ---")
+	var pacing_data: Dictionary = catalog._load_json_dict("res://design/pacing.json")
+	var checkpoints: Array = pacing_data.get("column_pacing_checkpoints", [])
+	var cp50: Dictionary = {}
+	var cp150: Dictionary = {}
+	for cp in checkpoints:
+		if int(cp.get("z", -1)) == 50:
+			cp50 = cp
+		elif int(cp.get("z", -1)) == 150:
+			cp150 = cp
+	var dps_50: float = maxf(1.0, float(cp50.get("assumed_tool_dps", 15.0)))
+	var dps_150: float = maxf(1.0, float(cp150.get("assumed_tool_dps", 32.0)))
+	var cum_sec_50: float = 0.0
+	var cum_sec_150: float = 0.0
+	for zz in range(0, 151):
+		var vox: Dictionary = grid.generator.sample_voxel(7, 15, zz)
+		var v_hp: float = float(vox.get("max_hp", 10.0))
+		if zz < 50:
+			var step_s := v_hp / dps_50
+			cum_sec_50 += step_s
+			cum_sec_150 += step_s
+		else:
+			cum_sec_150 += v_hp / dps_150
+	var t50: float = float(cp50.get("target_seconds", 65.0))
+	var min50: float = t50 * float(cp50.get("min_factor", 0.4))
+	var max50: float = t50 * float(cp50.get("max_factor", 2.2))
+	var t150: float = float(cp150.get("target_seconds", 145.0))
+	var min150: float = t150 * float(cp150.get("min_factor", 0.4))
+	var max150: float = t150 * float(cp150.get("max_factor", 2.2))
+	var s11_ok: bool = (
+		not checkpoints.is_empty()
+		and cum_sec_50 >= min50 and cum_sec_50 <= max50
+		and cum_sec_150 >= min150 and cum_sec_150 <= max150
+	)
+	_assert_true(s11_ok,
+		"Column Pacing Oracle (z=50 & z=150 Cumulative Active Mining Seconds Within [0.4x, 2.2x] Target)",
+		"z50=%.1fs [%.1f..%.1f], z150=%.1fs [%.1f..%.1f]" % [cum_sec_50, min50, max50, cum_sec_150, min150, max150])
+
+	# ------------------------------------------------------------------
+	# SPIKE S12: Hash-Manifest Hot-Update Quarantine, Atomic Rollback & Dormant-Stub Save Re-Activation
+	# ------------------------------------------------------------------
+	print("\n--- SPIKE S12: Hash-Manifest Hot-Update Quarantine, Atomic Rollback & Dormant-Stub Re-Activation ---")
+	var manifest_loaded: bool = grid.catalog.load_manifest("res://content/capsule_manifest.json")
+	# Ensure tools/starter_pick is registered as an active baseline capsule before testing hot-patch corruption
+	var base_starter_def: Dictionary = grid.catalog.capsules.get("tools/crude_stone_pick", {}).duplicate(true)
+	base_starter_def["id"] = "tools/starter_pick"
+	base_starter_def["_dormant_stub"] = false
+	grid.catalog.capsules["tools/starter_pick"] = base_starter_def
+
+	var hotpatch_dir := "/tmp/lfs_spike12_hotpatch"
+	var valid_dir := "/tmp/lfs_spike12_valid"
+	_rm_rf(hotpatch_dir)
+	_rm_rf(valid_dir)
+
+	# a) Corrupted override of existing valid capsules (tools/starter_pick and tools/crude_stone_pick)
+	var bad_starter_json := JSON.stringify({
+		"schema": 1,
+		"meta": {"name": "Corrupted Starter Pick"},
+		"affordances": ["carry", "equip_tool"],
+		"tags": ["tool"],
+		"stats": {"base_dps": 10.0},
+		"vars": {},
+		"modifiers": [{"stat": "base_dps", "phase": "add", "value": "OS.execute('sh')"}],
+		"reactions": []
+	})
+	_write_temp_file(hotpatch_dir + "/tools/starter_pick/capsule.json", bad_starter_json)
+	_write_temp_file(hotpatch_dir + "/tools/crude_stone_pick/capsule.json", bad_starter_json)
+
+	# b) Brand-new hostile capsule with division by zero
+	var hostile_new_json := JSON.stringify({
+		"schema": 1,
+		"meta": {"name": "Hostile Hotpatch 9999"},
+		"affordances": ["carry"],
+		"tags": ["tool"],
+		"stats": {"base_dps": 10.0},
+		"vars": {},
+		"modifiers": [{"stat": "base_dps", "phase": "add", "value": "10.0 / 0"}],
+		"reactions": []
+	})
+	_write_temp_file(hotpatch_dir + "/tools/hostile_hotpatch_9999/capsule.json", hostile_new_json)
+
+	grid.hot_reload_catalog([hotpatch_dir])
+
+	var hostile_quarantined: bool = grid.catalog.quarantined.has("tools/hostile_hotpatch_9999") and not grid.catalog.capsules.has("tools/hostile_hotpatch_9999")
+	var starter_rolled_back: bool = (
+		grid.catalog.capsules.has("tools/starter_pick")
+		and grid.catalog.rollback_log.has("tools/starter_pick")
+		and grid.catalog.capsules.has("tools/crude_stone_pick")
+		and grid.catalog.rollback_log.has("tools/crude_stone_pick")
+	)
+
+	# c) Dormant-stub round-trip: register dormant stub -> verify _dormant_stub == true -> hot-load valid definition -> verify _dormant_stub == false
+	var stub_id := "upgrades/removed_relic_stub_test"
+	grid.catalog.capsules.erase(stub_id)
+	grid.catalog.register_dormant_stub(stub_id)
+	var was_dormant: bool = bool(grid.catalog.capsules.get(stub_id, {}).get("_dormant_stub", false))
+
+	var reactivated_json := JSON.stringify({
+		"schema": 1,
+		"meta": {"name": "Restored Relic of the Deep", "description": "Re-activated from dormant stub."},
+		"affordances": ["carry"],
+		"tags": ["upgrade", "bracket_1"],
+		"stats": {"base_value": 25.0},
+		"vars": {},
+		"modifiers": [{"stat": "yield_mult", "phase": "add", "value": "0.10"}],
+		"reactions": [],
+		"offered_by": [],
+		"offline": "none"
+	})
+	_write_temp_file(valid_dir + "/" + stub_id + "/capsule.json", reactivated_json)
+	grid.hot_reload_catalog([valid_dir])
+	var now_active: bool = (
+		grid.catalog.capsules.has(stub_id)
+		and not bool(grid.catalog.capsules[stub_id].get("_dormant_stub", true))
+		and str(grid.catalog.capsules[stub_id].get("meta", {}).get("name", "")) == "Restored Relic of the Deep"
+	)
+
+	# Cleanup temporary directories and test-only catalog entries
+	_rm_rf(hotpatch_dir)
+	_rm_rf(valid_dir)
+	grid.catalog.capsules.erase("tools/starter_pick")
+	grid.catalog.capsules.erase(stub_id)
+	grid.catalog.quarantined.erase("tools/starter_pick")
+	grid.catalog.quarantined.erase("tools/crude_stone_pick")
+	grid.catalog.quarantined.erase("tools/hostile_hotpatch_9999")
+
+	_assert_true(manifest_loaded and hostile_quarantined and starter_rolled_back and was_dormant and now_active,
+		"Hot-Update Quarantine, Atomic Rollback of Existing Capsule & Dormant-Stub Save Re-Activation",
+		"manifest=%s, hostile_quarantined=%s, rolled_back=%s, dormant_to_active=%s->%s" % [
+			str(manifest_loaded), str(hostile_quarantined), str(starter_rolled_back), str(was_dormant), str(now_active)
+		])
 
 
+func _write_temp_file(file_path: String, content: String) -> void:
+	var dir_path := file_path.get_base_dir()
+	DirAccess.make_dir_recursive_absolute(dir_path)
+	var f := FileAccess.open(file_path, FileAccess.WRITE)
+	if f != null:
+		f.store_string(content)
+		f.flush()
 
+
+func _rm_rf(dir_path: String) -> void:
+	if not DirAccess.dir_exists_absolute(dir_path):
+		return
+	var d := DirAccess.open(dir_path)
+	if d == null:
+		return
+	d.list_dir_begin()
+	var entry := d.get_next()
+	while entry != "":
+		if entry != "." and entry != "..":
+			var full := dir_path.path_join(entry)
+			if d.current_is_dir():
+				_rm_rf(full)
+			else:
+				DirAccess.remove_absolute(full)
+		entry = d.get_next()
+	d.list_dir_end()
+	DirAccess.remove_absolute(dir_path)

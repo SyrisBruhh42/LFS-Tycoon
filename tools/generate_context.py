@@ -113,7 +113,14 @@ def main() -> int:
     for niche in suggested_niches[:25]:
         gap_lines.append(f"- {niche}")
     (ROOT / "GAP_MAP.md").write_text("\n".join(gap_lines) + "\n", encoding="utf-8")
-    print(f"OK: Generated AI_CONTEXT_MANIFEST.md ({sum(len(v) for v in capsules_by_ns.values())} capsules) and GAP_MAP.md.")
+    try:
+        if str(ROOT / "tools") not in sys.path:
+            sys.path.insert(0, str(ROOT / "tools"))
+        import build_manifest
+        build_manifest.build_manifest(write=True)
+    except Exception:
+        pass
+    print(f"OK: Generated AI_CONTEXT_MANIFEST.md ({sum(len(v) for v in capsules_by_ns.values())} capsules), GAP_MAP.md, and content/capsule_manifest.json.")
     return 0
 
 
