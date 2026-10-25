@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Gravel Ward-Breaker's Seal",
+    "description": "An apprentice milestone trophy honoring The Sovereign Ward-Breakers of the Obsidian Seal. Forged by the Gravel Wick vendor from coarse Pewter Gravel, this seal is kept in your home. It grants a small yield bonus when you are well-rested, and occasionally rewards your deep-earth resonance with extra Pewter Gravel upon waking.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_house_comfort",
+    "path_qol_upgrade",
+    "craft_achievement_relic",
+    "logic_plausible",
+    "theme_obsidian_wardbreaker",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 80.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "add",
+      "if": "player.is_rested == 1.0",
+      "value": 0.05
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_sleep",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "blocks/pewter_gravel_d53e",
+          "qty": 1,
+          "if": "shared.quarry_resonance_charge >= 50.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_wick_vendor_8db7",
+      "unlock_if": "player.max_depth >= 50.0",
+      "price": {
+        "devices/brass_wick_splash_dampener_dab3": 1,
+        "blocks/pewter_gravel_d53e": 20
+      }
+    }
+  ],
+  "offline": "none"
+}
