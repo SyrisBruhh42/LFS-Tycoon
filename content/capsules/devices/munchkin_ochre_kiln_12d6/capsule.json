@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin's Ochre Sconce Net",
+    "description": "An absurd contraption devised by the Paradox Symposium of St. Munchkin. Built from a brass dampener and layered with ochre stratum, it functions as both a kiln and a lure. The Quill Peddler claims that its burning ochre smoke exploits a literal loophole in feline logic, drawing stray cats out of the deep strata while you mine.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool"
+  ],
+  "tags": [
+    "tool",
+    "sconce",
+    "solves_event_helpers",
+    "path_tool_builtin",
+    "craft_smeltery_alloy",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "tool_type": "CAPTURE_NET",
+    "tool_tier": 2,
+    "base_dps": 15.0,
+    "durability_max": 200.0,
+    "is_rechargeable": 0,
+    "base_value": 75.0
+  },
+  "vars": {
+    "durability_left": 200.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "value": 0.05,
+      "if": "tile.tier >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/ochre_stratum_d812",
+          "qty": 1,
+          "if": "tile.tier >= 1.0"
+        },
+        {
+          "act": "var_add",
+          "var": "shared.quarry_resonance_charge",
+          "by": "15.0",
+          "if": "tile.tier >= 1.0"
+        }
+      ]
+    },
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "kiln_lure_ring",
+          "if": "tile.tier >= 1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/quill_peddler_0c07",
+      "price": {
+        "devices/brass_wick_splash_dampener_dab3": 1,
+        "blocks/ochre_stratum_d812": 35
+      },
+      "unlock_if": "player.max_depth >= 15.0 and player.max_depth <= 150.0"
+    }
+  ],
+  "offline": "none"
+}
