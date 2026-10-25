@@ -1085,6 +1085,240 @@ def check_health_ratchet(capsules: Dict[str, Dict[str, Any]]) -> List[str]:
     return errors
 
 
+WILLOW_GUILD_ID_RE = re.compile(r"^willow-guild-[a-z0-9-]+$")
+WILLOW_GUILD_CAPSULE_TYPES = {
+    "wardrobe_gear",
+    "combat_ability",
+    "mini_boss_mountain",
+    "big_boss_mountain",
+}
+WILLOW_GUILD_SLOT_TO_SOCKET = {
+    "back_accessory": "BackMountSocket",
+    "boots": "Shin.L/R, Foot.L/R",
+    "chassis_dress": "Spine, Chest, SkirtRing",
+    "visor": "Head",
+    "headpiece": "CrownSocket",
+    "held_prop": "WristPropSocket.R",
+}
+WILLOW_GUILD_STYLE_THEMES = {
+    "cyber-couture",
+    "astral-clockwork",
+    "cozy-tech",
+    "tactical-valkyrie",
+    "royal-valkyrie",
+    "botanical-fae",
+    "street-tech",
+}
+WILLOW_GUILD_ENCLAVE_IDS = {
+    "enclave_01_hector",
+    "enclave_02_jane",
+    "enclave_03_silas",
+    "enclave_04_leo",
+    "enclave_05_kaio",
+    "enclave_06_zara",
+    "enclave_07_willow",
+    "enclave_08_terra",
+    "enclave_09_orion",
+    "enclave_10_isla",
+    "enclave_11_kenna",
+    "enclave_12_elias",
+    "enclave_13_ryn",
+    "enclave_14_vex",
+    "enclave_15_dorian",
+    "enclave_16_elara",
+}
+WILLOW_GUILD_PRACTICE_AVENUES = {
+    "vanguard",
+    "valiance",
+    "aegis",
+    "bulwark",
+    "resonance",
+    "windrunner",
+}
+WILLOW_GUILD_STAT_KEYS = ("frt", "eth", "prw", "ten", "ast", "agi")
+VEO_FORBIDDEN_OVERLAY_RE = re.compile(
+    r"digital code|code streams|HUD|ISTP 5w6|enclave_07_willow|character\.png|A-pose|#FFFFFF|720x1280",
+    re.IGNORECASE,
+)
+EXPECTED_FLOW_SETTINGS = {
+    "aspect_ratio": "9:16",
+    "resolution": "720x1280",
+    "background_hex": "#FFFFFF",
+    "start_frame": "character.png",
+    "end_frame": "character.png",
+}
+
+
+def is_willow_guild_root(root: Path) -> bool:
+    resolved = root.resolve()
+    return (
+        ((resolved / "vocab" / "core_verbs.json").is_file() and resolved.name == "guild")
+        or (resolved / "guild_schema.json").is_file()
+    )
+
+
+def _is_strict_int(val: Any) -> bool:
+    return isinstance(val, int) and not isinstance(val, bool)
+
+
+def discover_willow_guild_capsules(root: Path, override_dir: Path | None = None) -> Dict[str, Path]:
+    base_dir = override_dir if override_dir is not None else (root / "content" / "capsules")
+    if not base_dir.exists() and root.exists():
+        base_dir = root
+    found: Dict[str, Path] = {}
+    if not base_dir.exists():
+        return found
+    seen_paths: Set[Path] = set()
+    candidates = (
+        sorted(base_dir.glob("willow-guild-*.json"))
+        + sorted(base_dir.glob("*/willow-guild-*.json"))
+        + sorted(base_dir.glob("*/*/capsule.json"))
+    )
+    for p in candidates:
+        rp = p.resolve()
+        if rp in seen_paths:
+            continue
+        seen_paths.add(rp)
+        cap_key = p.parent.name if p.name == "capsule.json" else p.stem
+        found[cap_key] = p
+    return found
+
+
+def validate_willow_guild_capsule(cap_key: str, cap_path: Path) -> List[str]:
+    errors: List[str] = []
+    try:
+        raw = cap_path.read_text(encoding="utf-8")
+        data = strict_json_loads(raw)
+    except Exception as exc:
+        return [f"[{cap_key}] JSON parse failure: {exc}"]
+
+    if not isinstance(data, dict):
+        return [f"[{cap_key}] Root JSON value must be an object."]
+
+    cid = data.get("capsule_id")
+    if not isinstance(cid, str) or not WILLOW_GUILD_ID_RE.match(cid):
+        errors.append(
+            f"[{cap_key}] Missing or invalid 'capsule_id' '{cid}' (must match ^willow-guild-[a-z0-9-]+$)."
+        )
+    elif cap_path.name.startswith("willow-guild-") and cid != cap_path.stem:
+        errors.append(
+            f"[{cap_key}] 'capsule_id' '{cid}' disagrees with filename stem '{cap_path.stem}'."
+        )
+
+    label = cid if isinstance(cid, str) and cid else cap_key
+
+    title = data.get("title")
+    if not isinstance(title, str) or not title.strip():
+        errors.append(f"[{label}] Missing required non-empty 'title'.")
+
+    ctype = data.get("capsule_type")
+    if ctype not in WILLOW_GUILD_CAPSULE_TYPES:
+        errors.append(
+            f"[{label}] Invalid 'capsule_type' '{ctype}'{suggest(str(ctype), WILLOW_GUILD_CAPSULE_TYPES)}"
+        )
+
+    slot = data.get("slot")
+    valid_slots = set(WILLOW_GUILD_SLOT_TO_SOCKET.keys())
+    if slot not in valid_slots:
+        errors.append(f"[{label}] Invalid 'slot' '{slot}'{suggest(str(slot), valid_slots)}")
+
+    rig_socket = data.get("rig_socket")
+    valid_sockets = set(WILLOW_GUILD_SLOT_TO_SOCKET.values())
+    if rig_socket not in valid_sockets:
+        errors.append(
+            f"[{label}] Invalid 'rig_socket' '{rig_socket}'{suggest(str(rig_socket), valid_sockets)}"
+        )
+    elif slot in WILLOW_GUILD_SLOT_TO_SOCKET and rig_socket != WILLOW_GUILD_SLOT_TO_SOCKET[slot]:
+        expected_sock = WILLOW_GUILD_SLOT_TO_SOCKET[slot]
+        errors.append(
+            f"[{label}] 'rig_socket' '{rig_socket}' does not match canonical socket '{expected_sock}' for slot '{slot}'."
+        )
+
+    style_theme = data.get("style_theme")
+    if style_theme not in WILLOW_GUILD_STYLE_THEMES:
+        errors.append(
+            f"[{label}] Invalid 'style_theme' '{style_theme}'{suggest(str(style_theme), WILLOW_GUILD_STYLE_THEMES)}"
+        )
+
+    emotion_id = data.get("enclave_emotion_id")
+    if emotion_id not in WILLOW_GUILD_ENCLAVE_IDS:
+        errors.append(
+            f"[{label}] Invalid 'enclave_emotion_id' '{emotion_id}'{suggest(str(emotion_id), WILLOW_GUILD_ENCLAVE_IDS)}"
+        )
+
+    cost_rupees = data.get("cost_rupees")
+    if not _is_strict_int(cost_rupees) or not (1 <= cost_rupees <= 1000):
+        errors.append(f"[{label}] 'cost_rupees' must be an integer in [1, 1000] (got {cost_rupees!r}).")
+
+    frontier_cost = data.get("frontier_cost")
+    if not _is_strict_int(frontier_cost) or not (1 <= frontier_cost <= 100):
+        errors.append(f"[{label}] 'frontier_cost' must be an integer in [1, 100] (got {frontier_cost!r}).")
+
+    stats = data.get("stats")
+    if not isinstance(stats, dict):
+        errors.append(f"[{label}] 'stats' must be an object with integer keys {WILLOW_GUILD_STAT_KEYS}.")
+    else:
+        for sk in WILLOW_GUILD_STAT_KEYS:
+            if sk not in stats or not _is_strict_int(stats.get(sk)):
+                errors.append(f"[{label}] 'stats.{sk}' must be an integer (got {stats.get(sk)!r}).")
+
+    avenue = data.get("practice_avenue")
+    if avenue not in WILLOW_GUILD_PRACTICE_AVENUES:
+        errors.append(
+            f"[{label}] Invalid 'practice_avenue' '{avenue}'{suggest(str(avenue), WILLOW_GUILD_PRACTICE_AVENUES)}"
+        )
+
+    mastery_ap = data.get("mastery_ap_required")
+    if not _is_strict_int(mastery_ap) or not (50 <= mastery_ap <= 500):
+        errors.append(
+            f"[{label}] 'mastery_ap_required' must be an integer in [50, 500] (got {mastery_ap!r})."
+        )
+
+    flow_prompt = data.get("flow_prompt")
+    if not isinstance(flow_prompt, str) or not flow_prompt.strip():
+        errors.append(f"[{label}] Missing required non-empty 'flow_prompt'.")
+    else:
+        bad_match = VEO_FORBIDDEN_OVERLAY_RE.search(flow_prompt)
+        if bad_match:
+            errors.append(
+                f"[{label}] CRUCIBLE-06 Veo 3.1 Anti-Overlay violation: 'flow_prompt' contains forbidden literal trigger '{bad_match.group(0)}'."
+            )
+        word_count = len(flow_prompt.split())
+        if not (60 <= word_count <= 240):
+            errors.append(
+                f"[{label}] CRUCIBLE-06 'flow_prompt' word count ({word_count}) must be in [60, 240]."
+            )
+
+    flow_settings = data.get("flow_settings")
+    if not isinstance(flow_settings, dict):
+        errors.append(f"[{label}] Missing required 'flow_settings' object.")
+    else:
+        for fk, expected_val in EXPECTED_FLOW_SETTINGS.items():
+            actual_val = flow_settings.get(fk)
+            if actual_val != expected_val:
+                errors.append(
+                    f"[{label}] 'flow_settings.{fk}' must be '{expected_val}' (got {actual_val!r})."
+                )
+
+    audio_script = data.get("audio_script")
+    if not isinstance(audio_script, dict):
+        errors.append(f"[{label}] Missing required 'audio_script' object.")
+    else:
+        target_lufs = audio_script.get("target_lufs")
+        if not _is_strict_int(target_lufs) or target_lufs not in (-28, -18):
+            errors.append(
+                f"[{label}] 'audio_script.target_lufs' must be -28 (loop) or -18 (one-shot) (got {target_lufs!r})."
+            )
+        speech_mode = audio_script.get("speech_mode")
+        valid_speech = {"non_verbal_foley", "warm_human_voice_and_foley"}
+        if speech_mode not in valid_speech:
+            errors.append(
+                f"[{label}] 'audio_script.speech_mode' must be in {sorted(valid_speech)} (got {speech_mode!r})."
+            )
+
+    return errors
+
+
 def discover_capsules(base_dir: Path) -> Dict[str, Path]:
     found: Dict[str, Path] = {}
     if not base_dir.exists():
@@ -1106,8 +1340,10 @@ def _extract_cap_id_from_relpath(rel_or_id: str) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Validate LFS-Tycoon capsules (Gate G1 & Static G3).")
-    parser.add_argument("--dir", type=Path, default=DEFAULT_CAPSULES_DIR, help="Capsules root directory")
+    global ROOT, VOCAB_DIR, DEFAULT_CAPSULES_DIR
+    parser = argparse.ArgumentParser(description="Validate LFS-Tycoon or Willow Guild capsules (Gate G1 & Static G3 / SR-14).")
+    parser.add_argument("--root", type=Path, default=ROOT, help="Project or Guild root directory (default: lfs-tycoon root)")
+    parser.add_argument("--dir", type=Path, default=None, help="Capsules root directory override")
     parser.add_argument("--strict", action="store_true", help="Exit non-zero on any error")
     parser.add_argument(
         "--new-capsule",
@@ -1116,7 +1352,26 @@ def main() -> int:
         help="Capsule id or relative path of a newly added capsule to run forward-only semantic quality lints on.",
     )
     args = parser.parse_args()
-    is_default_dir = args.dir.resolve() == DEFAULT_CAPSULES_DIR.resolve()
+    root_dir = args.root.resolve()
+
+    if is_willow_guild_root(root_dir):
+        guild_map = discover_willow_guild_capsules(root_dir, args.dir.resolve() if args.dir else None)
+        guild_errors: List[str] = []
+        for cap_key, cap_path in guild_map.items():
+            guild_errors.extend(validate_willow_guild_capsule(cap_key, cap_path))
+        if guild_errors:
+            for err in guild_errors:
+                print(f"ERROR: {err}")
+            print(f"\nFAILED: {len(guild_errors)} validation error(s) across {len(guild_map)} Willow Guild capsules.")
+            return 1
+        print(f"ALL WILLOW GUILD CAPSULES VALID ({len(guild_map)} capsules verified against Willow Guild & Veo 3.1 Anti-Overlay laws).")
+        return 0
+
+    ROOT = root_dir
+    VOCAB_DIR = ROOT / "vocab"
+    DEFAULT_CAPSULES_DIR = ROOT / "content" / "capsules"
+    capsules_dir = args.dir.resolve() if args.dir is not None else DEFAULT_CAPSULES_DIR.resolve()
+    is_default_dir = capsules_dir == DEFAULT_CAPSULES_DIR.resolve()
 
     vocab = load_vocab()
     expr_linter = ExpressionAllowListLinter(
@@ -1127,7 +1382,7 @@ def main() -> int:
 
     # Always include canonical content/capsules IDs as known targets even when validating a test dir
     canonical_map = discover_capsules(DEFAULT_CAPSULES_DIR)
-    target_map = discover_capsules(args.dir)
+    target_map = discover_capsules(capsules_dir)
     known_ids = set(canonical_map.keys()) | set(target_map.keys())
 
     new_cap_ids: Set[str] = {_extract_cap_id_from_relpath(x) for x in args.new_capsule if x.strip()}
@@ -1190,4 +1445,5 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
 

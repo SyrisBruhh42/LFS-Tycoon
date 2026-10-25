@@ -80,12 +80,21 @@ class CapsuleNode(dict):
         return self.get("affordances", []) or []
 
 
-def load_capsules() -> dict[str, dict]:
+def load_capsules(root: Path | None = None) -> dict[str, dict]:
+    base_root = root.resolve() if root is not None else ROOT
+    caps_dir = base_root / "content" / "capsules"
     out: dict[str, dict] = {}
-    for p in sorted(CAPSULES_DIR.glob("*/*/capsule.json")):
+    for p in sorted(caps_dir.glob("*/*/capsule.json")):
         try:
             cid = f"{p.parent.parent.name}/{p.parent.name}"
             out[cid] = CapsuleNode(cid, json.loads(p.read_text(encoding="utf-8")))
+        except Exception:
+            continue
+    for p in sorted(caps_dir.glob("willow-guild-*.json")):
+        try:
+            data = json.loads(p.read_text(encoding="utf-8"))
+            cid = f"guild/{data.get('capsule_id', p.stem)}"
+            out[cid] = CapsuleNode(cid, data)
         except Exception:
             continue
     return out
@@ -827,8 +836,8 @@ class Graph:
 ContentGraph = Graph
 
 
-def build() -> Graph:
-    return Graph(load_capsules())
+def build(root: Path | None = None) -> Graph:
+    return Graph(load_capsules(root))
 
 
 def recent_share(g: Graph, tier: str, n: int = 30) -> float:
@@ -837,11 +846,17 @@ def recent_share(g: Graph, tier: str, n: int = 30) -> float:
 
 
 def main() -> int:
+    global ROOT, CAPSULES_DIR, PACING_FILE, HEALTH_BASELINE_FILE
     ap = argparse.ArgumentParser(description="Print the content synergy scorecard (read-only).")
+    ap.add_argument("--root", type=Path, default=ROOT, help="Project or Guild root directory")
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--recent", type=int, default=30)
     args = ap.parse_args()
-    sc = build().scorecard(args.recent)
+    ROOT = args.root.resolve()
+    CAPSULES_DIR = ROOT / "content" / "capsules"
+    PACING_FILE = ROOT / "design" / "pacing.json"
+    HEALTH_BASELINE_FILE = ROOT / "design" / "health_baseline.json"
+    sc = build(ROOT).scorecard(args.recent)
     if args.json:
         print(json.dumps(sc, indent=1, sort_keys=True))
         return 0

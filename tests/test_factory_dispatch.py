@@ -18,6 +18,7 @@ Verifies antifragile handling of:
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -26,11 +27,13 @@ from datetime import timedelta
 from pathlib import Path
 from unittest import mock
 
+sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT / "tools") not in sys.path:
     sys.path.insert(0, str(ROOT / "tools"))
 
 import factory_dispatch as fd  # noqa: E402
+
 
 
 def base_cfg() -> dict:
@@ -289,6 +292,104 @@ class TestFactoryDispatchAntifragile(unittest.TestCase):
             self.assertEqual(st, {"sessions": {}, "lessons": [], "api_fail_streak": 0})
             self.assertTrue(sf.with_suffix(".corrupt.bak").exists())
 
+    def test_check_capsules_root_flag_validates_willow_guild_and_rejects_veo_overlay_triggers(self) -> None:
+        """SR-14 & CRUCIBLE-06: check_capsules.py --root validates Willow Guild capsules and rejects Veo 3.1 overlay triggers."""
+        valid_words = (
+            "Willow stands in a serene alchemical conservatory bathed in soft warm brass light, "
+            "adjusting a finely calibrated astral clockwork monocle over her right eye while "
+            "delicate brass pendulums swing gently along her velvet hem. Subtle steam rises "
+            "from a copper distillation flask beside her boots as she inspects the crystal "
+            "refraction with calm, deliberate precision and poised artisanal focus before "
+            "settling smoothly back into her balanced neutral stance with gentle breathing "
+            "and natural fabric sway across her emerald and brass alchemical attire."
+        )
+        valid_capsule = {
+            "capsule_id": "willow-guild-astral-monocle",
+            "title": "Astral Clockwork Monocle",
+            "capsule_type": "wardrobe_gear",
+            "slot": "visor",
+            "rig_socket": "Head",
+            "style_theme": "astral-clockwork",
+            "enclave_emotion_id": "enclave_07_willow",
+            "cost_rupees": 50,
+            "frontier_cost": 12,
+            "stats": {"frt": 4, "eth": 8, "prw": 2, "ten": 5, "ast": 10, "agi": 6},
+            "practice_avenue": "resonance",
+            "mastery_ap_required": 150,
+            "flow_prompt": valid_words,
+            "flow_settings": {
+                "aspect_ratio": "9:16",
+                "resolution": "720x1280",
+                "background_hex": "#FFFFFF",
+                "start_frame": "character.png",
+                "end_frame": "character.png",
+            },
+            "audio_script": {
+                "target_lufs": -28,
+                "speech_mode": "non_verbal_foley",
+            },
+        }
+        with tempfile.TemporaryDirectory() as td:
+            guild_root = Path(td) / "guild"
+            (guild_root / "vocab").mkdir(parents=True, exist_ok=True)
+            (guild_root / "vocab" / "core_verbs.json").write_text("{\"verbs\": []}\n", encoding="utf-8")
+            caps_dir = guild_root / "content" / "capsules"
+            caps_dir.mkdir(parents=True, exist_ok=True)
+            cap_file = caps_dir / "willow-guild-astral-monocle.json"
+            cap_file.write_text(json.dumps(valid_capsule, indent=2), encoding="utf-8")
+
+            res_ok = subprocess.run(
+                [sys.executable, str(ROOT / "tools" / "check_capsules.py"), "--root", str(guild_root), "--strict"],
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            self.assertEqual(res_ok.returncode, 0, msg=res_ok.stdout + res_ok.stderr)
+            self.assertIn("ALL WILLOW GUILD CAPSULES VALID", res_ok.stdout)
+
+            # Inject forbidden Veo 3.1 overlay trigger ("digital code" and "character.png") into flow_prompt
+            hostile_capsule = dict(valid_capsule)
+            hostile_capsule["flow_prompt"] = valid_words + " glowing green digital code from character.png"
+            cap_file.write_text(json.dumps(hostile_capsule, indent=2), encoding="utf-8")
+
+            res_bad = subprocess.run(
+                [sys.executable, str(ROOT / "tools" / "check_capsules.py"), "--root", str(guild_root), "--strict"],
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            self.assertNotEqual(res_bad.returncode, 0)
+            self.assertIn("CRUCIBLE-06 Veo 3.1 Anti-Overlay violation", res_bad.stdout)
+
+    def test_willow_studio_loader_and_enclave_concordance_contract(self) -> None:
+        """CRUCIBLE-07 & SR-02: willow_studio_loader.gd exposes 5 cardinal 720x1280 views with CM-02 flip_h=false and grid_manager.gd syncs enclaveTwinLiveState."""
+        loader_src = (ROOT / "engine" / "willow_studio_loader.gd").read_text(encoding="utf-8")
+        self.assertIn("class_name WillowStudioLoader", loader_src)
+        for vid in (
+            "01_front_0deg",
+            "02_side_right_90deg",
+            "03_three_quarter_45deg",
+            "04_back_180deg",
+            "05_side_left_270deg",
+        ):
+            self.assertIn(f'"{vid}"', loader_src)
+        self.assertIn("Image.load_from_file(", loader_src)
+        self.assertIn("ImageTexture.create_from_image(", loader_src)
+        self.assertIn("CanvasTexture.new()", loader_src)
+        self.assertIn("get_view_atlas_texture(", loader_src)
+        self.assertIn('"flip_h": false', loader_src)
+
+        gm_src = (ROOT / "engine" / "grid_manager.gd").read_text(encoding="utf-8")
+        self.assertIn("func sync_enclave_twin_concordance(", gm_src)
+        self.assertIn("enclaveTwinLiveState", gm_src)
+        self.assertNotIn("/home/" + "joe", gm_src)
+
+
+def tearDownModule() -> None:
+    shutil.rmtree(ROOT / "tests" / "__pycache__", ignore_errors=True)
+    shutil.rmtree(ROOT / "tools" / "__pycache__", ignore_errors=True)
+
 
 if __name__ == "__main__":
     unittest.main()
+

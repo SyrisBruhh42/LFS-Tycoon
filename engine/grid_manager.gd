@@ -1200,6 +1200,44 @@ func export_willow_wardrobe_bridge(path: String = "user://willow_wardrobe_entitl
 	return payload
 
 
+## Reads enclaveTwinLiveState from ~/.local/share/lfs-aegis/aegis_asset_bridge.json and updates enclaveConcordance when present.
+func sync_enclave_twin_concordance(bridge_path: String = "") -> Dictionary:
+	var base_bridge: Dictionary = catalog._load_json_dict("res://content/aegis_asset_bridge.json")
+	var concordance: Dictionary = (base_bridge.get("enclaveConcordance", {}) as Dictionary).duplicate(true)
+	var resolved_path := bridge_path.strip_edges()
+	if resolved_path == "":
+		var xdg_data := OS.get_environment("XDG_DATA_HOME").strip_edges()
+		if xdg_data == "":
+			var home_dir := OS.get_environment("HOME").strip_edges()
+			if home_dir != "":
+				xdg_data = home_dir.path_join(".local/share")
+		if xdg_data != "":
+			resolved_path = xdg_data.path_join("lfs-aegis/aegis_asset_bridge.json")
+	if resolved_path != "" and FileAccess.file_exists(resolved_path):
+		var live_bridge: Dictionary = catalog._load_json_dict(resolved_path)
+		var twin_state: Dictionary = {}
+		if live_bridge.has("enclaveTwinLiveState") and typeof(live_bridge["enclaveTwinLiveState"]) == TYPE_DICTIONARY:
+			twin_state = live_bridge["enclaveTwinLiveState"]
+		elif live_bridge.has("partitions") and typeof(live_bridge["partitions"]) == TYPE_DICTIONARY:
+			var parts: Dictionary = live_bridge["partitions"]
+			for pk in parts.keys():
+				var p_val: Variant = parts[pk]
+				if typeof(p_val) == TYPE_DICTIONARY and (p_val as Dictionary).has("enclaveTwinLiveState"):
+					var candidate: Variant = (p_val as Dictionary)["enclaveTwinLiveState"]
+					if typeof(candidate) == TYPE_DICTIONARY and not (candidate as Dictionary).is_empty():
+						twin_state = candidate
+						break
+		if not twin_state.is_empty():
+			concordance["enclaveTwinLiveState"] = twin_state.duplicate(true)
+			if twin_state.has("citizens") and typeof(twin_state["citizens"]) == TYPE_DICTIONARY:
+				var citizens: Dictionary = twin_state["citizens"]
+				if citizens.has("enclave_07_willow"):
+					concordance["willowLiveState"] = citizens["enclave_07_willow"]
+			if twin_state.has("kp_exo"):
+				concordance["kp_exo"] = twin_state["kp_exo"]
+	return concordance
+
+
 ## Sockets a socket_in_tool capsule instance into the target tool (default: active player_tool).
 func socket_capsule_into_tool(socket_inst: Dictionary, target_tool: Dictionary = {}) -> bool:
 	var tool_ref: Dictionary = player_tool if target_tool.is_empty() else target_tool
@@ -1265,8 +1303,8 @@ func hot_reload_catalog(extra_dirs: Array = []) -> Dictionary:
 		saved_tile_cats[i] = catalog.block_int_to_id[c_int] if (c_int >= 0 and c_int < catalog.block_int_to_id.size()) else ""
 
 	catalog.load_directory_into_catalog("res://content/capsules")
-	var factory_mirror := "/home/joe/.local/share/lfs-tycoon-factory/repo/content/capsules"
-	if DirAccess.dir_exists_absolute(factory_mirror):
+	var factory_mirror := OS.get_environment("LFS_TYCOON_LIVE_CAPSULES_DIR").strip_edges()
+	if factory_mirror != "" and DirAccess.dir_exists_absolute(factory_mirror):
 		catalog.load_directory_into_catalog(factory_mirror)
 	if DirAccess.dir_exists_absolute("user://live_capsules"):
 		catalog.load_directory_into_catalog("user://live_capsules")

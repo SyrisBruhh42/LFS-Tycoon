@@ -18,24 +18,28 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 CAPSULE_RE = re.compile(r"^content/capsules/([a-z0-9_]{1,40})/([a-z0-9_]{1,80})/capsule\.json$")
-PROPOSAL_RE = re.compile(r"^proposals/[a-z0-9_]{1,80}\.md$")
+GUILD_CAPSULE_RE = re.compile(r"^(?:guild/)?content/capsules/willow-guild-[a-z0-9-]{1,80}\.json$")
+PROPOSAL_RE = re.compile(r"^(?:guild/)?proposals/[a-z0-9_-]{1,80}\.md$")
 MAX_CAPSULES = 5
 MAX_CAPSULE_BYTES = 32 * 1024
 MAX_PROPOSAL_BYTES = 16 * 1024
 
 
-def git(*args: str) -> str:
-    return subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True, check=True).stdout
+def git(*args: str, cwd: Path = ROOT) -> str:
+    return subprocess.run(["git", *args], cwd=cwd, capture_output=True, text=True, check=True).stdout
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Reject content changes that stray outside new capsule folders.")
+    ap.add_argument("--root", type=Path, default=ROOT, help="Project or Guild root directory")
     ap.add_argument("--base", default="origin/main")
     ap.add_argument("--head", default="HEAD")
     args = ap.parse_args()
+    root_dir = args.root.resolve()
+    is_guild = ((root_dir / "vocab" / "core_verbs.json").is_file() and root_dir.name == "guild") or (root_dir / "guild_schema.json").is_file()
 
     try:
-        out = git("diff", "--name-status", "--no-renames", f"{args.base}...{args.head}")
+        out = git("diff", "--name-status", "--no-renames", f"{args.base}...{args.head}", cwd=root_dir)
     except subprocess.CalledProcessError as exc:
         print(f"PATH GUARD ERROR: cannot diff {args.base}...{args.head}: {exc.stderr.strip()}")
         return 2
@@ -48,10 +52,10 @@ def main() -> int:
             errors.append(f"{path}: status '{status}' not allowed (content sessions may only ADD files).")
             continue
         try:
-            size = int(git("cat-file", "-s", f"{args.head}:{path}").strip())
+            size = int(git("cat-file", "-s", f"{args.head}:{path}", cwd=root_dir).strip())
         except (subprocess.CalledProcessError, ValueError):
             size = 0
-        if CAPSULE_RE.match(path):
+        if CAPSULE_RE.match(path) or (is_guild and GUILD_CAPSULE_RE.match(path)):
             capsules += 1
             if size > MAX_CAPSULE_BYTES:
                 errors.append(f"{path}: {size} bytes exceeds {MAX_CAPSULE_BYTES}.")
@@ -76,3 +80,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+

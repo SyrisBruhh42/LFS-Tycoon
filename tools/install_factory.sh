@@ -11,16 +11,19 @@
 #   ~/.secrets/jules_api_key                 API key, mode 600 (never committed, never logged)
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_SRC="${LFS_SUITE_ROOT:-$(cd "$SCRIPT_DIR/../../.." && pwd)}/3-lfs-aegis-linux/capsules/lfs-tycoon"
+FACTORY_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/lfs-tycoon-factory"
 REPO_SLUG="SyrisBruhh42/LFS-Tycoon"
-MIRROR="$HOME/.local/share/lfs-tycoon-factory/repo"
-UNIT_DIR="$HOME/.config/systemd/user"
+MIRROR="$FACTORY_ROOT/repo"
+UNIT_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user"
 NAME="lfs-tycoon-factory"
 
 if [[ "${1:-}" == "--uninstall" ]]; then
   systemctl --user disable --now "$NAME.timer" 2>/dev/null || true
   rm -f "$UNIT_DIR/$NAME.service" "$UNIT_DIR/$NAME.timer"
   systemctl --user daemon-reload
-  rm -rf "$HOME/.local/share/lfs-tycoon-factory"
+  rm -rf "$FACTORY_ROOT"
   echo "Uninstalled. State and logs remain in ~/.local/state/lfs-tycoon-factory (delete manually if wanted)."
   exit 0
 fi

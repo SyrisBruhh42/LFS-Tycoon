@@ -23,11 +23,13 @@ import random
 import sys
 from pathlib import Path
 
+sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT / "tools") not in sys.path:
     sys.path.insert(0, str(ROOT / "tools"))
 
 import content_graph  # noqa: E402
+
 
 DESIGN = ROOT / "design" / "frictions.json"
 PACING = ROOT / "design" / "pacing.json"

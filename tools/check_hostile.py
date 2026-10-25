@@ -7,6 +7,7 @@ so an argparse typo or a crashed checker can never produce a vacuous pass.
 """
 from __future__ import annotations
 
+import argparse
 import subprocess
 import sys
 from pathlib import Path
@@ -18,7 +19,7 @@ EXPECTED_CORE = 20
 EXPECTED_STATIC = 4
 
 
-def _verify_corpus(corpus_root: Path, expected_count: int, label: str) -> tuple[bool, int]:
+def _verify_corpus(corpus_root: Path, expected_count: int, label: str, root_dir: Path = ROOT) -> tuple[bool, int]:
     hostile_dir = corpus_root / "hostile"
     if not hostile_dir.exists():
         print(f"FAILED: missing {label} hostile directory: {hostile_dir}")
@@ -27,9 +28,10 @@ def _verify_corpus(corpus_root: Path, expected_count: int, label: str) -> tuple[
     if len(dirs) < expected_count:
         print(f"FAILED: expected at least {expected_count} {label} hostile capsules, found {len(dirs)}.")
         return False, len(dirs)
+    checker_script = Path(__file__).resolve().parent / "check_capsules.py"
     res = subprocess.run(
-        [sys.executable, "tools/check_capsules.py", "--strict", "--dir", str(corpus_root)],
-        cwd=ROOT,
+        [sys.executable, str(checker_script), "--root", str(root_dir), "--strict", "--dir", str(corpus_root)],
+        cwd=root_dir,
         capture_output=True,
         text=True,
     )
@@ -47,10 +49,17 @@ def _verify_corpus(corpus_root: Path, expected_count: int, label: str) -> tuple[
 
 
 def main() -> int:
-    ok_core, n_core = _verify_corpus(HOSTILE_ROOT, EXPECTED_CORE, "runtime/core")
+    ap = argparse.ArgumentParser(description="Verify hostile capsule corpora are rejected by check_capsules.py.")
+    ap.add_argument("--root", type=Path, default=ROOT, help="Project root directory")
+    args = ap.parse_args()
+    root_dir = args.root.resolve()
+    hostile_root = root_dir / "tests" / "hostile_capsules"
+    hostile_static_root = root_dir / "tests" / "hostile_static"
+
+    ok_core, n_core = _verify_corpus(hostile_root, EXPECTED_CORE, "runtime/core", root_dir)
     if not ok_core:
         return 1
-    ok_static, n_static = _verify_corpus(HOSTILE_STATIC_ROOT, EXPECTED_STATIC, "static/progression")
+    ok_static, n_static = _verify_corpus(hostile_static_root, EXPECTED_STATIC, "static/progression", root_dir)
     if not ok_static:
         return 1
     total = n_core + n_static
@@ -63,4 +72,5 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
 
