@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Quill Crucible",
+    "description": "An ochre crucible apparatus utilized by the blind monastic archivists of the Infinite Scriptorium of the Lithic Choir. Traded by the Quill Peddler, it is a marvel of smeltery alloy refining. When placed on a tile or socketed into a tool, it passively reduces battery drain. With each strike, it consumes brittle Hollow Quill Ore to synthesize acoustic resonance, extending your auto-tool runtime.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "crucible",
+    "solves_auto_tool_runtime",
+    "path_placeable_device",
+    "craft_smeltery_alloy",
+    "logic_canonical",
+    "theme_lithic_choir",
+    "bracket_1",
+    "skill_school_pewter_cinder",
+    "ochre"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "shared.quarry_resonance_charge": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": 0.75
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/quill_hollow_fa6d",
+          "qty": 1
+        },
+        {
+          "act": "var_add",
+          "var": "shared.quarry_resonance_charge",
+          "by": "5.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/quill_peddler_0c07",
+      "price": {
+        "upgrades/cinder_munchkin_suite_315d": 1,
+        "blocks/quill_hollow_fa6d": 30
+      },
+      "unlock_if": "player.max_depth >= 15.0 and player.max_depth <= 45.0 and shared.quarry_resonance_charge >= 0.0"
+    }
+  ],
+  "offline": "exact"
+}
