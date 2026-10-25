@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Mortar Sigil",
+    "description": "Forged from pewter gravel in a quill crucible mortar. A relic of The Perpetual Clockwork Deep-Bore Syndicate, its pneumatic resonance channels excess force sideways. Traded by the gravel vendor.",
+    "author": "core:ai",
+    "rarity": "common"
+  },
+  "affordances": ["socket_in_tool", "equip_tool", "carry"],
+  "tags": ["tool", "solves_overkill_waste", "path_forge_material", "craft_skyrim_enchant", "logic_plausible", "theme_clockwork_syndicate", "bracket_2", "skill_school_manual"],
+  "stats": {
+    "base_value": 20.0,
+    "base_dps": 18.0,
+    "durability_max": 300.0,
+    "is_rechargeable": 1,
+    "tool_tier": 3,
+    "tool_type": "PICKAXE"
+  },
+  "vars": {
+    "durability_left": 300.0
+  },
+  "unlock_if": "shared.quarry_resonance_charge >= 50.0 and player.max_depth >= 150.0 and player.max_depth <= 250.0",
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_vendor_51cb",
+      "price": {
+        "devices/quill_crucible_charm_694f": 1,
+        "blocks/pewter_gravel_d53e": 100
+      }
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "tool.overkill_damage > 0.0 and ctx.is_secondary_damage == 0.0",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "neighbors_4",
+          "amount": "tool.overkill_damage * 0.3"
+        }
+      ]
+    }
+  ],
+  "offline": "coarse"
+}
