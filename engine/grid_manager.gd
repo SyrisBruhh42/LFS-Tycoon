@@ -994,6 +994,25 @@ func get_vendor_unlock_depth(vendor_capsule_id: String) -> int:
 	return maxi(0, int(round(base_unlock - disc)))
 
 
+## Returns true if item_id is a permanent Skill Bracket, Guild Mastery, Homestead Station, or Achievement Relic
+## that gates recipes in offered_by[].price without being destroyed when a recipe is forged.
+func is_permanent_prerequisite(item_id: String) -> bool:
+	if item_id.begins_with("upgrades/"):
+		return true
+	if catalog == null or not catalog.capsules.has(item_id):
+		return false
+	var cap: Dictionary = catalog.capsules[item_id]
+	var tags: Array = cap.get("tags", [])
+	for t in tags:
+		var ts := str(t)
+		if ts == "skill_bracket" or ts == "craft_skill_mastery" or ts == "craft_homestead_station" or ts == "craft_achievement_relic" or ts.begins_with("skill_school_"):
+			return true
+	var affs: Array = cap.get("affordances", [])
+	if affs.has("place_in_house"):
+		return true
+	return false
+
+
 ## Evaluates whether a vendor offer can currently be purchased by the player.
 func can_buy_vendor_offer(vendor_id: String, offer: Dictionary) -> Dictionary:
 	var req_depth := get_vendor_unlock_depth(vendor_id)
@@ -1009,6 +1028,8 @@ func can_buy_vendor_offer(vendor_id: String, offer: Dictionary) -> Dictionary:
 		var req_qty := int(price[curr_id])
 		if req_qty > 0 and not can_satisfy_requirement(str(curr_id), 0, req_qty):
 			var c_name := str(catalog.capsules.get(str(curr_id), {}).get("meta", {}).get("name", str(curr_id)))
+			if is_permanent_prerequisite(str(curr_id)):
+				return {"can_buy": false, "reason": "Requires Skill/Station: %s" % c_name}
 			return {"can_buy": false, "reason": "Need %d %s" % [req_qty, c_name]}
 	return {"can_buy": true, "reason": "Available"}
 
@@ -1025,7 +1046,7 @@ func buy_vendor_offer(vendor_id: String, offer: Dictionary, free_grant: bool = f
 		var price: Dictionary = offer.get("price", {})
 		for curr_id in price.keys():
 			var req_qty := int(price[curr_id])
-			if req_qty > 0:
+			if req_qty > 0 and not is_permanent_prerequisite(str(curr_id)):
 				action_consume_item(str(curr_id), 0, req_qty)
 
 	var cap_id := str(offer.get("capsule_id", ""))

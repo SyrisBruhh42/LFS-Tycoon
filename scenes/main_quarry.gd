@@ -845,13 +845,26 @@ func _build_shop_drawer() -> void:
 
 
 func _build_forge_drawer() -> void:
-	_drawer_title.text = "MULTI-DISCIPLINARY FORGE, ALCHEMY & SYNERGY ANVIL"
+	_drawer_title.text = "MULTI-DISCIPLINARY FORGE, MODULAR SKILL BRACKETS & ANVIL"
+
+	var unlocked_skills: Array[String] = []
+	for inst in grid.player_owned_capsules:
+		if bool(inst.get("destroyed", false)):
+			continue
+		var cid := str(inst.get("capsule_id", ""))
+		if grid.is_permanent_prerequisite(cid):
+			var s_nm := str(catalog.capsules.get(cid, {}).get("meta", {}).get("name", cid))
+			if not unlocked_skills.has(s_nm):
+				unlocked_skills.append(s_nm)
 
 	var sub_lbl := Label.new()
 	sub_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	sub_lbl.add_theme_font_size_override("font_size", 11)
 	sub_lbl.add_theme_color_override("font_color", Color(0.78, 0.90, 0.98))
-	sub_lbl.text = "Combine mined strata ores, socketed Tinker parts, prerequisite tools (Terraria-style fusion inherits sockets!), and arcane reagents across 10 disciplines."
+	var skill_summary := "None yet (Unlock in Discipline 7 / 9!)" if unlocked_skills.is_empty() else ", ".join(PackedStringArray(unlocked_skills.slice(0, 5)))
+	sub_lbl.text = "Active Skill Brackets & Stations (%d): %s\n(Skill Brackets & Stations are verified and KEPT permanently when forging; base tools transfer socketed Tinker parts!)" % [
+		unlocked_skills.size(), skill_summary
+	]
 	_drawer_body.add_child(sub_lbl)
 
 	var disc_specs := [
@@ -862,9 +875,9 @@ func _build_forge_drawer() -> void:
 		["craft_alchemy_potion", "4. Multi-Reagent Alchemy & Decoctions"],
 		["craft_spell_grimoire", "5. Quarry Geomancy Spells & Grimoires"],
 		["craft_smeltery_alloy", "6. Smeltery Alloying & Crucible Transmutation"],
-		["craft_skill_mastery", "7. RPG Skill Trees & Guild Mastery Treatises"],
+		["craft_skill_mastery", "7. Expandable Modular Skill Brackets & Guild Masteries"],
 		["craft_achievement_relic", "8. Quarry Achievement Seals & Milestone Trophies"],
-		["craft_homestead_station", "9. Homestead Workshop Benches & Architecture"],
+		["craft_homestead_station", "9. Homestead Workshop Benches & Stations"],
 		["craft_clockwork_automaton", "10. Clockwork Automatons & Autonomous Field Rigs"]
 	]
 
@@ -904,7 +917,8 @@ func _build_forge_drawer() -> void:
 			var price_dict: Dictionary = offer.get("price", {})
 			var has_craft_tag := false
 			for t_var in tags_arr:
-				if str(t_var).begins_with("craft_"):
+				var ts := str(t_var)
+				if ts.begins_with("craft_") or ts == "skill_bracket" or ts.begins_with("skill_school_"):
 					has_craft_tag = true
 					break
 			var has_item_reagent := false
@@ -933,7 +947,7 @@ func _build_forge_drawer() -> void:
 					forge_entries.append(entry_dict)
 				elif forge_discipline_filter == "craft_spell_grimoire" and cid.begins_with("books/"):
 					forge_entries.append(entry_dict)
-				elif forge_discipline_filter == "craft_skill_mastery" and cid.begins_with("upgrades/"):
+				elif forge_discipline_filter == "craft_skill_mastery" and (cid.begins_with("upgrades/") or tags_arr.has("skill_bracket")):
 					forge_entries.append(entry_dict)
 				elif forge_discipline_filter == "craft_homestead_station" and cap.get("affordances", []).has("place_in_house"):
 					forge_entries.append(entry_dict)
@@ -994,7 +1008,17 @@ func _build_forge_drawer() -> void:
 		elif tags_arr.has("logic_plausible"):
 			logic_badge = "[PLAUSIBLE]"
 
-		var price_parts: Array[String] = []
+		var bracket_badge := ""
+		var theme_badge := ""
+		for t_var in tags_arr:
+			var ts := str(t_var)
+			if ts.begins_with("bracket_"):
+				bracket_badge = " [B" + ts.substr(8) + "]"
+			elif ts.begins_with("theme_"):
+				theme_badge = " [" + ts.substr(6) + "]"
+
+		var kept_parts: Array[String] = []
+		var consumed_parts: Array[String] = []
 		var price_dict: Dictionary = offer.get("price", {})
 		for curr_id in price_dict.keys():
 			var c_str := str(curr_id)
@@ -1002,8 +1026,16 @@ func _build_forge_drawer() -> void:
 			var have_q := grid.get_owned_count(c_str, 0)
 			var c_nm := str(catalog.capsules.get(c_str, {}).get("meta", {}).get("name", c_str.get_file()))
 			var mark := "✓" if have_q >= req_q else "✗"
-			price_parts.append("%s %s (%d/%d)" % [mark, c_nm, have_q, req_q])
-		var recipe_str := " + ".join(PackedStringArray(price_parts))
+			if grid.is_permanent_prerequisite(c_str):
+				kept_parts.append("%s %s (Skill/Station Kept)" % [mark, c_nm])
+			else:
+				consumed_parts.append("%s %s (%d/%d)" % [mark, c_nm, have_q, req_q])
+		var recipe_segments: Array[String] = []
+		if not kept_parts.is_empty():
+			recipe_segments.append("Requires: " + ", ".join(PackedStringArray(kept_parts)))
+		if not consumed_parts.is_empty():
+			recipe_segments.append("Consumes: " + " + ".join(PackedStringArray(consumed_parts)))
+		var recipe_str := "  |  ".join(PackedStringArray(recipe_segments))
 		var v_name := str(catalog.capsules.get(v_id, {}).get("meta", {}).get("name", v_id.get_file()))
 
 		var item_box := VBoxContainer.new()
@@ -1014,7 +1046,7 @@ func _build_forge_drawer() -> void:
 
 		var lbl := Label.new()
 		lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		lbl.text = "%s %s — Station/Artisan: %s" % [logic_badge, nm, v_name]
+		lbl.text = "%s%s%s %s — Artisan: %s" % [logic_badge, bracket_badge, theme_badge, nm, v_name]
 		lbl.add_theme_color_override("font_color", Color(0.98, 0.92, 0.65) if can_forge else Color(0.68, 0.70, 0.75))
 		r1.add_child(lbl)
 
@@ -1037,7 +1069,7 @@ func _build_forge_drawer() -> void:
 		rec_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		rec_lbl.add_theme_font_size_override("font_size", 10)
 		rec_lbl.add_theme_color_override("font_color", Color(0.62, 0.92, 0.75) if can_forge else Color(0.85, 0.68, 0.62))
-		rec_lbl.text = "   Recipe: " + recipe_str
+		rec_lbl.text = "   " + recipe_str
 		item_box.add_child(rec_lbl)
 
 		var d_lbl := Label.new()

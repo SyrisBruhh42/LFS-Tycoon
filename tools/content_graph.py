@@ -112,6 +112,9 @@ class Graph:
         self.consumers: dict[str, set[str]] = defaultdict(set)
         self.item_vendors: dict[str, set[str]] = defaultdict(set)
         self.item_blocks: dict[str, set[str]] = defaultdict(set)
+        self.item_prereqs: dict[str, set[str]] = defaultdict(set)
+        self.prereq_dependents: dict[str, set[str]] = defaultdict(set)
+        self.item_min_depth: dict[str, float] = {}
         self._index()
 
     # ---- construction
@@ -126,15 +129,18 @@ class Graph:
                 if b in self.blocks:
                     self.item_blocks[cid].add(b)
                     self.consumers[b].add(cid)
+            min_d: float | None = None
             for off in d.get("offered_by", []) or []:
                 vid = str(off.get("vendor", ""))
                 gate = 0.0
                 m = DEPTH_RE.search(str(off.get("unlock_if", "")))
                 if m:
                     gate = float(m.group(1))
+                eff_d = max(self._npc_depth(vid), gate)
+                if min_d is None or eff_d < min_d:
+                    min_d = eff_d
                 price = {k: v for k, v in (off.get("price", {}) or {}).items()}
-                self.offers.append({"item": cid, "vendor": vid, "price": price,
-                                    "depth": max(self._npc_depth(vid), gate)})
+                self.offers.append({"item": cid, "vendor": vid, "price": price, "depth": eff_d})
                 self.vendor_offers[vid] += 1
                 self.item_vendors[cid].add(vid)
                 for b in price:
@@ -142,6 +148,10 @@ class Graph:
                     if b in self.blocks:
                         self.item_blocks[cid].add(b)
                         self.consumers[b].add(cid)
+                    elif b in self.items:
+                        self.item_prereqs[cid].add(b)
+                        self.prereq_dependents[b].add(cid)
+            self.item_min_depth[cid] = min_d if min_d is not None else 0.0
         for bid, d in self.blocks.items():
             for biome in (d.get("biome_weights") or {}):
                 self.consumers[bid].add(biome)
@@ -149,6 +159,122 @@ class Graph:
             for bid in (d.get("biome_weights") or {}):
                 if bid in self.blocks:
                     self.consumers[bid].add(bio)
+
+    # ---- modular skill brackets & endgame themes
+    def is_skill_or_station_node(self, cid: str) -> bool:
+        d = self.items.get(cid)
+        if not d:
+            return False
+        tags = set(d.get("tags", []) or [])
+        if tags & {"skill_bracket", "craft_skill_mastery", "craft_homestead_station", "craft_achievement_relic"}:
+            return True
+        if any(str(t).startswith("skill_school_") for t in tags):
+            return True
+        return cid.startswith("upgrades/")
+
+    def bracket_of(self, cid: str) -> int:
+        d = self.caps.get(cid, {})
+        for t in d.get("tags", []) or []:
+            if isinstance(t, str) and re.match(r"^bracket_[1-5]$", t):
+                return int(t.split("_")[1])
+        z = self.item_min_depth.get(cid, 0.0)
+        if z < 250:
+            return 1
+        if z < 700:
+            return 2
+        if z < 1400:
+            return 3
+        if z < 2200:
+            return 4
+        return 5
+
+    def skill_school_of(self, cid: str) -> str:
+        d = self.caps.get(cid, {})
+        for t in d.get("tags", []) or []:
+            if isinstance(t, str) and t.startswith("skill_school_"):
+                return t
+        motifs = sorted(self.tok.get(cid, (set(), set()))[0])
+        head = motifs[0] if motifs else cid.split("/")[-1].split("_")[0]
+        return f"skill_school_{head}"
+
+    def theme_of(self, cid: str) -> str | None:
+        d = self.caps.get(cid, {})
+        for t in d.get("tags", []) or []:
+            if isinstance(t, str) and t.startswith("theme_"):
+                return t
+        return None
+
+    def skill_bracket_nodes(self, ceiling: float = 99999.0) -> list[dict]:
+        out: list[dict] = []
+        for cid in sorted(self.items):
+            if not self.is_skill_or_station_node(cid):
+                continue
+            d_unlock = self.item_min_depth.get(cid, 0.0)
+            if d_unlock > ceiling:
+                continue
+            d = self.items[cid]
+            tags = d.get("tags", []) or []
+            explicit_skill = any(
+                isinstance(t, str) and (t in ("skill_bracket", "craft_skill_mastery", "craft_homestead_station") or t.startswith("skill_school_"))
+                for t in tags
+            )
+            deps = sorted(self.prereq_dependents.get(cid, set()))
+            out.append({
+                "id": cid,
+                "name": d.get("meta", {}).get("name", cid),
+                "desc": d.get("meta", {}).get("description", ""),
+                "bracket": self.bracket_of(cid),
+                "school": self.skill_school_of(cid),
+                "theme": self.theme_of(cid),
+                "unlock_depth": d_unlock,
+                "explicit_skill": explicit_skill,
+                "dependent_count": len(deps),
+                "dependents": deps,
+            })
+        return out
+
+    def expandable_skill_schools(self, ceiling: float = 99999.0) -> list[dict]:
+        by_school: dict[str, list[dict]] = defaultdict(list)
+        for node in self.skill_bracket_nodes(ceiling):
+            if node["explicit_skill"] or node["dependent_count"] > 0:
+                by_school[node["school"]].append(node)
+        out: list[dict] = []
+        for school, nodes in sorted(by_school.items()):
+            nodes.sort(key=lambda x: (x["bracket"], x["unlock_depth"]))
+            top = nodes[-1]
+            if top["bracket"] < 5:
+                out.append({
+                    "school": school,
+                    "current_bracket": top["bracket"],
+                    "next_bracket": top["bracket"] + 1,
+                    "prev_capsule_id": top["id"],
+                    "prev_name": top["name"],
+                    "prev_depth": top["unlock_depth"],
+                    "theme": top["theme"],
+                })
+        return out
+
+    def discovered_themes(self) -> dict[str, dict]:
+        themes: dict[str, dict] = {}
+        for cid, d in self.caps.items():
+            t_tag = self.theme_of(cid)
+            if not t_tag:
+                continue
+            info = themes.setdefault(t_tag, {"members": [], "disciplines": set(), "brackets": set()})
+            info["members"].append(cid)
+            info["brackets"].add(self.bracket_of(cid))
+            for t in d.get("tags", []) or []:
+                if isinstance(t, str) and (t.startswith("craft_") or t.startswith("world_")):
+                    info["disciplines"].add(t)
+        return {
+            k: {
+                "member_count": len(v["members"]),
+                "members": sorted(v["members"])[:12],
+                "disciplines": sorted(v["disciplines"]),
+                "brackets": sorted(v["brackets"]),
+            }
+            for k, v in sorted(themes.items())
+        }
 
     # ---- block helpers
     def z_unlock(self, bid: str) -> float:
@@ -198,6 +324,9 @@ class Graph:
             for v in vendors:
                 if v in self.npcs:
                     best = max(best, self.pair_affinity(v, b))
+        for p_item in self.item_prereqs.get(item, set()):
+            if p_item in self.items:
+                best = max(best, self.pair_affinity(item, p_item))
         return best
 
     # ---- anchor selection for briefs
@@ -246,12 +375,17 @@ class Graph:
         unobt, ahead = [], []
         for o in self.offers:
             for b in o["price"]:
-                if b not in self.blocks:
+                if b in self.blocks:
+                    if not self.obtainable(b):
+                        unobt.append([o["item"], b, "not mineable"])
+                    elif self.z_unlock(b) > o["depth"] + AHEAD_SLACK:
+                        ahead.append([o["item"], b, f"z_unlock {self.z_unlock(b):.0f} vs offer depth {o['depth']:.0f}"])
+                elif b in self.items:
+                    req_d = self.item_min_depth.get(b, 0.0)
+                    if req_d > o["depth"] + AHEAD_SLACK:
+                        ahead.append([o["item"], b, f"prereq depth {req_d:.0f} vs offer depth {o['depth']:.0f}"])
+                else:
                     unobt.append([o["item"], b, "dangling"])
-                elif not self.obtainable(b):
-                    unobt.append([o["item"], b, "not mineable"])
-                elif self.z_unlock(b) > o["depth"] + AHEAD_SLACK:
-                    ahead.append([o["item"], b, f"z_unlock {self.z_unlock(b):.0f} vs offer depth {o['depth']:.0f}"])
         prices = Counter(b for o in self.offers for b in o["price"])
         total_p = sum(prices.values()) or 1
         top3 = prices.most_common(3)
@@ -274,6 +408,11 @@ class Graph:
             for b in bs:
                 parent[find(cid)] = find(b)
                 edges += 1
+        for cid, ps in self.item_prereqs.items():
+            for p_item in ps:
+                if p_item in parent:
+                    parent[find(cid)] = find(p_item)
+                    edges += 1
         for bid, cons in self.consumers.items():
             for c in cons:
                 if c in parent and c.startswith("biomes/"):
@@ -285,10 +424,21 @@ class Graph:
         rec_ids = recent_ids(recent)
         rec_decl = Counter((declared_tier(self.caps[i]) or "untagged") for i in rec_ids if i in self.items)
         top_v, share_v = self.vendor_share()
+        skill_nodes = self.skill_bracket_nodes()
+        explicit_skills = [s for s in skill_nodes if s["explicit_skill"]]
+        underused_skills = [s["id"] for s in explicit_skills if s["dependent_count"] < 2]
+        themes = self.discovered_themes()
         return {
             "capsules": len(self.caps), "items": len(self.items), "blocks": len(self.blocks),
             "npcs": len(self.npcs), "biomes": len(self.biomes),
             "orphan_blocks": self.orphan_blocks(), "orphan_npcs": self.orphan_npcs(),
+            "skill_brackets": {
+                "total_nodes": len(skill_nodes),
+                "explicit_skill_brackets": len(explicit_skills),
+                "under_assigned_skills": underused_skills[:12],
+                "expandable_schools": self.expandable_skill_schools()[:8],
+            },
+            "themes": themes,
             "vendor_concentration": {"top": top_v, "share": round(share_v, 3)},
             "currency_concentration": {"top3": [k for k, _ in top3], "share": round(sum(n for _, n in top3) / total_p, 3)},
             "unobtainable_prices": unobt, "ahead_of_curve_prices": ahead,
@@ -320,6 +470,8 @@ def main() -> int:
     print(f"CAPSULES {sc['capsules']}  items={sc['items']} blocks={sc['blocks']} npcs={sc['npcs']} biomes={sc['biomes']}")
     print(f"orphan blocks ({len(sc['orphan_blocks'])}): {', '.join(sc['orphan_blocks']) or '-'}")
     print(f"orphan npcs   ({len(sc['orphan_npcs'])}): {', '.join(sc['orphan_npcs']) or '-'}")
+    sb = sc["skill_brackets"]
+    print(f"skill nodes   ({sb['total_nodes']} total, {sb['explicit_skill_brackets']} explicit): under-assigned={len(sb['under_assigned_skills'])} expandable_schools={len(sb['expandable_schools'])}")
     vc, cc = sc["vendor_concentration"], sc["currency_concentration"]
     print(f"vendor concentration: {vc['top']} holds {vc['share']:.1%} of offers")
     print(f"currency concentration: top3 {cc['top3']} = {cc['share']:.1%} of price entries")

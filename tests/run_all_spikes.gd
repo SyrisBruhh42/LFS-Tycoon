@@ -430,9 +430,9 @@ func _run_suite() -> void:
 		"claimed=%d, bought=%s, bulk_gold=%d, scene_ok=%s" % [claimed_cnt, str(buy_res.get("ok", false)), bulk_gold, str(scene_ok)])
 
 	# ------------------------------------------------------------------
-	# SPIKE S9: Multi-Disciplinary Forge, Terraria Socket Fusion & Trickle Hot-Patcher
+	# SPIKE S9: Modular Skill Brackets, Terraria Socket Fusion & Trickle Hot-Patcher
 	# ------------------------------------------------------------------
-	print("\n--- SPIKE S9: Terraria Item Fusion (Socket Inheritance) & Trickle Hot-Patcher ---")
+	print("\n--- SPIKE S9: Modular Skill Brackets, Terraria Item Fusion & Trickle Hot-Patcher ---")
 	grid.player_owned_capsules.clear()
 	grid.inventory.clear()
 	grid.grant_inventory_item("blocks/copper", 0, 25, "backpack")
@@ -444,9 +444,9 @@ func _run_suite() -> void:
 
 	catalog.capsules["tools/zzz_test_terraria_fused_pick"] = {
 		"schema": 1,
-		"meta": {"name": "Resonant Fused Pickaxe", "description": "Fused from Crude Stone Pickaxe + Copper.", "rarity": "rare"},
+		"meta": {"name": "Resonant Fused Pickaxe", "description": "Fused from Crude Stone Pickaxe + Copper under Bracket II.", "rarity": "rare"},
 		"affordances": ["carry", "equip_tool"],
-		"tags": ["tool", "craft_terraria_fusion", "logic_canonical"],
+		"tags": ["tool", "craft_terraria_fusion", "bracket_2", "skill_school_surveyor", "theme_lithic_choir", "logic_canonical"],
 		"stats": {"tool_type": "PICKAXE", "tool_tier": 2, "base_dps": 28.0},
 		"vars": {"durability_left": 500},
 		"modifiers": [],
@@ -454,13 +454,20 @@ func _run_suite() -> void:
 	}
 	var fusion_offer := {
 		"capsule_id": "tools/zzz_test_terraria_fused_pick",
-		"price": {"tools/crude_stone_pick": 1, "blocks/copper": 10},
+		"price": {"upgrades/surveyor_chalk_and_stencil": 1, "tools/crude_stone_pick": 1, "blocks/copper": 10},
 		"unlock_if": "player.max_depth >= 1"
 	}
+	# Before unlocking the Skill Bracket prerequisite, the recipe must be locked
+	var locked_before_skill: bool = not bool(grid.can_buy_vendor_offer("npcs/peddler_vayne", fusion_offer).get("can_buy", true))
+	# Unlock the Skill Bracket capsule
+	var skill_bracket_inst: Dictionary = grid.create_capsule_instance("upgrades/surveyor_chalk_and_stencil")
+	grid.player_owned_capsules.append(skill_bracket_inst)
+
 	var fuse_res: Dictionary = grid.buy_vendor_offer("npcs/peddler_vayne", fusion_offer, false)
 	var fused_inst: Dictionary = fuse_res.get("instance", {})
 	var inherited_sockets: Array = fused_inst.get("sockets", [])
 	var base_pick_consumed: bool = bool(base_pick.get("destroyed", false))
+	var skill_bracket_preserved: bool = not bool(skill_bracket_inst.get("destroyed", false)) and grid.get_owned_count("upgrades/surveyor_chalk_and_stencil", 0) == 1
 	catalog.capsules.erase("tools/zzz_test_terraria_fused_pick")
 
 	# Snapshot all 434 tile block string IDs before hot_reload_catalog()
@@ -474,10 +481,10 @@ func _run_suite() -> void:
 			id_shifts += 1
 
 	_assert_true(
-		socketed_ok and bool(fuse_res.get("ok", false)) and base_pick_consumed and inherited_sockets.size() == 1 and id_shifts == 0 and int(hot_res.get("total_capsules", 0)) >= 480,
-		"Terraria Multi-Item Fusion Consumes Prerequisite Tool, Inherits Socketed Tinker Parts & Hot-Reload Preserves 100% of Quarry Tiles",
-		"fused=%s, base_consumed=%s, inherited_sockets=%d, tile_id_shifts=%d, total_caps=%d" % [
-			str(fuse_res.get("ok", false)), str(base_pick_consumed), inherited_sockets.size(), id_shifts, int(hot_res.get("total_capsules", 0))
+		locked_before_skill and socketed_ok and bool(fuse_res.get("ok", false)) and base_pick_consumed and skill_bracket_preserved and inherited_sockets.size() == 1 and id_shifts == 0 and int(hot_res.get("total_capsules", 0)) >= 480,
+		"Modular Skill Bracket Gating (Preserved on Craft), Terraria Tool Fusion (Socket Inheritance) & Hot-Reload Tile Preservation",
+		"locked_before=%s, fused=%s, skill_kept=%s, base_consumed=%s, inherited_sockets=%d, tile_id_shifts=%d" % [
+			str(locked_before_skill), str(fuse_res.get("ok", false)), str(skill_bracket_preserved), str(base_pick_consumed), inherited_sockets.size(), id_shifts
 		]
 	)
 

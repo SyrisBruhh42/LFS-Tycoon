@@ -170,11 +170,11 @@
       "hint": "A crucible catalyst or kiln apparatus that consumes raw ore/slag (`consume_item`) on break or tick and refines/transmutes it (`spawn_item` or `set_shared_var`) into higher-tier material or resonance."
     },
     "rpg_skill_mastery_tree": {
-      "title": "RPG Skill Tree & Guild Mastery Treatise",
-      "archetype": "book",
-      "namespace": "books",
+      "title": "Expandable Modular Skill Bracket & Guild Mastery Node",
+      "archetype": "upgrade",
+      "namespace": "upgrades",
       "tag": "craft_skill_mastery",
-      "hint": "A progressive RPG mastery rank (Demolitionist, Hydro-Engineer, Geomancer, Tinkerer, or Assayer) with an `unlock_if` progression gate (`tool.tier`, `player.max_depth`, or `shared.*`) granting permanent specialization."
+      "hint": "Create a permanent, expandable Skill Bracket node (`upgrades/<slug>/capsule.json` or `books/<slug>/capsule.json`) tagged with `\"skill_bracket\"`, `\"bracket_<1..5>\"`, `\"skill_school_<slug>\"`, and `\"theme_<slug>\"`. Future recipes across all 11 systems will reference this capsule ID inside `offered_by[].price` as a non-consumed permanent skill requirement!"
     },
     "achievement_milestone_relic": {
       "title": "Quarry Achievement Seal & Milestone Trophy",
@@ -188,7 +188,7 @@
       "archetype": "upgrade",
       "namespace": "upgrades",
       "tag": "craft_homestead_station",
-      "hint": "A crafted homestead bench or architectural fixture (`place_in_house` affordance) built from multiple mineral strata that permanently enhances rested state, clean-hands bonuses, market value, or tool upkeep."
+      "hint": "A crafted homestead bench or architectural fixture (`place_in_house` affordance) built from multiple mineral strata that permanently enhances rested state, clean-hands bonuses, market value, or tool upkeep, and can act as a non-consumed station requirement in future recipes."
     },
     "clockwork_field_automaton": {
       "title": "Clockwork Automaton & Autonomous Field Rig",
@@ -198,16 +198,90 @@
       "hint": "A multi-part engineered quarry rig (`place_on_tile` affordance, `offline: \"coarse\"` or `\"exact\"`) forged from metal/rivet/cinder strata that autonomously mines, siphons fluids, or dampens hazards."
     }
   },
+  "modular_skill_brackets": {
+    "bracket_1": {
+      "rank": 1,
+      "title": "Bracket I — Novice / Frontier Initiate",
+      "depth_band": [0, 249],
+      "tag": "bracket_1",
+      "lore_epoch": "The Brass Ledger Frontier (Surface Claim & Sunken Bog)",
+      "recipe_rule": "1-2 shallow strata blocks; introduces foundational tools, apprentice skill brackets (`skill_school_<slug>`), or basic workshop benches."
+    },
+    "bracket_2": {
+      "rank": 2,
+      "title": "Bracket II — Apprentice / Journeyman Artisan",
+      "depth_band": [250, 699],
+      "tag": "bracket_2",
+      "lore_epoch": "The Calcified Foundry (Drowned Steam-Baronies of Rivet & Slag)",
+      "recipe_rule": "Requires a Bracket I Skill/Station or lower-tier item + 1-2 Foundry-depth strata ores in `offered_by[].price`."
+    },
+    "bracket_3": {
+      "rank": 3,
+      "title": "Bracket III — Adept / Guild Specialist",
+      "depth_band": [700, 1399],
+      "tag": "bracket_3",
+      "lore_epoch": "The Scriptorium of Hollow Quill (Monastic Lithic Archivists & Brine Vaults)",
+      "recipe_rule": "Requires a Bracket II Skill/Station or prerequisite tool + 2 mid-strata ores/reagents in `offered_by[].price`."
+    },
+    "bracket_4": {
+      "rank": 4,
+      "title": "Bracket IV — Master / Deep-Stratum Savant",
+      "depth_band": [1400, 2199],
+      "tag": "bracket_4",
+      "lore_epoch": "The Crucible of the Under-Sun (Basal Pyromancers & 8-Perimeter Obsidian Wardens)",
+      "recipe_rule": "Requires a Bracket III Skill/Station + 1 prerequisite item/tool + 1-2 deep strata blocks in `offered_by[].price`."
+    },
+    "bracket_5": {
+      "rank": 5,
+      "title": "Bracket V — Grandmaster / Abyssal Confluence",
+      "depth_band": [2200, 4000],
+      "tag": "bracket_5",
+      "lore_epoch": "The Singing Abyss & Paradox Ledger (Tectonic Harmonic Convergence)",
+      "recipe_rule": "Endgame Confluence uniting multiple systems: requires a Master Skill/Station + prerequisite gear/reagent + deep stratum block in `offered_by[].price`."
+    }
+  },
+  "endgame_themes": {
+    "theme_tectonic_crucible": {
+      "title": "The Grand Crucible of the Tectonic Leviathan",
+      "motifs": ["anvil", "crucible", "slag", "cinder", "ember", "bismuth", "bellows", "forge"],
+      "lore": "Ancient smith-lords of the Under-Sun Manifold who bound magma veins and anvilstone into self-tempering thermal drills and crucible transmutation rigs."
+    },
+    "theme_lithic_choir": {
+      "title": "The Infinite Scriptorium of the Lithic Choir",
+      "motifs": ["quill", "hollow", "quartz", "ledger", "sconce", "bell", "chisel", "calcite"],
+      "lore": "Blind monastic archivists of Quill Hollow who discovered that bedrock is frozen acoustic music, using zero-damage stalls and bell harmonics to shatter equal-depth contours."
+    },
+    "theme_clockwork_syndicate": {
+      "title": "The Perpetual Clockwork Deep-Bore Syndicate",
+      "motifs": ["rivet", "brass", "ochre", "gasket", "tin", "pewter", "plumb", "zinc"],
+      "lore": "The sunken steam-baronies and horologists who built self-feeding wind-up automatons, pneumatic paired-chest tubes, and autonomous deep-bore railways."
+    },
+    "theme_alkahest_hydro": {
+      "title": "The Alkahest Vitriol & Abyssal Hydro-Works",
+      "motifs": ["mica", "salt", "vitriol", "kettle", "mortar", "tallow", "loam", "pumice"],
+      "lore": "Subterranean hydro-alchemists who treat the 14x31 quarry as a terraced chemical alembic, flooding strata with brine and vitriol to soften and transmute rock before siphoning it dry."
+    },
+    "theme_obsidian_wardbreaker": {
+      "title": "The Sovereign Ward-Breakers of the Obsidian Seal",
+      "motifs": ["gravel", "wick", "flint", "shale", "basalt", "umber", "iron"],
+      "lore": "Siege geomancers and catalyst-sappers sworn to cracking the 1% strict-locked Obsidian Hazard seals via 8-perimeter equal-depth catalyst detonations and blast-shield textiles."
+    },
+    "theme_munchkin_paradox": {
+      "title": "The Paradox Symposium of St. Munchkin",
+      "motifs": ["lantern", "hearth", "wine", "cat", "paradox", "loophole"],
+      "lore": "A secret order of subterranean bureaucrats, sommeliers, and stray-cat whisperers who exploit hilarious literal loopholes in the laws of physics, intoxication, and wrong-tool penalties."
+    }
+  },
   "logic_tiers": {
     "canonical": {
       "weight": 45,
       "tag": "logic_canonical",
-      "hint": "CANONICAL LOGIC (Strict Metallurgical / Industrial Sense): Directly match the item's material, function, and name to the assigned specialist NPC and assigned stratum ore (e.g., a Rivet-forged part at a Rivet Smith using Rivet Ore)."
+      "hint": "CANONICAL LOGIC (Strict Metallurgical / Industrial Sense): Directly match the item's material, function, and name to the assigned specialist NPC, Skill Bracket, and assigned stratum ore."
     },
     "plausible": {
       "weight": 30,
       "tag": "logic_plausible",
-      "hint": "PLAUSIBLE LOGIC (Cross-Discipline Craft / Alloy): Combine two complementary materials or upgrade an existing item logically (like alloying two ores or binding a lens onto a pickaxe)."
+      "hint": "PLAUSIBLE LOGIC (Cross-Discipline Craft / Alloy): Combine two complementary materials or upgrade an existing item logically across adjacent skill schools."
     },
     "whimsical": {
       "weight": 15,

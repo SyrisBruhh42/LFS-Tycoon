@@ -82,6 +82,9 @@ def main() -> int:
                               ", ".join(f"`{b}` (z>={int(g.z_unlock(b))}, uses={g.consumer_count(b)})" for b in sorted(g.blocks, key=lambda x: g.consumer_count(x))[:10]))
         manifest_lines.append("- **Under-Stocked Specialist NPCs (prioritize in `offered_by.vendor`):** " +
                               ", ".join(f"`{n}` (offers={g.vendor_offers.get(n, 0)})" for n in sorted(g.npcs, key=lambda x: g.vendor_offers.get(x, 0))[:10]))
+        s_nodes = sorted(g.skill_bracket_nodes(), key=lambda x: (not x["explicit_skill"], x["dependent_count"], x["unlock_depth"]))[:12]
+        manifest_lines.append("- **Live Modular Skill Brackets & Station Prerequisites (reference in `offered_by.price` as non-consumed requirements or advance to next `bracket_<1..5>`):** " +
+                              ", ".join(f"`{s['id']}` (B{s['bracket']}, {s['school']}, deps={s['dependent_count']})" for s in s_nodes))
     except Exception:
         pass
     manifest_lines.append("")
