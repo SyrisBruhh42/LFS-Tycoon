@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quill Bone Ledger",
+    "description": "Crafted under the flame of the Bone Sconce Wick, this enchanted ledger sings the acoustic music of Quill Hollow. By transmuting raw Quill Ore via an Obsidian Salt Siphon during zero-damage stalls, the archivists of the Lithic Choir found its bell harmonics crystallize resonance, sparing tool wear at the cost of minor clumsiness.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "place_on_tile", "sell"],
+  "tags": [
+    "device",
+    "acoustic",
+    "solves_tool_wear",
+    "path_magic_charm",
+    "craft_smeltery_alloy",
+    "logic_canonical",
+    "theme_lithic_choir",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "transmutations": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": 0.60
+    },
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": 1.20
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {"act": "consume_item", "item": "blocks/quill_ore_4083", "qty": 1.0},
+        {"act": "var_add", "var": "shared.quarry_resonance_charge", "by": "1.0"},
+        {"act": "emit_alert", "channel": "house_bell", "tag": "stall_impassable"},
+        {"act": "var_add", "var": "self.transmutations", "by": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/bone_sconce_wick_2a5c",
+      "unlock_if": "player.max_depth >= 15",
+      "price": {
+        "devices/obsidian_salt_siphon_head_a474": 1,
+        "blocks/quill_ore_4083": 45
+      }
+    }
+  ],
+  "offline": "exact"
+}
