@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Vitriol Munchkin Chisel Sigil",
+    "description": "An arcane chisel-stone sigil forged from vitriol crystals by the Vitriol Alchemist, drawing upon the paradoxical teachings of the Symposium of St. Munchkin. When socketed into a manual tool, it channels subterranean resonance to project chalk lines on the HUD, revealing contours of buried veins, while slightly increasing mining luck by exploiting literal loopholes in geology.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "magic_charm",
+    "solves_ore_hunting",
+    "path_magic_charm",
+    "craft_skyrim_enchant",
+    "logic_canonical",
+    "theme_munchkin_paradox",
+    "bracket_2",
+    "skill_school_manual",
+    "chisel",
+    "flint"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": 0.50
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true}
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": false}
+      ]
+    },
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "var_add", "var": "self.activations", "by": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/vitriol_alchemist_4814",
+      "price": {
+        "tools/lantern_siphon_bucket_13d3": 1,
+        "blocks/vitriol_crystal_b488": 150
+      },
+      "unlock_if": "player.max_depth >= 250.0 and shared.quarry_resonance_charge >= 50.0"
+    }
+  ],
+  "offline": "exact"
+}
