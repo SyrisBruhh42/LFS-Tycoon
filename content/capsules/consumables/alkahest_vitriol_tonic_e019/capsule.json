@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Vitriol Tonic",
+    "description": "Brewed by the subterranean hydro-alchemists of the Abyssal Hydro-Works, who treat the 14x31 quarry as a terraced chemical alembic. Sold by the Pewter Quill Newt to those supplying quill ore, this caustic, umber-tinted brine is meant for mechanisms rather than men. Flooding the gears softens impact and drastically reduces the wear on tools.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "consume", "sell", "socket_in_tool"],
+  "tags": [
+    "consumable",
+    "tonic",
+    "tinker_binding",
+    "solves_repair_upkeep",
+    "path_consumable_buff",
+    "craft_tinker_part",
+    "logic_canonical",
+    "theme_alkahest_hydro",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 20.0,
+    "durability_drain_mult": 0.5
+  },
+  "vars": {
+    "durability_left": 250.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.durability_left > 0.0",
+      "value": "self.stats.durability_drain_mult"
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/pewter_quill_newt_3730",
+      "price": {
+        "devices/munchkin_pewter_head_13b8": 1,
+        "blocks/quill_ore_4083": 15
+      },
+      "unlock_if": "player.max_depth >= 100 and player.max_depth <= 249"
+    }
+  ],
+  "offline": "none"
+}
