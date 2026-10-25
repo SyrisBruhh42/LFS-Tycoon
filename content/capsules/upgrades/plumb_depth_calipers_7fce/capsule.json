@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Plumb Pewter Depth Calipers",
+    "description": "A heavy, clunky set of calipers forged by The Paradox Symposium of St. Munchkin. Merging the aquatic clearing mechanisms of a bronze plumb chisel with hardened pewter gravel, this device brilliantly circumvents the laws of physics to project a HUD depth gauge across uneven strata. It works flawlessly, though its sheer density makes the user slightly unwieldy.",
+    "author": "jules",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": [
+    "upgrade",
+    "qol",
+    "hud",
+    "calipers",
+    "plumb",
+    "solves_depth_awareness",
+    "path_qol_upgrade",
+    "craft_terraria_fusion",
+    "logic_plausible",
+    "theme_munchkin_paradox",
+    "bracket_2",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 250.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "drunk_drift_px",
+      "phase": "add",
+      "if": "self.installed > 0.0",
+      "value": "5.0"
+    },
+    {
+      "stat": "luck_mult",
+      "phase": "mul",
+      "if": "self.installed > 0.0 and tile.depth >= 120.0 and tile.depth <= 200.0",
+      "value": "1.15"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"},
+        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": true}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_wick_vendor_8db7",
+      "price": {
+        "tools/plumb_chisel_a11c": 1,
+        "blocks/pewter_gravel_d53e": 50
+      },
+      "unlock_if": "player.max_depth >= 120.0"
+    }
+  ],
+  "offline": "none"
+}
