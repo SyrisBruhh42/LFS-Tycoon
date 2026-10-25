@@ -32,3 +32,7 @@
   godot --headless --path . --import --quit
   godot --headless --path . -s tests/run_all_spikes.gd
   ```
+
+## LFS Suite `v1.1.0` Capsule Alignment (`3-lfs-aegis-linux/capsules/lfs-tycoon`, `PF-07`, `lfs-local-abac-v1`)
+
+StrataPaper (`LFS-Tycoon`, `PF-07`) is integrated into `/home/joe/Projects/LFS-Suite/3-lfs-aegis-linux/capsules/lfs-tycoon` with `lfs-local-abac-v1` offline policy alignment under the [LFS Ecosystem Plug-In & Synergy Standard](/home/joe/Projects/LFS-Suite/LFS-ECOSYSTEM-PLUGIN-STANDARD.md).

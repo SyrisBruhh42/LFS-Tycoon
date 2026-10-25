@@ -62,3 +62,8 @@ If a design genuinely needs a verb the vocabulary lacks, still ship your best vo
 | `python3 tools/preflight.py` | Everything CI checks that you can check locally |
 
 Optional, when Godot 4.3 is installed: `godot --headless --path . --import --quit && godot --headless --path . -s tests/run_all_spikes.gd` (Gate G2).
+
+## LFS Suite `v1.1.0` Capsule Alignment (`3-lfs-aegis-linux/capsules/lfs-tycoon`, `PF-07`, `lfs-local-abac-v1`)
+
+- **Umbrella Target**: `/home/joe/Projects/LFS-Suite/3-lfs-aegis-linux/capsules/lfs-tycoon` (`PF-07` StrataPaper).
+- **Additive Plug-In & Synergy Standard**: Governed by `/home/joe/Projects/LFS-Suite/LFS-ECOSYSTEM-PLUGIN-STANDARD.md`. Integrates offline-first `lfs-local-abac-v1` policy verification, Aegis-LDS dark gold/obsidian HUD styling, and the 20-capsule deterministic Godot 4.3 economy while preserving standalone verification gates (`G1`/`G2`).
