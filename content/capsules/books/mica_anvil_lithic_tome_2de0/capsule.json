@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mica Anvil Lithic Tome",
+    "description": "An esoteric text from the Infinite Scriptorium of the Lithic Choir, bound in alkahest-etched mica. Blind monastic archivists discovered that by ringing bell harmonics across the active quarry sheet, they could harmonize mismatched tools with stubborn bedrock, significantly easing the penalty for improper use.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "book",
+    "skill_book",
+    "mica",
+    "anvil",
+    "solves_wrong_tool_penalty",
+    "path_skill_book",
+    "craft_terraria_fusion",
+    "logic_canonical",
+    "theme_lithic_choir",
+    "bracket_3",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 250.0
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "self.is_learned >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_learned",
+          "value": "1.0"
+        },
+        {
+          "act": "var_add",
+          "var": "shared.quarry_resonance_charge",
+          "by": "15.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/lantern_smith_fb67",
+      "price": {
+        "devices/alkahest_copper_tinker_head_f0ea": 1,
+        "devices/apprentice_pumice_rune_f32f": 1,
+        "blocks/alkahest_quartz_d755": 45
+      },
+      "unlock_if": "player.max_depth >= 250.0 and shared.quarry_resonance_charge >= 0.0"
+    }
+  ],
+  "offline": "none"
+}
