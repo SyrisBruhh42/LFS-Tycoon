@@ -33,7 +33,8 @@
   godot --headless --path . -s tests/run_all_spikes.gd
   ```
 
-## LFS Suite `v1.1.0` Capsule Alignment (`3-lfs-aegis-linux/capsules/lfs-tycoon`, `PF-07`, `lfs-local-abac-v1`)
+## Capsule Manifest & Runtime Alignment (`PF-07`)
 
-StrataPaper (`LFS-Tycoon`, `PF-07`) is integrated into `3-lfs-aegis-linux/capsules/lfs-tycoon` with `lfs-local-abac-v1` offline policy alignment under the [LFS Ecosystem Plug-In & Synergy Standard](../../../LFS-ECOSYSTEM-PLUGIN-STANDARD.md).
+StrataPaper (`LFS-Tycoon`, `PF-07`) ships `capsule.manifest.json` with `lfs-local-abac-v1` offline policy alignment and headless Godot 4.3 capsule verification (`tools/check_capsules.py --strict`).
+
 
