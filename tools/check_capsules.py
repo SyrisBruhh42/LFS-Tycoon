@@ -492,6 +492,53 @@ def validate_single_capsule(
     return errors, data
 
 
+def check_prereq_graph(capsules: Dict[str, Dict[str, Any]]) -> List[str]:
+    """Law L13: non-block prerequisites (skill brackets, stations, fusion bases) priced in offered_by must be
+    obtainable (themselves offered by a vendor), self-/cycle-free, and skill_bracket capsules must be upgrades/* with an offer.
+    Prevents Jules from minting dead recipes gated behind an item no player can ever acquire."""
+    errors: List[str] = []
+    offered = {cid for cid, d in capsules.items() if d.get("offered_by")}
+    edges: Dict[str, Set[str]] = {}
+    for cid, d in capsules.items():
+        tags = d.get("tags", []) if isinstance(d.get("tags"), list) else []
+        if "skill_bracket" in tags:
+            if not cid.startswith("upgrades/"):
+                errors.append(f"[{cid}] Law L13: 'skill_bracket' capsules must live in upgrades/* (books can self-destruct and silently re-lock recipes).")
+            if not d.get("offered_by"):
+                errors.append(f"[{cid}] Law L13: 'skill_bracket' capsule has no offered_by; it is unobtainable, so every recipe gated on it would be dead.")
+        for off in d.get("offered_by", []) or []:
+            if not isinstance(off, dict) or not isinstance(off.get("price"), dict):
+                continue
+            for curr in off["price"]:
+                if curr.startswith("blocks/") or curr not in capsules:
+                    continue
+                if curr == cid:
+                    errors.append(f"[{cid}] Law L13: recipe requires itself in price.")
+                    continue
+                edges.setdefault(cid, set()).add(curr)
+                if curr not in offered:
+                    errors.append(f"[{cid}] Law L13: prerequisite '{curr}' has no offered_by (unobtainable), recipe would be permanently locked.")
+    # Cycle detection (iterative DFS, colors 0=new 1=active 2=done)
+    color: Dict[str, int] = {}
+    for root in edges:
+        if color.get(root):
+            continue
+        stack = [(root, iter(sorted(edges.get(root, ()))))]
+        color[root] = 1
+        while stack:
+            node, it = stack[-1]
+            nxt = next(it, None)
+            if nxt is None:
+                color[node] = 2
+                stack.pop()
+            elif color.get(nxt) == 1:
+                errors.append(f"[{node}] Law L13: prerequisite cycle via '{nxt}'.")
+            elif not color.get(nxt):
+                color[nxt] = 1
+                stack.append((nxt, iter(sorted(edges.get(nxt, ())))))
+    return errors
+
+
 def check_economy_containment(capsules: Dict[str, Dict[str, Any]]) -> List[str]:
     """Law L11: Static economy containment (checks for positive-gain purchase/consume value explosions)."""
     errors: List[str] = []
@@ -802,7 +849,7 @@ def main() -> int:
                 except Exception:
                     pass
 
-    econ_errors = check_economy_containment(full_economy_pool) + check_world_mass_budget(full_economy_pool)
+    econ_errors = check_economy_containment(full_economy_pool) + check_world_mass_budget(full_economy_pool) + check_prereq_graph(full_economy_pool)
     # Filter economy errors to capsules in target_map
     for e in econ_errors:
         if any(e.startswith(f"[{cid}]") for cid in target_map):
@@ -814,7 +861,7 @@ def main() -> int:
         print(f"\nFAILED: {len(all_errors)} validation error(s) across {len(target_map)} capsules.")
         return 1
 
-    print(f"ALL CAPSULES VALID ({len(target_map)} capsules verified against Laws L1-L12).")
+    print(f"ALL CAPSULES VALID ({len(target_map)} capsules verified against Laws L1-L13).")
     return 0
 
 

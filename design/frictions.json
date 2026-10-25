@@ -174,7 +174,7 @@
       "archetype": "upgrade",
       "namespace": "upgrades",
       "tag": "craft_skill_mastery",
-      "hint": "Create a permanent, expandable Skill Bracket node (`upgrades/<slug>/capsule.json` or `books/<slug>/capsule.json`) tagged with `\"skill_bracket\"`, `\"bracket_<1..5>\"`, `\"skill_school_<slug>\"`, and `\"theme_<slug>\"`. Future recipes across all 11 systems will reference this capsule ID inside `offered_by[].price` as a non-consumed permanent skill requirement!"
+      "hint": "Create a permanent, expandable Skill Bracket node at `upgrades/<slug>/capsule.json` (NEVER books/: books can self-destruct and re-lock recipes) tagged `\"skill_bracket\"`, `\"bracket_<1..5>\"`, `\"skill_school_<slug>\"` and `\"theme_<slug>\"`. It MUST have its own `offered_by` (an unobtainable skill is rejected by Law L13). Future recipes reference its capsule ID in `offered_by[].price` as a non-consumed requirement."
     },
     "achievement_milestone_relic": {
       "title": "Quarry Achievement Seal & Milestone Trophy",

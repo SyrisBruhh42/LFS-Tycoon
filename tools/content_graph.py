@@ -170,7 +170,7 @@ class Graph:
             return True
         if any(str(t).startswith("skill_school_") for t in tags):
             return True
-        return cid.startswith("upgrades/")
+        return "place_in_house" in (d.get("affordances", []) or []) and "craft_homestead_station" in tags
 
     def bracket_of(self, cid: str) -> int:
         d = self.caps.get(cid, {})
