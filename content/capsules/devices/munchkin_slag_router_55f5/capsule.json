@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin Slag Router",
+    "description": "An autonomous clockwork quarry rig forged from quill hollow cinder strata, blessed by the paradoxical bureaucrats of St. Munchkin. It meticulously siphons and routes mined ores straight to your paired chest. However, its obsessive precision and legal literalism slightly delay your manual digging rhythm.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "place_on_tile",
+    "place_in_house"
+  ],
+  "tags": [
+    "device",
+    "solves_haul_capacity",
+    "path_profession_perk",
+    "craft_clockwork_automaton",
+    "logic_canonical",
+    "theme_munchkin_paradox",
+    "bracket_1",
+    "skill_school_manual",
+    "slag"
+  ],
+  "stats": {},
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.50
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "add",
+      "value": 0.25
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "devices/munchkin_ochre_kiln_12d6": 1,
+        "blocks/quill_hollow_fa6d": 30
+      },
+      "unlock_if": "player.max_depth >= 15.0"
+    }
+  ],
+  "offline": "coarse"
+}
