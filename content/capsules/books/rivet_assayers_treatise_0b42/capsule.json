@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Rivet Assayer's Treatise (Vol. I)",
+    "description": "A dusty pumice-bound manual detailing the finer points of metallurgical valuation. Reading it permanently grants an 8% boost to market payouts, recognizing the subtle impurities of your finds.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["book", "skill_book", "solves_market_saturation", "path_skill_book", "craft_skill_mastery", "logic_canonical", "pumice", "rivet"],
+  "stats": {
+    "base_value": 75.0,
+    "bonus_pct": 0.08
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "add",
+      "value": "0.08",
+      "if": "self.is_learned >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {"act": "var_set", "var": "self.is_learned", "value": "1.0"}
+      ]
+    },
+    {
+      "on": "on_market_sell",
+      "if": "self.is_learned >= 1.0",
+      "do": [
+        {"act": "spawn_item", "item": "blocks/lark_newt_rivet_ore_a337", "qty": "1", "if": "roll(0.01)"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_assayer_c04e",
+      "price": {
+        "blocks/lark_newt_rivet_ore_a337": 45,
+        "blocks/anvilstone_02a1": 15
+      },
+      "unlock_if": "shared.global_cleave_bonus_pct >= 0.0"
+    }
+  ],
+  "offline": "none"
+}
