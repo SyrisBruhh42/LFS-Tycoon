@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder Quill Lure Bell",
+    "description": "Forged by Rivet Smith in the tradition of the blind monastic archivists of Quill Hollow, this cinder-warmed kiln apparatus acts as a crucible catalyst. When placed on a tile that is broken (or zero-damage stalled due to acoustic harmonics in bedrock), it consumes raw Quill Ore and emits a bell harmonic that lures lost creatures and transmutes local slag. A true relic of the Infinite Scriptorium of the Lithic Choir.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_event_helpers",
+    "path_placeable_device",
+    "craft_smeltery_alloy",
+    "logic_plausible",
+    "theme_lithic_choir",
+    "bracket_1",
+    "skill_school_manual",
+    "cinder"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "cat_lure_bonus": 0.05
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [
+    {
+      "if": "tile.depth >= 0.0",
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "value": 0.05
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {"act": "consume_item", "item": "blocks/quill_ore_4083", "qty": 1},
+        {"act": "emit_alert", "channel": "house_bell", "tag": "stall_impassable"},
+        {"act": "stall_tool", "pause_battery": false, "pause_durability": true},
+        {"act": "var_add", "var": "shared.house_bell_ringing", "by": "1.0"},
+        {"act": "var_add", "var": "self.activations", "by": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "consumables/flint_hollow_phial_3833": 1,
+        "blocks/quill_ore_4083": 120
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "exact"
+}
