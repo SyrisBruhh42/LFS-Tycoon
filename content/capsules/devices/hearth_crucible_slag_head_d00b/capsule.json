@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hearth Crucible Slag Head",
+    "description": "A heavy, modular tool head cast from Crucible Slag using the methods of The Grand Crucible of the Tectonic Leviathan. It heavily boosts early mining speed in shallow strata, but its intense heat rapidly consumes durability.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "gadget", "tinker_head", "hearth", "solves_slow_early_dps", "path_vendor_disposable", "craft_tinker_part", "logic_canonical", "theme_tectonic_crucible", "bracket_1", "skill_school_assayers"],
+  "stats": {
+    "tool_tier": 2,
+    "base_value": 50.0,
+    "durability_max": 200.0,
+    "base_dps": 40.0
+  },
+  "vars": {
+    "durability_left": 200.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "add",
+      "value": 15.0,
+      "if": "tile.depth < 300.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_assayer_c04e",
+      "price": {
+        "books/rivet_assayers_treatise_0b42": 1,
+        "blocks/crucible_slag_5dfc": 5
+      },
+      "unlock_if": "shared.quarry_resonance_charge >= 0.0 and player.max_depth <= 150.0"
+    }
+  ],
+  "offline": "none"
+}
