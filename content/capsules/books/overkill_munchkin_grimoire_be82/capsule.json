@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "The Munchkin Paradox Grimoire",
+    "description": "An arcane tome detailing the Paradox Symposium of St. Munchkin. A secret order of subterranean bureaucrats, sommeliers, and stray-cat whisperers who exploit hilarious literal loopholes. In this grimoire, they discovered that using a quill to write a ledger of overkill damage on Flint Shale will cause the rock to spontaneously shatter nearby blocks to balance the accounting. Works best when the author is fully rested.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "book",
+    "skill_book",
+    "solves_overkill_waste",
+    "path_tool_builtin",
+    "craft_spell_grimoire",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 10.0,
+    "durability_max": 200.0,
+    "is_rechargeable": 1,
+    "base_value": 50.0
+  },
+  "vars": {
+    "durability_left": 200.0
+  },
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "upgrades/bellows_diviner_loupe_8dc3": 1,
+        "blocks/flint_shale_6493": 40
+      },
+      "unlock_if": "player.max_depth >= 45"
+    }
+  ],
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "tool.overkill_damage > 0.0 and player.is_rested == 1.0",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": "tool.overkill_damage * 1.5"
+        }
+      ]
+    }
+  ],
+  "offline": "none"
+}
