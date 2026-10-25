@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Ward-Breaker Mine",
+    "description": "A rare subterranean pocket mine of the Sovereign Ward-Breakers of the Obsidian Seal. Here, siege geomancers harvest alkahest quartz and cinder gravel amid rusted iron scaffolding to crack strict-locked hazard seals.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "biome",
+    "world_biome",
+    "theme_obsidian_wardbreaker",
+    "mine",
+    "geomancer"
+  ],
+  "stats": {
+    "z_min": 310,
+    "z_max": 450,
+    "biome_weight": 0.25
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/alkahest_quartz_d755": 2.0,
+    "blocks/cinder_gravel_61a3": 1.5
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
