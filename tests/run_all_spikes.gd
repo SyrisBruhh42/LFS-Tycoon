@@ -488,6 +488,34 @@ func _run_suite() -> void:
 		]
 	)
 
+	# ------------------------------------------------------------------
+	# SPIKE S10: UI input focus routing (drawer owns input while open; HUD bands never reach the quarry)
+	# ------------------------------------------------------------------
+	print("\n--- SPIKE S10: UI Input Focus Routing ---")
+	var ui_scene: Node = (load("res://scenes/main_quarry.tscn") as PackedScene).instantiate()
+	root.add_child(ui_scene)
+	ui_scene.call("_ready")
+	var top_px: float = float(ui_scene.call("_top_px"))
+	var bot_px: float = float(ui_scene.call("_bottom_px"))
+	var vp_h_test: float = 2400.0
+	ui_scene.call("_set_active_drawer", "")
+	var owner_closed: String = str(ui_scene.call("_input_owner"))
+	var mid_is_world: bool = bool(ui_scene.call("_is_world_y", vp_h_test * 0.5, vp_h_test))
+	var top_is_hud: bool = not bool(ui_scene.call("_is_world_y", top_px - 2.0, vp_h_test))
+	var dock_is_hud: bool = not bool(ui_scene.call("_is_world_y", vp_h_test - bot_px + 2.0, vp_h_test))
+	ui_scene.set("_holding_press", true)
+	ui_scene.call("_set_active_drawer", "forge")
+	var owner_open: String = str(ui_scene.call("_input_owner"))
+	var drawer_clears_hold: bool = not bool(ui_scene.get("_holding_press"))
+	var drawer_visible: bool = bool(ui_scene.get("_drawer_panel").visible)
+	ui_scene.call("_set_active_drawer", "")
+	var drawer_hidden_after: bool = not bool(ui_scene.get("_drawer_panel").visible)
+	root.remove_child(ui_scene)
+	ui_scene.free()
+	_assert_true(owner_closed == "world" and owner_open == "drawer" and mid_is_world and top_is_hud and dock_is_hud and drawer_clears_hold and drawer_visible and drawer_hidden_after,
+		"Input Focus Routing: Open Drawer Owns Input & Clears Held Press; HUD Bands Never Reach the Quarry",
+		"owner_closed=%s, owner_open=%s, mid_world=%s, top_hud=%s, dock_hud=%s, clears_hold=%s" % [owner_closed, owner_open, str(mid_is_world), str(top_is_hud), str(dock_is_hud), str(drawer_clears_hold)])
+
 
 
 

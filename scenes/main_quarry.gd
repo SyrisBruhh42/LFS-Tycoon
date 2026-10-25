@@ -13,8 +13,11 @@ enum CursorMode {
 	PAN
 }
 
-const TOP_HUD_H: float = 68.0
-const BOTTOM_DOCK_H: float = 88.0
+## HUD metrics are LOGICAL units; the HUD CanvasLayer is scaled by grid.scale_k (same dpi density mechanism as the world tiles).
+const TOP_HUD_H: float = 96.0
+const BOTTOM_DOCK_H: float = 112.0
+## Minimum touch target (Android guideline 48dp), in logical units.
+const MIN_TOUCH: float = 48.0
 
 var catalog: CatalogDB
 var generator: Generator3D
@@ -24,6 +27,8 @@ var active_tool: Dictionary = {}
 var fallback_bucket_tool: Dictionary = {}
 var selected_place_inst: Dictionary = {}
 var dev_window: DevCalibrationWindow = null
+## >0 forces the density used for world+HUD scaling (tests/ui_audit.gd simulates a 489 dpi phone).
+var forced_dpi: int = 0
 
 var cursor_mode: int = CursorMode.MINE
 var active_drawer: String = "" # "", "bag", "forge", "shop", "homestead"
@@ -46,6 +51,10 @@ var _last_alert_count: int = 0
 
 # UI Layer nodes
 var _hud_layer: CanvasLayer
+var _hud_root: Control
+var _drawer_scroll: ScrollContainer
+var _last_drawer_kind: String = ""
+var _ui_k: int = 1
 var _lbl_top_stats: Label
 var _lbl_tile_info: Label
 var _lbl_toast: Label
@@ -75,6 +84,8 @@ func _ready() -> void:
 
 	var vp_size := get_viewport_rect().size if is_inside_tree() else Vector2(1080, 2400)
 	var dpi := DisplayServer.screen_get_dpi() if DisplayServer.get_name() != "headless" else 96
+	if forced_dpi > 0:
+		dpi = forced_dpi
 	if dpi <= 0:
 		dpi = 96
 	grid.apply_viewport_scaling(int(vp_size.x), int(vp_size.y), dpi)
@@ -169,19 +180,29 @@ func _find_best_bucket_tool() -> Dictionary:
 
 func _screen_to_tile(screen_pos: Vector2, apply_drift: bool = false) -> Vector2i:
 	var p := grid.apply_drunk_touch_offset(screen_pos, _elapsed_time) if apply_drift else screen_pos
-	var world_pt := Vector2(p.x + grid.pan_offset_px.x, p.y - TOP_HUD_H + grid.pan_offset_px.y)
+	var world_pt := Vector2(p.x + grid.pan_offset_px.x, p.y - _top_px() + grid.pan_offset_px.y)
 	var tx := int(floor(world_pt.x / float(grid.tile_size_px)))
 	var ty := int(floor(world_pt.y / float(grid.tile_size_px)))
 	return Vector2i(tx, ty)
 
 
+## Which layer owns pointer input right now: an open drawer owns ALL of it; otherwise the quarry owns the middle band.
+func _input_owner() -> String:
+	return "drawer" if active_drawer != "" else "world"
+
+
+## True when a screen-y falls in the quarry band (between the top HUD and the bottom dock).
+func _is_world_y(y: float, vp_h: float) -> bool:
+	return y >= _top_px() and y <= vp_h - _bottom_px()
+
+
 func _unhandled_input(event: InputEvent) -> void:
-	if active_drawer != "":
+	if _input_owner() == "drawer":
 		return
 	var vp_h := get_viewport_rect().size.y
 	if event is InputEventMouseButton:
 		var mb := event as InputEventMouseButton
-		if mb.position.y < TOP_HUD_H or mb.position.y > vp_h - BOTTOM_DOCK_H:
+		if not _is_world_y(mb.position.y, vp_h):
 			_holding_press = false
 			_panning_drag = false
 			return
@@ -208,7 +229,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		_press_screen_pos = mm.position
 		if _panning_drag:
 			var vp_size := get_viewport_rect().size
-			var avail_h := maxf(100.0, vp_size.y - TOP_HUD_H - BOTTOM_DOCK_H)
+			var avail_h := maxf(100.0, vp_size.y - _top_px() - _bottom_px())
 			var max_px := maxf(0.0, float(grid.cols * grid.tile_size_px) - vp_size.x)
 			var max_py := maxf(0.0, float(grid.rows * grid.tile_size_px) - avail_h)
 			grid.pan_offset_px.x = clampf(grid.pan_offset_px.x - mm.relative.x, 0.0, max_px)
@@ -305,15 +326,106 @@ func _find_catalyst_in_inventory() -> Dictionary:
 	return {"id": best_id, "tier": best_tier}
 
 
+func _top_px() -> float:
+	return TOP_HUD_H * float(_ui_k)
+
+
+func _bottom_px() -> float:
+	return BOTTOM_DOCK_H * float(_ui_k)
+
+
+func _opaque_style(c: Color) -> StyleBoxFlat:
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = c
+	sb.content_margin_left = 8.0
+	sb.content_margin_right = 8.0
+	sb.content_margin_top = 4.0
+	sb.content_margin_bottom = 4.0
+	return sb
+
+
+## Scales the HUD by the same density factor as the world and sizes its logical root to viewport / k.
+## (Anchors under a scaled CanvasLayer resolve against the UNscaled viewport, so a sized root Control is required.)
+func _apply_ui_scale() -> void:
+	_ui_k = maxi(1, grid.scale_k)
+	var vp: Vector2 = get_viewport_rect().size if is_inside_tree() else Vector2(448, 992)
+	if _hud_layer != null:
+		_hud_layer.scale = Vector2(_ui_k, _ui_k)
+	if _hud_root != null:
+		_hud_root.position = Vector2.ZERO
+		_hud_root.size = vp / float(_ui_k)
+
+
+## Touch-first normalisation: no sticky keyboard focus rings, >=48 logical-unit targets, truncating (never overflowing) text.
+func _touchify(n: Node, wrap_labels: bool = false) -> void:
+	if n is Button:
+		var b := n as Button
+		b.focus_mode = Control.FOCUS_NONE
+		b.custom_minimum_size.y = maxf(b.custom_minimum_size.y, MIN_TOUCH)
+		b.custom_minimum_size.x = maxf(b.custom_minimum_size.x, MIN_TOUCH)
+		if b is OptionButton:
+			b.clip_text = true
+	elif wrap_labels and n is Label:
+		var l := n as Label
+		if l.autowrap_mode == TextServer.AUTOWRAP_OFF:
+			l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		l.custom_minimum_size.x = maxf(l.custom_minimum_size.x, 60.0)
+	for c in n.get_children():
+		_touchify(c, wrap_labels)
+
+
+## Shared touch-first button look: visible affordance for normal/hover/pressed/disabled (default theme is dark-on-dark).
+func _build_ui_theme() -> Theme:
+	var th := Theme.new()
+	var states := {
+		"normal": Color(0.20, 0.23, 0.31),
+		"hover": Color(0.26, 0.30, 0.40),
+		"pressed": Color(0.30, 0.46, 0.38),
+		"disabled": Color(0.13, 0.14, 0.18),
+	}
+	for st in states.keys():
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = states[st]
+		sb.set_corner_radius_all(6)
+		sb.content_margin_left = 10.0
+		sb.content_margin_right = 10.0
+		sb.content_margin_top = 6.0
+		sb.content_margin_bottom = 6.0
+		if st == "disabled":
+			sb.set_border_width_all(1)
+			sb.border_color = Color(0.26, 0.28, 0.34)
+		th.set_stylebox(st, "Button", sb)
+		th.set_stylebox(st, "OptionButton", sb)
+	th.set_color("font_disabled_color", "Button", Color(0.55, 0.57, 0.64))
+	th.set_color("font_color", "Button", Color(0.94, 0.96, 1.0))
+	return th
+
+
+func _restore_scroll(v: int) -> void:
+	if not is_inside_tree():
+		return
+	await get_tree().process_frame
+	if _drawer_scroll != null and is_instance_valid(_drawer_scroll):
+		_drawer_scroll.scroll_vertical = v
+
+
 func _build_hud() -> void:
 	_hud_layer = CanvasLayer.new()
 	add_child(_hud_layer)
+	_hud_root = Control.new()
+	_hud_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_hud_root.theme = _build_ui_theme()
+	_hud_layer.add_child(_hud_root)
+	_apply_ui_scale()
+	if is_inside_tree():
+		get_viewport().size_changed.connect(_apply_ui_scale)
 
-	# 1. Top Telemetry Bar
+	# 1. Top Telemetry Bar (opaque so the world never bleeds through text)
 	var top_panel := PanelContainer.new()
+	top_panel.add_theme_stylebox_override("panel", _opaque_style(Color(0.10, 0.11, 0.14)))
 	top_panel.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	top_panel.offset_bottom = TOP_HUD_H
-	_hud_layer.add_child(top_panel)
+	_hud_root.add_child(top_panel)
 
 	var top_vbox := VBoxContainer.new()
 	top_vbox.add_theme_constant_override("separation", 2)
@@ -324,35 +436,41 @@ func _build_hud() -> void:
 
 	_lbl_top_stats = Label.new()
 	_lbl_top_stats.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_lbl_top_stats.add_theme_font_size_override("font_size", 12)
+	_lbl_top_stats.custom_minimum_size.x = 40.0
+	_lbl_top_stats.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_lbl_top_stats.add_theme_font_size_override("font_size", 14)
 	_lbl_top_stats.add_theme_color_override("font_color", Color(0.95, 0.92, 0.72))
 	top_row.add_child(_lbl_top_stats)
 
 	var hot_btn := Button.new()
-	hot_btn.text = "⬇ Hot-Update"
-	hot_btn.add_theme_font_size_override("font_size", 10)
+	hot_btn.text = "⬇ Update"
+	hot_btn.add_theme_font_size_override("font_size", 13)
+	hot_btn.custom_minimum_size.x = 96.0
 	hot_btn.pressed.connect(func() -> void:
 		_on_hot_update_pressed()
 	)
 	top_row.add_child(hot_btn)
 
 	_lbl_tile_info = Label.new()
-	_lbl_tile_info.add_theme_font_size_override("font_size", 11)
+	_lbl_tile_info.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_lbl_tile_info.add_theme_font_size_override("font_size", 12)
 	_lbl_tile_info.add_theme_color_override("font_color", Color(0.82, 0.92, 0.98))
 	top_vbox.add_child(_lbl_tile_info)
 
 	_lbl_toast = Label.new()
-	_lbl_toast.add_theme_font_size_override("font_size", 11)
+	_lbl_toast.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_lbl_toast.add_theme_font_size_override("font_size", 12)
 	_lbl_toast.add_theme_color_override("font_color", Color(0.58, 0.95, 0.68))
 	top_vbox.add_child(_lbl_toast)
 
-	# 2. Slide-Up Drawer Panel (hidden when active_drawer == "")
+	# 2. Slide-Up Drawer Panel (hidden when active_drawer == ""). Opaque: focus belongs to the drawer while open.
 	_drawer_panel = PanelContainer.new()
+	_drawer_panel.add_theme_stylebox_override("panel", _opaque_style(Color(0.085, 0.095, 0.125)))
 	_drawer_panel.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_drawer_panel.offset_top = TOP_HUD_H
 	_drawer_panel.offset_bottom = -BOTTOM_DOCK_H
 	_drawer_panel.visible = false
-	_hud_layer.add_child(_drawer_panel)
+	_hud_root.add_child(_drawer_panel)
 
 	var drawer_outer := VBoxContainer.new()
 	_drawer_panel.add_child(drawer_outer)
@@ -362,12 +480,13 @@ func _build_hud() -> void:
 
 	_drawer_title = Label.new()
 	_drawer_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_drawer_title.add_theme_font_size_override("font_size", 14)
+	_drawer_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_drawer_title.add_theme_font_size_override("font_size", 16)
 	_drawer_title.add_theme_color_override("font_color", Color(1.0, 0.90, 0.55))
 	header_bar.add_child(_drawer_title)
 
 	var close_btn := Button.new()
-	close_btn.text = "Back to Quarry [X]"
+	close_btn.text = "✕ Close"
 	close_btn.pressed.connect(func() -> void:
 		_set_active_drawer("")
 	)
@@ -375,18 +494,21 @@ func _build_hud() -> void:
 
 	var drawer_scroll := ScrollContainer.new()
 	drawer_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	drawer_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	drawer_outer.add_child(drawer_scroll)
+	_drawer_scroll = drawer_scroll
 
 	_drawer_body = VBoxContainer.new()
 	_drawer_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_drawer_body.add_theme_constant_override("separation", 6)
+	_drawer_body.add_theme_constant_override("separation", 8)
 	drawer_scroll.add_child(_drawer_body)
 
 	# 3. Bottom Control Dock (Cursor Modes + Navigation Tabs)
 	var bottom_panel := PanelContainer.new()
+	bottom_panel.add_theme_stylebox_override("panel", _opaque_style(Color(0.10, 0.11, 0.14)))
 	bottom_panel.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	bottom_panel.offset_top = -BOTTOM_DOCK_H
-	_hud_layer.add_child(bottom_panel)
+	_hud_root.add_child(bottom_panel)
 
 	var dock_vbox := VBoxContainer.new()
 	dock_vbox.add_theme_constant_override("separation", 4)
@@ -400,8 +522,8 @@ func _build_hud() -> void:
 		[CursorMode.MINE, "Mine"],
 		[CursorMode.SCOOP, "Scoop"],
 		[CursorMode.PLACE, "Place"],
-		[CursorMode.BACKFILL, "Backfill"],
-		[CursorMode.CATALYST, "Catalyst"],
+		[CursorMode.BACKFILL, "Fill"],
+		[CursorMode.CATALYST, "Cat."],
 		[CursorMode.PAN, "Pan"]
 	]
 	for ms in mode_specs:
@@ -410,7 +532,7 @@ func _build_hud() -> void:
 		var b := Button.new()
 		b.text = m_txt
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		b.add_theme_font_size_override("font_size", 11)
+		b.add_theme_font_size_override("font_size", 13)
 		b.pressed.connect(func() -> void:
 			cursor_mode = m_val
 			_set_active_drawer("")
@@ -425,10 +547,10 @@ func _build_hud() -> void:
 
 	var tab_specs := [
 		["", "Quarry"],
-		["bag", "Bag & Gear"],
+		["bag", "Bag"],
 		["forge", "⚒ Forge"],
-		["shop", "Shop (NPCs)"],
-		["homestead", "Homestead"]
+		["shop", "Shop"],
+		["homestead", "Home"]
 	]
 	for ts in tab_specs:
 		var t_id: String = ts[0]
@@ -436,7 +558,7 @@ func _build_hud() -> void:
 		var tb := Button.new()
 		tb.text = t_txt
 		tb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		tb.add_theme_font_size_override("font_size", 12)
+		tb.add_theme_font_size_override("font_size", 13)
 		tb.pressed.connect(func() -> void:
 			if t_id != "" and active_drawer == t_id:
 				_set_active_drawer("")
@@ -446,6 +568,7 @@ func _build_hud() -> void:
 		tab_row.add_child(tb)
 		_tab_buttons[t_id] = tb
 
+	_touchify(_hud_root)
 	_update_dock_button_highlights()
 
 
@@ -486,7 +609,7 @@ func _refresh_hud_labels() -> void:
 		return
 	var gold := int(round(float(rules.shared_registers.get("gold_earned_total", 0.0))))
 	var rest_str := "Rested" if grid.player_is_rested else "Tired"
-	_lbl_top_stats.text = " Z-Max: %d | Gold: %dg | Grime: %.0f | %s | Capsules: %d" % [
+	_lbl_top_stats.text = "Z %d · %dg · Grime %.0f · %s · %d caps" % [
 		grid.player_max_depth, gold, grid.player_grime, rest_str, catalog.capsules.size()
 	]
 
@@ -509,7 +632,7 @@ func _refresh_hud_labels() -> void:
 			fl_txt = " [WATER x%d]" % grid.fluid_level[hi] if grid.fluid_type[hi] == GridManager.FLUID_WATER else " [LAVA x%d]" % grid.fluid_level[hi]
 		var att_cnt: int = grid.tile_attachments[hi].size()
 		var att_txt := (" [+%d dev]" % att_cnt) if att_cnt > 0 else ""
-		_lbl_tile_info.text = " Tool: %s%s | [%s] %s (T%d) Z:%d HP:%.0f/%.0f%s%s" % [
+		_lbl_tile_info.text = "%s%s · [%s] %s T%d · Z%d · HP %.0f/%.0f%s%s" % [
 			t_name, dur_txt, coord, b_name, grid.tier[hi], grid.depth[hi],
 			maxf(0.0, grid.max_hp[hi] - grid.damage_accum[hi]), grid.max_hp[hi], fl_txt, att_txt
 		]
@@ -519,6 +642,10 @@ func _refresh_hud_labels() -> void:
 func _refresh_drawer() -> void:
 	if _drawer_body == null:
 		return
+	var keep_scroll := 0
+	if _drawer_scroll != null and _last_drawer_kind == active_drawer:
+		keep_scroll = _drawer_scroll.scroll_vertical
+	_last_drawer_kind = active_drawer
 	for ch in _drawer_body.get_children():
 		_drawer_body.remove_child(ch)
 		ch.queue_free()
@@ -531,10 +658,13 @@ func _refresh_drawer() -> void:
 		_build_shop_drawer()
 	elif active_drawer == "homestead" or active_drawer == "home":
 		_build_homestead_drawer()
+	_touchify(_drawer_body, true)
+	if keep_scroll > 0:
+		_restore_scroll(keep_scroll)
 
 
 func _build_bag_drawer() -> void:
-	_drawer_title.text = "BAG, LOADOUT & MINED ORES"
+	_drawer_title.text = "BAG & LOADOUT"
 
 	# Section A: Mined Ores in Backpack
 	var ore_hdr := Label.new()
@@ -593,8 +723,7 @@ func _build_bag_drawer() -> void:
 		var card := VBoxContainer.new()
 		_drawer_body.add_child(card)
 
-		var top_row := HBoxContainer.new()
-		card.add_child(top_row)
+		var top_row := HFlowContainer.new()
 
 		var is_active_tool: bool = (active_tool == inst)
 		var is_eq_buff: bool = grid.player_equipped_items.has(inst)
@@ -611,7 +740,9 @@ func _build_bag_drawer() -> void:
 		title_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		title_lbl.text = "• %s%s" % [nm, badge]
 		title_lbl.add_theme_color_override("font_color", Color(0.95, 0.98, 1.0))
-		top_row.add_child(title_lbl)
+		title_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		card.add_child(title_lbl)
+		card.add_child(top_row)
 
 		if affs.has("equip_tool"):
 			var eq_btn := Button.new()
@@ -675,20 +806,33 @@ func _build_bag_drawer() -> void:
 		if desc != "":
 			var d_lbl := Label.new()
 			d_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-			d_lbl.add_theme_font_size_override("font_size", 10)
+			d_lbl.add_theme_font_size_override("font_size", 12)
 			d_lbl.add_theme_color_override("font_color", Color(0.72, 0.76, 0.82))
 			d_lbl.text = "    " + desc
 			card.add_child(d_lbl)
 
 
+func _reason_label(txt: String) -> Label:
+	var why := Label.new()
+	why.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	why.custom_minimum_size.x = 80.0
+	why.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	why.size_flags_stretch_ratio = 1.6
+	why.add_theme_font_size_override("font_size", 12)
+	why.add_theme_color_override("font_color", Color(0.95, 0.72, 0.55))
+	why.text = txt
+	return why
+
+
 func _build_shop_drawer() -> void:
-	_drawer_title.text = "NPC VENDOR BAZAAR (%d Vendors)" % catalog.vendor_catalog.size()
+	_drawer_title.text = "SHOP (%d vendors)" % catalog.vendor_catalog.size()
 
 	# Filter Row 1: Vendor Selector + Category Selector
-	var filter_row := HBoxContainer.new()
+	var filter_row := VBoxContainer.new()
 	_drawer_body.add_child(filter_row)
 
 	var v_opt := OptionButton.new()
+	v_opt.clip_text = true
 	v_opt.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var vendor_ids: Array[String] = ["ALL"]
 	v_opt.add_item("All Vendors (%d)" % catalog.vendor_catalog.size())
@@ -711,6 +855,7 @@ func _build_shop_drawer() -> void:
 	filter_row.add_child(v_opt)
 
 	var c_opt := OptionButton.new()
+	c_opt.clip_text = true
 	var cats := ["ALL", "tools", "devices", "upgrades", "consumables", "books", "textiles"]
 	for c_idx in cats.size():
 		c_opt.add_item("Cat: " + cats[c_idx].capitalize())
@@ -727,7 +872,7 @@ func _build_shop_drawer() -> void:
 	var search_row := HBoxContainer.new()
 	_drawer_body.add_child(search_row)
 	var search_box := LineEdit.new()
-	search_box.placeholder_text = "Search 450+ items by name, tag, or friction (e.g. fluid, cleave, luck)..."
+	search_box.placeholder_text = "Search name, tag or friction…"
 	search_box.text = shop_search_query
 	search_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	search_box.text_submitted.connect(func(new_txt: String) -> void:
@@ -778,6 +923,7 @@ func _build_shop_drawer() -> void:
 	page_lbl.text = "Showing %d-%d of %d offers" % [start_i + 1 if total_matches > 0 else 0, end_i, total_matches]
 	page_row.add_child(page_lbl)
 
+	var show_pager := total_matches > SHOP_PAGE_SIZE
 	var prev_btn := Button.new()
 	prev_btn.text = "< Prev"
 	prev_btn.disabled = (shop_page_offset <= 0)
@@ -785,7 +931,8 @@ func _build_shop_drawer() -> void:
 		shop_page_offset = maxi(0, shop_page_offset - SHOP_PAGE_SIZE)
 		_refresh_drawer()
 	)
-	page_row.add_child(prev_btn)
+	if show_pager:
+		page_row.add_child(prev_btn)
 
 	var next_btn := Button.new()
 	next_btn.text = "Next >"
@@ -794,7 +941,8 @@ func _build_shop_drawer() -> void:
 		shop_page_offset = end_i
 		_refresh_drawer()
 	)
-	page_row.add_child(next_btn)
+	if show_pager:
+		page_row.add_child(next_btn)
 
 	for idx in range(start_i, end_i):
 		var entry: Dictionary = matching_offers[idx]
@@ -815,17 +963,19 @@ func _build_shop_drawer() -> void:
 		var item_box := VBoxContainer.new()
 		_drawer_body.add_child(item_box)
 
-		var r1 := HBoxContainer.new()
-		item_box.add_child(r1)
-
 		var lbl := Label.new()
+		lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		lbl.text = "%s — Cost: %s" % [nm, price_str]
 		lbl.add_theme_color_override("font_color", Color(0.95, 0.96, 1.0) if can_buy else Color(0.65, 0.65, 0.70))
-		r1.add_child(lbl)
+		item_box.add_child(lbl)
+
+		var r1 := HBoxContainer.new()
+		item_box.add_child(r1)
 
 		var buy_btn := Button.new()
-		buy_btn.text = "Buy" if can_buy else str(chk.get("reason", "Locked"))
+		buy_btn.text = "Buy" if can_buy else "Locked"
+		buy_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		buy_btn.disabled = not can_buy
 		buy_btn.pressed.connect(func() -> void:
 			var res := grid.buy_vendor_offer(v_id, offer, false)
@@ -835,17 +985,19 @@ func _build_shop_drawer() -> void:
 				_refresh_hud_labels()
 		)
 		r1.add_child(buy_btn)
+		if not can_buy:
+			r1.add_child(_reason_label(str(chk.get("reason", "Locked"))))
 
 		var d_lbl := Label.new()
 		d_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		d_lbl.add_theme_font_size_override("font_size", 10)
+		d_lbl.add_theme_font_size_override("font_size", 12)
 		d_lbl.add_theme_color_override("font_color", Color(0.70, 0.75, 0.82))
 		d_lbl.text = "   " + desc
 		item_box.add_child(d_lbl)
 
 
 func _build_forge_drawer() -> void:
-	_drawer_title.text = "MULTI-DISCIPLINARY FORGE, MODULAR SKILL BRACKETS & ANVIL"
+	_drawer_title.text = "⚒ FORGE & SKILL BRACKETS"
 
 	var unlocked_skills: Array[String] = []
 	for inst in grid.player_owned_capsules:
@@ -859,7 +1011,7 @@ func _build_forge_drawer() -> void:
 
 	var sub_lbl := Label.new()
 	sub_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	sub_lbl.add_theme_font_size_override("font_size", 11)
+	sub_lbl.add_theme_font_size_override("font_size", 12)
 	sub_lbl.add_theme_color_override("font_color", Color(0.78, 0.90, 0.98))
 	var skill_summary := "None yet (Unlock in Discipline 7 / 9!)" if unlocked_skills.is_empty() else ", ".join(PackedStringArray(unlocked_skills.slice(0, 5)))
 	sub_lbl.text = "Active Skill Brackets & Stations (%d): %s\n(Skill Brackets & Stations are verified and KEPT permanently when forging; base tools transfer socketed Tinker parts!)" % [
@@ -885,6 +1037,7 @@ func _build_forge_drawer() -> void:
 	_drawer_body.add_child(filter_row)
 
 	var d_opt := OptionButton.new()
+	d_opt.clip_text = true
 	d_opt.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	for d_idx in disc_specs.size():
 		var spec_entry: Array = disc_specs[d_idx]
@@ -972,6 +1125,7 @@ func _build_forge_drawer() -> void:
 	page_lbl.text = "Showing %d-%d of %d forgeable recipes" % [start_i + 1 if total_matches > 0 else 0, end_i, total_matches]
 	page_row.add_child(page_lbl)
 
+	var show_pager := total_matches > SHOP_PAGE_SIZE
 	var prev_btn := Button.new()
 	prev_btn.text = "< Prev"
 	prev_btn.disabled = (forge_page_offset <= 0)
@@ -979,7 +1133,8 @@ func _build_forge_drawer() -> void:
 		forge_page_offset = maxi(0, forge_page_offset - SHOP_PAGE_SIZE)
 		_refresh_drawer()
 	)
-	page_row.add_child(prev_btn)
+	if show_pager:
+		page_row.add_child(prev_btn)
 
 	var next_btn := Button.new()
 	next_btn.text = "Next >"
@@ -988,7 +1143,8 @@ func _build_forge_drawer() -> void:
 		forge_page_offset = end_i
 		_refresh_drawer()
 	)
-	page_row.add_child(next_btn)
+	if show_pager:
+		page_row.add_child(next_btn)
 
 	for idx in range(start_i, end_i):
 		var entry: Dictionary = forge_entries[idx]
@@ -1041,17 +1197,19 @@ func _build_forge_drawer() -> void:
 		var item_box := VBoxContainer.new()
 		_drawer_body.add_child(item_box)
 
-		var r1 := HBoxContainer.new()
-		item_box.add_child(r1)
-
 		var lbl := Label.new()
+		lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		lbl.text = "%s%s%s %s — Artisan: %s" % [logic_badge, bracket_badge, theme_badge, nm, v_name]
 		lbl.add_theme_color_override("font_color", Color(0.98, 0.92, 0.65) if can_forge else Color(0.68, 0.70, 0.75))
-		r1.add_child(lbl)
+		item_box.add_child(lbl)
+
+		var r1 := HBoxContainer.new()
+		item_box.add_child(r1)
 
 		var forge_btn := Button.new()
-		forge_btn.text = "⚒ Forge" if can_forge else str(chk.get("reason", "Locked"))
+		forge_btn.text = "⚒ Forge" if can_forge else "Locked"
+		forge_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		forge_btn.disabled = not can_forge
 		forge_btn.pressed.connect(func() -> void:
 			var res := grid.buy_vendor_offer(v_id, offer, false)
@@ -1064,31 +1222,33 @@ func _build_forge_drawer() -> void:
 				_refresh_hud_labels()
 		)
 		r1.add_child(forge_btn)
+		if not can_forge:
+			r1.add_child(_reason_label(str(chk.get("reason", "Locked"))))
 
 		var rec_lbl := Label.new()
 		rec_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		rec_lbl.add_theme_font_size_override("font_size", 10)
+		rec_lbl.add_theme_font_size_override("font_size", 12)
 		rec_lbl.add_theme_color_override("font_color", Color(0.62, 0.92, 0.75) if can_forge else Color(0.85, 0.68, 0.62))
 		rec_lbl.text = "   " + recipe_str
 		item_box.add_child(rec_lbl)
 
 		var d_lbl := Label.new()
 		d_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		d_lbl.add_theme_font_size_override("font_size", 10)
+		d_lbl.add_theme_font_size_override("font_size", 12)
 		d_lbl.add_theme_color_override("font_color", Color(0.70, 0.75, 0.82))
 		d_lbl.text = "   " + desc
 		item_box.add_child(d_lbl)
 
 
 func _build_homestead_drawer() -> void:
-	_drawer_title.text = "HOMESTEAD,PAIRED CHEST, MARKET & SAVE"
+	_drawer_title.text = "HOMESTEAD"
 
 	var chest_count := 0
 	for k in grid.paired_chest_loot.keys():
 		chest_count += int(grid.paired_chest_loot[k])
 
 	var btn_chest := Button.new()
-	btn_chest.text = "Claim Paired Chest Loot (%d items waiting)" % chest_count
+	btn_chest.text = "Claim Chest Loot (%d waiting)" % chest_count
 	btn_chest.pressed.connect(func() -> void:
 		var claimed := grid.claim_paired_chest()
 		_status_toast = "Claimed %d item(s) from Paired Chest into Bag!" % claimed
@@ -1098,7 +1258,7 @@ func _build_homestead_drawer() -> void:
 	_drawer_body.add_child(btn_chest)
 
 	var btn_sell_all := Button.new()
-	btn_sell_all.text = "Sell All Mined Ores in Bag to Market"
+	btn_sell_all.text = "Sell All Ores to Market"
 	btn_sell_all.pressed.connect(func() -> void:
 		var gold := grid.sell_all_inventory_ores()
 		_status_toast = "Sold all mined ores for +%d Gold!" % gold
@@ -1108,7 +1268,7 @@ func _build_homestead_drawer() -> void:
 	_drawer_body.add_child(btn_sell_all)
 
 	var btn_wash := Button.new()
-	btn_wash.text = "Wash Off Quarry Grime (Current Grime: %.0f)" % grid.player_grime
+	btn_wash.text = "Wash Off Grime (%.0f)" % grid.player_grime
 	btn_wash.pressed.connect(func() -> void:
 		grid.wash_grime()
 		_status_toast = "Washed clean! Grime reset to 0."
@@ -1118,7 +1278,7 @@ func _build_homestead_drawer() -> void:
 	_drawer_body.add_child(btn_wash)
 
 	var btn_sleep := Button.new()
-	btn_sleep.text = "Sleep in Homestead Bed (Restore Rested Perk)"
+	btn_sleep.text = "Sleep (Restore Rested Perk)"
 	btn_sleep.pressed.connect(func() -> void:
 		grid.enter_house()
 		grid.sleep_in_house()
@@ -1129,7 +1289,7 @@ func _build_homestead_drawer() -> void:
 	_drawer_body.add_child(btn_sleep)
 
 	var btn_offline := Button.new()
-	btn_offline.text = "Simulate +1 Hour (3,600s) Offline Auto-Tool Catch-Up"
+	btn_offline.text = "Offline Catch-Up (+1 Hour)"
 	btn_offline.pressed.connect(func() -> void:
 		var sim := OfflineSim.simulate_offline(grid, 3600.0)
 		_status_toast = "Offline 1h Catch-Up: %d blocks mined (%.1f ms)!" % [
@@ -1142,7 +1302,7 @@ func _build_homestead_drawer() -> void:
 	_drawer_body.add_child(btn_offline)
 
 	var btn_hotpatch := Button.new()
-	btn_hotpatch.text = "⬇ Trickle Hot-Update: Reload Live Capsules Without Restarting"
+	btn_hotpatch.text = "⬇ Hot-Update Capsules"
 	btn_hotpatch.pressed.connect(func() -> void:
 		_on_hot_update_pressed()
 	)
@@ -1152,7 +1312,7 @@ func _build_homestead_drawer() -> void:
 	_drawer_body.add_child(save_row)
 
 	var btn_save := Button.new()
-	btn_save.text = "Save Game (Atomic)"
+	btn_save.text = "Save Game"
 	btn_save.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	btn_save.pressed.connect(func() -> void:
 		if SaveManager.save_atomic(grid, "user://quarry_save.json"):
@@ -1161,7 +1321,7 @@ func _build_homestead_drawer() -> void:
 	save_row.add_child(btn_save)
 
 	var btn_load := Button.new()
-	btn_load.text = "Load Saved Game"
+	btn_load.text = "Load Game"
 	btn_load.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	btn_load.pressed.connect(func() -> void:
 		var res := SaveManager.load_with_fallback(grid, "user://quarry_save.json")
@@ -1187,7 +1347,7 @@ func _draw() -> void:
 		for x in grid.cols:
 			var i := grid.idx_of(x, y)
 			var rx := float(x) * t_px - grid.pan_offset_px.x
-			var ry := TOP_HUD_H + float(y) * t_px - grid.pan_offset_px.y
+			var ry := _top_px() + float(y) * t_px - grid.pan_offset_px.y
 			var rect := Rect2(rx, ry, t_px, t_px)
 
 			var bid_str := catalog.block_int_to_id[grid.base_id[i]]
@@ -1236,7 +1396,7 @@ func _draw() -> void:
 	if show_chess and font != null:
 		for x in grid.cols:
 			var col_letter := String.chr(65 + x)
-			draw_string(font, Vector2(float(x) * t_px + t_px * 0.35, TOP_HUD_H + 12.0), col_letter, HORIZONTAL_ALIGNMENT_CENTER, -1, 10, Color(1, 0.9, 0.4))
+			draw_string(font, Vector2(float(x) * t_px + t_px * 0.35, _top_px() + 12.0), col_letter, HORIZONTAL_ALIGNMENT_CENTER, -1, 10, Color(1, 0.9, 0.4))
 
 	# Floating Target Loupe upgrade
 	if show_loupe and font != null and grid.in_bounds(_hovered_tile.x, _hovered_tile.y):
@@ -1247,8 +1407,8 @@ func _draw() -> void:
 			coord_str, b_name, grid.tier[hi], grid.depth[hi],
 			maxf(0.0, grid.max_hp[hi] - grid.damage_accum[hi]), grid.max_hp[hi]
 		]
-		draw_rect(Rect2(6, TOP_HUD_H + 4.0, 340, 22), Color(0.05, 0.07, 0.10, 0.88), true)
-		draw_string(font, Vector2(12, TOP_HUD_H + 19.0), loupe_txt, HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color(0.95, 0.98, 1.0))
+		draw_rect(Rect2(6, _top_px() + 4.0, 340, 22), Color(0.05, 0.07, 0.10, 0.88), true)
+		draw_string(font, Vector2(12, _top_px() + 19.0), loupe_txt, HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color(0.95, 0.98, 1.0))
 
 
 func _get_tile_color(bid: String, fl_type: int, tier_val: int) -> Color:
