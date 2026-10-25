@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Enclave Rivet Sigil",
+    "description": "Forged by The Forge Squad of the Enclave of the 16, this brass rivet sigil embodies the Stormbreaker Concordance. When socketed into a tool, its sympathetic core-metallurgy resonates with cinder gravel, amplifying mining force specifically against hazardous obsidian clusters to aid early quarrying.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "catalyst",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "solves_hazard_clearing",
+    "path_npc_enchanter",
+    "craft_terraria_fusion",
+    "logic_canonical",
+    "theme_enclave_first_forge",
+    "bracket_2",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 22.0,
+    "durability_max": 200.0,
+    "base_value": 45.0
+  },
+  "vars": {
+    "durability_left": 200.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "if": "tile.is_hazard == 1.0",
+      "phase": "mul",
+      "value": 2.5
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_hazard_expose",
+      "do": [
+        {"act": "deal_damage", "target": "self_tile", "amount": 10.0},
+        {"act": "emit_alert", "channel": "combat", "tag": "hazard_cleaved"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/mica_salt_vendor_832d",
+      "unlock_if": "player.max_depth >= 200",
+      "price": {
+        "devices/salt_badger_thimble_6908": 1,
+        "blocks/cinder_gravel_61a3": 40
+      }
+    }
+  ],
+  "offline": "coarse"
+}
