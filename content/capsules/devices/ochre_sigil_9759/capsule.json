@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Sigil",
+    "description": "A socketable arcane rune inscribed by the blind monastic archivists of Quill Hollow, who discovered bedrock is frozen acoustic music. Forged from Hollow Quill Ore, this sigil binds a seismic resonance to any tool. When the tool strikes an impassable contour, it shatters the silence with a bell harmonic, stalling durability drain. Its clarity is heightened when the wielder's hands are clean.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "solves_zero_damage_stall", "path_qol_upgrade", "craft_skyrim_enchant", "logic_canonical", "theme_lithic_choir", "bracket_1", "skill_school_manual", "ochre"],
+  "stats": {
+    "base_value": 350.0
+  },
+  "vars": {
+    "charge_left": 50.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": 0.0,
+      "if": "tile.is_strict_locked == 1.0 and player.grime < 15.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {"act": "stall_tool", "pause_battery": 1.0, "pause_durability": 1.0, "if": "tile.is_strict_locked == 1.0 and self.charge_left > 0.0"},
+        {"act": "emit_alert", "channel": "house_bell", "tag": "stall_impassable", "if": "tile.is_strict_locked == 1.0 and self.charge_left > 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/bone_sconce_wick_2a5c",
+      "price": {
+        "upgrades/bellows_diviner_loupe_8dc3": 1,
+        "blocks/quill_hollow_fa6d": 15
+      },
+      "unlock_if": "player.max_depth >= 15.0 and player.max_depth <= 249.0"
+    }
+  ],
+  "offline": "coarse"
+}
