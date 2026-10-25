@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Quartz Slag-Enchant",
+    "description": "A ticking brass seal of the Perpetual Clockwork Deep-Bore Syndicate, utilizing the reactive properties of Alkahest Quartz to continuously self-heal your tool. It consumes basic copper to maintain its durability. Once the main charge runs out, the enchanted protection ceases.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "socket_in_tool", "place_in_house", "sell"],
+  "tags": ["upgrade", "solves_repair_upkeep", "path_npc_enchanter", "craft_homestead_station", "logic_canonical", "theme_clockwork_syndicate", "bracket_1", "skill_school_manual", "slag"],
+  "stats": {
+    "base_value": 120.0
+  },
+  "vars": {
+    "charge_left": 500.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.charge_left > 0.0",
+      "value": 0.25
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {"act": "consume_item", "item": "blocks/copper", "qty": 1, "if": "self.charge_left < 500.0"},
+        {"act": "var_add", "var": "self.charge_left", "by": "1.0", "if": "self.charge_left < 500.0"},
+        {"act": "var_add", "var": "self.charge_left", "by": "-2.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_assayer_c04e",
+      "unlock_if": "player.max_depth >= 40.0",
+      "price": {
+        "devices/munchkin_ochre_kiln_12d6": 1,
+        "blocks/alkahest_quartz_d755": 25
+      }
+    }
+  ]
+}
