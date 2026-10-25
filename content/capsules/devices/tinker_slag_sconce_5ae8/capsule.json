@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin's Slag Sconce",
+    "description": "An absurd contraption devised by the Paradox Symposium of St. Munchkin. A lantern smith's masterwork that sockets a glowing, volatile wick of Crucible Slag onto your tool. Hacking at a hazard cluster with this somehow bends literal definitions, channeling the peril directly back into the tool to obliterate obstacles, or occasionally, just ring a non-existent bell.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_hazard_clearing",
+    "path_forge_material",
+    "craft_tinker_part",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "tool_tier": 2
+  },
+  "vars": {
+    "charge_left": 100.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "add",
+      "if": "tile.is_hazard == 1.0 and tile.tier >= 1.0",
+      "value": 115.0
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_hazard_expose",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "self_tile",
+          "amount": 120.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/lantern_smith_fb67",
+      "price": {
+        "upgrades/cinder_munchkin_suite_315d": 1,
+        "blocks/crucible_slag_5dfc": 1
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "exact"
+}
