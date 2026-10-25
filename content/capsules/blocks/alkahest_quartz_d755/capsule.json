@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Quartz",
+    "description": "A dense quartz matrix permeated by alkahest vitriol from the hydro-works. Subterranean alchemists value its reactive properties for transmuting rock.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell",
+    "catalyst"
+  ],
+  "tags": [
+    "block",
+    "world_block",
+    "quartz",
+    "theme_alkahest_hydro"
+  ],
+  "stats": {
+    "base_hp": 32.0,
+    "value_base": 22.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 250,
+    "z_max": 420,
+    "l_step": 1000,
+    "spawn_prob": 0.012,
+    "clump_xy": 4.0,
+    "pipe_z": 8.0,
+    "priority_rank": 45
+  },
+  "biome_weights": {
+    "biomes/standard_crust": 0.01
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
