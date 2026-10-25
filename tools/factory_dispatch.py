@@ -362,19 +362,50 @@ def cut_loss_session(cfg: dict, sid: str, rec: dict, state: dict, reason: str, d
 
 
 def enclave_dispatched_24h() -> int:
-    """Reads Enclave of the 16 (733881f5) rolling-24h Jules budget if present for sympathetic fleet quota sharing."""
-    enclave_budget = ROOT.parent / "enclave-digital-twin" / "ops" / "budget.json"
-    if not enclave_budget.exists():
-        return 0
-    try:
-        data = json.loads(enclave_budget.read_text(encoding="utf-8"))
-        cutoff = now() - timedelta(hours=24)
-        ts_list = data.get("dispatches_utc", []) or data.get("recent_dispatches", [])
-        if isinstance(ts_list, list):
-            return sum(1 for t in ts_list if isinstance(t, str) and parse_ts(t) >= cutoff)
-        return int(data.get("used_24h", 0))
-    except Exception:
-        return 0
+    """Reads peer factories' (PA-15 Enclave, PF-08 Trash Arcade, PA-14 Willow Guild) rolling-24h Jules dispatches for sympathetic 4-fleet quota sharing."""
+    cutoff = now() - timedelta(hours=24)
+    total_peer_24h = 0
+    xdg_state = Path(os.environ.get("XDG_STATE_HOME", str(Path.home() / ".local" / "state")))
+
+    # 1. PA-15 Enclave Digital Twin runtime budget (with repo fallback)
+    for eb in (xdg_state / "lfs-enclave-factory" / "budget.json", ROOT.parent / "enclave-digital-twin" / "ops" / "budget.json"):
+        if eb.exists():
+            try:
+                data = json.loads(eb.read_text(encoding="utf-8"))
+                ledger = data.get("session_ledger_24h", [])
+                if isinstance(ledger, list) and ledger:
+                    total_peer_24h += sum(
+                        1 for e in ledger
+                        if isinstance(e, dict) and not e.get("dry_run", False)
+                        and isinstance(e.get("timestamp_utc"), str) and parse_ts(e["timestamp_utc"]) >= cutoff
+                    )
+                    break
+                ts_list = data.get("dispatches_utc", []) or data.get("recent_dispatches", [])
+                if isinstance(ts_list, list) and ts_list:
+                    total_peer_24h += sum(1 for t in ts_list if isinstance(t, str) and parse_ts(t) >= cutoff)
+                    break
+            except Exception:
+                pass
+
+    # 2. PF-08 Trash Arcade & PA-14 Willow Guild state files
+    for peer_state_file in (
+        xdg_state / "lfs-trasharcade-factory" / "state.json",
+        xdg_state / "lfs-willow-guild-factory" / "state.json",
+    ):
+        if peer_state_file.exists():
+            try:
+                pdata = json.loads(peer_state_file.read_text(encoding="utf-8"))
+                psess = pdata.get("sessions", {})
+                if isinstance(psess, dict):
+                    total_peer_24h += sum(
+                        1 for rec in psess.values()
+                        if isinstance(rec, dict)
+                        and isinstance(rec.get("created_at") or rec.get("created"), str)
+                        and parse_ts(str(rec.get("created_at") or rec.get("created"))) >= cutoff
+                    )
+            except Exception:
+                pass
+    return total_peer_24h
 
 
 def normalize_error(line: str) -> str:
