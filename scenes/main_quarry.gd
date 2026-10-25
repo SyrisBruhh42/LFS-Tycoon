@@ -39,6 +39,12 @@ var shop_page_offset: int = 0
 var forge_discipline_filter: String = "ALL"
 var forge_page_offset: int = 0
 const SHOP_PAGE_SIZE: int = 25
+const LDS_THEME_PACKS: Array[String] = ["evergreen-dark", "evergreen-light", "high-contrast", "calm"]
+var lds_theme_pack: String = "evergreen-dark"
+var comfort_reduced_motion: bool = false
+var comfort_haptics_enabled: bool = true
+var comfort_audio_muted: bool = false
+var safe_mode_active: bool = false
 
 var _holding_press: bool = false
 var _panning_drag: bool = false
@@ -91,6 +97,13 @@ func _ready() -> void:
 	grid.apply_viewport_scaling(int(vp_size.x), int(vp_size.y), dpi)
 
 	_build_hud()
+	var cmd_args := OS.get_cmdline_args()
+	var env_safe := OS.get_environment("LFS_SAFE_MODE") == "1" or cmd_args.has("--safe-mode")
+	var env_theme := OS.get_environment("LFS_THEME_PACK")
+	if env_theme == "" or not LDS_THEME_PACKS.has(env_theme):
+		env_theme = lds_theme_pack
+	apply_cp11_settings(env_theme, comfort_reduced_motion or env_safe, comfort_haptics_enabled and not env_safe, comfort_audio_muted or env_safe, env_safe)
+	grid.export_willow_wardrobe_bridge()
 	_refresh_hud_labels()
 
 	# Spawn detachable Linux Dev Calibration Window when running with a desktop display
@@ -179,7 +192,8 @@ func _find_best_bucket_tool() -> Dictionary:
 
 
 func _screen_to_tile(screen_pos: Vector2, apply_drift: bool = false) -> Vector2i:
-	var p := grid.apply_drunk_touch_offset(screen_pos, _elapsed_time) if apply_drift else screen_pos
+	var allow_drift := apply_drift and not comfort_reduced_motion and not safe_mode_active
+	var p := grid.apply_drunk_touch_offset(screen_pos, _elapsed_time) if allow_drift else screen_pos
 	var world_pt := Vector2(p.x + grid.pan_offset_px.x, p.y - _top_px() + grid.pan_offset_px.y)
 	var tx := int(floor(world_pt.x / float(grid.tile_size_px)))
 	var ty := int(floor(world_pt.y / float(grid.tile_size_px)))
@@ -1339,6 +1353,59 @@ func _build_homestead_drawer() -> void:
 	)
 	_drawer_body.add_child(btn_hotpatch)
 
+	var willow_env := grid.get_willow_wardrobe_entitlements()
+	var willow_count: int = willow_env.get("ownedItemIds", []).size()
+	var btn_willow := Button.new()
+	btn_willow.text = "Willow Wardrobe Sync (%d Regalia)" % willow_count
+	btn_willow.clip_text = true
+	btn_willow.pressed.connect(func() -> void:
+		var env := grid.export_willow_wardrobe_bridge("user://willow_wardrobe_entitlements.json")
+		var cnt: int = env.get("ownedItemIds", []).size()
+		_status_toast = "Synced %d regalia items to Willow's Wardrobe Studio (lfs-local-abac-v1)!" % cnt
+		_refresh_drawer()
+		_refresh_hud_labels()
+	)
+	_drawer_body.add_child(btn_willow)
+
+	var theme_labels: Array[String] = [
+		"Theme: Evergreen Dark",
+		"Theme: Evergreen Light",
+		"Theme: High Contrast",
+		"Theme: Calm Slate"
+	]
+	var cur_theme_idx := maxi(0, LDS_THEME_PACKS.find(lds_theme_pack))
+	_drawer_body.add_child(_make_inline_selector(theme_labels, cur_theme_idx, func(idx: int) -> void:
+		var next_pack := LDS_THEME_PACKS[clampi(idx, 0, LDS_THEME_PACKS.size() - 1)]
+		apply_cp11_settings(next_pack, comfort_reduced_motion, comfort_haptics_enabled, comfort_audio_muted, safe_mode_active)
+		_status_toast = "Applied CP-11 LDS Theme Pack: %s" % next_pack
+		_refresh_drawer()
+	))
+
+	var comfort_row := HBoxContainer.new()
+	_drawer_body.add_child(comfort_row)
+
+	var btn_motion := Button.new()
+	btn_motion.text = "Motion: %s" % ("Reduced" if comfort_reduced_motion else "Full")
+	btn_motion.clip_text = true
+	btn_motion.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	btn_motion.pressed.connect(func() -> void:
+		apply_cp11_settings(lds_theme_pack, not comfort_reduced_motion, comfort_haptics_enabled, comfort_audio_muted, safe_mode_active)
+		_status_toast = "Comfort Reduced Motion: %s" % ("ON" if comfort_reduced_motion else "OFF")
+		_refresh_drawer()
+	)
+	comfort_row.add_child(btn_motion)
+
+	var btn_safe := Button.new()
+	btn_safe.text = "Safe Mode: %s" % ("ON" if safe_mode_active else "OFF")
+	btn_safe.clip_text = true
+	btn_safe.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	btn_safe.pressed.connect(func() -> void:
+		apply_cp11_settings(lds_theme_pack, comfort_reduced_motion, comfort_haptics_enabled, comfort_audio_muted, not safe_mode_active)
+		_status_toast = "ZT-10 Safe Mode: %s" % ("ACTIVE" if safe_mode_active else "OFF")
+		_refresh_drawer()
+	)
+	comfort_row.add_child(btn_safe)
+
 	var save_row := HBoxContainer.new()
 	_drawer_body.add_child(save_row)
 
@@ -1365,6 +1432,50 @@ func _build_homestead_drawer() -> void:
 			queue_redraw()
 	)
 	save_row.add_child(btn_load)
+
+
+## Applies CP-11 (1f481664) LDS 4-pack themes, ZT-9 comfort overrides, and ZT-10 safe mode.
+func apply_cp11_settings(theme_pack: String, reduced_motion: bool, haptics_enabled: bool, audio_muted: bool, safe_mode: bool) -> Dictionary:
+	lds_theme_pack = theme_pack if LDS_THEME_PACKS.has(theme_pack) else "evergreen-dark"
+	safe_mode_active = safe_mode
+	comfort_reduced_motion = reduced_motion or safe_mode
+	comfort_haptics_enabled = haptics_enabled and not safe_mode
+	comfort_audio_muted = audio_muted or safe_mode
+
+	var base_theme: Theme = null
+	if ResourceLoader.exists("res://aegis_lds_theme.tres"):
+		var loaded := load("res://aegis_lds_theme.tres")
+		if loaded is Theme:
+			base_theme = (loaded as Theme).duplicate(true)
+	if base_theme == null:
+		base_theme = Theme.new()
+
+	var font_col := Color(0.925, 0.957, 0.941, 1.0)
+	var accent_col := Color(0.431, 0.906, 0.718, 1.0)
+	match lds_theme_pack:
+		"evergreen-light":
+			font_col = Color(0.08, 0.14, 0.12, 1.0)
+			accent_col = Color(0.06, 0.52, 0.36, 1.0)
+		"high-contrast":
+			font_col = Color(1.0, 1.0, 1.0, 1.0)
+			accent_col = Color(1.0, 0.92, 0.15, 1.0)
+		"calm":
+			font_col = Color(0.88, 0.91, 0.94, 1.0)
+			accent_col = Color(0.56, 0.78, 0.88, 1.0)
+
+	base_theme.set_color("font_color", "Button", font_col)
+	base_theme.set_color("font_focus_color", "Button", accent_col)
+	base_theme.set_color("font_hover_color", "Button", accent_col)
+	base_theme.set_color("font_color", "Label", font_col)
+	if _hud_root != null:
+		_hud_root.theme = base_theme
+	return {
+		"theme.pack": lds_theme_pack,
+		"comfort.reduced_motion": comfort_reduced_motion,
+		"comfort.haptics_enabled": comfort_haptics_enabled,
+		"comfort.audio_muted": comfort_audio_muted,
+		"safe_mode": safe_mode_active
+	}
 
 
 func _draw() -> void:

@@ -651,6 +651,73 @@ func _run_suite() -> void:
 			str(manifest_loaded), str(hostile_quarantined), str(starter_rolled_back), str(was_dormant), str(now_active)
 		])
 
+	# ------------------------------------------------------------------
+	# SPIKE S13: Cross-Project Suite Alignment (CP-11 LDS Theme/Safe-Mode, Willow Wardrobe ABAC Bridge & Aegis Asset Bridge)
+	# ------------------------------------------------------------------
+	print("\n--- SPIKE S13: Cross-Project Suite Alignment (CP-11, Willow Wardrobe & Aegis Asset Bridge) ---")
+	var cp11_manifest: Dictionary = catalog._load_json_dict("res://capsule.manifest.json")
+	var expected_theme_sha := "887f8df1a23fffd125c449d787dd9e9ac8d4ee01651869213288ed1cf0402940"
+	var actual_theme_sha := FileAccess.get_sha256("res://aegis_lds_theme.tres")
+	var cp11_manifest_ok: bool = (
+		str(cp11_manifest.get("schema", "")) == "cp11-capsule-manifest-v1"
+		and str(cp11_manifest.get("project_id", "")) == "PF-07"
+		and str(cp11_manifest.get("abac_action_id", "")) == "desktop.capsule.launch"
+		and actual_theme_sha == expected_theme_sha
+	)
+
+	var s13_scene: Node = (load("res://scenes/main_quarry.tscn") as PackedScene).instantiate()
+	root.add_child(s13_scene)
+	s13_scene.call("_ready")
+	var pack_hc: Dictionary = s13_scene.call("apply_cp11_settings", "high-contrast", false, true, false, false)
+	var pack_safe: Dictionary = s13_scene.call("apply_cp11_settings", "calm", false, true, false, true)
+	var cp11_runtime_ok: bool = (
+		str(pack_hc.get("theme.pack", "")) == "high-contrast"
+		and str(pack_safe.get("theme.pack", "")) == "calm"
+		and bool(pack_safe.get("comfort.reduced_motion", false)) == true
+		and bool(pack_safe.get("comfort.audio_muted", false)) == true
+		and bool(pack_safe.get("safe_mode", false)) == true
+	)
+	root.remove_child(s13_scene)
+	s13_scene.free()
+
+	# Test Willow Wardrobe ABAC entitlement bridge across textile, skill bracket, and relic capsules
+	grid.player_owned_capsules.clear()
+	grid.player_owned_capsules.append(grid.create_capsule_instance("tools/crude_stone_pick"))
+	grid.player_owned_capsules.append(grid.create_capsule_instance("upgrades/surveyor_chalk_and_stencil"))
+	for k in catalog.capsules.keys():
+		var ks := str(k)
+		if ks.begins_with("textiles/"):
+			grid.player_owned_capsules.append(grid.create_capsule_instance(ks))
+			break
+	var willow_env: Dictionary = grid.export_willow_wardrobe_bridge("user://willow_wardrobe_entitlements.json")
+	var w_owned: Array = willow_env.get("ownedItemIds", [])
+	var w_sidecars: Array = willow_env.get("dynamicSidecars", [])
+	var willow_ok: bool = (
+		str(willow_env.get("authority", "")) == "lfs-local-abac-v1"
+		and str(willow_env.get("capability", "")) == "lfs.game.item.use"
+		and bool(willow_env.get("offlineUsable", false)) == true
+		and w_owned.has("astral_chronicle_monocle")
+		and w_owned.has("astral_velvet_corset_gown")
+		and w_owned.has("astral_orrery_crown")
+		and w_sidecars.size() >= 2
+	)
+
+	var aegis_bridge: Dictionary = catalog._load_json_dict("res://content/aegis_asset_bridge.json")
+	var bridge_ok: bool = (
+		str(aegis_bridge.get("schema", "")) == "aegis-asset-bridge-v1"
+		and (aegis_bridge.get("paletteSwatches", []) as Array).size() == 6
+		and (aegis_bridge.get("howToPlaySteps", []) as Array).size() == 3
+		and (aegis_bridge.get("optionsSchema", []) as Array).size() == 4
+		and (aegis_bridge.get("willowCompanion", {}) as Dictionary).get("authority", "") == "lfs-local-abac-v1"
+		and ((aegis_bridge.get("enclaveConcordance", {}) as Dictionary).get("squadMappings", []) as Array).size() == 4
+	)
+
+	_assert_true(cp11_manifest_ok and cp11_runtime_ok and willow_ok and bridge_ok,
+		"CP-11 Manifest/Theme/Safe-Mode, Willow Wardrobe ABAC Bridge & Aegis/Enclave Asset Bridge",
+		"cp11=%s/%s, willow_items=%d (sidecars=%d), aegis_bridge=%s" % [
+			str(cp11_manifest_ok), str(cp11_runtime_ok), w_owned.size(), w_sidecars.size(), str(bridge_ok)
+		])
+
 
 func _write_temp_file(file_path: String, content: String) -> void:
 	var dir_path := file_path.get_base_dir()

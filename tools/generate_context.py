@@ -120,8 +120,107 @@ def main() -> int:
         build_manifest.build_manifest(write=True)
     except Exception:
         pass
-    print(f"OK: Generated AI_CONTEXT_MANIFEST.md ({sum(len(v) for v in capsules_by_ns.values())} capsules), GAP_MAP.md, and content/capsule_manifest.json.")
+    try:
+        build_aegis_asset_bridge()
+    except Exception:
+        pass
+    print(f"OK: Generated AI_CONTEXT_MANIFEST.md ({sum(len(v) for v in capsules_by_ns.values())} capsules), GAP_MAP.md, content/capsule_manifest.json, and content/aegis_asset_bridge.json.")
     return 0
+
+
+def build_aegis_asset_bridge() -> dict:
+    """Emits content/aegis_asset_bridge.json for Aegis Hub / LFS_TrashArcade (0a728b45),
+    Willow Companion & Wardrobe Studio (ca85e78a / 80ed872f), CP-11 (1f481664), and Enclave of the 16 (733881f5)."""
+    if str(ROOT / "tools") not in sys.path:
+        sys.path.insert(0, str(ROOT / "tools"))
+    import content_graph
+    g = content_graph.build()
+    entities = []
+    for bid in sorted(g.blocks)[:8]:
+        raw = g.caps.get(bid, {})
+        meta = raw.get("meta", {})
+        entities.append({
+            "id": bid,
+            "name": str(meta.get("name", bid)),
+            "kind": "stratum_block",
+            "z_unlock": int(g.z_unlock(bid)),
+            "summary": str(meta.get("description", ""))[:140],
+        })
+    for nid in sorted(g.npcs)[:6]:
+        raw = g.caps.get(nid, {})
+        meta = raw.get("meta", {})
+        entities.append({
+            "id": nid,
+            "name": str(meta.get("name", nid)),
+            "kind": "specialist_npc",
+            "unlock_depth": int(g._npc_depth(nid)),
+            "offers": int(g.vendor_offers.get(nid, 0)),
+            "summary": str(meta.get("description", ""))[:140],
+        })
+    upgrades = []
+    for s in sorted(g.skill_bracket_nodes(), key=lambda x: (not x["explicit_skill"], -x["dependent_count"], x["id"]))[:12]:
+        raw = g.caps.get(s["id"], {})
+        meta = raw.get("meta", {})
+        upgrades.append({
+            "id": s["id"],
+            "name": str(meta.get("name", s["id"])),
+            "bracket": f"bracket_{s['bracket']}",
+            "school": s["school"],
+            "dependents": s["dependent_count"],
+            "summary": str(meta.get("description", ""))[:140],
+        })
+    bridge = {
+        "schema": "aegis-asset-bridge-v1",
+        "projectId": "PF-07",
+        "capsuleId": "lfs-tycoon",
+        "title": "LFS Tycoon: StrataPaper Quarry & Forge",
+        "portalArchetype": "Deep-Strata Quarry, 11-Discipline Tinker Forge & Autonomous World Engine",
+        "portalBadge": "STRATA-FORGE",
+        "inspirationTitles": ["Tinkers' Construct", "Terraria", "Skyrim", "Munchkin"],
+        "sessionLength": "3-15 min active / 24h offline catch-up",
+        "goalSummary": "Excavate the 14x31 layered quarry, unlock 5 Modular Skill Brackets across 11 crafting disciplines, socket Tinker parts, fuse Terraria gear, and outfit Willow's Wardrobe.",
+        "loreHook": "Beneath the Singing Abyss and the Enclave's First Forge lies the Great Ledger Beneath—where acoustic monks, clockwork syndicates, and siege geomancers transmute bedrock into living relics.",
+        "artPalette": "Evergreen Dark & Subterranean Brass",
+        "paletteSwatches": ["#141F1B", "#1B2924", "#6EE7B7", "#D97706", "#38BDF8", "#F43F5E"],
+        "capsuleCount": len(g.caps),
+        "frontierDepthZ": g.frontier_depth(),
+        "openBrackets": g.open_brackets(),
+        "entities": entities,
+        "upgrades": upgrades,
+        "howToPlaySteps": [
+            "Hold-press or drag across the 14x31 quarry grid to excavate strata, bail flooded aquifers, and detonate 8-perimeter Obsidian Hazards.",
+            "Open [⚒ Forge] to craft across 11 disciplines—unlocking non-consumed Modular Skill Brackets (`bracket_1`..`bracket_5`) and fusing socketed tools.",
+            "Open [Homestead] to claim Paired Chest loot, switch CP-11 LDS theme packs, and sync forged regalia to Willow's Desktop Pet Wardrobe."
+        ],
+        "optionsSchema": [
+            {"group": "Audio & Mix", "keys": ["comfort.audio_muted"], "summary": "Master quarry acoustic resonance and autoplay mute."},
+            {"group": "Visual Comfort", "keys": ["theme.pack", "comfort.reduced_motion"], "summary": "CP-11 LDS 4-pack themes (evergreen-dark, evergreen-light, high-contrast, calm) & reduced motion."},
+            {"group": "Control Mode", "keys": ["comfort.haptics_enabled"], "summary": "48dp touch-safe inline steppers, one-handed drawer dock, and haptics toggle."},
+            {"group": "Save & Reset", "keys": ["safe_mode.supported"], "summary": "Atomic save/load with dormant-stub forward/backward compatibility and ZT-10 safe mode."}
+        ],
+        "willowCompanion": {
+            "companionName": "Willow",
+            "role": "Chief Quarry Assayer & LFS Suite Face",
+            "authority": "lfs-local-abac-v1",
+            "capability": "lfs.game.item.use",
+            "offlineUsable": True,
+            "wardrobeSlots": ["back_accessory", "boots", "chassis_dress", "visor", "headpiece", "held_prop"],
+            "wardrobeThemes": ["astral-clockwork", "tactical-valkyrie", "cyber-couture", "cozy-tech", "royal-valkyrie", "botanical-fae", "street-tech"],
+            "entitlementExportPath": "user://willow_wardrobe_entitlements.json"
+        },
+        "enclaveConcordance": {
+            "repo": "enclave-digital-twin",
+            "squadMappings": [
+                {"squad": "The Forge", "members": ["Silas (ISTJ)", "Leo (ENTJ)", "Hector (ESTP)", "Jane (INTP)"], "theme": "theme_enclave_first_forge", "grandProjects": ["The First Forge", "The Stormbreaker"]},
+                {"squad": "The Wilds", "members": ["Kaio (ENFP)", "Zara (ISFP)", "Willow (ISTP)", "Terra (ISFJ)"], "theme": "theme_enclave_living_atlas", "grandProjects": ["The Genesis Garden", "The Sanctuary"]},
+                {"squad": "The Mind", "members": ["Orion (INFP)", "Isla (INTJ)", "Kenna (ENFJ)", "Elias (INFJ)"], "theme": "theme_lithic_choir", "grandProjects": ["The Simulacrum", "The Lyceum of the Mind"]},
+                {"squad": "The Hub", "members": ["Ryn (ESTJ)", "Vex (ENTP)", "Dorian (ESFP)", "Elara (ESFJ)"], "theme": "theme_clockwork_syndicate", "grandProjects": ["The Living Atlas & Mycelial Concordance", "The Hearth"]}
+            ]
+        }
+    }
+    out_path = ROOT / "content" / "aegis_asset_bridge.json"
+    out_path.write_text(json.dumps(bridge, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return bridge
 
 
 if __name__ == "__main__":

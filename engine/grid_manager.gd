@@ -1065,7 +1065,139 @@ func buy_vendor_offer(vendor_id: String, offer: Dictionary, free_grant: bool = f
 	elif affs.has("place_in_house") or (affs.has("carry") and not affs.has("equip_tool") and not affs.has("place_on_tile") and not affs.has("consume") and not affs.has("read_book")):
 		equip_item(inst)
 
+	export_willow_wardrobe_bridge()
 	return {"ok": true, "instance": inst}
+
+
+## Computes the canonical Willow Companion & Wardrobe Studio ABAC entitlement envelope (80ed872f + ca85e78a).
+func get_willow_wardrobe_entitlements() -> Dictionary:
+	var owned_item_ids: Array[String] = []
+	var unlocks: Array[Dictionary] = []
+	var dynamic_sidecars: Array[Dictionary] = []
+	var seen_ids: Dictionary = {}
+
+	var add_starter := func(item_id: String, slot_id: String, theme_id: String, src_cap: String) -> void:
+		if not seen_ids.has(item_id):
+			seen_ids[item_id] = true
+			owned_item_ids.append(item_id)
+			unlocks.append({
+				"schema": "lfs-wardrobe-unlock-v1",
+				"authority": "lfs-local-abac-v1",
+				"capability": "lfs.game.item.use",
+				"offlineUsable": true,
+				"itemId": item_id,
+				"slot": slot_id,
+				"theme": theme_id,
+				"sourceCapsule": src_cap,
+				"unlockedAt": "2026-10-25T01:40:00Z"
+			})
+
+	# Always grant Willow's starter Quarry Assayer monocle if the player owns any tool
+	if not player_owned_capsules.is_empty():
+		add_starter.call("astral_chronicle_monocle", "visor", "astral-clockwork", "tools/crude_stone_pick")
+
+	for inst in player_owned_capsules:
+		if bool(inst.get("destroyed", false)):
+			continue
+		var cid := str(inst.get("capsule_id", ""))
+		var cap: Dictionary = catalog.capsules.get(cid, {})
+		if cap.is_empty():
+			continue
+		var tags: Array = cap.get("tags", [])
+		var meta: Dictionary = cap.get("meta", {})
+		var nm := str(meta.get("name", cid))
+		var rarity := str(meta.get("rarity", "rare"))
+
+		var is_textile := cid.begins_with("textiles/") or tags.has("craft_textile_loom")
+		var is_relic := tags.has("craft_achievement_relic")
+		var is_skill := tags.has("skill_bracket") or cid.begins_with("upgrades/")
+		var is_lens := cid.begins_with("glassblowing/") or cid.begins_with("lapidary/") or tags.has("craft_glassblowing_kiln") or tags.has("craft_lapidary_jewel")
+
+		if not (is_textile or is_relic or is_skill or is_lens):
+			continue
+
+		var slot_id := "held_prop"
+		var theme_id := "astral-clockwork"
+		if is_textile:
+			slot_id = "chassis_dress"
+			add_starter.call("astral_velvet_corset_gown", "chassis_dress", "astral-clockwork", cid)
+			if tags.has("theme_obsidian_wardbreaker") or tags.has("theme_tectonic_crucible"):
+				theme_id = "tactical-valkyrie"
+				add_starter.call("valkyrie_cuirass_tassets", "chassis_dress", "tactical-valkyrie", cid)
+		elif is_lens:
+			slot_id = "visor"
+			theme_id = "cyber-couture"
+			add_starter.call("cyber_waveform_visor", "visor", "cyber-couture", cid)
+		elif is_skill:
+			slot_id = "headpiece"
+			add_starter.call("astral_orrery_crown", "headpiece", "astral-clockwork", cid)
+			add_starter.call("astral_pendulum_sabatons", "boots", "astral-clockwork", cid)
+		elif is_relic:
+			slot_id = "held_prop"
+			add_starter.call("astral_lantern_chronometer", "held_prop", "astral-clockwork", cid)
+			add_starter.call("astral_astrolabe_halo", "back_accessory", "astral-clockwork", cid)
+
+		var raw_slug := cid.get_file().to_lower()
+		var clean_slug := ""
+		for ch_idx in raw_slug.length():
+			var c := raw_slug.substr(ch_idx, 1)
+			if (c >= "a" and c <= "z") or (c >= "0" and c <= "9") or c == "_" or c == "-":
+				clean_slug += c
+		if clean_slug.length() > 40:
+			clean_slug = clean_slug.substr(0, 40)
+		if clean_slug == "":
+			clean_slug = "strata_regalia"
+
+		var custom_id := "custom_%s__%s" % [slot_id, clean_slug]
+		if not seen_ids.has(custom_id):
+			seen_ids[custom_id] = true
+			owned_item_ids.append(custom_id)
+			unlocks.append({
+				"schema": "lfs-wardrobe-unlock-v1",
+				"authority": "lfs-local-abac-v1",
+				"capability": "lfs.game.item.use",
+				"offlineUsable": true,
+				"itemId": custom_id,
+				"slot": slot_id,
+				"theme": theme_id,
+				"sourceCapsule": cid,
+				"unlockedAt": "2026-10-25T01:40:00Z"
+			})
+			dynamic_sidecars.append({
+				"id": custom_id,
+				"name": nm,
+				"slot": slot_id,
+				"theme": theme_id,
+				"rarity": rarity,
+				"summary": str(meta.get("description", "Forged in LFS-Tycoon StrataPaper.")),
+				"promptFragment": "adorned with %s forged from deep quarry strata" % nm,
+				"motionFragment": "subtle subterranean resonance and warm brass shimmer from %s" % nm,
+				"palette": {"primary": "#141f1b", "secondary": "#d97706", "glow": "#6ee7b7", "rim": "#1e293b"},
+				"keyed": true,
+				"slotMask": true
+			})
+
+	return {
+		"schema": "lfs-wardrobe-unlock-v1",
+		"companion": "Willow",
+		"authority": "lfs-local-abac-v1",
+		"capability": "lfs.game.item.use",
+		"offlineUsable": true,
+		"ownedItemIds": owned_item_ids,
+		"unlockedItemIds": owned_item_ids,
+		"unlocks": unlocks,
+		"dynamicSidecars": dynamic_sidecars
+	}
+
+
+## Writes Willow's Wardrobe Studio ABAC entitlement JSON to disk (default: user://willow_wardrobe_entitlements.json).
+func export_willow_wardrobe_bridge(path: String = "user://willow_wardrobe_entitlements.json") -> Dictionary:
+	var payload := get_willow_wardrobe_entitlements()
+	var f := FileAccess.open(path, FileAccess.WRITE)
+	if f != null:
+		f.store_string(JSON.stringify(payload, "  ") + "\n")
+		f.flush()
+	return payload
 
 
 ## Sockets a socket_in_tool capsule instance into the target tool (default: active player_tool).

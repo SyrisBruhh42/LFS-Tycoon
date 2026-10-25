@@ -270,6 +270,16 @@
       "title": "The Paradox Symposium of St. Munchkin",
       "motifs": ["lantern", "hearth", "wine", "cat", "paradox", "loophole"],
       "lore": "A secret order of subterranean bureaucrats, sommeliers, and stray-cat whisperers who exploit hilarious literal loopholes in the laws of physics, intoxication, and wrong-tool penalties."
+    },
+    "theme_enclave_first_forge": {
+      "title": "The Enclave First Forge & Stormbreaker Concordance",
+      "motifs": ["forge", "anvil", "copper", "lightning", "stormbreaker", "silas", "hector", "ferrofluid"],
+      "lore": "Sympathetic core-metallurgy and captured-lightning geode smithing pioneered by The Forge Squad (Silas, Leo, Hector, Jane) of the Enclave of the 16, where hyper-dense alloys shift resonance with operator focus and grounding rods tame subterranean plasma."
+    },
+    "theme_enclave_living_atlas": {
+      "title": "The Living Atlas & Mycelial Sanctuary of the Enclave",
+      "motifs": ["atlas", "mycelial", "spore", "crystal", "willow", "kaio", "sanctuary", "hearth"],
+      "lore": "Bioluminescent spore cartography, magnetotropic flora cultivation, and Schrödinger's Harvest culinary alchemy shared across The Wilds, The Mind, and The Hub of the Enclave of the 16."
     }
   },
   "logic_tiers": {

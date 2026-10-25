@@ -179,11 +179,44 @@ def main_is_red(cfg: dict) -> tuple[bool, str]:
 
 # --------------------------------------------------------------------------- reconcile
 def first_pr_url(session: dict) -> str | None:
+    """Strictly filters Jules v1alpha multi-output arrays (ignoring changeSet objects)."""
     for o in session.get("outputs", []) or []:
+        if not isinstance(o, dict):
+            continue
         pr = o.get("pullRequest")
-        if pr and pr.get("url"):
-            return pr["url"]
+        if isinstance(pr, dict) and isinstance(pr.get("url"), str) and pr["url"].strip():
+            return pr["url"].strip()
     return None
+
+
+def cut_loss_session(cfg: dict, sid: str, rec: dict, state: dict, reason: str, dry: bool) -> None:
+    """Gracefully closes stalled/failed sessions, deletes abandoned PR branches, and records a bounded Second-Pass Lesson."""
+    rec["outcome"] = f"failed:{reason}"
+    rec["finished"] = iso(now())
+    lesson = f"[Second-Pass Failure Lesson] Session stalled/failed ({reason}) on {rec.get('label', 'capsule')}: keep scope to 1 valid capsule, respect 2-Item Self-Mix Budget, and run tools/preflight.py."
+    state["lessons"] = (state.get("lessons", []) + [lesson[:220]])[-60:]
+    pr_url = rec.get("pr")
+    if pr_url and not dry:
+        gh("pr", "edit", pr_url, "--add-label", FAIL_LABEL, check=False)
+        gh("pr", "close", pr_url, "--delete-branch", "--comment",
+           f"Closed automatically by `cut_loss_session` ({reason}). Recorded Second-Pass Failure Lesson.", check=False)
+    log("cut_loss_session", session=sid, reason=reason, pr=pr_url or "")
+
+
+def enclave_dispatched_24h() -> int:
+    """Reads Enclave of the 16 (733881f5) rolling-24h Jules budget if present for sympathetic fleet quota sharing."""
+    enclave_budget = ROOT.parent / "enclave-digital-twin" / "ops" / "budget.json"
+    if not enclave_budget.exists():
+        return 0
+    try:
+        data = json.loads(enclave_budget.read_text(encoding="utf-8"))
+        cutoff = now() - timedelta(hours=24)
+        ts_list = data.get("dispatches_utc", []) or data.get("recent_dispatches", [])
+        if isinstance(ts_list, list):
+            return sum(1 for t in ts_list if isinstance(t, str) and parse_ts(t) >= cutoff)
+        return int(data.get("used_24h", 0))
+    except Exception:
+        return 0
 
 
 def normalize_error(line: str) -> str:
@@ -212,6 +245,7 @@ def harvest_lessons(cfg: dict, pr_url: str, state: dict) -> bool:
 
 def reconcile(cfg: dict, state: dict, dry: bool) -> None:
     sessions = state.setdefault("sessions", {})
+    behind_updates_this_tick = 0
     for sid, rec in sessions.items():
         if rec.get("outcome"):
             continue
@@ -244,24 +278,21 @@ def reconcile(cfg: dict, state: dict, dry: bool) -> None:
                         log("session_nudged", session=sid, nudges=rec["nudges"])
                     except ApiError as e:
                         log("nudge_error", session=sid, error=str(e))
-                elif age_h > 2:
-                    rec["outcome"] = "failed:stuck_asking"
+                elif age_h > 0.5:
+                    cut_loss_session(cfg, sid, rec, state, "stuck_asking", dry)
             elif st == "FAILED":
-                rec["outcome"] = "failed:session_failed"
+                cut_loss_session(cfg, sid, rec, state, "session_failed", dry)
             elif st == "COMPLETED":
                 done_min = (now() - parse_ts(s.get("updateTime", rec["created"]))).total_seconds() / 60
                 if done_min > cfg["no_pr_grace_minutes"]:
-                    rec["outcome"] = "failed:no_pr"
+                    cut_loss_session(cfg, sid, rec, state, "no_pr", dry)
             if not rec.get("outcome") and not rec.get("pr") and age_h > cfg["stale_session_hours"]:
-                rec["outcome"] = "failed:stale"
-            if rec.get("outcome"):
-                rec["finished"] = iso(now())
-                log("session_finished", session=sid, outcome=rec["outcome"])
+                cut_loss_session(cfg, sid, rec, state, "stale", dry)
             if not rec.get("pr"):
                 continue
         # ---- pull request side
         try:
-            pr = json.loads(gh("pr", "view", rec["pr"], "--json", "state,statusCheckRollup,isDraft"))
+            pr = json.loads(gh("pr", "view", rec["pr"], "--json", "number,state,statusCheckRollup,isDraft,mergeable,mergeStateStatus"))
         except (RuntimeError, ValueError) as e:
             log("pr_poll_error", session=sid, error=str(e)[:200])
             continue
@@ -270,6 +301,12 @@ def reconcile(cfg: dict, state: dict, dry: bool) -> None:
         elif pr["state"] == "CLOSED":
             rec["outcome"] = "failed:closed"
         else:
+            # Auto-reconcile stale-base PRs (MERGEABLE + BEHIND, bounded to <= 2 per tick)
+            if (pr.get("mergeable") == "MERGEABLE" and pr.get("mergeStateStatus") == "BEHIND"
+                    and behind_updates_this_tick < 2 and not dry and pr.get("number")):
+                gh("api", "-X", "PUT", f"repos/{cfg['repo']}/pulls/{pr['number']}/update-branch", check=False)
+                behind_updates_this_tick += 1
+                log("pr_branch_updated", session=sid, pr=rec["pr"], number=pr["number"])
             checks = [c for c in pr.get("statusCheckRollup", []) or [] if c.get("name") == cfg["gate_check_name"]]
             concl = (checks[-1].get("conclusion") or "") if checks else ""
             if concl in ("FAILURE", "TIMED_OUT", "STARTUP_FAILURE"):
@@ -280,14 +317,11 @@ def reconcile(cfg: dict, state: dict, dry: bool) -> None:
                     rec["finished"] = iso(now())
                     log("session_finished", session=sid, outcome=rec["outcome"], pr=rec["pr"])
                     continue
-                rec["outcome"] = "failed:gate"
-                if not dry:
-                    gh("pr", "edit", rec["pr"], "--add-label", FAIL_LABEL, check=False)
-                    gh("pr", "close", rec["pr"], "--delete-branch", "--comment",
-                       "Closed automatically by the Jules factory: the capsule gate failed. The errors were recorded as "
-                       "lessons for future sessions.", check=False)
+                cut_loss_session(cfg, sid, rec, state, "gate", dry)
+                continue
             elif not checks and (now() - parse_ts(rec.get("pr_seen", rec["created"]))).total_seconds() > cfg["no_gate_hours"] * 3600:
-                rec["outcome"] = "failed:no_gate"
+                cut_loss_session(cfg, sid, rec, state, "no_gate", dry)
+                continue
         if rec.get("outcome"):
             rec["finished"] = iso(now())
             log("session_finished", session=sid, outcome=rec["outcome"], pr=rec["pr"])
@@ -421,11 +455,13 @@ def tick(args: argparse.Namespace) -> int:
     active = [v for v in live if not v.get("pr")]
     open_prs = [v for v in live if v.get("pr")]
     day = [v for v in state["sessions"].values() if now() - parse_ts(v["created"]) < timedelta(hours=24)]
+    fleet_24h = len(day) + enclave_dispatched_24h()
     for cond, reason in ((len(active) >= cfg["max_active_sessions"], "too_many_active_sessions"),
                          (len(open_prs) >= cfg["max_open_prs"], "pr_backlog"),
-                         (len(day) >= min(cfg["daily_cap"], 300), "daily_cap")):
+                         (len(day) >= min(cfg["daily_cap"], 300), "daily_cap"),
+                         (fleet_24h >= 270, "fleet_ultra_budget_cap")):
         if cond:
-            log("skip", reason=reason, active=len(active), open_prs=len(open_prs), last_24h=len(day))
+            log("skip", reason=reason, active=len(active), open_prs=len(open_prs), last_24h=len(day), fleet_24h=fleet_24h)
             return 0
     if args.no_dispatch:
         log("skip", reason="no_dispatch_flag")

@@ -1,0 +1,47 @@
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://c8lds4aegistheme"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.078431, 0.121569, 0.105882, 1.0)
+border_color = Color(0.164706, 0.235294, 0.207843, 1.0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_normal"]
+bg_color = Color(0.105882, 0.160784, 0.141176, 1.0)
+border_color = Color(0.164706, 0.235294, 0.207843, 1.0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_focus"]
+bg_color = Color(0.105882, 0.160784, 0.141176, 1.0)
+border_color = Color(0.431373, 0.905882, 0.717647, 1.0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[resource]
+default_font_size = 16
+Button/colors/font_color = Color(0.92549, 0.956863, 0.941176, 1.0)
+Button/colors/font_focus_color = Color(0.431373, 0.905882, 0.717647, 1.0)
+Button/colors/font_hover_color = Color(0.431373, 0.905882, 0.717647, 1.0)
+Button/styles/normal = SubResource("StyleBoxFlat_button_normal")
+Button/styles/focus = SubResource("StyleBoxFlat_button_focus")
+Label/colors/font_color = Color(0.92549, 0.956863, 0.941176, 1.0)
+Panel/styles/panel = SubResource("StyleBoxFlat_panel")

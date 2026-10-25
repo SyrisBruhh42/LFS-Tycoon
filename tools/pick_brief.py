@@ -681,7 +681,9 @@ def main() -> int:
             f"- **Logic Spectrum Tier (`{chosen_logic['tag']}`):** {chosen_logic['hint']}",
             f"- **Assigned Specialist Artisan / Vendor (`offered_by[0].vendor`):** `{v_anchor}` (do NOT default to `npcs/peddler_vayne` unless assigned)",
             f"- **Assigned Multi-Ingredient Recipe (`offered_by[0].price`):** {recipe_hint}",
+            f"- **2-Item Self-Mix Budget (`0a728b45` Guard):** Reference at most 2-3 existing item/block IDs in `offered_by[].price` and reactions (the assigned anchors `{b_anchor}` and `{second_ingredient}`); never stuff unrelated capsule IDs into a single recipe.",
             f"- **Rolling-Horizon Depth Gate (`Gap A` / Law L14):** Any `player.max_depth >= Z` inside `offered_by[].unlock_if` MUST stay inside `Z = {z_lo}..{min(z_hi, int(live_frontier))}m` (`<= {int(live_frontier)}m`, never deeper than obtainable blocks).",
+            f"- **Willow Companion Wardrobe Bridge (`80ed872f` / `ca85e78a`):** Crafted `textiles/*`, `lapidary/*`, `glassblowing/*`, and `craft_achievement_relic` capsules automatically unlock companion regalia for **Willow** across her 6 wardrobe slots (`chassis_dress`, `visor`, `headpiece`, `boots`, `back_accessory`, `held_prop`) under `lfs-local-abac-v1`.",
             f"- **Deep Lore & Stratum Interconnectivity:** Weave the lore of *{theme_spec['title']}* (`{theme_key}`), `{v_anchor}`, and `{b_anchor}` into `meta.description`, and if natural let a modifier or reaction reward or interact with `{b_anchor}`.",
         ]
         if mech_hint:

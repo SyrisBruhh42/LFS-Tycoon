@@ -1,0 +1,65 @@
+{
+  "abac_action_id": "desktop.capsule.launch",
+  "action_ids": [
+    "GAME-001",
+    "desktop.capsule.launch"
+  ],
+  "aegis_lds_theme_sha256": "887f8df1a23fffd125c449d787dd9e9ac8d4ee01651869213288ed1cf0402940",
+  "canonical_abac_action": "desktop.capsule.launch",
+  "capsule_id": "lfs-tycoon",
+  "category": "tycoon_game",
+  "comfort_overrides": {
+    "precedence_authority": "ZT-9",
+    "respects_audio_mute": true,
+    "respects_haptics_off": true,
+    "respects_reduced_motion": true
+  },
+  "default_theme_pack": "evergreen-dark",
+  "entrypoint": "project.godot",
+  "godot_lds_theme_path": "aegis_lds_theme.tres",
+  "godot_lds_theme_sha256": "887f8df1a23fffd125c449d787dd9e9ac8d4ee01651869213288ed1cf0402940",
+  "help_id": "help.apps_capsules",
+  "help_topic_id": "help.apps_capsules",
+  "lds_theme_pack_support": [
+    "evergreen-dark",
+    "evergreen-light",
+    "high-contrast",
+    "calm"
+  ],
+  "path": "capsules/lfs-tycoon",
+  "project_id": "PF-07",
+  "quarantine_status": {
+    "authority_directive": "C-07",
+    "auto_execute_allowed": true,
+    "csd_vit_l_restricted_quarantine": true,
+    "model_id": null,
+    "quarantined_models": [
+      "CSD-ViT-L"
+    ],
+    "reason": "Standard desktop capsule sandbox boundary (ZT-10); CSD-ViT-L remains quarantined under C-07.",
+    "requires_step_up": false,
+    "restricted_quarantine": false
+  },
+  "safe_mode": {
+    "disables_shaders_and_particles": true,
+    "forces_reduced_motion": true,
+    "isolation_policy": "ZT-10",
+    "mutes_autoplay_audio": true,
+    "supported": true
+  },
+  "schema": "cp11-capsule-manifest-v1",
+  "settings_schema": {
+    "keys": [
+      "theme.pack",
+      "comfort.reduced_motion",
+      "comfort.haptics_enabled",
+      "comfort.audio_muted"
+    ],
+    "registry": "governance/settings-registry.json"
+  },
+  "stacks": [
+    "godot4",
+    "python"
+  ],
+  "title": "LFS Tycoon Quarry & Automation"
+}

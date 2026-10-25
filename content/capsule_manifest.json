@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "capsule_count": 491,
+  "capsule_count": 493,
   "capsules": {
     "biomes/basalt_hearth_9d89": {
       "sha256": "74fd42124058dfeae6b17fb6ea7fbdf2524061426d5dce014a17e2da9b5c053c",
@@ -749,6 +749,10 @@
     "devices/mortar_lens_bf8a": {
       "sha256": "543ab8115ef7d9b8ac2420a30b0a7541ff03c09efdb832bce999f70e976088ca",
       "bytes": 980
+    },
+    "devices/munchkin_ochre_kiln_12d6": {
+      "sha256": "5cd8e0aed3801c737a81d5de6a6b481429174025526212128dd01751520e0803",
+      "bytes": 2028
     },
     "devices/nettle_kettle_4cf5": {
       "sha256": "72b8489a9e03c15cc52edc017b80cea9f2c04b956a03dd29547689cbd048e44b",
@@ -1709,6 +1713,10 @@
     "upgrades/gravel_tallow_router_deec": {
       "sha256": "8f0f9b07b7dca5523f038d259f577fbb4e331f1ae533cfd505c61b23c0ef4533",
       "bytes": 1293
+    },
+    "upgrades/gravel_wardbreaker_seal_22d6": {
+      "sha256": "d102d18e88425e3000a07e177932b0c4995534f511493548051dd953411d31a9",
+      "bytes": 1499
     },
     "upgrades/hearth_crafting_desk_626d": {
       "sha256": "e4b88e4f7f195d2620007836507d1afc7edde6032b9a1e38515e275b9dc52dde",
