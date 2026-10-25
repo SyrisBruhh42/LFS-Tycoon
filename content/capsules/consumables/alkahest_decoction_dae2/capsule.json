@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Decoction",
+    "description": "An alchemical decoction brewed from the methods of the Infinite Scriptorium of the Lithic Choir. The blind monastic archivists of Quill Hollow discovered that by combining Alkahest Quartz with native Copper in a Quill Crucible, the resulting elixir fortifies the miner's resolve. When consumed, it reduces tool wear and emits a harmonious bell tone whenever striking Alkahest Quartz, a physical echo of bedrock's frozen acoustic music.",
+    "author": "jules",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "food",
+    "solves_tool_wear",
+    "craft_alchemy_potion",
+    "bracket_2",
+    "skill_school_pewter_cinder",
+    "theme_lithic_choir",
+    "logic_canonical",
+    "steward_keystone",
+    "path_consumable_buff"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "duration_sec": 450.0,
+    "durability_drain_mult": 0.65
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.durability_drain_mult"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec"
+        },
+        {
+          "act": "spawn_item",
+          "item": "blocks/alkahest_quartz_d755",
+          "qty": 1
+        },
+        {
+          "act": "destroy_self"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/mica_salt_vendor_832d",
+      "price": {
+        "devices/quill_crucible_9ff0": 1,
+        "blocks/alkahest_quartz_d755": 25,
+        "blocks/copper": 50
+      },
+      "unlock_if": "player.max_depth <= 330"
+    }
+  ],
+  "offline": "none"
+}
