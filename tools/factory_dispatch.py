@@ -25,6 +25,7 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 import time
 import urllib.error
 import urllib.request
@@ -46,6 +47,8 @@ KEY_FILE = Path(os.environ.get("JULES_API_KEY_FILE", str(Path.home() / ".secrets
 PAUSE_LABEL = "factory:pause"
 FAIL_LABEL = "gate-failed"
 GATE_MARKER = "<!-- capsule-gate-report -->"
+CAPSULE_PATH_RE = re.compile(r"^content/capsules/([a-z0-9_]{1,40})/([a-z0-9_]{1,80})/capsule\.json$")
+PROPOSAL_PATH_RE = re.compile(r"^proposals/[a-z0-9_]{1,80}\.md$")
 ACTIVE_STATES = {"QUEUED", "PLANNING", "AWAITING_PLAN_APPROVAL", "AWAITING_USER_FEEDBACK", "IN_PROGRESS", "PAUSED"}
 NUDGE = ("Proceed autonomously without asking questions. Make the best reasonable decision yourself, follow "
          "AGENTS.md, keep the scope to one new capsule in its own folder, make tools/preflight.py pass, and "
@@ -95,8 +98,22 @@ def log(event: str, **fields) -> None:
 
 def load_state() -> dict:
     try:
-        return json.loads(STATE_FILE.read_text(encoding="utf-8"))
+        data = json.loads(STATE_FILE.read_text(encoding="utf-8"))
+        if not isinstance(data, dict):
+            raise ValueError("state root must be a dict")
+        if not isinstance(data.get("sessions"), dict):
+            data["sessions"] = {}
+        if not isinstance(data.get("lessons"), list):
+            data["lessons"] = []
+        if not isinstance(data.get("api_fail_streak"), int):
+            data["api_fail_streak"] = 0
+        return data
     except (OSError, ValueError):
+        if STATE_FILE.exists():
+            try:
+                STATE_FILE.replace(STATE_FILE.with_suffix(".corrupt.bak"))
+            except OSError:
+                pass
         return {"sessions": {}, "lessons": [], "api_fail_streak": 0}
 
 
@@ -195,6 +212,134 @@ def first_pr_url(session: dict) -> str | None:
     return None
 
 
+def extract_latest_changeset(sid: str, session: dict) -> tuple[str, str]:
+    """Returns (unidiff_patch, suggested_commit_message) from session.outputs or session/activities."""
+    for o in reversed(session.get("outputs", []) or []):
+        if isinstance(o, dict):
+            gp = (o.get("changeSet") or {}).get("gitPatch") or {}
+            patch = gp.get("unidiffPatch", "")
+            if isinstance(patch, str) and patch.strip():
+                return patch, str(gp.get("suggestedCommitMessage") or "").strip()
+    try:
+        acts = api_retry("GET", f"/sessions/{sid}/activities?pageSize=50").get("activities", []) or []
+    except ApiError:
+        return "", ""
+    for a in reversed(acts):
+        if not isinstance(a, dict):
+            continue
+        for art in reversed(a.get("artifacts", []) or []):
+            if not isinstance(art, dict):
+                continue
+            gp = (art.get("changeSet") or {}).get("gitPatch") or {}
+            patch = gp.get("unidiffPatch", "")
+            if isinstance(patch, str) and patch.strip():
+                return patch, str(gp.get("suggestedCommitMessage") or "").strip()
+    return "", ""
+
+
+def salvage_changeset_to_pr(cfg: dict, sid: str, rec: dict, state: dict, session: dict, dry: bool) -> bool:
+    """Antifragile fallback: if a session completed work inside its VM (producing a valid changeSet in
+    outputs or activities) but never opened a GitHub PR even after submit nudges, validates the patch
+    in an isolated git worktree against path_guard.py + check_capsules.py --strict. If valid, pushes a
+    salvage branch and opens the PR; if invalid, harvests the exact validation errors into state['lessons']."""
+    if rec.get("salvage_attempted"):
+        return False
+    rec["salvage_attempted"] = True
+    patch, commit_msg = extract_latest_changeset(sid, session)
+    if not patch.strip():
+        return False
+
+    touched_paths: list[str] = []
+    for line in patch.splitlines():
+        if line.startswith("diff --git "):
+            parts = line.split(" b/", 1)
+            if len(parts) == 2:
+                touched_paths.append(parts[1].strip())
+    if not touched_paths:
+        return False
+
+    bad_paths = [
+        p for p in touched_paths
+        if not (CAPSULE_PATH_RE.match(p) or PROPOSAL_PATH_RE.match(p))
+    ]
+    if bad_paths:
+        errs = [
+            normalize_error(f"PATH GUARD: {p}: outside the allowed paths (content/capsules/<ns>/<slug>/capsule.json, proposals/<name>.md).")
+            for p in bad_paths[:4]
+        ]
+        state["lessons"] = (state.get("lessons", []) + errs)[-60:]
+        log("salvage_rejected_path_guard", session=sid, bad_paths=bad_paths[:4])
+        return False
+
+    capsule_paths = [p for p in touched_paths if CAPSULE_PATH_RE.match(p)]
+    if not capsule_paths:
+        return False
+
+    if dry:
+        log("dry_run_salvage", session=sid, paths=capsule_paths)
+        return True
+
+    title = (commit_msg.splitlines()[0].strip() if commit_msg else "") or f"content: add {capsule_paths[0].split('/')[2]}/{capsule_paths[0].split('/')[3]}"
+    title = title[:120]
+    branch = f"salvage/jules-{sid}"
+
+    with tempfile.TemporaryDirectory(prefix=f"tycoon-salvage-{sid[:8]}-") as tmp_dir:
+        wt = Path(tmp_dir) / "wt"
+        try:
+            subprocess.run(["git", "-C", str(ROOT), "worktree", "add", "--detach", str(wt), "origin/main"],
+                           capture_output=True, text=True, check=True, timeout=60)
+            apply_res = subprocess.run(["git", "-C", str(wt), "apply", "--index"],
+                                       input=patch, capture_output=True, text=True, timeout=30)
+            if apply_res.returncode != 0:
+                log("salvage_apply_failed", session=sid, error=apply_res.stderr.strip()[:200])
+                return False
+            subprocess.run(["git", "-C", str(wt), "-c", "user.name=lfs-tycoon-factory",
+                            "-c", "user.email=lfs-tycoon-factory@users.noreply.github.com",
+                            "commit", "-m", commit_msg or title],
+                           capture_output=True, text=True, check=True, timeout=30)
+
+            pg = subprocess.run([sys.executable, "tools/path_guard.py", "--base", "origin/main", "--head", "HEAD"],
+                                cwd=wt, capture_output=True, text=True, timeout=30)
+            new_cap_args: list[str] = []
+            for cp in capsule_paths:
+                new_cap_args.extend(["--new-capsule", cp])
+            cc = subprocess.run([sys.executable, "tools/check_capsules.py", "--strict", *new_cap_args],
+                                cwd=wt, capture_output=True, text=True, timeout=60)
+
+            if pg.returncode != 0 or cc.returncode != 0:
+                combined = (pg.stdout + "\n" + pg.stderr + "\n" + cc.stdout + "\n" + cc.stderr).splitlines()
+                errs = [
+                    normalize_error(l) for l in combined
+                    if l.startswith(("ERROR:", "PATH GUARD:", "FAILED:", "  [FAIL]"))
+                ]
+                if errs:
+                    state["lessons"] = (state.get("lessons", []) + errs[:8])[-60:]
+                log("salvage_validation_failed", session=sid, errors=errs[:4])
+                return False
+
+            subprocess.run(["git", "-C", str(wt), "push", "-f", "origin", f"HEAD:refs/heads/{branch}"],
+                           capture_output=True, text=True, check=True, timeout=60)
+            pr_body = (
+                f"{commit_msg or title}\n\n---\n"
+                f"*Salvaged automatically by `factory_dispatch.py` from verified changeSet in Jules session `{sid}`.*"
+            )
+            out = gh("pr", "create", "-R", cfg["repo"], "--base", cfg["starting_branch"],
+                     "--head", branch, "--title", title, "--body", pr_body).strip()
+            pr_url = next((l.strip() for l in reversed(out.splitlines()) if l.strip().startswith("https://")), "")
+            if pr_url:
+                rec["pr"] = pr_url
+                rec["pr_seen"] = iso(now())
+                rec["salvaged"] = True
+                log("salvaged_pr_opened", session=sid, pr=pr_url, paths=capsule_paths)
+                return True
+        except Exception as e:
+            log("salvage_error", session=sid, error=f"{type(e).__name__}: {str(e)[:200]}")
+        finally:
+            subprocess.run(["git", "-C", str(ROOT), "worktree", "remove", "--force", str(wt)],
+                           capture_output=True, text=True, check=False, timeout=30)
+    return False
+
+
 def cut_loss_session(cfg: dict, sid: str, rec: dict, state: dict, reason: str, dry: bool) -> None:
     """Gracefully closes stalled/failed sessions, deletes abandoned PR branches, and records a bounded Second-Pass Lesson."""
     rec["outcome"] = f"failed:{reason}"
@@ -285,33 +430,44 @@ def reconcile(cfg: dict, state: dict, dry: bool) -> None:
                     log("approve_error", session=sid, error=str(e))
             elif st == "AWAITING_USER_FEEDBACK" and not dry:
                 if rec.get("nudges", 0) < cfg["max_feedback_nudges"]:
+                    rec["nudges"] = rec.get("nudges", 0) + 1
                     try:
                         api_retry("POST", f"/sessions/{sid}:sendMessage", {"prompt": NUDGE})
-                        rec["nudges"] = rec.get("nudges", 0) + 1
                         log("session_nudged", session=sid, nudges=rec["nudges"])
                     except ApiError as e:
-                        log("nudge_error", session=sid, error=str(e))
+                        log("nudge_error", session=sid, error=str(e), nudges=rec["nudges"])
                 elif age_h > 0.5:
-                    cut_loss_session(cfg, sid, rec, state, "stuck_asking", dry)
+                    if not salvage_changeset_to_pr(cfg, sid, rec, state, s, dry):
+                        cut_loss_session(cfg, sid, rec, state, "stuck_asking", dry)
             elif st == "FAILED":
-                cut_loss_session(cfg, sid, rec, state, "session_failed", dry)
+                if not salvage_changeset_to_pr(cfg, sid, rec, state, s, dry):
+                    cut_loss_session(cfg, sid, rec, state, "session_failed", dry)
             elif st == "COMPLETED":
                 done_min = (now() - parse_ts(s.get("updateTime", rec["created"]))).total_seconds() / 60
+                since_last_nudge_min = (
+                    (now() - parse_ts(rec["last_submit_nudge"])).total_seconds() / 60
+                    if rec.get("last_submit_nudge") else 999.0
+                )
+                nudges_used = rec.get("submit_nudges", 0)
                 # Jules v1alpha reports "COMPLETED" with empty outputs when an agent ends its turn via
                 # agentMessaged without calling the submit tool (shown as "Inactive" in Jules UI/CLI).
-                # Nudge the session to call `submit` before ever declaring `no_pr`.
-                if (not s.get("outputs") or done_min >= 5.0) and rec.get("submit_nudges", 0) < cfg["max_feedback_nudges"] and not dry:
-                    if rec.get("submit_nudges", 0) == 0 or done_min >= 10.0:
-                        try:
-                            api_retry("POST", f"/sessions/{sid}:sendMessage", {"prompt": SUBMIT_NUDGE})
-                            rec["submit_nudges"] = rec.get("submit_nudges", 0) + 1
-                            log("session_submit_nudged", session=sid, submit_nudges=rec["submit_nudges"])
-                        except ApiError as e:
-                            log("nudge_error", session=sid, error=str(e))
-                elif done_min > cfg["no_pr_grace_minutes"]:
-                    cut_loss_session(cfg, sid, rec, state, "no_pr", dry)
+                # 1. Nudge the session to call `submit` (with deadlock-safe attempt tracking).
+                # 2. If nudges are exhausted and grace elapsed, attempt autonomous local changeSet salvage
+                #    before ever cutting loss as `no_pr`.
+                if (not s.get("outputs") or done_min >= 5.0) and nudges_used < cfg["max_feedback_nudges"] and since_last_nudge_min >= 10.0 and not dry:
+                    rec["submit_nudges"] = nudges_used + 1
+                    rec["last_submit_nudge"] = iso(now())
+                    try:
+                        api_retry("POST", f"/sessions/{sid}:sendMessage", {"prompt": SUBMIT_NUDGE})
+                        log("session_submit_nudged", session=sid, submit_nudges=rec["submit_nudges"])
+                    except ApiError as e:
+                        log("nudge_error", session=sid, error=str(e), submit_nudges=rec["submit_nudges"])
+                elif done_min > cfg["no_pr_grace_minutes"] and (nudges_used >= cfg["max_feedback_nudges"] or since_last_nudge_min >= 10.0):
+                    if not salvage_changeset_to_pr(cfg, sid, rec, state, s, dry):
+                        cut_loss_session(cfg, sid, rec, state, "no_pr", dry)
             if not rec.get("outcome") and not rec.get("pr") and age_h > cfg["stale_session_hours"]:
-                cut_loss_session(cfg, sid, rec, state, "stale", dry)
+                if not salvage_changeset_to_pr(cfg, sid, rec, state, s, dry):
+                    cut_loss_session(cfg, sid, rec, state, "stale", dry)
             if not rec.get("pr"):
                 continue
         # ---- pull request side
@@ -325,6 +481,12 @@ def reconcile(cfg: dict, state: dict, dry: bool) -> None:
         elif pr["state"] == "CLOSED":
             rec["outcome"] = "failed:closed"
         else:
+            if pr.get("isDraft") and not dry:
+                gh("pr", "ready", rec["pr"], check=False)
+                log("pr_marked_ready", session=sid, pr=rec["pr"])
+            if pr.get("mergeable") == "CONFLICTING":
+                cut_loss_session(cfg, sid, rec, state, "merge_conflict", dry)
+                continue
             # Auto-reconcile stale-base PRs (MERGEABLE + BEHIND, bounded to <= 2 per tick)
             if (pr.get("mergeable") == "MERGEABLE" and pr.get("mergeStateStatus") == "BEHIND"
                     and behind_updates_this_tick < 2 and not dry and pr.get("number")):
@@ -333,6 +495,7 @@ def reconcile(cfg: dict, state: dict, dry: bool) -> None:
                 log("pr_branch_updated", session=sid, pr=rec["pr"], number=pr["number"])
             checks = [c for c in pr.get("statusCheckRollup", []) or [] if c.get("name") == cfg["gate_check_name"]]
             concl = (checks[-1].get("conclusion") or "") if checks else ""
+            pr_age_sec = (now() - parse_ts(rec.get("pr_seen", rec["created"]))).total_seconds()
             if concl in ("FAILURE", "TIMED_OUT", "STARTUP_FAILURE"):
                 if harvest_lessons(cfg, rec["pr"], state):
                     # Gate infrastructure broke, not the capsule: keep the PR open for a re-run after the fix.
@@ -343,8 +506,18 @@ def reconcile(cfg: dict, state: dict, dry: bool) -> None:
                     continue
                 cut_loss_session(cfg, sid, rec, state, "gate", dry)
                 continue
-            elif not checks and (now() - parse_ts(rec.get("pr_seen", rec["created"]))).total_seconds() > cfg["no_gate_hours"] * 3600:
+            elif concl == "SUCCESS" and pr.get("mergeable") == "MERGEABLE" and pr_age_sec >= 180 and not dry:
+                # Fallback auto-merge if capsule_gate.yml passed but its merge step hit a transient race.
+                merge_res = subprocess.run(["gh", "pr", "merge", rec["pr"], "--squash", "--delete-branch"],
+                                           capture_output=True, text=True, timeout=60)
+                if merge_res.returncode == 0:
+                    rec["outcome"] = "merged"
+                    log("pr_fallback_merged", session=sid, pr=rec["pr"])
+            elif not checks and pr_age_sec > cfg["no_gate_hours"] * 3600:
                 cut_loss_session(cfg, sid, rec, state, "no_gate", dry)
+                continue
+            elif age_h > cfg["stale_session_hours"]:
+                cut_loss_session(cfg, sid, rec, state, "stale_pr", dry)
                 continue
         if rec.get("outcome"):
             rec["finished"] = iso(now())
