@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Forge Milestone Relic",
+    "description": "Forged in the heart of The Enclave First Forge & Stormbreaker Concordance by the illustrious Ochre Toad, this milestone trophy resonates with the deeply buried Ochre Stratum. By grounding subterranean plasma with hyper-dense alloys, it channels excess energy back to the user, significantly easing the durability drain on tools while deep in the Brass Ledger Frontier.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "solves_repair_upkeep",
+    "path_forge_material",
+    "craft_achievement_relic",
+    "logic_canonical",
+    "theme_enclave_first_forge",
+    "bracket_1",
+    "skill_school_manual",
+    "hearth"
+  ],
+  "stats": {
+    "base_value": 120.0,
+    "base_dps": 25.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "tool.tier >= 3.0",
+      "value": 0.5
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/ochre_toad_5e64",
+      "unlock_if": "player.max_depth >= 45.0",
+      "price": {
+        "devices/ochre_sigil_9759": 1,
+        "blocks/ochre_stratum_d812": 45
+      }
+    }
+  ],
+  "offline": "none"
+}
