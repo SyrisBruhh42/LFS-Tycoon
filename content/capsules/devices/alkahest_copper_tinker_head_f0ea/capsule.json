@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Copper Tinker Head",
+    "description": "A modular tool head cast from copper and tempered in a subterranean water pocket. The hydro-alchemists of the Alkahest Vitriol use these components to siphon away filth. Socketing this tinker head significantly reduces grime accumulation during your excavations.",
+    "author": "jules:steward",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "tinker_head",
+    "solves_grime_cleanliness",
+    "path_forge_material",
+    "craft_tinker_part",
+    "bracket_2",
+    "skill_school_manual",
+    "theme_alkahest_hydro",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 250.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "grime_gain_mult",
+      "phase": "mul",
+      "value": 0.25
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/water_aquifer",
+          "qty": 1.0,
+          "if": "tile.depth >= 150.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/mica_salt_vendor_832d",
+      "price": {
+        "devices/munchkin_ochre_kiln_12d6": 1,
+        "blocks/water_aquifer": 5,
+        "blocks/copper": 50
+      },
+      "unlock_if": "player.max_depth >= 150.0 and player.max_depth <= 250.0"
+    }
+  ]
+}
