@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Siphon Rig",
+    "description": "An autonomous field rig forged from cinder and rivet, echoing the Infinite Scriptorium of the Lithic Choir. The blind monastic archivists of Quill Hollow discovered that bedrock is frozen acoustic music, using these machines to tune zero-damage stalls and bell harmonics to shatter equal-depth contours without wearing down gear.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_zero_damage_stall",
+    "path_explore",
+    "craft_clockwork_automaton",
+    "bracket_2",
+    "skill_school_manual",
+    "theme_lithic_choir",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 450.0,
+    "base_dps": 20.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "add",
+      "value": -0.5
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "if": "tile.depth >= 150.0",
+      "do": [
+        {
+          "act": "stall_tool",
+          "pause_battery": 1.0,
+          "pause_durability": 1.0
+        },
+        {
+          "act": "consume_item",
+          "item": "blocks/alkahest_quartz_d755",
+          "qty": 1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/mica_salt_vendor_832d",
+      "unlock_if": "player.max_depth >= 150.0",
+      "price": {
+        "upgrades/gravel_wardbreaker_seal_22d6": 1,
+        "blocks/alkahest_quartz_d755": 10,
+        "blocks/copper": 5
+      }
+    }
+  ],
+  "offline": "exact"
+}
