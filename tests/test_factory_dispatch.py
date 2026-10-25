@@ -130,8 +130,10 @@ class TestFactoryDispatchAntifragile(unittest.TestCase):
             self.assertEqual(state["sessions"]["s_comp"]["submit_nudges"], 2)
             self.assertEqual(state["sessions"]["s_ask"]["nudges"], 2)
 
-            # Fast-forward last_submit_nudge by 11m and run Tick 2: both must terminate cleanly
+            # Fast-forward last_submit_nudge and last_nudge_at by 11m and run Tick 2: both must terminate cleanly
+            self.assertIn("last_nudge_at", state["sessions"]["s_ask"])
             state["sessions"]["s_comp"]["last_submit_nudge"] = fd.iso(self.t0 - timedelta(minutes=11))
+            state["sessions"]["s_ask"]["last_nudge_at"] = fd.iso(self.t0 - timedelta(minutes=11))
             fd.reconcile(self.cfg, state, dry=False)
             self.assertEqual(state["sessions"]["s_comp"].get("outcome"), "failed:no_pr")
             self.assertEqual(state["sessions"]["s_ask"].get("outcome"), "failed:stuck_asking")

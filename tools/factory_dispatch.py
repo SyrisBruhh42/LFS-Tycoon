@@ -258,11 +258,12 @@ def salvage_changeset_to_pr(cfg: dict, sid: str, rec: dict, state: dict, session
     if not touched_paths:
         return False
 
+    capsule_paths = [p for p in touched_paths if CAPSULE_PATH_RE.match(p)]
     bad_paths = [
         p for p in touched_paths
         if not (CAPSULE_PATH_RE.match(p) or PROPOSAL_PATH_RE.match(p))
     ]
-    if bad_paths:
+    if bad_paths and not capsule_paths:
         errs = [
             normalize_error(f"PATH GUARD: {p}: outside the allowed paths (content/capsules/<ns>/<slug>/capsule.json, proposals/<name>.md).")
             for p in bad_paths[:4]
@@ -271,7 +272,6 @@ def salvage_changeset_to_pr(cfg: dict, sid: str, rec: dict, state: dict, session
         log("salvage_rejected_path_guard", session=sid, bad_paths=bad_paths[:4])
         return False
 
-    capsule_paths = [p for p in touched_paths if CAPSULE_PATH_RE.match(p)]
     if not capsule_paths:
         return False
 
@@ -286,19 +286,26 @@ def salvage_changeset_to_pr(cfg: dict, sid: str, rec: dict, state: dict, session
     with tempfile.TemporaryDirectory(prefix=f"tycoon-salvage-{sid[:8]}-") as tmp_dir:
         wt = Path(tmp_dir) / "wt"
         try:
-            subprocess.run(["git", "-C", str(ROOT), "worktree", "add", "--detach", str(wt), "origin/main"],
-                           capture_output=True, text=True, check=True, timeout=60)
+            subprocess.run(["gh", "repo", "clone", cfg["repo"], str(wt), "--", "--depth=50", "--branch", cfg["starting_branch"]],
+                           capture_output=True, text=True, check=True, timeout=90)
             apply_res = subprocess.run(["git", "-C", str(wt), "apply", "--index"],
                                        input=patch, capture_output=True, text=True, timeout=30)
             if apply_res.returncode != 0:
                 log("salvage_apply_failed", session=sid, error=apply_res.stderr.strip()[:200])
                 return False
+            for tp in touched_paths:
+                if not (CAPSULE_PATH_RE.match(tp) or PROPOSAL_PATH_RE.match(tp)):
+                    subprocess.run(["git", "-C", str(wt), "rm", "-rf", "--ignore-unmatch", tp],
+                                   capture_output=True, text=True, check=False, timeout=15)
+                    scratch_fp = wt / tp
+                    if scratch_fp.exists():
+                        scratch_fp.unlink(missing_ok=True)
             subprocess.run(["git", "-C", str(wt), "-c", "user.name=lfs-tycoon-factory",
                             "-c", "user.email=lfs-tycoon-factory@users.noreply.github.com",
                             "commit", "-m", commit_msg or title],
                            capture_output=True, text=True, check=True, timeout=30)
 
-            pg = subprocess.run([sys.executable, "tools/path_guard.py", "--base", "origin/main", "--head", "HEAD"],
+            pg = subprocess.run([sys.executable, "tools/path_guard.py", "--base", f"origin/{cfg['starting_branch']}", "--head", "HEAD"],
                                 cwd=wt, capture_output=True, text=True, timeout=30)
             new_cap_args: list[str] = []
             for cp in capsule_paths:
@@ -331,12 +338,11 @@ def salvage_changeset_to_pr(cfg: dict, sid: str, rec: dict, state: dict, session
                 rec["pr_seen"] = iso(now())
                 rec["salvaged"] = True
                 log("salvaged_pr_opened", session=sid, pr=pr_url, paths=capsule_paths)
+                subprocess.run(["gh", "pr", "merge", pr_url, "--squash", "--delete-branch", "--auto"],
+                               capture_output=True, text=True, check=False, timeout=30)
                 return True
         except Exception as e:
             log("salvage_error", session=sid, error=f"{type(e).__name__}: {str(e)[:200]}")
-        finally:
-            subprocess.run(["git", "-C", str(ROOT), "worktree", "remove", "--force", str(wt)],
-                           capture_output=True, text=True, check=False, timeout=30)
     return False
 
 
@@ -460,14 +466,20 @@ def reconcile(cfg: dict, state: dict, dry: bool) -> None:
                 except ApiError as e:
                     log("approve_error", session=sid, error=str(e))
             elif st == "AWAITING_USER_FEEDBACK" and not dry:
+                since_nudge_min = (
+                    (now() - parse_ts(rec["last_nudge_at"])).total_seconds() / 60
+                    if rec.get("last_nudge_at") else 999.0
+                )
                 if rec.get("nudges", 0) < cfg["max_feedback_nudges"]:
-                    rec["nudges"] = rec.get("nudges", 0) + 1
-                    try:
-                        api_retry("POST", f"/sessions/{sid}:sendMessage", {"prompt": NUDGE})
-                        log("session_nudged", session=sid, nudges=rec["nudges"])
-                    except ApiError as e:
-                        log("nudge_error", session=sid, error=str(e), nudges=rec["nudges"])
-                elif age_h > 0.5:
+                    if since_nudge_min >= 10.0:
+                        rec["nudges"] = rec.get("nudges", 0) + 1
+                        rec["last_nudge_at"] = iso(now())
+                        try:
+                            api_retry("POST", f"/sessions/{sid}:sendMessage", {"prompt": NUDGE})
+                            log("session_nudged", session=sid, nudges=rec["nudges"])
+                        except ApiError as e:
+                            log("nudge_error", session=sid, error=str(e), nudges=rec["nudges"])
+                elif age_h > 0.5 and since_nudge_min >= 10.0:
                     if not salvage_changeset_to_pr(cfg, sid, rec, state, s, dry):
                         cut_loss_session(cfg, sid, rec, state, "stuck_asking", dry)
             elif st == "FAILED":
@@ -496,7 +508,11 @@ def reconcile(cfg: dict, state: dict, dry: bool) -> None:
                 elif done_min > cfg["no_pr_grace_minutes"] and (nudges_used >= cfg["max_feedback_nudges"] or since_last_nudge_min >= 10.0):
                     if not salvage_changeset_to_pr(cfg, sid, rec, state, s, dry):
                         cut_loss_session(cfg, sid, rec, state, "no_pr", dry)
-            if not rec.get("outcome") and not rec.get("pr") and age_h > cfg["stale_session_hours"]:
+            since_any_nudge_min = min(
+                (now() - parse_ts(rec["last_nudge_at"])).total_seconds() / 60 if rec.get("last_nudge_at") else 999.0,
+                (now() - parse_ts(rec["last_submit_nudge"])).total_seconds() / 60 if rec.get("last_submit_nudge") else 999.0,
+            )
+            if not rec.get("outcome") and not rec.get("pr") and age_h > cfg["stale_session_hours"] and since_any_nudge_min >= 10.0:
                 if not salvage_changeset_to_pr(cfg, sid, rec, state, s, dry):
                     cut_loss_session(cfg, sid, rec, state, "stale", dry)
             if not rec.get("pr"):
