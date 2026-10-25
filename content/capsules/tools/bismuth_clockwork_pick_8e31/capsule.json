@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bismuth Clockwork Pick",
+    "description": "A whimsical wind-up pickaxe forged from Rivet Ore. Designed by The Perpetual Clockwork Deep-Bore Syndicate and hawked by the gravel vendor, its self-feeding pneumatic mechanism speeds up mining in shallow, high-tier rock layers. It can even be placed in your house as a striking horological fixture.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "bismuth",
+    "solves_slow_early_dps",
+    "path_forge_material",
+    "craft_homestead_station",
+    "logic_whimsical",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 35.0,
+    "durability_max": 800.0,
+    "is_rechargeable": 1,
+    "base_value": 140.0
+  },
+  "vars": {
+    "durability_left": 800.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "tile.depth < 300.0 and tile.tier >= 1.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_vendor_51cb",
+      "price": {
+        "devices/hearth_crucible_slag_head_d00b": 1,
+        "blocks/rivet_ore_dd06": 45
+      },
+      "unlock_if": "player.max_depth >= 40.0"
+    }
+  ],
+  "offline": "coarse"
+}
