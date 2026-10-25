@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Hearth Ledger Bell",
+    "description": "An anvilstone bell placed on a tile, forged by the smith-lords of The Grand Crucible of the Tectonic Leviathan. It significantly dampens the battery drain of early-tier auto-tools traversing its tile, thrifty and reliable for early-game miners. Its tone resonates harmoniously when placed near Ochre Stratum.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "place_on_tile", "sell"],
+  "tags": [
+    "upgrade",
+    "solves_auto_tool_runtime",
+    "path_placeable_device",
+    "craft_skill_mastery",
+    "logic_canonical",
+    "theme_tectonic_crucible",
+    "skill_bracket",
+    "bracket_2",
+    "skill_school_assayers",
+    "anvil",
+    "ledger"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "base_dps": 20.0
+  },
+  "vars": {
+    "times_rung": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": 0.25,
+      "if": "tool.tier <= 1.0 and tile.covered_by_self"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "if": "tile.covered_by_self",
+      "do": [
+        {"act": "emit_alert", "channel": "house_bell", "tag": "stall_impassable"},
+        {"act": "var_add", "var": "shared.house_bell_ringing", "by": "1.0"},
+        {"act": "var_add", "var": "self.times_rung", "by": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ochre_toad_5e64",
+      "price": {
+        "devices/hearth_crucible_slag_head_d00b": 1,
+        "blocks/ochre_stratum_d812": 45
+      },
+      "unlock_if": "player.max_depth >= 120.0"
+    }
+  ],
+  "offline": "exact"
+}
