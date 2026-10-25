@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Flint Hollow Choir Sponge",
+    "description": "An architectural fixture born of the Infinite Scriptorium of the Lithic Choir, carved from cinder gravel into a hollow acoustic chamber. When placed in the house, it channels the bedrock's frozen music to completely absorb invading fluids, drying out adjacent strata with every zero-damage strike. Includes a permanent discount to tool upkeep while housed.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "solves_fluid_flooding",
+    "path_magic_charm",
+    "craft_homestead_station",
+    "logic_canonical",
+    "theme_lithic_choir",
+    "bracket_2",
+    "skill_school_manual",
+    "flint",
+    "hollow"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": 0.8
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "if": "tile.fluid_level > 0.0",
+      "do": [
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": "-1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ochre_toad_5e64",
+      "price": {
+        "consumables/munchkin_brew_5ec5": 1,
+        "blocks/cinder_gravel_61a3": 40
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "coarse"
+}
