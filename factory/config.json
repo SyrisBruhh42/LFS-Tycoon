@@ -7,7 +7,7 @@
   "starting_branch": "main",
   "gate_workflow": "capsule_gate.yml",
   "gate_check_name": "Capsule gate",
-  "daily_cap": 48,
+  "daily_cap": 96,
   "max_active_sessions": 12,
   "max_open_prs": 8,
   "failure_window": 12,
