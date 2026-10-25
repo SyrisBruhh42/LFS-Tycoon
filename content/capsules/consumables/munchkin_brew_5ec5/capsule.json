@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin Cinder-Kettle Brew",
+    "description": "An absurdly potent, chunky brew simmered in a Basalt Kettle by the paradoxical sommeliers of St. Munchkin. By consuming dense Cinder Mortar as a soup, miners exploit a literal loophole in the laws of intoxication: sacrificing speed for staggering precision.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "consume", "sell", "place_in_house", "socket_in_tool"],
+  "tags": [
+    "solves_house_comfort",
+    "path_consumable_buff",
+    "craft_skyrim_enchant",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_2",
+    "skill_school_manual",
+    "consumable",
+    "buff_speed",
+    "kettle"
+  ],
+  "stats": {
+    "base_value": 35.0,
+    "duration_sec": 180.0
+  },
+  "vars": {
+    "active_sec_left": -1.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": 0.5
+    },
+    {
+      "stat": "drunk_drift_px",
+      "phase": "add",
+      "if": "self.active_sec_left > 0.0",
+      "value": 42.0
+    },
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0 and player.is_rested == 1.0",
+      "value": 2.0
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.active_sec_left", "value": "self.stats.duration_sec"}
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "do": [
+        {"act": "var_add", "var": "self.active_sec_left", "by": "-1.0", "if": "self.active_sec_left > 0.0"},
+        {"act": "destroy_self", "if": "self.active_sec_left == 0.0"}
+      ]
+    },
+    {
+      "on": "on_sleep",
+      "do": [
+        {"act": "var_add", "var": "shared.quarry_resonance_charge", "by": "10.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/basalt_kettle_6ec2",
+      "price": {
+        "consumables/brass_quill_crucible_e1a9": 1,
+        "blocks/cinder_mortar_17bb": 30
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "coarse"
+}
