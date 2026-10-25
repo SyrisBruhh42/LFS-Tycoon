@@ -19,7 +19,7 @@ Your job each session: add **one** new, well-designed capsule (up to 3 only if o
 5. **Design and edit** only your own `capsule.json`. Include the brief's required tags (`solves_<friction>`, `path_<type>`, or `world_<kind>`). Write a vivid `meta.description` in the game's voice.
 6. **Commit** (message: `content: add <id>`), then **verify:** `python3 tools/preflight.py`. Fix every error it reports, re-commit, re-run. It must print `PREFLIGHT OK`.
    * If a clever mechanic will not validate after 5 honest attempts, **simplify the design** (fewer reactions, plain modifiers) and ship that. Never ship nothing, never touch shared files to force a pass.
-7. **Submit** by opening a pull request (in automated sessions the pull request is created for you when you finish). The gate verifies it against trusted tools from `main` and merges it automatically; failures are closed and fed back to future sessions as lessons. Final reply: just the capsule id(s).
+7. **Submit & Publish:** Once `python3 tools/preflight.py` prints `PREFLIGHT OK` and your pre-commit steps are complete, **you MUST call your `submit` tool to officially complete the session and publish the pull request**. Never end your turn with a plain chat message instead of calling `submit` (replying in chat without invoking `submit` leaves the session `Inactive` and prevents `AUTO_CREATE_PR` from opening the pull request). The gate verifies the PR against trusted tools from `main` and merges it automatically; failures are closed and fed back to future sessions as lessons.
 
 If a design genuinely needs a verb the vocabulary lacks, still ship your best vocabulary-legal capsule, and optionally add `proposals/<slug>_<suffix>.md` (<=16 KB) describing the missing verb. Proposals are allowed additions; vocabulary edits are not.
 
@@ -62,8 +62,3 @@ If a design genuinely needs a verb the vocabulary lacks, still ship your best vo
 | `python3 tools/preflight.py` | Everything CI checks that you can check locally |
 
 Optional, when Godot 4.3 is installed: `godot --headless --path . --import --quit && godot --headless --path . -s tests/run_all_spikes.gd` (Gate G2).
-
-## LFS Suite `v1.1.0` Capsule Alignment (`3-lfs-aegis-linux/capsules/lfs-tycoon`, `PF-07`, `lfs-local-abac-v1`)
-
-- **Umbrella Target**: `/home/joe/Projects/LFS-Suite/3-lfs-aegis-linux/capsules/lfs-tycoon` (`PF-07` StrataPaper).
-- **Additive Plug-In & Synergy Standard**: Governed by `/home/joe/Projects/LFS-Suite/LFS-ECOSYSTEM-PLUGIN-STANDARD.md`. Integrates offline-first `lfs-local-abac-v1` policy verification, Aegis-LDS dark gold/obsidian HUD styling, and the 20-capsule deterministic Godot 4.3 economy while preserving standalone verification gates (`G1`/`G2`).

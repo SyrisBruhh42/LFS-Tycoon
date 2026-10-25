@@ -49,7 +49,13 @@ GATE_MARKER = "<!-- capsule-gate-report -->"
 ACTIVE_STATES = {"QUEUED", "PLANNING", "AWAITING_PLAN_APPROVAL", "AWAITING_USER_FEEDBACK", "IN_PROGRESS", "PAUSED"}
 NUDGE = ("Proceed autonomously without asking questions. Make the best reasonable decision yourself, follow "
          "AGENTS.md, keep the scope to one new capsule in its own folder, make tools/preflight.py pass, and "
-         "finish by opening the pull request.")
+         "call your submit tool to finish the session and publish the pull request.")
+SUBMIT_NUDGE = (
+    "You finished pre-commit steps and sent a chat message without calling the submit tool, "
+    "leaving the session Inactive without publishing the branch or pull request. "
+    "Ensure your new capsule is committed, `python3 tools/preflight.py` prints PREFLIGHT OK, "
+    "and call your `submit` tool now to officially complete the session and create the pull request."
+)
 
 
 class ApiError(Exception):
@@ -193,7 +199,14 @@ def cut_loss_session(cfg: dict, sid: str, rec: dict, state: dict, reason: str, d
     """Gracefully closes stalled/failed sessions, deletes abandoned PR branches, and records a bounded Second-Pass Lesson."""
     rec["outcome"] = f"failed:{reason}"
     rec["finished"] = iso(now())
-    lesson = f"[Second-Pass Failure Lesson] Session stalled/failed ({reason}) on {rec.get('label', 'capsule')}: keep scope to 1 valid capsule, respect 2-Item Self-Mix Budget, and run tools/preflight.py."
+    if reason == "no_pr":
+        lesson = (
+            "[Second-Pass Failure Lesson] Session finished without opening a PR (no_pr): "
+            "after tools/preflight.py prints PREFLIGHT OK and pre-commit steps finish, "
+            "you MUST invoke the submit tool (never stop after sending a chat message)."
+        )
+    else:
+        lesson = f"[Second-Pass Failure Lesson] Session stalled/failed ({reason}) on {rec.get('label', 'capsule')}: keep scope to 1 valid capsule, respect 2-Item Self-Mix Budget, and run tools/preflight.py."
     state["lessons"] = (state.get("lessons", []) + [lesson[:220]])[-60:]
     pr_url = rec.get("pr")
     if pr_url and not dry:
@@ -284,7 +297,18 @@ def reconcile(cfg: dict, state: dict, dry: bool) -> None:
                 cut_loss_session(cfg, sid, rec, state, "session_failed", dry)
             elif st == "COMPLETED":
                 done_min = (now() - parse_ts(s.get("updateTime", rec["created"]))).total_seconds() / 60
-                if done_min > cfg["no_pr_grace_minutes"]:
+                # Jules v1alpha reports "COMPLETED" with empty outputs when an agent ends its turn via
+                # agentMessaged without calling the submit tool (shown as "Inactive" in Jules UI/CLI).
+                # Nudge the session to call `submit` before ever declaring `no_pr`.
+                if (not s.get("outputs") or done_min >= 5.0) and rec.get("submit_nudges", 0) < cfg["max_feedback_nudges"] and not dry:
+                    if rec.get("submit_nudges", 0) == 0 or done_min >= 10.0:
+                        try:
+                            api_retry("POST", f"/sessions/{sid}:sendMessage", {"prompt": SUBMIT_NUDGE})
+                            rec["submit_nudges"] = rec.get("submit_nudges", 0) + 1
+                            log("session_submit_nudged", session=sid, submit_nudges=rec["submit_nudges"])
+                        except ApiError as e:
+                            log("nudge_error", session=sid, error=str(e))
+                elif done_min > cfg["no_pr_grace_minutes"]:
                     cut_loss_session(cfg, sid, rec, state, "no_pr", dry)
             if not rec.get("outcome") and not rec.get("pr") and age_h > cfg["stale_session_hours"]:
                 cut_loss_session(cfg, sid, rec, state, "stale", dry)

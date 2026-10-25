@@ -13,7 +13,7 @@ Every 9 autonomous content sessions, you are invoked on the 10th session to audi
    - Tag your capsule with the assigned `bracket_<1..5>`, `skill_school_<slug>`, and `theme_<slug>` (or advance a skill school to its next bracket), and weave deep subterranean lore into `meta.description`.
    - Include at least one working modifier or reaction that mechanically interacts with the assigned stratum ore or progression path.
 4. **Optional Enterprise Audit Note:** You may also add a concise markdown audit report at `proposals/steward_review_<suffix>.md` (`<= 8 KB`) summarizing how the past 9 capsules, skill brackets, and lore themes connect and how your Keystone Connector strengthens the crafting graph.
-5. **Verify & Ship:** Commit your work, run `python3 tools/preflight.py` until it prints `PREFLIGHT OK`, and open the pull request.
+5. **Verify & Ship:** Commit your work, run `python3 tools/preflight.py` until it prints `PREFLIGHT OK`, complete pre-commit steps, and **call your `submit` tool to officially finish the session and publish the pull request** (never stop after sending a chat message without calling `submit`).
 
 ## 5. Required Machine-Checkable Audit Footer
 Include the following machine-checkable HTML comment block at the end of your PR description (and in your `proposals/steward_review_<suffix>.md` if created) with the exact IDs connected in your Keystone Connector capsule:
