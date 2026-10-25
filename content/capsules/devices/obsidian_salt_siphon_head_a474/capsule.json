@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Salt Siphon Head",
+    "description": "A whimsical modular tool component cast from obsidian by the reclusive artisan Basalt Kettle, packed with thirsty salt from deep water aquifers. It playfully swallows flooding fluids when stalled, allowing sovereign ward-breakers to delve the Sunken Bog without wet feet.",
+    "author": "core:ward_breakers",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "tinker_head",
+    "solves_fluid_flooding",
+    "path_placeable_device",
+    "craft_tinker_part",
+    "logic_whimsical",
+    "theme_obsidian_wardbreaker",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 55.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": -1.0,
+          "if": "tile.depth >= 500.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/basalt_kettle_6ec2",
+      "price": {
+        "devices/munchkin_slag_router_55f5": 1,
+        "blocks/water_aquifer": 15
+      },
+      "unlock_if": "player.max_depth >= 45.0"
+    }
+  ],
+  "offline": "coarse"
+}
