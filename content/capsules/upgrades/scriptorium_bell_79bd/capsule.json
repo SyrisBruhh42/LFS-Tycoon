@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Scriptorium Bell",
+    "description": "An acoustic marvel forged by Pewter Quill Newt from basalt and Hollow Quill Ore. Tracing its lineage back to the blind monastic archivists of The Infinite Scriptorium of the Lithic Choir, who knew the drowned steam-baronies of Rivet & Slag to be a tapestry of frozen acoustic music. This bell rings a chime and stalls auto-tools when striking strict-locked contours they cannot shatter, provided they have some charge remaining. It teaches you how to hear equal-depth contours in the dark.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_zero_damage_stall",
+    "path_qol_upgrade",
+    "craft_skill_mastery",
+    "logic_canonical",
+    "theme_lithic_choir",
+    "skill_bracket",
+    "bracket_2",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 60.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {
+          "act": "stall_tool",
+          "pause_battery": true,
+          "pause_durability": true,
+          "if": "self.installed == 1.0 and tool.charge_left > 0.0 and tile.is_strict_locked == 1.0"
+        },
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "scriptorium_bell",
+          "if": "self.installed == 1.0 and tool.charge_left > 0.0 and tile.is_strict_locked == 1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/pewter_quill_newt_3730",
+      "price": {
+        "upgrades/quarry_milestone_trophy_27df": 1,
+        "blocks/quill_hollow_fa6d": 45
+      },
+      "unlock_if": "player.max_depth >= 198.0"
+    }
+  ],
+  "offline": "none"
+}
