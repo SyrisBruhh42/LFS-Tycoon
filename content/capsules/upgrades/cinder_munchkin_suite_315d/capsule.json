@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin's Apprentice Hearth",
+    "description": "A starter home comfort suite approved by the Paradox Symposium of St. Munchkin. Supplied by the Gravel Keeper using Pewter Gravel and Copper, it cleverly exploits thermal loopholes to grant luck and yield bonuses while rested.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_house_comfort",
+    "path_bundle_package",
+    "craft_skill_mastery",
+    "logic_plausible",
+    "theme_munchkin_paradox",
+    "skill_bracket",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 60.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "if": "player.is_rested == 1.0",
+      "value": 0.15
+    },
+    {
+      "stat": "yield_mult",
+      "phase": "add",
+      "if": "player.is_rested == 1.0",
+      "value": 0.10
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "blocks/pewter_gravel_d53e": 20,
+        "blocks/copper": 15
+      },
+      "unlock_if": "player.max_depth >= 10.0 and player.max_depth <= 45.0"
+    }
+  ],
+  "offline": "none"
+}
