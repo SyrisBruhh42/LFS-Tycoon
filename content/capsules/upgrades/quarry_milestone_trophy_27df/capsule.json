@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quarry Milestone Trophy",
+    "description": "An unlockable trophy seal honoring The Infinite Scriptorium of the Lithic Choir. These blind monastic archivists of Quill Hollow discovered that bedrock is frozen acoustic music, using zero-damage stalls and bell harmonics to shatter equal-depth contours. Forged by the Rivet Assayer from Lark Newt Rivet Ore, this permanent relic pauses battery and durability drain when auto-tools inevitably strike strict-locked blocks they cannot damage, provided you are well-rested.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_zero_damage_stall",
+    "path_qol_upgrade",
+    "craft_achievement_relic",
+    "logic_canonical",
+    "theme_lithic_choir",
+    "bracket_1",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "if": "tile.is_strict_locked == 1.0 and player.is_rested == 1.0",
+      "value": 0.0
+    },
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "tile.is_strict_locked == 1.0 and player.is_rested == 1.0",
+      "value": 0.0
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_assayer_c04e",
+      "unlock_if": "player.max_depth >= 45.0",
+      "price": {
+        "books/rivet_assayers_treatise_0b42": 1,
+        "blocks/lark_newt_rivet_ore_a337": 50
+      }
+    }
+  ],
+  "offline": "none"
+}
