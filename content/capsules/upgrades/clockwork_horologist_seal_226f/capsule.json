@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Horologist Seal",
+    "description": "An unlockable trophy seal honoring The Perpetual Clockwork Deep-Bore Syndicate. Place it in your home to grant deep rest and passive stamina when you sleep. It hums with the resonance of a Stormbreaker Geode.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_house_comfort",
+    "path_qol_upgrade",
+    "craft_achievement_relic",
+    "bracket_3",
+    "skill_school_manual",
+    "theme_clockwork_syndicate",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 200.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "if": "player.is_rested == 1.0",
+      "value": 0.25
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_sleep",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/stormbreaker_geode_5e99",
+          "qty": 1.0
+        },
+        {
+          "act": "emit_alert",
+          "channel": "house_bell",
+          "tag": "sleep_resonance"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "unlock_if": "player.max_depth >= 330.0 or shared.house_bell_ringing >= 1.0",
+      "price": {
+        "devices/vitriol_munchkin_sigil_9bc4": 1,
+        "blocks/stormbreaker_geode_5e99": 20,
+        "blocks/copper": 30
+      }
+    }
+  ],
+  "offline": "none"
+}
