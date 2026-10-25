@@ -40,6 +40,8 @@ func load_all(capsules_root: String = "res://content/capsules") -> void:
 	block_id_to_int.clear()
 
 	load_directory_into_catalog(capsules_root)
+	if capsules_root == "res://content/capsules" and DirAccess.dir_exists_absolute("user://live_capsules"):
+		load_directory_into_catalog("user://live_capsules")
 	rebuild_indexes()
 
 

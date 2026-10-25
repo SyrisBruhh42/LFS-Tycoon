@@ -122,9 +122,103 @@
     "bundle_package": {"archetype": "upgrade", "namespace": "upgrades", "example": "upgrades/surveyor_chalk_and_stencil", "hint": "A very expensive, unlock-gated NPC package that grants several single options at once."}
   },
   "world_archetypes": {
-    "block": {"namespace": "blocks", "example": "blocks/copper", "hint": "A new ore, soil or hazard stratum. Keep stats.spawn_prob small (0.005 to 0.015), set stats.z_unlock and stats.z_max (e.g. a 200-500 depth band), base_hp, value_base, and ideal_tool; never add offered_by to a natural block."},
-    "biome": {"namespace": "biomes", "example": "biomes/sunken_bog", "hint": "A biome is a subterranean stratum with stats (z_min, z_max, biome_weight) and biome_weights referencing existing blocks. Never add offered_by to a biome."},
-    "npc": {"namespace": "npcs", "example": "npcs/peddler_vayne", "hint": "A vendor or service NPC with affordances [\"npc_vendor\"] and stats.unlock_depth. Items point back at it via their own offered_by; NEVER put offered_by inside an NPC capsule."}
+    "block": {"namespace": "blocks", "example": "blocks/copper", "hint": "A new ore, crystal, soil or hazard stratum. Keep stats.spawn_prob small (0.005 to 0.015), set stats.z_unlock and stats.z_max (e.g. a 200-500 depth band), base_hp, value_base, and ideal_tool; never add offered_by to a natural block."},
+    "biome": {"namespace": "biomes", "example": "biomes/sunken_bog", "hint": "A rare subterranean pocket mine, geode chamber, or stratum with stats (z_min, z_max, biome_weight) and biome_weights referencing existing blocks (especially under-referenced ores). Never add offered_by to a biome."},
+    "npc": {"namespace": "npcs", "example": "npcs/peddler_vayne", "hint": "A rare specialist guild artisan, runesmith, alchemist, or secret deep-stratum vendor with affordances [\"npc_vendor\"] and stats.unlock_depth. Items point back at it via their own offered_by; NEVER put offered_by inside an NPC capsule."}
+  },
+  "crafting_disciplines": {
+    "tinker_part_forging": {
+      "title": "Tinkers' Modular Part Forging (Head / Rod / Binding)",
+      "archetype": "device",
+      "namespace": "devices",
+      "tag": "craft_tinker_part",
+      "hint": "Cast a modular tool component (`tinker_head`, `tinker_rod`, or `tinker_binding` with `socket_in_tool` affordance) from an exotic stratum ore + secondary flux block so players can socket multiple modular parts into a tool."
+    },
+    "terraria_item_fusion": {
+      "title": "Terraria Cumulative Item Fusion (Multi-Item Recipe)",
+      "archetype": "tool",
+      "namespace": "tools",
+      "tag": "craft_terraria_fusion",
+      "hint": "Combine 1 existing lower-tier tool or device capsule PLUS 1-2 stratum ores inside `offered_by[].price` to forge a cumulative upgraded tool or relic that merges their themes."
+    },
+    "skyrim_arcane_enchanting": {
+      "title": "Skyrim Arcane Enchanting & Resonance Sigils",
+      "archetype": "device",
+      "namespace": "devices",
+      "tag": "craft_skyrim_enchant",
+      "hint": "A socketable arcane sigil stone or rune (`socket_in_tool`) gated by `shared.quarry_resonance_charge` or depth, forged from crystal/ore strata, that binds an elemental or seismic proc onto any tool."
+    },
+    "alchemy_multi_reagent": {
+      "title": "Skyrim / RPG Multi-Reagent Alchemy & Decoctions",
+      "archetype": "consumable",
+      "namespace": "consumables",
+      "tag": "craft_alchemy_potion",
+      "hint": "Brew a multi-ingredient potion, elixir, or phial whose `offered_by[].price` combines 2-3 distinct raw strata (fluids, soils, mineral salts) for a potent timed buff with an alchemical quirk."
+    },
+    "geomancy_spell_grimoire": {
+      "title": "Arcane Grimoire & Quarry Geomancy Spell",
+      "archetype": "book",
+      "namespace": "books",
+      "tag": "craft_spell_grimoire",
+      "hint": "An arcane spell tome or incantation (`read_book` or `consume`) that casts active quarry geomancy: transmuting rock (`transform_tile`), evaporating fluids (`modify_fluid`), shifting depth (`modify_depth`), or chaining damage (`deal_damage`)."
+    },
+    "smeltery_alloy_refining": {
+      "title": "Smeltery Alloying & Crucible Transmutation",
+      "archetype": "device",
+      "namespace": "devices",
+      "tag": "craft_smeltery_alloy",
+      "hint": "A crucible catalyst or kiln apparatus that consumes raw ore/slag (`consume_item`) on break or tick and refines/transmutes it (`spawn_item` or `set_shared_var`) into higher-tier material or resonance."
+    },
+    "rpg_skill_mastery_tree": {
+      "title": "RPG Skill Tree & Guild Mastery Treatise",
+      "archetype": "book",
+      "namespace": "books",
+      "tag": "craft_skill_mastery",
+      "hint": "A progressive RPG mastery rank (Demolitionist, Hydro-Engineer, Geomancer, Tinkerer, or Assayer) with an `unlock_if` progression gate (`tool.tier`, `player.max_depth`, or `shared.*`) granting permanent specialization."
+    },
+    "achievement_milestone_relic": {
+      "title": "Quarry Achievement Seal & Milestone Trophy",
+      "archetype": "upgrade",
+      "namespace": "upgrades",
+      "tag": "craft_achievement_relic",
+      "hint": "An unlockable trophy seal whose `offered_by[].unlock_if` requires proving a quarry feat (deep `player.max_depth`, `tool.tier >= 3`, `shared.quarry_resonance_charge`, or `shared.house_bell_ringing`) and grants a permanent passive aura."
+    },
+    "homestead_workshop_station": {
+      "title": "Homestead Workshop Bench & Architecture",
+      "archetype": "upgrade",
+      "namespace": "upgrades",
+      "tag": "craft_homestead_station",
+      "hint": "A crafted homestead bench or architectural fixture (`place_in_house` affordance) built from multiple mineral strata that permanently enhances rested state, clean-hands bonuses, market value, or tool upkeep."
+    },
+    "clockwork_field_automaton": {
+      "title": "Clockwork Automaton & Autonomous Field Rig",
+      "archetype": "device",
+      "namespace": "devices",
+      "tag": "craft_clockwork_automaton",
+      "hint": "A multi-part engineered quarry rig (`place_on_tile` affordance, `offline: \"coarse\"` or `\"exact\"`) forged from metal/rivet/cinder strata that autonomously mines, siphons fluids, or dampens hazards."
+    }
+  },
+  "logic_tiers": {
+    "canonical": {
+      "weight": 45,
+      "tag": "logic_canonical",
+      "hint": "CANONICAL LOGIC (Strict Metallurgical / Industrial Sense): Directly match the item's material, function, and name to the assigned specialist NPC and assigned stratum ore (e.g., a Rivet-forged part at a Rivet Smith using Rivet Ore)."
+    },
+    "plausible": {
+      "weight": 30,
+      "tag": "logic_plausible",
+      "hint": "PLAUSIBLE LOGIC (Cross-Discipline Craft / Alloy): Combine two complementary materials or upgrade an existing item logically (like alloying two ores or binding a lens onto a pickaxe)."
+    },
+    "whimsical": {
+      "weight": 15,
+      "tag": "logic_whimsical",
+      "hint": "WHIMSICAL LOGIC (Quarry Folk-Science / Clever Twist): Use playful subterranean folk-logic or a witty pun connection while still delivering a genuinely useful mechanical effect."
+    },
+    "absurd": {
+      "weight": 10,
+      "tag": "logic_absurd",
+      "hint": "MUNCHKIN-ABSURD LOGIC (Rule-Bending Comedy with Real Value): Channel the card game Munchkin—an outrageously funny, over-the-top contraption, potion, or spell with a legitimate mechanical payoff AND a hilarious situational quirk."
+    }
   },
   "twists": [
     "Give it one clear limiter: a cost, a bounded charge/durability, or a situational condition.",
@@ -132,7 +226,7 @@
     "Make it disposable: it wears down after a bounded amount of use (`durability_left` or `charge_left`).",
     "Make it trade speed for precision, or precision for speed.",
     "Give it a mild situational trade-off that rewards thoughtful placement.",
-    "Price it in a deeper or rarer block (such as `blocks/quartz_vein` or `blocks/copper` tier 1+) rather than dirt.",
+    "Price it in a multi-ingredient recipe (2-3 existing blocks or 1 existing item + 1-2 blocks) rather than a single common block.",
     "Make it an early-tier apprentice version with modest numbers and clear identity.",
     "Make it specialize strongly in deep strata (`tile.depth >= 500`) or high-tier rock (`tile.tier >= 1`).",
     "Make it synergize with rested state (`player.is_rested == 1`) or clean hands (`player.grime < 15`).",

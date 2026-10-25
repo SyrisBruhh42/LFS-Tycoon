@@ -414,18 +414,73 @@ func _run_suite() -> void:
 		main_node.call("_ready")
 		main_node.call("_set_active_drawer", "bag")
 		var bag_children: int = main_node.get("_drawer_body").get_child_count()
+		main_node.call("_set_active_drawer", "forge")
+		var forge_children: int = main_node.get("_drawer_body").get_child_count()
 		main_node.call("_set_active_drawer", "shop")
 		var shop_children: int = main_node.get("_drawer_body").get_child_count()
-		main_node.call("_set_active_drawer", "home")
+		main_node.call("_set_active_drawer", "homestead")
 		var home_children: int = main_node.get("_drawer_body").get_child_count()
 		main_node.call("_set_active_drawer", "")
-		scene_ok = (bag_children > 0 and shop_children > 0 and home_children > 0)
+		scene_ok = (bag_children > 0 and forge_children > 0 and shop_children > 0 and home_children > 0)
 		root.remove_child(main_node)
 	if main_node != null:
 		main_node.free()
 	_assert_true(claimed_cnt == 5 and bool(buy_res.get("ok", false)) and grid.player_owned_capsules.size() == 1 and bulk_gold > 0 and scene_ok,
 		"Vendor Purchase, Paired Chest Claim, Bulk Market Sell & MainQuarry Scene Instantiation",
 		"claimed=%d, bought=%s, bulk_gold=%d, scene_ok=%s" % [claimed_cnt, str(buy_res.get("ok", false)), bulk_gold, str(scene_ok)])
+
+	# ------------------------------------------------------------------
+	# SPIKE S9: Multi-Disciplinary Forge, Terraria Socket Fusion & Trickle Hot-Patcher
+	# ------------------------------------------------------------------
+	print("\n--- SPIKE S9: Terraria Item Fusion (Socket Inheritance) & Trickle Hot-Patcher ---")
+	grid.player_owned_capsules.clear()
+	grid.inventory.clear()
+	grid.grant_inventory_item("blocks/copper", 0, 25, "backpack")
+	var base_pick: Dictionary = grid.create_capsule_instance("tools/crude_stone_pick")
+	var tinker_socket: Dictionary = grid.create_capsule_instance("devices/enchanted_brass_bell")
+	grid.player_owned_capsules.append(base_pick)
+	grid.player_owned_capsules.append(tinker_socket)
+	var socketed_ok: bool = grid.socket_capsule_into_tool(tinker_socket, base_pick)
+
+	catalog.capsules["tools/zzz_test_terraria_fused_pick"] = {
+		"schema": 1,
+		"meta": {"name": "Resonant Fused Pickaxe", "description": "Fused from Crude Stone Pickaxe + Copper.", "rarity": "rare"},
+		"affordances": ["carry", "equip_tool"],
+		"tags": ["tool", "craft_terraria_fusion", "logic_canonical"],
+		"stats": {"tool_type": "PICKAXE", "tool_tier": 2, "base_dps": 28.0},
+		"vars": {"durability_left": 500},
+		"modifiers": [],
+		"reactions": []
+	}
+	var fusion_offer := {
+		"capsule_id": "tools/zzz_test_terraria_fused_pick",
+		"price": {"tools/crude_stone_pick": 1, "blocks/copper": 10},
+		"unlock_if": "player.max_depth >= 1"
+	}
+	var fuse_res: Dictionary = grid.buy_vendor_offer("npcs/peddler_vayne", fusion_offer, false)
+	var fused_inst: Dictionary = fuse_res.get("instance", {})
+	var inherited_sockets: Array = fused_inst.get("sockets", [])
+	var base_pick_consumed: bool = bool(base_pick.get("destroyed", false))
+	catalog.capsules.erase("tools/zzz_test_terraria_fused_pick")
+
+	# Snapshot all 434 tile block string IDs before hot_reload_catalog()
+	var before_block_ids: Array[String] = []
+	for ti in (grid.cols * grid.rows):
+		before_block_ids.append(catalog.block_int_to_id[grid.base_id[ti]])
+	var hot_res: Dictionary = grid.hot_reload_catalog()
+	var id_shifts: int = 0
+	for ti in (grid.cols * grid.rows):
+		if catalog.block_int_to_id[grid.base_id[ti]] != before_block_ids[ti]:
+			id_shifts += 1
+
+	_assert_true(
+		socketed_ok and bool(fuse_res.get("ok", false)) and base_pick_consumed and inherited_sockets.size() == 1 and id_shifts == 0 and int(hot_res.get("total_capsules", 0)) >= 480,
+		"Terraria Multi-Item Fusion Consumes Prerequisite Tool, Inherits Socketed Tinker Parts & Hot-Reload Preserves 100% of Quarry Tiles",
+		"fused=%s, base_consumed=%s, inherited_sockets=%d, tile_id_shifts=%d, total_caps=%d" % [
+			str(fuse_res.get("ok", false)), str(base_pick_consumed), inherited_sockets.size(), id_shifts, int(hot_res.get("total_capsules", 0))
+		]
+	)
+
 
 
 

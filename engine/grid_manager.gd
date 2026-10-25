@@ -856,10 +856,16 @@ func grant_inventory_item(item_id: String, item_tier: int, qty: int, route: Stri
 		ground_pile[key] = int(ground_pile.get(key, 0)) + qty
 	else:
 		inventory[key] = int(inventory.get(key, 0)) + qty
+		if catalog != null and catalog.capsules.has(item_id):
+			var affs: Array = catalog.capsules[item_id].get("affordances", [])
+			if not affs.has("mineable_block") and not affs.has("biome_profile") and not affs.has("npc_vendor"):
+				var spawn_cap := mini(qty, 3)
+				for _i in spawn_cap:
+					player_owned_capsules.append(create_capsule_instance(item_id))
 
 
-## Section 3.3B: Asymmetric Downward Recipe Inheritance (item_tier >= req_tier satisfies requirement).
-func can_satisfy_requirement(req_base_id: String, req_tier: int, req_qty: int) -> bool:
+## Returns total owned count of req_base_id across backpack stacks (tier >= req_tier) and player_owned_capsules.
+func get_owned_count(req_base_id: String, req_tier: int = 0) -> int:
 	var found := 0
 	var prefix := req_base_id + ":"
 	for k in inventory.keys():
@@ -867,9 +873,15 @@ func can_satisfy_requirement(req_base_id: String, req_tier: int, req_qty: int) -
 			var t_val := int(str(k).split(":")[1])
 			if t_val >= req_tier:
 				found += int(inventory[k])
-				if found >= req_qty:
-					return true
-	return false
+	for inst in player_owned_capsules:
+		if not bool(inst.get("destroyed", false)) and str(inst.get("capsule_id", "")) == req_base_id:
+			found += 1
+	return found
+
+
+## Section 3.3B: Asymmetric Downward Recipe Inheritance (item_tier >= req_tier or owned capsule instance satisfies requirement).
+func can_satisfy_requirement(req_base_id: String, req_tier: int, req_qty: int) -> bool:
+	return get_owned_count(req_base_id, req_tier) >= req_qty
 
 
 ## Discrete player tap on tile (fires on_tap before hold mining).
@@ -1001,8 +1013,11 @@ func can_buy_vendor_offer(vendor_id: String, offer: Dictionary) -> Dictionary:
 	return {"can_buy": true, "reason": "Available"}
 
 
-## Purchases an offer from an NPC vendor (or grants it directly if free_grant is true), instantiating and routing the capsule.
+var _last_consumed_sockets: Array = []
+
+## Purchases or forges an offer from an NPC vendor/station (or grants it directly if free_grant is true), instantiating and routing the capsule.
 func buy_vendor_offer(vendor_id: String, offer: Dictionary, free_grant: bool = false) -> Dictionary:
+	_last_consumed_sockets.clear()
 	if not free_grant:
 		var chk := can_buy_vendor_offer(vendor_id, offer)
 		if not bool(chk.get("can_buy", false)):
@@ -1017,11 +1032,14 @@ func buy_vendor_offer(vendor_id: String, offer: Dictionary, free_grant: bool = f
 	if not catalog.capsules.has(cap_id):
 		return {"ok": false, "reason": "Unknown capsule " + cap_id}
 	var inst := create_capsule_instance(cap_id)
+	if not _last_consumed_sockets.is_empty():
+		inst["sockets"] = _last_consumed_sockets.duplicate()
+		_last_consumed_sockets.clear()
 	player_owned_capsules.append(inst)
 
 	var cap: Dictionary = catalog.capsules[cap_id]
 	var affs: Array = cap.get("affordances", [])
-	if affs.has("equip_tool") and (player_tool.is_empty() or str(player_tool.get("capsule_id", "")) == ""):
+	if affs.has("equip_tool") and (player_tool.is_empty() or str(player_tool.get("capsule_id", "")) == "" or bool(player_tool.get("destroyed", false))):
 		equip_tool_instance(inst)
 	elif affs.has("place_in_house") or (affs.has("carry") and not affs.has("equip_tool") and not affs.has("place_on_tile") and not affs.has("consume") and not affs.has("read_book")):
 		equip_item(inst)
@@ -1075,6 +1093,56 @@ func sell_all_inventory_ores() -> int:
 	return total_gold
 
 
+## Hot-reloads newly downloaded or autonomously merged capsules without restarting or shifting active tile block IDs.
+func hot_reload_catalog(extra_dirs: Array = []) -> Dictionary:
+	var before_ids: Dictionary = {}
+	for k in catalog.capsules.keys():
+		before_ids[str(k)] = true
+
+	# Snapshot active quarry tile string IDs before rebuilding block_int_to_id
+	var n := cols * rows
+	var saved_tile_blocks: Array[String] = []
+	var saved_tile_cats: Array[String] = []
+	saved_tile_blocks.resize(n)
+	saved_tile_cats.resize(n)
+	for i in n:
+		var b_int := base_id[i]
+		saved_tile_blocks[i] = catalog.block_int_to_id[b_int] if (b_int >= 0 and b_int < catalog.block_int_to_id.size()) else "blocks/stone"
+		var c_int := placed_catalyst_id[i]
+		saved_tile_cats[i] = catalog.block_int_to_id[c_int] if (c_int >= 0 and c_int < catalog.block_int_to_id.size()) else ""
+
+	catalog.load_directory_into_catalog("res://content/capsules")
+	var factory_mirror := "/home/joe/.local/share/lfs-tycoon-factory/repo/content/capsules"
+	if DirAccess.dir_exists_absolute(factory_mirror):
+		catalog.load_directory_into_catalog(factory_mirror)
+	if DirAccess.dir_exists_absolute("user://live_capsules"):
+		catalog.load_directory_into_catalog("user://live_capsules")
+	for d in extra_dirs:
+		var ds := str(d)
+		if ds != "" and DirAccess.dir_exists_absolute(ds):
+			catalog.load_directory_into_catalog(ds)
+
+	catalog.rebuild_indexes()
+	generator._init_noises()
+
+	# Restore exact integer block IDs on all active tiles
+	var stone_fallback := int(catalog.block_id_to_int.get("blocks/stone", 0))
+	for i in n:
+		base_id[i] = int(catalog.block_id_to_int.get(saved_tile_blocks[i], stone_fallback))
+		placed_catalyst_id[i] = int(catalog.block_id_to_int.get(saved_tile_cats[i], -1)) if saved_tile_cats[i] != "" else -1
+
+	var new_ids: Array[String] = []
+	for k in catalog.capsules.keys():
+		var ks := str(k)
+		if not before_ids.has(ks):
+			new_ids.append(ks)
+	new_ids.sort()
+	return {
+		"added_count": new_ids.size(),
+		"total_capsules": catalog.capsules.size(),
+		"new_ids": new_ids
+	}
+
 
 ## RuleEngine action hooks for consume_item, modify_depth, modify_fluid, transform_tile.
 func action_consume_item(item_id: String, min_tier: int, qty: int) -> bool:
@@ -1103,6 +1171,22 @@ func action_consume_item(item_id: String, min_tier: int, qty: int) -> bool:
 		remaining -= take
 		if int(inventory[ks]) <= 0:
 			inventory.erase(ks)
+
+	# If remaining > 0, consume matching instances from player_owned_capsules (Terraria-style item fusion)
+	if remaining > 0:
+		for idx in range(player_owned_capsules.size() - 1, -1, -1):
+			if remaining <= 0:
+				break
+			var inst: Dictionary = player_owned_capsules[idx]
+			if not bool(inst.get("destroyed", false)) and str(inst.get("capsule_id", "")) == item_id:
+				if inst.has("sockets") and typeof(inst["sockets"]) == TYPE_ARRAY:
+					for s_inst in inst["sockets"]:
+						if not _last_consumed_sockets.has(s_inst):
+							_last_consumed_sockets.append(s_inst)
+				inst["destroyed"] = true
+				player_equipped_items.erase(inst)
+				player_owned_capsules.remove_at(idx)
+				remaining -= 1
 	return true
 
 

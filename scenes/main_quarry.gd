@@ -26,11 +26,13 @@ var selected_place_inst: Dictionary = {}
 var dev_window: DevCalibrationWindow = null
 
 var cursor_mode: int = CursorMode.MINE
-var active_drawer: String = "" # "", "bag", "shop", "homestead"
+var active_drawer: String = "" # "", "bag", "forge", "shop", "homestead"
 var shop_vendor_filter: String = "ALL"
 var shop_category_filter: String = "ALL"
 var shop_search_query: String = ""
 var shop_page_offset: int = 0
+var forge_discipline_filter: String = "ALL"
+var forge_page_offset: int = 0
 const SHOP_PAGE_SIZE: int = 25
 
 var _holding_press: bool = false
@@ -317,10 +319,22 @@ func _build_hud() -> void:
 	top_vbox.add_theme_constant_override("separation", 2)
 	top_panel.add_child(top_vbox)
 
+	var top_row := HBoxContainer.new()
+	top_vbox.add_child(top_row)
+
 	_lbl_top_stats = Label.new()
+	_lbl_top_stats.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_lbl_top_stats.add_theme_font_size_override("font_size", 12)
 	_lbl_top_stats.add_theme_color_override("font_color", Color(0.95, 0.92, 0.72))
-	top_vbox.add_child(_lbl_top_stats)
+	top_row.add_child(_lbl_top_stats)
+
+	var hot_btn := Button.new()
+	hot_btn.text = "⬇ Hot-Update"
+	hot_btn.add_theme_font_size_override("font_size", 10)
+	hot_btn.pressed.connect(func() -> void:
+		_on_hot_update_pressed()
+	)
+	top_row.add_child(hot_btn)
 
 	_lbl_tile_info = Label.new()
 	_lbl_tile_info.add_theme_font_size_override("font_size", 11)
@@ -412,6 +426,7 @@ func _build_hud() -> void:
 	var tab_specs := [
 		["", "Quarry"],
 		["bag", "Bag & Gear"],
+		["forge", "⚒ Forge"],
 		["shop", "Shop (NPCs)"],
 		["homestead", "Homestead"]
 	]
@@ -432,6 +447,19 @@ func _build_hud() -> void:
 		_tab_buttons[t_id] = tb
 
 	_update_dock_button_highlights()
+
+
+func _on_hot_update_pressed() -> void:
+	var res := grid.hot_reload_catalog()
+	var added_cnt := int(res.get("added_count", 0))
+	var total_cnt := int(res.get("total_capsules", catalog.capsules.size()))
+	if added_cnt > 0:
+		_status_toast = "Hot-Update applied! +%d new capsule(s) live (%d total)." % [added_cnt, total_cnt]
+	else:
+		_status_toast = "Catalog up-to-date (%d capsules active, 0 new deltas)." % total_cnt
+	_refresh_drawer()
+	_refresh_hud_labels()
+	queue_redraw()
 
 
 func _update_dock_button_highlights() -> void:
@@ -492,13 +520,16 @@ func _refresh_drawer() -> void:
 	if _drawer_body == null:
 		return
 	for ch in _drawer_body.get_children():
+		_drawer_body.remove_child(ch)
 		ch.queue_free()
 
 	if active_drawer == "bag":
 		_build_bag_drawer()
+	elif active_drawer == "forge":
+		_build_forge_drawer()
 	elif active_drawer == "shop":
 		_build_shop_drawer()
-	elif active_drawer == "homestead":
+	elif active_drawer == "homestead" or active_drawer == "home":
 		_build_homestead_drawer()
 
 
@@ -813,6 +844,210 @@ func _build_shop_drawer() -> void:
 		item_box.add_child(d_lbl)
 
 
+func _build_forge_drawer() -> void:
+	_drawer_title.text = "MULTI-DISCIPLINARY FORGE, ALCHEMY & SYNERGY ANVIL"
+
+	var sub_lbl := Label.new()
+	sub_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	sub_lbl.add_theme_font_size_override("font_size", 11)
+	sub_lbl.add_theme_color_override("font_color", Color(0.78, 0.90, 0.98))
+	sub_lbl.text = "Combine mined strata ores, socketed Tinker parts, prerequisite tools (Terraria-style fusion inherits sockets!), and arcane reagents across 10 disciplines."
+	_drawer_body.add_child(sub_lbl)
+
+	var disc_specs := [
+		["ALL", "All Forge & Multi-Reagent Recipes"],
+		["craft_tinker_part", "1. Tinker Modular Part Forging (Socketable Heads/Rods/Bindings)"],
+		["craft_terraria_fusion", "2. Terraria Cumulative Item Fusion (Consumes Base Gear + Ores)"],
+		["craft_skyrim_enchant", "3. Skyrim Arcane Enchanting & Resonance Sigils"],
+		["craft_alchemy_potion", "4. Multi-Reagent Alchemy & Decoctions"],
+		["craft_spell_grimoire", "5. Quarry Geomancy Spells & Grimoires"],
+		["craft_smeltery_alloy", "6. Smeltery Alloying & Crucible Transmutation"],
+		["craft_skill_mastery", "7. RPG Skill Trees & Guild Mastery Treatises"],
+		["craft_achievement_relic", "8. Quarry Achievement Seals & Milestone Trophies"],
+		["craft_homestead_station", "9. Homestead Workshop Benches & Architecture"],
+		["craft_clockwork_automaton", "10. Clockwork Automatons & Autonomous Field Rigs"]
+	]
+
+	var filter_row := HBoxContainer.new()
+	_drawer_body.add_child(filter_row)
+
+	var d_opt := OptionButton.new()
+	d_opt.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	for d_idx in disc_specs.size():
+		var spec_entry: Array = disc_specs[d_idx]
+		d_opt.add_item(str(spec_entry[1]))
+		if str(spec_entry[0]) == forge_discipline_filter:
+			d_opt.selected = d_idx
+	d_opt.item_selected.connect(func(idx: int) -> void:
+		var clamped := clampi(idx, 0, disc_specs.size() - 1)
+		forge_discipline_filter = str(disc_specs[clamped][0])
+		forge_page_offset = 0
+		_refresh_drawer()
+	)
+	filter_row.add_child(d_opt)
+
+	var sorted_vendors := catalog.vendor_catalog.keys()
+	sorted_vendors.sort()
+	var forge_entries: Array[Dictionary] = []
+	var fallback_entries: Array[Dictionary] = []
+
+	for vid in sorted_vendors:
+		var v_str := str(vid)
+		var offers_arr: Array = catalog.vendor_catalog[v_str]
+		for offer_var in offers_arr:
+			var offer: Dictionary = offer_var
+			var cid := str(offer.get("capsule_id", ""))
+			var cap: Dictionary = catalog.capsules.get(cid, {})
+			if cap.is_empty():
+				continue
+			var tags_arr: Array = cap.get("tags", [])
+			var price_dict: Dictionary = offer.get("price", {})
+			var has_craft_tag := false
+			for t_var in tags_arr:
+				if str(t_var).begins_with("craft_"):
+					has_craft_tag = true
+					break
+			var has_item_reagent := false
+			for p_key in price_dict.keys():
+				if not str(p_key).begins_with("blocks/"):
+					has_item_reagent = true
+					break
+			var is_multi_ing := price_dict.size() >= 2
+
+			var entry_dict := {
+				"vendor_id": v_str,
+				"offer": offer,
+				"cid": cid,
+				"name": str(cap.get("meta", {}).get("name", cid)),
+				"desc": str(cap.get("meta", {}).get("description", "")),
+				"tags": tags_arr
+			}
+			if forge_discipline_filter != "ALL":
+				if tags_arr.has(forge_discipline_filter):
+					forge_entries.append(entry_dict)
+				elif forge_discipline_filter == "craft_terraria_fusion" and has_item_reagent:
+					forge_entries.append(entry_dict)
+				elif forge_discipline_filter == "craft_tinker_part" and cap.get("affordances", []).has("socket_in_tool"):
+					forge_entries.append(entry_dict)
+				elif forge_discipline_filter == "craft_alchemy_potion" and cid.begins_with("consumables/"):
+					forge_entries.append(entry_dict)
+				elif forge_discipline_filter == "craft_spell_grimoire" and cid.begins_with("books/"):
+					forge_entries.append(entry_dict)
+				elif forge_discipline_filter == "craft_skill_mastery" and cid.begins_with("upgrades/"):
+					forge_entries.append(entry_dict)
+				elif forge_discipline_filter == "craft_homestead_station" and cap.get("affordances", []).has("place_in_house"):
+					forge_entries.append(entry_dict)
+				elif forge_discipline_filter == "craft_clockwork_automaton" and cap.get("affordances", []).has("place_on_tile"):
+					forge_entries.append(entry_dict)
+			else:
+				if has_craft_tag or has_item_reagent or is_multi_ing:
+					forge_entries.append(entry_dict)
+				else:
+					fallback_entries.append(entry_dict)
+
+	if forge_entries.is_empty() and forge_discipline_filter == "ALL":
+		forge_entries = fallback_entries
+
+	var total_matches := forge_entries.size()
+	var page_row := HBoxContainer.new()
+	_drawer_body.add_child(page_row)
+	var page_lbl := Label.new()
+	page_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var start_i := mini(forge_page_offset, maxi(0, total_matches - 1))
+	var end_i := mini(start_i + SHOP_PAGE_SIZE, total_matches)
+	page_lbl.text = "Showing %d-%d of %d forgeable recipes" % [start_i + 1 if total_matches > 0 else 0, end_i, total_matches]
+	page_row.add_child(page_lbl)
+
+	var prev_btn := Button.new()
+	prev_btn.text = "< Prev"
+	prev_btn.disabled = (forge_page_offset <= 0)
+	prev_btn.pressed.connect(func() -> void:
+		forge_page_offset = maxi(0, forge_page_offset - SHOP_PAGE_SIZE)
+		_refresh_drawer()
+	)
+	page_row.add_child(prev_btn)
+
+	var next_btn := Button.new()
+	next_btn.text = "Next >"
+	next_btn.disabled = (end_i >= total_matches)
+	next_btn.pressed.connect(func() -> void:
+		forge_page_offset = end_i
+		_refresh_drawer()
+	)
+	page_row.add_child(next_btn)
+
+	for idx in range(start_i, end_i):
+		var entry: Dictionary = forge_entries[idx]
+		var v_id := str(entry["vendor_id"])
+		var offer: Dictionary = entry["offer"]
+		var nm := str(entry["name"])
+		var desc := str(entry["desc"])
+		var tags_arr: Array = entry["tags"]
+		var chk := grid.can_buy_vendor_offer(v_id, offer)
+		var can_forge := bool(chk.get("can_buy", false))
+
+		var logic_badge := "[CANONICAL]"
+		if tags_arr.has("logic_absurd"):
+			logic_badge = "[MUNCHKIN-ABSURD]"
+		elif tags_arr.has("logic_whimsical"):
+			logic_badge = "[WHIMSICAL]"
+		elif tags_arr.has("logic_plausible"):
+			logic_badge = "[PLAUSIBLE]"
+
+		var price_parts: Array[String] = []
+		var price_dict: Dictionary = offer.get("price", {})
+		for curr_id in price_dict.keys():
+			var c_str := str(curr_id)
+			var req_q := int(price_dict[curr_id])
+			var have_q := grid.get_owned_count(c_str, 0)
+			var c_nm := str(catalog.capsules.get(c_str, {}).get("meta", {}).get("name", c_str.get_file()))
+			var mark := "✓" if have_q >= req_q else "✗"
+			price_parts.append("%s %s (%d/%d)" % [mark, c_nm, have_q, req_q])
+		var recipe_str := " + ".join(PackedStringArray(price_parts))
+		var v_name := str(catalog.capsules.get(v_id, {}).get("meta", {}).get("name", v_id.get_file()))
+
+		var item_box := VBoxContainer.new()
+		_drawer_body.add_child(item_box)
+
+		var r1 := HBoxContainer.new()
+		item_box.add_child(r1)
+
+		var lbl := Label.new()
+		lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		lbl.text = "%s %s — Station/Artisan: %s" % [logic_badge, nm, v_name]
+		lbl.add_theme_color_override("font_color", Color(0.98, 0.92, 0.65) if can_forge else Color(0.68, 0.70, 0.75))
+		r1.add_child(lbl)
+
+		var forge_btn := Button.new()
+		forge_btn.text = "⚒ Forge" if can_forge else str(chk.get("reason", "Locked"))
+		forge_btn.disabled = not can_forge
+		forge_btn.pressed.connect(func() -> void:
+			var res := grid.buy_vendor_offer(v_id, offer, false)
+			if bool(res.get("ok", false)):
+				var new_inst: Dictionary = res.get("instance", {})
+				var inherited_cnt: int = new_inst.get("sockets", []).size()
+				var inh_txt := (" (Inherited %d socketed part(s)!)" % inherited_cnt) if inherited_cnt > 0 else ""
+				_status_toast = "Forged %s!%s Check [Bag & Gear]." % [nm, inh_txt]
+				_refresh_drawer()
+				_refresh_hud_labels()
+		)
+		r1.add_child(forge_btn)
+
+		var rec_lbl := Label.new()
+		rec_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		rec_lbl.add_theme_font_size_override("font_size", 10)
+		rec_lbl.add_theme_color_override("font_color", Color(0.62, 0.92, 0.75) if can_forge else Color(0.85, 0.68, 0.62))
+		rec_lbl.text = "   Recipe: " + recipe_str
+		item_box.add_child(rec_lbl)
+
+		var d_lbl := Label.new()
+		d_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		d_lbl.add_theme_font_size_override("font_size", 10)
+		d_lbl.add_theme_color_override("font_color", Color(0.70, 0.75, 0.82))
+		d_lbl.text = "   " + desc
+		item_box.add_child(d_lbl)
+
+
 func _build_homestead_drawer() -> void:
 	_drawer_title.text = "HOMESTEAD,PAIRED CHEST, MARKET & SAVE"
 
@@ -873,6 +1108,13 @@ func _build_homestead_drawer() -> void:
 		queue_redraw()
 	)
 	_drawer_body.add_child(btn_offline)
+
+	var btn_hotpatch := Button.new()
+	btn_hotpatch.text = "⬇ Trickle Hot-Update: Reload Live Capsules Without Restarting"
+	btn_hotpatch.pressed.connect(func() -> void:
+		_on_hot_update_pressed()
+	)
+	_drawer_body.add_child(btn_hotpatch)
 
 	var save_row := HBoxContainer.new()
 	_drawer_body.add_child(save_row)

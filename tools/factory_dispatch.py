@@ -35,6 +35,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG_FILE = ROOT / "factory" / "config.json"
 PROMPT_FILE = ROOT / ".github" / "JULES_PROMPT.md"
+STEWARD_PROMPT_FILE = ROOT / ".github" / "STEWARD_PROMPT.md"
 API = "https://jules.googleapis.com/v1alpha"
 STATE_DIR = Path(os.environ.get("XDG_STATE_HOME", str(Path.home() / ".local" / "state"))) / "lfs-tycoon-factory"
 STATE_FILE = STATE_DIR / "state.json"
@@ -307,9 +308,14 @@ def lessons_block(state: dict, n: int) -> str:
 
 # --------------------------------------------------------------------------- dispatch
 def dispatch(cfg: dict, state: dict, dry: bool) -> None:
-    brief = json.loads(subprocess.run([sys.executable, str(ROOT / "tools" / "pick_brief.py"), "--json"],
-                                      capture_output=True, text=True, check=True, cwd=ROOT).stdout)
-    prompt = PROMPT_FILE.read_text(encoding="utf-8").strip() + "\n\n" + brief["markdown"] + lessons_block(state, cfg["lesson_count"])
+    next_seq = int(state.get("dispatch_seq", 0)) + 1
+    is_steward = (next_seq % 10 == 0)
+    cmd = [sys.executable, str(ROOT / "tools" / "pick_brief.py"), "--json"]
+    if is_steward:
+        cmd.append("--force-steward")
+    brief = json.loads(subprocess.run(cmd, capture_output=True, text=True, check=True, cwd=ROOT).stdout)
+    base_prompt_file = STEWARD_PROMPT_FILE if (is_steward and STEWARD_PROMPT_FILE.exists()) else PROMPT_FILE
+    prompt = base_prompt_file.read_text(encoding="utf-8").strip() + "\n\n" + brief["markdown"] + lessons_block(state, cfg["lesson_count"])
     title = f"capsule {brief['suffix']}: {brief['label']}"[:120]
     body = {
         "prompt": prompt,
@@ -319,7 +325,7 @@ def dispatch(cfg: dict, state: dict, dry: bool) -> None:
         "requirePlanApproval": False,
     }
     if dry:
-        log("dry_run_dispatch", title=title, prompt_chars=len(prompt))
+        log("dry_run_dispatch", title=title, prompt_chars=len(prompt), seq=next_seq)
         print("\n----- PROMPT PREVIEW -----\n" + prompt + "\n--------------------------")
         return
     session = None
@@ -342,9 +348,11 @@ def dispatch(cfg: dict, state: dict, dry: bool) -> None:
             if attempt == 2:
                 raise
     sid = session.get("id") or session.get("name", "").split("/")[-1]
+    state["dispatch_seq"] = next_seq
     state["sessions"][sid] = {"created": iso(now()), "title": title, "suffix": brief["suffix"],
-                              "label": brief["label"], "state": session.get("state", "QUEUED")}
-    log("dispatched", session=sid, title=title, url=session.get("url", ""))
+                              "label": brief["label"], "anchors": brief.get("anchors", []),
+                              "state": session.get("state", "QUEUED")}
+    log("dispatched", session=sid, title=title, seq=next_seq, url=session.get("url", ""))
 
 
 # --------------------------------------------------------------------------- main

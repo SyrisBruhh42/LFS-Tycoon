@@ -71,7 +71,20 @@ def main() -> int:
         "## 4. Canonical Affordances",
         ", ".join(f"`{a}`" for a in affordances),
         "",
+        "## 5. Under-Referenced Ores & Specialist NPCs (High-Synergy Targets)",
     ])
+    try:
+        if str(ROOT / "tools") not in sys.path:
+            sys.path.insert(0, str(ROOT / "tools"))
+        import content_graph
+        g = content_graph.build()
+        manifest_lines.append("- **Orphan / Low-Use Blocks (prioritize in `offered_by.price`, `biome_weights`, and reactions):** " +
+                              ", ".join(f"`{b}` (z>={int(g.z_unlock(b))}, uses={g.consumer_count(b)})" for b in sorted(g.blocks, key=lambda x: g.consumer_count(x))[:10]))
+        manifest_lines.append("- **Under-Stocked Specialist NPCs (prioritize in `offered_by.vendor`):** " +
+                              ", ".join(f"`{n}` (offers={g.vendor_offers.get(n, 0)})" for n in sorted(g.npcs, key=lambda x: g.vendor_offers.get(x, 0))[:10]))
+    except Exception:
+        pass
+    manifest_lines.append("")
     (ROOT / "AI_CONTEXT_MANIFEST.md").write_text("\n".join(manifest_lines), encoding="utf-8")
 
     # Write GAP_MAP.md (Under-used Event x Action niches for parallel Jules ideation)
