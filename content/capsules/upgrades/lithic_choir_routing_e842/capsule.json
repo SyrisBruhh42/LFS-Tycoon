@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lithic Choir Routing Package",
+    "description": "The blind monastic archivists of Quill Hollow discovered that bedrock is frozen acoustic music, using zero-damage stalls and bell harmonics to shatter equal-depth contours. Assayer Rivet has adapted this ancient resonance, creating an upgrade that directly routes 40% of newly mined Lark Newt Rivet ore directly to a paired chest, honoring the infinite scriptorium of the Lithic Choir.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_haul_capacity",
+    "path_qol_upgrade",
+    "craft_skill_mastery",
+    "logic_canonical",
+    "theme_lithic_choir",
+    "skill_bracket",
+    "bracket_2",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.4,
+      "if": "self.installed >= 1.0 and player.is_rested == 1"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_assayer_c04e",
+      "price": {
+        "upgrades/quarry_milestone_trophy_27df": 1,
+        "blocks/lark_newt_rivet_ore_a337": 45
+      },
+      "unlock_if": "player.max_depth >= 198 and player.max_depth <= 330"
+    }
+  ],
+  "offline": "none"
+}
