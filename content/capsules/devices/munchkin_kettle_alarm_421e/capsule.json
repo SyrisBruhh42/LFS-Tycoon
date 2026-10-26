@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin's Thrifty Kettle-Alarm",
+    "description": "A ridiculously modified basalt kettle from The Paradox Symposium of St. Munchkin. Instead of boiling water, it boils impatience. When attached to a tool socket, if you strike an impassable strict-locked block (0 damage), it frantically dings in the house, exploiting a physics loophole to instantly pause the tool's battery drain. Powered by raw flint shale.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_zero_damage_stall",
+    "path_placeable_device",
+    "craft_tinker_part",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "durability_left": 250.0
+  },
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": 0.0,
+      "if": "tile.is_strict_locked >= 1.0"
+    },
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": 0.0,
+      "if": "tile.is_strict_locked >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {"act": "emit_alert", "channel": "house_bell", "tag": "munchkin_kettle_stall"},
+        {"act": "stall_tool", "pause_battery": true, "pause_durability": true}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_assayer_c04e",
+      "price": {
+        "devices/obsidian_resonant_crucible_d5d5": 1,
+        "blocks/flint_shale_6493": 15
+      },
+      "unlock_if": "player.max_depth >= 15.0"
+    }
+  ],
+  "offline": "exact"
+}
