@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Anvilstone Clockwork Lure",
+    "description": "An architectural marvel from The Perpetual Clockwork Deep-Bore Syndicate, built from dense anvilstone. Driven by a sturdy rivet, its internal gears hum permanently when placed in your house or carried, subtly enticing lost felines to draw near.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["place_in_house", "carry", "sell"],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_event_helpers",
+    "path_qol_upgrade",
+    "craft_homestead_station",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_2",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 110.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "value": 0.05
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "unlock_if": "player.max_depth >= 198.0",
+      "price": {
+        "devices/flint_shale_scrubber_b898": 1,
+        "blocks/anvilstone_02a1": 25
+      }
+    }
+  ],
+  "offline": "none"
+}
