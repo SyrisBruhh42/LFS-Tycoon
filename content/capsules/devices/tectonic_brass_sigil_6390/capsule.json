@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Brass Tectonic Sigil",
+    "description": "An ancient socketable crystal of the Under-Sun Manifold, once used by the smith-lords of The Grand Crucible of the Tectonic Leviathan. Etched in vitriol and brass by the Quill vendor Pewter Quill Newt, it binds magma veins to anvilstone. When socketed into a tool, it uses resonance charge to unleash a violent seismic tremor on zero-damage stalls, cracking adjacent rock but draining charge. Grants an intrinsic boost to vendor depth discount and market prices when carried. Bound to Quill ore.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "rune",
+    "gadget",
+    "solves_vendor_access",
+    "path_skill_book",
+    "craft_skyrim_enchant",
+    "logic_canonical",
+    "theme_tectonic_crucible",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 450.0,
+    "charge_left": 100.0,
+    "max_charge": 100.0
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "value": "20.0"
+    },
+    {
+      "stat": "market_value_mult",
+      "phase": "mul",
+      "value": "1.15"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "if": "tool.tier <= 1.0 and shared.quarry_resonance_charge >= 5.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "shared.quarry_resonance_charge",
+          "by": "-5.0"
+        },
+        {
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": "15.0"
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "if": "tile.depth <= 249",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "shared.quarry_resonance_charge",
+          "by": "0.1"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/pewter_quill_newt_3730",
+      "price": {
+        "upgrades/ochre_forge_milestone_relic_9ed9": 1,
+        "blocks/quill_ore_4083": 45
+      },
+      "unlock_if": "player.max_depth >= 45"
+    }
+  ],
+  "offline": "exact"
+}
