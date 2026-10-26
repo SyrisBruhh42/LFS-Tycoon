@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Living Atlas Spore Sanctuary",
+    "description": "A rare subterranean pocket mine acting as a Mycelial Sanctuary of the Enclave of the 16. Bioluminescent spore cartography illuminates the wick-like tendrils of magnetotropic flora, offering a Schrödinger's Harvest of culinary alchemy across The Wilds, The Mind, and The Hub.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "biome",
+    "world_biome",
+    "theme_enclave_living_atlas",
+    "spore",
+    "sanctuary"
+  ],
+  "stats": {
+    "z_min": 350,
+    "z_max": 500,
+    "biome_weight": 0.25
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/alkahest_quartz_d755": 2.5,
+    "blocks/cinder_gravel_61a3": 1.5
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
