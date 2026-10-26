@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Hearth Dampener",
+    "description": "An arcane grimoire spell woven into a hearth-gasket by Ochre Toad, drawing on the magmas of The Grand Crucible of the Tectonic Leviathan. While carried or placed in the house, it uses resonant Ochre Stratum dust to significantly dampen secondary shockwaves, protecting unintended blocks from splash damage.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "consume"
+  ],
+  "tags": [
+    "device",
+    "solves_unwanted_splash",
+    "path_magic_charm",
+    "craft_spell_grimoire",
+    "logic_canonical",
+    "theme_tectonic_crucible",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "value": 0.15,
+      "if": "ctx.is_secondary_damage == 1.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/ochre_toad_5e64",
+      "price": {
+        "devices/tinker_slag_sconce_5ae8": 1,
+        "blocks/ochre_stratum_d812": 15
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ]
+}
