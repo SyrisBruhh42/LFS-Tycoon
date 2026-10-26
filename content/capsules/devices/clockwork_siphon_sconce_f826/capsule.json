@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Siphon Sconce",
+    "description": "An autonomous iron sconce engineered by The Perpetual Clockwork Deep-Bore Syndicate. Its pneumatic wind-up engine greedily siphons hazardous fluids to keep the quarry dry. Folk say it's so thirsty it drinks puddles like a stray hound.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "equip_tool"
+  ],
+  "tags": [
+    "device",
+    "solves_fluid_flooding",
+    "path_tool_builtin",
+    "craft_clockwork_automaton",
+    "logic_whimsical",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "tool_type": "BUCKET",
+    "tool_tier": 1,
+    "base_dps": 20.0,
+    "durability_max": 200.0,
+    "is_rechargeable": 1
+  },
+  "vars": {
+    "durability_left": 200.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "tile.fluid_level > 0",
+      "do": [
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": "-1.0"
+        },
+        {
+          "act": "var_add",
+          "var": "self.durability_left",
+          "by": "-2.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ember_vendor_f749",
+      "price": {
+        "devices/quill_crucible_9ff0": 1,
+        "blocks/water_aquifer": 40
+      },
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ],
+  "offline": "exact"
+}
