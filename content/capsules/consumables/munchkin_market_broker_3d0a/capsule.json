@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "St. Munchkin's Loophole Ledger",
+    "description": "An outrageously literal reading of The Brass Ledger Frontier's trade laws. St. Munchkin's Paradox Symposium found that if a subterranean bureaucrat or sommelier claims a batch of raw blocks/lark_newt_rivet_ore_a337 is actually a 'rare chisel-pressed artifact' made by clean hands, the market value spikes wildly. It's a hilarious literal loophole in the laws of economics, but the market honors it anyway.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "solves_market_saturation",
+    "path_profession_perk",
+    "craft_alchemy_potion",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 85.0,
+    "duration_sec": 480.0,
+    "market_value_bonus": 2.5
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.market_value_bonus"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec",
+          "if": "player.grime < 15.0"
+        },
+        {
+          "act": "destroy_self"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "blocks/lark_newt_rivet_ore_a337": 45,
+        "upgrades/ochre_forge_milestone_relic_9ed9": 1
+      },
+      "unlock_if": "player.max_depth >= 45.0"
+    }
+  ],
+  "offline": "none"
+}
