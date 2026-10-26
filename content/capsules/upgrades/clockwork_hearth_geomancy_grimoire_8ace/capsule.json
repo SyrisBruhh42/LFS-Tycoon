@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Hearth Geomancy Grimoire",
+    "description": "An arcane spell tome from the Brass Ledger Frontier. Crafted by Rivet Assayer C04e and bound with an Iron Stormbreaker Charm, this crucible of geomancy logic is favored by The Perpetual Clockwork Deep-Bore Syndicate for easing the wick maintenance of auto-tools. Reads a geomancy incantation to transmute nearby bedrock into rivet ore.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell",
+    "consume"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_auto_tool_runtime",
+    "path_bundle_package",
+    "craft_spell_grimoire",
+    "logic_canonical",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 60.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": "0.75"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "transform_tile",
+          "target": "self_tile",
+          "block": "blocks/rivet_ore_dd06"
+        },
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": "1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_assayer_c04e",
+      "price": {
+        "upgrades/iron_stormbreaker_charm_a589": 1,
+        "blocks/rivet_ore_dd06": 15
+      },
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ],
+  "offline": "none"
+}
