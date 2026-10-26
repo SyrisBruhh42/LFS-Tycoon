@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter-Bound Gravel Dampener",
+    "description": "A heavy, brass-fitted dampening mat built with the same techniques The Perpetual Clockwork Deep-Bore Syndicate used to silence their pneumatic paired-chest tubes. Forged from basalt and packed with pewter gravel, when placed on a tile it drastically reduces incoming damage from secondary splash impacts, making it ideal for protecting valuable high-tier or deep strata.",
+    "author": "jules:session",
+    "rarity": "common",
+    "era": "early"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "solves_unwanted_splash",
+    "path_placeable_device",
+    "craft_alchemy_potion",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "min_hp_clamp": 1.0,
+    "base_dps": 2.5
+  },
+  "vars": {
+    "hits_absorbed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "if": "ctx.is_secondary_damage == 1 and (tile.depth >= 500 or tile.tier >= 1)",
+      "value": "1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_damage_absorbed",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.hits_absorbed",
+          "by": "1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.hits_absorbed >= 10.0"
+        }
+      ]
+    }
+  ],
+  "offline": "exact",
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_wick_vendor_8db7",
+      "price": {
+        "devices/ochre_sigil_9759": 1,
+        "blocks/pewter_gravel_d53e": 25
+      },
+      "unlock_if": "player.max_depth >= 150"
+    }
+  ]
+}
