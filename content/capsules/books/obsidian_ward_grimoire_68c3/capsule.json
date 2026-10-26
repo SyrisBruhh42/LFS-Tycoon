@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Ward-Breaker Grimoire",
+    "description": "An arcane tome penned by the Sovereign Ward-Breakers of the Obsidian Seal. Whispers of basalt and shattered locks resonate from its heavy pages, recounting the metallurgical rites of the deep. Bound with rivet ore, it grants the power to reshape the living rock, easing the burden on automated digging rigs by lowering battery drain in deep strata.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "book",
+    "skill_book",
+    "solves_auto_tool_runtime",
+    "path_placeable_device",
+    "craft_spell_grimoire",
+    "logic_canonical",
+    "theme_obsidian_wardbreaker",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 115.0
+  },
+  "vars": {
+    "pages_turned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": 0.75,
+      "if": "tile.depth >= 300.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "tile.tier >= 1.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.pages_turned",
+          "by": 1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "devices/tinker_slag_sconce_5ae8": 1,
+        "blocks/rivet_ore_dd06": 12
+      },
+      "unlock_if": "player.max_depth >= 200.0"
+    }
+  ],
+  "offline": "exact"
+}
