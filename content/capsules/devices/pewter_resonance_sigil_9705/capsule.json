@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Resonance Sigil",
+    "description": "A socketable arcane sigil forged from pewter gravel strata. Originally designed by the horologists of The Perpetual Clockwork Deep-Bore Syndicate to fine-tune pneumatic railway bores, this crystalline mica construct sacrifices raw drilling speed in exchange for pinpoint structural analysis, earning the wielder immense respect (and deep discounts) from automated vendors like the Gravel Vendor.",
+    "author": "autonomous:content_developer",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": [
+    "solves_vendor_access",
+    "path_profession_perk",
+    "craft_skyrim_enchant",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 150.0
+  },
+  "vars": {
+    "durability_left": 300.0
+  },
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "if": "self.durability_left > 0.0",
+      "value": 0.2
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "self.durability_left > 0.0",
+      "value": 1.2
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_vendor_51cb",
+      "price": {
+        "consumables/alkahest_vitriol_tonic_e019": 1,
+        "blocks/pewter_gravel_d53e": 50
+      },
+      "unlock_if": "player.max_depth >= 150"
+    }
+  ],
+  "offline": "none"
+}
