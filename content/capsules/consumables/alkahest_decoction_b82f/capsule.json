@@ -1,0 +1,107 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mycelial Alkahest Decoction",
+    "description": "A potent alchemical phial brewed in the Mycelial Sanctuary of the Enclave. It channels Schrödinger's Harvest, causing overwhelming strikes to cleave through rock, occasionally crystallizing the kinetic echo into fresh Alkahest Quartz.",
+    "author": "jules:steward",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "food",
+    "solves_overkill_waste",
+    "path_consumable_buff",
+    "craft_alchemy_potion",
+    "bracket_3",
+    "skill_school_manual",
+    "theme_enclave_living_atlas",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 450.0,
+    "duration_sec": 300.0
+  },
+  "vars": {
+    "active_sec_left": 0.0,
+    "quartz_charge": 0.0
+  },
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "devices/vitriol_munchkin_sigil_9bc4": 1,
+        "blocks/alkahest_quartz_d755": 5,
+        "blocks/copper": 15
+      },
+      "unlock_if": "player.max_depth >= 330"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": 300.0
+        },
+        {
+          "act": "var_add",
+          "var": "shared.global_cleave_bonus_pct",
+          "by": 0.5
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "shared.global_cleave_bonus_pct",
+          "by": -0.5,
+          "if": "self.active_sec_left == 1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.active_sec_left == 1.0"
+        },
+        {
+          "act": "var_add",
+          "var": "self.active_sec_left",
+          "by": -1.0,
+          "if": "self.active_sec_left > 0.0"
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.quartz_charge",
+          "by": 1.0,
+          "if": "self.active_sec_left > 0.0"
+        },
+        {
+          "act": "spawn_item",
+          "item": "blocks/alkahest_quartz_d755",
+          "qty": 1,
+          "if": "self.quartz_charge >= 10.0"
+        },
+        {
+          "act": "var_set",
+          "var": "self.quartz_charge",
+          "value": 0.0,
+          "if": "self.quartz_charge >= 10.0"
+        }
+      ]
+    }
+  ],
+  "offline": "none"
+}
