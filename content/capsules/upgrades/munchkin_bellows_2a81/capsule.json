@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin Paradox Bellows",
+    "description": "An outrageously over-engineered set of subterranean bellows authorized by The Paradox Symposium of St. Munchkin. Built from Quill-Hollow stratum by the Rivet Assayer, it exploits a hilarious loophole in physics: by continuously blowing warm air onto your tool, it convinces the universe the tool is 'relaxing', drastically cutting durability wear, but the distracting noise significantly slows your mining speed. A perfect example of rule-bending bureaucracy with a legitimate mechanical payoff.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "solves_repair_upkeep",
+    "path_magic_charm",
+    "craft_homestead_station",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "tool.tier <= 1.0"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": 1.5,
+      "if": "tool.tier <= 1.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_assayer_c04e",
+      "price": {
+        "consumables/flint_hollow_phial_3833": 1,
+        "blocks/quill_hollow_fa6d": 45
+      },
+      "unlock_if": "player.max_depth >= 45"
+    }
+  ]
+}
