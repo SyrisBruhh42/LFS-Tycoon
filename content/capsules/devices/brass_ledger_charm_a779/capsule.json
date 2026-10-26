@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Brass Ledger Plumb-Charm",
+    "description": "A plumb-bob wrought from pewter gravel by the gravel-vendor's trade, forged in the Grand Crucible of the Tectonic Leviathan. This brass device siphons raw earth to repair tools in deep strata.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_repair_upkeep",
+    "path_magic_charm",
+    "craft_clockwork_automaton",
+    "logic_plausible",
+    "theme_tectonic_crucible",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 65.0
+  },
+  "vars": {
+    "durability_left": 100.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "tile.depth >= 500"
+    },
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "tile.tier >= 1"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/pewter_gravel_d53e",
+          "qty": 1
+        },
+        {
+          "act": "var_add",
+          "var": "self.durability_left",
+          "by": 10.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_vendor_51cb",
+      "price": {
+        "devices/obsidian_resonant_crucible_d5d5": 1,
+        "blocks/pewter_gravel_d53e": 400
+      },
+      "unlock_if": "player.max_depth >= 150"
+    }
+  ],
+  "offline": "exact"
+}
