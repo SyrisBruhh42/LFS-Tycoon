@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Depth Calipers Bench",
+    "description": "Homestead Workshop Bench forged by the Ancient smith-lords of the Under-Sun Manifold who bound magma veins and anvilstone into self-tempering thermal drills and crucible transmutation rigs. It permanently enhances rested state and market value.",
+    "author": "Enterprise Steward",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "place_in_house",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "solves_depth_awareness",
+    "craft_homestead_station",
+    "path_explore",
+    "bracket_3",
+    "skill_school_manual",
+    "theme_tectonic_crucible",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 450.0
+  },
+  "vars": {
+    "installed": 1.0
+  },
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "add",
+      "value": 0.15
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_sleep",
+      "if": "player.is_rested >= 1.0",
+      "do": [
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_depth_calipers",
+          "enabled": 1.0
+        },
+        {
+          "act": "consume_item",
+          "item": "blocks/stormbreaker_geode_5e99",
+          "qty": 1.0
+        },
+        {
+          "act": "spawn_item",
+          "item": "blocks/copper",
+          "qty": 3.0,
+          "route": "backpack"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "unlock_if": "player.max_depth >= 300.0",
+      "price": {
+        "devices/clockwork_siphon_rig_2410": 1,
+        "blocks/stormbreaker_geode_5e99": 5,
+        "blocks/copper": 5
+      }
+    }
+  ],
+  "offline": "none"
+}
