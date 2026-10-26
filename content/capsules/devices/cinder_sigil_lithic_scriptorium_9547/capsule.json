@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lithic Scriptorium Ledger Cinder-Bell",
+    "description": "A heavy ledger-sigil forged by the blind archivists of Quill Hollow in the calcified foundry. Merges the Bismuth Clockwork Pick's mechanism with a Cinder Sigil and Quill Hollow stone, recording zero-damage stalls and freezing tool decay via pure acoustic resonance.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_zero_damage_stall",
+    "path_placeable_device",
+    "craft_terraria_fusion",
+    "logic_canonical",
+    "theme_lithic_choir",
+    "bracket_2",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 150.0,
+    "charge_max_sec": 7200.0,
+    "is_rechargeable": 0
+  },
+  "vars": {
+    "charge_left": 7200.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {
+          "act": "stall_tool",
+          "pause_battery": true,
+          "pause_durability": true
+        },
+        {
+          "act": "emit_alert",
+          "channel": "house_bell",
+          "tag": "stall_impassable"
+        },
+        {
+          "act": "var_add",
+          "var": "shared.house_bell_ringing",
+          "by": 1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/quill_peddler_0c07",
+      "unlock_if": "shared.house_bell_ringing >= 0.0",
+      "price": {
+        "tools/bismuth_clockwork_pick_8e31": 1,
+        "devices/cinder_sigil_23dd": 1,
+        "blocks/quill_hollow_fa6d": 20
+      }
+    }
+  ],
+  "offline": "exact"
+}
