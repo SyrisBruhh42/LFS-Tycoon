@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Apprentice Pewter Dampener",
+    "description": "An early-tier apprentice dampening field, woven from rudimentary tallow threads and pulverized pewter. The Clockwork Deep-Bore Syndicate originally devised this whimsical 'gravel-pad' folk-logic to protect sensitive pneumatic pipes from their own explosive bore-charges. Laid over a quarry square, it intercepts 70% of stray secondary splash damage, saving the block below from an accidental cleave.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell",
+    "place_in_house"
+  ],
+  "tags": [
+    "solves_unwanted_splash",
+    "path_field_textile",
+    "craft_homestead_station",
+    "logic_whimsical",
+    "theme_clockwork_syndicate",
+    "bracket_2",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "dampen_pct": 0.7,
+    "wear_max": 25.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "if": "tile.covered_by_self and ctx.is_secondary_damage == 1",
+      "value": "1.0 - self.stats.dampen_pct"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_damage_absorbed",
+      "if": "tile.covered_by_self",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.wear",
+          "by": "1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.wear >= self.stats.wear_max"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "tools/pewter_mortar_sigil_d84b": 1,
+        "blocks/pewter_gravel_d53e": 10
+      },
+      "unlock_if": "player.max_depth >= 198"
+    }
+  ],
+  "offline": "exact"
+}
