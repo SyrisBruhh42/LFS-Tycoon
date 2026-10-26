@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lantern-Light Tectonic Crucible",
+    "description": "An ancient crucible catalyst, crafted by the smith-lords of the Under-Sun Manifold within The Grand Crucible of the Tectonic Leviathan. Tempered with glowing lantern vitriol by a secretive Deep-Bore Horologist, this charm projects a dampening field. When hung on a tool socket or placed nearby, it arrests secondary tectonic shockwaves from shattering pristine cinder ore and other delicate strata.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_unwanted_splash",
+    "path_magic_charm",
+    "craft_smeltery_alloy",
+    "logic_canonical",
+    "theme_tectonic_crucible",
+    "bracket_1",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "durability_left": 100.0
+  },
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "value": 1.0,
+      "if": "ctx.is_secondary_damage == 1"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "books/cinder_munchkin_grimoire_95a0": 1,
+        "blocks/cinder_ore_1db2": 5
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "exact"
+}
