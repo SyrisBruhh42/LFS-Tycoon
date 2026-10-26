@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mycelial Stencil Tincture",
+    "description": "A glowing phial of bioluminescent spores from the Enclave's Mycelial Sanctuary, suspended in a tin-laced pewter solvent. When kept in the home by Wick's clientele, its Schrödinger's Harvest aroma permeates the hearth. Sleeping near it reveals structural grid lines and rewards a strange pewter gravel anomaly, while granting a potent yielding buff while well-rested.",
+    "author": "core:ground_zero",
+    "rarity": "epic"
+  },
+  "affordances": ["place_in_house", "carry", "sell"],
+  "tags": [
+    "solves_house_comfort",
+    "path_qol_upgrade",
+    "craft_alchemy_potion",
+    "logic_plausible",
+    "theme_enclave_living_atlas",
+    "bracket_1",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 110.0
+  },
+  "vars": {
+    "aroma_charge": 15.0
+  },
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "add",
+      "value": 0.25,
+      "if": "player.is_rested >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_sleep",
+      "do": [
+        {"act": "var_add", "var": "self.aroma_charge", "by": -1.0},
+        {"act": "set_ui_flag", "flag": "hud_chess_grid", "enabled": true},
+        {"act": "spawn_item", "item": "blocks/pewter_gravel_d53e", "qty": 1, "route": "backpack"}
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "do": [
+        {"act": "destroy_self", "if": "self.aroma_charge <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_wick_vendor_8db7",
+      "price": {
+        "tools/bismuth_clockwork_pick_8e31": 1,
+        "blocks/pewter_gravel_d53e": 50
+      },
+      "unlock_if": "player.max_depth >= 150"
+    }
+  ]
+}
