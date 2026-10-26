@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Sconce Sigil",
+    "description": "An autonomous arcane routing sigil forged by The Perpetual Clockwork Deep-Bore Syndicate. Crafted with stormbreaker geode, this glowing sconce socket binds a deep-bore automaton sprite to your tool. The tireless clockwork spirit handles the heavy lifting, routing a portion of mined ore directly to your paired chest.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "solves_haul_capacity",
+    "path_hired_laborer",
+    "craft_skyrim_enchant",
+    "logic_canonical",
+    "theme_clockwork_syndicate",
+    "bracket_2",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "tool_type": "NONE",
+    "tool_tier": 3,
+    "charge_max_sec": 3600.0,
+    "is_rechargeable": 0,
+    "base_value": 150.0
+  },
+  "vars": {
+    "charge_left": 3600.0
+  },
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.5
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "upgrades/scriptorium_bell_79bd": 1,
+        "blocks/stormbreaker_geode_5e99": 100
+      },
+      "unlock_if": "player.max_depth >= 198"
+    }
+  ],
+  "offline": "coarse"
+}
