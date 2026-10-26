@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Horologist's Hearth Clock",
+    "description": "Forged of rivet ore from the Brass Ledger Frontier, this meticulous clockwork rig graces any home base. Its gentle chime grants the weary miner a burst of luck from The Living Atlas when rested, though its winding springs naturally degrade.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_house_comfort",
+    "path_qol_upgrade",
+    "craft_clockwork_automaton",
+    "logic_canonical",
+    "theme_enclave_living_atlas",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {
+    "winding_left": 100.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "mul",
+      "value": 1.15,
+      "if": "player.is_rested == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_sleep",
+      "do": [
+        {"act": "var_add", "var": "self.winding_left", "by": -1.0},
+        {"act": "spawn_item", "item": "blocks/rivet_ore_dd06", "qty": 1.0, "route": "ground_pile", "if": "self.winding_left > 0.0"},
+        {"act": "destroy_self", "if": "self.winding_left <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "devices/tinker_slag_sconce_5ae8": 1,
+        "blocks/rivet_ore_dd06": 12
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "exact"
+}
