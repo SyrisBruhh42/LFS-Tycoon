@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Alkahest Phial",
+    "description": "Brewed by the Gravel Vendor, this phial of subterranean hydro-alchemist vitriol softens strata. Imbibe the essence of the Alkahest Vitriol & Abyssal Hydro-Works to harden your tools and gain a deep resonance with pewter gravel, making tools lose significantly less durability when mining for a short time.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "solves_tool_wear",
+    "path_vendor_disposable",
+    "craft_alchemy_potion",
+    "logic_plausible",
+    "theme_alkahest_hydro",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "active_sec_left": -1.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": 0.5
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": 300.0
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "self.active_sec_left > 0.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.active_sec_left",
+          "by": -1.0
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.active_sec_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_vendor_51cb",
+      "price": {
+        "devices/obsidian_resonant_crucible_d5d5": 1,
+        "blocks/pewter_gravel_d53e": 25
+      },
+      "unlock_if": "player.max_depth >= 150"
+    }
+  ]
+}
