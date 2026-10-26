@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lithic Choir Brass Ledger",
+    "description": "A whimsical homestead station fashioned from rivet ore by Bone Sconce Wick. It translates the frozen acoustic music of the Infinite Scriptorium's blind archivists, guiding its owner to greater luck and yields in the deep frontier.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_ore_hunting",
+    "path_qol_upgrade",
+    "craft_homestead_station",
+    "logic_whimsical",
+    "theme_lithic_choir",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 150.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": 0.5,
+      "if": "tile.depth >= 500"
+    },
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "value": 1.25,
+      "if": "tile.tier >= 1"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/bone_sconce_wick_2a5c",
+      "price": {
+        "upgrades/bellows_diviner_loupe_8dc3": 1,
+        "blocks/rivet_ore_dd06": 120
+      },
+      "unlock_if": "player.max_depth >= 150"
+    }
+  ],
+  "offline": "none"
+}
