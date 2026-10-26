@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Living Atlas Quill Gravel Bracket",
+    "description": "A permanent Skill Bracket mapping the bioluminescent spore cartography of the Mycelial Sanctuary. When studied, it imparts a lasting resonance that significantly dampens the shock of mining gravel with the wrong tool.",
+    "author": "jules:session",
+    "rarity": "rare",
+    "era": "early"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "skill_bracket",
+    "bracket_1",
+    "skill_school_quill_gravel",
+    "theme_enclave_living_atlas",
+    "solves_wrong_tool_penalty",
+    "path_consumable_buff",
+    "craft_skill_mastery",
+    "logic_canonical"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "self.installed >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": 1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/quill_peddler_0c07",
+      "price": {
+        "blocks/quill_ore_4083": 45,
+        "blocks/copper": 20
+      },
+      "unlock_if": "player.max_depth >= 30.0"
+    }
+  ],
+  "offline": "none"
+}
