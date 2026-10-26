@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Pneumatic Router",
+    "description": "Constructed by The Perpetual Clockwork Deep-Bore Syndicate, this dense galena router routes loose ore to your paired chest. Often traded by rivet_assayer_c04e for lark_newt_rivet_ore_a337.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell",
+    "consume"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_haul_capacity",
+    "path_qol_upgrade",
+    "craft_skill_mastery",
+    "logic_canonical",
+    "theme_clockwork_syndicate",
+    "skill_bracket",
+    "bracket_3",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 60.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.50,
+      "if": "self.installed == 1.0 and player.grime <= 50"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_assayer_c04e",
+      "unlock_if": "player.max_depth >= 330",
+      "price": {
+        "tools/vitriol_hollow_geomancy_pick_54d7": 1,
+        "blocks/lark_newt_rivet_ore_a337": 50
+      }
+    }
+  ],
+  "offline": "none"
+}
