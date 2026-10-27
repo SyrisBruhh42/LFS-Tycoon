@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "St. Munchkin",
+    "description": "A subterranean sommelier and member of the Paradox Symposium who exploits literal loopholes in intoxication. Sells fine rock-salt wines and mica-infused elixirs.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "npc_vendor"
+  ],
+  "tags": [
+    "world_npc",
+    "theme_munchkin_paradox",
+    "npc",
+    "vendor"
+  ],
+  "stats": {
+    "cleanliness_required": 0.0,
+    "saturation_half_volume": 1000.0,
+    "unlock_depth": 330.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
