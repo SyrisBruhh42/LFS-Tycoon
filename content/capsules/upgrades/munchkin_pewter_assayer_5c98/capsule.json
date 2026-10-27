@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin Pewter Assayer",
+    "description": "An intricate pewter apparatus crafted by the paradoxical bureaucrats of St. Munchkin. By pouring umber and pewter gravel over lithic chants, the device calibrates your grip to reduce tool wear significantly without losing any yield.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["upgrade", "solves_tool_wear", "path_profession_perk", "craft_skill_mastery", "logic_plausible", "theme_munchkin_paradox", "skill_bracket", "bracket_4", "skill_school_assayers"],
+  "stats": {
+    "base_value": 310.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": "1.0 - (0.25 * self.installed)"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "books/lithic_choir_geomancy_grimoire_0954": 1,
+        "blocks/pewter_gravel_d53e": 30
+      },
+      "unlock_if": "player.max_depth >= 330.0",
+      "unlock_depth": 330
+    }
+  ],
+  "offline": "none"
+}
