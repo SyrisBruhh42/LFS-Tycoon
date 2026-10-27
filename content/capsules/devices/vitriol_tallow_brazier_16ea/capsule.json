@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Vitriol-Tallow Crucible Brazier",
+    "description": "The Infinite Scriptorium of the Lithic Choir - Blind monastic archivists of Quill Hollow discovered that bedrock is frozen acoustic music, using zero-damage stalls and bell harmonics to shatter equal-depth contours. Socketed into a tool, this vitriol and tallow brazier refines pewter gravel upon breaking blocks, resonating bell harmonics that convert overkill damage into splash damage to shatter adjacent strata.",
+    "author": "jules",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_overkill_waste",
+    "path_npc_enchanter",
+    "craft_smeltery_alloy",
+    "logic_plausible",
+    "theme_lithic_choir",
+    "bracket_2",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 1200.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": "tool.overkill_damage * 0.5",
+          "if": "tool.overkill_damage > 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_wick_vendor_8db7",
+      "price": {
+        "upgrades/plumb_depth_calipers_7fce": 1,
+        "blocks/pewter_gravel_d53e": 120
+      },
+      "unlock_if": "player.max_depth >= 198.0"
+    }
+  ],
+  "offline": "exact"
+}
