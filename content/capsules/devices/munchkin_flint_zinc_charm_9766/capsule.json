@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin's Zinc-Flint Rulebender",
+    "description": "A zinc crucible's bottom scrapped with flint shale and a literal interpretation of the bylaws of The Paradox Symposium of St. Munchkin. Mica the salt vendor insists it exploits a loophole so off-class tools suffer far less wrong-tool slowdown, simply by redefining 'pickaxe' to mean 'any object swung with sufficient confidence.' As the zinc abrades against bedrock, it magically reassures the tool it is exactly what it needs to be.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_wrong_tool_penalty",
+    "path_magic_charm",
+    "craft_tinker_part",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_2",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": 0.5
+    }
+  ],
+  "reactions": [],
+  "offline": "exact",
+  "offered_by": [
+    {
+      "vendor": "npcs/mica_salt_vendor_832d",
+      "price": {
+        "devices/flint_shale_scrubber_b898": 1,
+        "blocks/flint_shale_6493": 25
+      },
+      "unlock_if": "player.max_depth >= 198.0 and player.max_depth <= 330.0"
+    }
+  ]
+}
