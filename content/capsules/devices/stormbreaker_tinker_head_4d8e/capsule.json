@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Stormbreaker Tinker Head",
+    "description": "Cast from an exotic stormbreaker geode stratum ore and secondary copper, this modular tinker head allows you to socket it into a tool. The Perpetual Clockwork Deep-Bore Syndicate crafted this to mitigate the wrong tool penalty when dealing with stormbreaker geodes and advancing deep subterranean mining.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_wrong_tool_penalty",
+    "path_consumable_buff",
+    "craft_tinker_part",
+    "bracket_3",
+    "skill_school_assayers",
+    "theme_clockwork_syndicate",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 250.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "blocks/stormbreaker_geode_5e99",
+          "qty": 1,
+          "if": "tile.depth >= 330.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "upgrades/plumb_depth_calipers_7fce": 1,
+        "blocks/stormbreaker_geode_5e99": 1,
+        "blocks/copper": 5
+      },
+      "unlock_depth": 330.0
+    }
+  ],
+  "offline": "exact"
+}
