@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Stormbreaker Clockwork Ledger-Rig",
+    "description": "A multi-part engineered quarry rig of The Enclave First Forge, driven by The Stormbreaker Concordance. Forged with heavy iron rods and a humming stormbreaker geode core, this ledger-recorded automaton anchors to the subterranean strata. When socketed, its sympathetic core-metallurgy guides the operator's strikes, halving tool wear. When placed in the field, it autonomously channels captured-lightning plasma to fracture dense stone, saving manual labor.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_tool_wear",
+    "path_forge_material",
+    "craft_clockwork_automaton",
+    "logic_canonical",
+    "theme_enclave_first_forge",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 150.0,
+    "durability_max": 2000.0
+  },
+  "vars": {
+    "durability_left": 2000.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": 0.5
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "tile.tier >= 2",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "self_tile",
+          "amount": 25.0
+        },
+        {
+          "act": "var_add",
+          "var": "self.durability_left",
+          "by": -1.0
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "self.durability_left <= 0.0",
+      "do": [
+        {
+          "act": "destroy_self"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "textiles/crucible_cinder_weave_ab8b": 1,
+        "blocks/stormbreaker_geode_5e99": 100
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "exact"
+}
