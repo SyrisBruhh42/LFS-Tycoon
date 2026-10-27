@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Resonant Sigil",
+    "description": "Forged by The Forge Squad of the Enclave of the 16, this captured-lightning geode channels core-metallurgy into a resonant sigil. Socketed into a tool, its sympathetic alloys shift with operator focus, redirecting wasted impact. When striking anvilstone or deep strata, ground rods tame subterranean plasma to shatter adjacent rock with the overkill.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_overkill_waste",
+    "path_skill_book",
+    "craft_skyrim_enchant",
+    "logic_plausible",
+    "theme_enclave_first_forge",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 90.0,
+    "splash_pct": 0.15,
+    "charge_max_sec": 3600.0
+  },
+  "vars": {
+    "activations": 0.0,
+    "charge_left": 3600.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "deal_damage",
+          "if": "tool.overkill_damage > 0 and self.charge_left > 0 and ctx.is_secondary_damage == 0 and tile.depth > 50",
+          "target": "shallowest_neighbor_4",
+          "amount": "tool.overkill_damage * self.stats.splash_pct"
+        },
+        {
+          "act": "var_add",
+          "if": "tool.overkill_damage > 0 and self.charge_left > 0 and ctx.is_secondary_damage == 0 and tile.depth > 50",
+          "var": "self.charge_left",
+          "by": -1.0
+        }
+      ]
+    }
+  ],
+  "offline": "exact",
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "devices/tinker_slag_sconce_5ae8": 1,
+        "blocks/anvilstone_02a1": 5
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ]
+}
