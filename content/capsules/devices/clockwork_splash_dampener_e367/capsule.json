@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Splash Dampener",
+    "description": "A precise mechanical gadget built by The Perpetual Clockwork Deep-Bore Syndicate. Utilizing heavy loam-packed pewter casing, it absorbs collateral damage to the tile. Created from Pewter Gravel and a Pumice Cleaver.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "solves_unwanted_splash",
+    "path_placeable_device",
+    "craft_terraria_fusion",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_3",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 95.0,
+    "charge_max_sec": 120.0
+  },
+  "vars": {
+    "activations": 0.0,
+    "charge_left": 120.0
+  },
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "if": "ctx.is_secondary_damage == 1",
+      "value": 1.0
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_damage_absorbed",
+      "if": "ctx.is_secondary_damage == 1",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.charge_left",
+          "by": -1.0
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.charge_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "tools/pumice_cleaver_8183": 1,
+        "blocks/pewter_gravel_d53e": 30
+      },
+      "unlock_if": "player.max_depth >= 330"
+    }
+  ],
+  "offline": "exact"
+}
