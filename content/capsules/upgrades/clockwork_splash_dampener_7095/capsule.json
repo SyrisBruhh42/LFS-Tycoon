@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Splash Dampener",
+    "description": "A wind-up clockwork charm from the Scriptorium of Hollow Quill, crafted by The Perpetual Clockwork Deep-Bore Syndicate. Forged from kettle-grade pewter gravel, this monastic relic absorbs kinetic excess when carried or placed in the house. It perfectly clamps secondary shockwaves so splash damage never cracks fragile tiles.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_unwanted_splash",
+    "path_magic_charm",
+    "craft_achievement_relic",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_3",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 400.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "value": 1.0,
+      "if": "ctx.is_secondary_damage == 1"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "books/lithic_choir_geomancy_grimoire_0954": 1,
+        "blocks/pewter_gravel_d53e": 150
+      },
+      "unlock_if": "player.max_depth >= 330.0"
+    }
+  ],
+  "offline": "none"
+}
