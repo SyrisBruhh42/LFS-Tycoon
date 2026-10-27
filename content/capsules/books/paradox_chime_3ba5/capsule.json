@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin Paradox Chime",
+    "description": "An outrageously funny tome from The Paradox Symposium of St. Munchkin. Kept in stock by the eccentric Gravel Wick Vendor and often dropped heavily on a solid anvilstone, this arcane grimoire exploits a literal loophole in the physics of fatigue. It chimes to suspend wear when striking an immovable object.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "consume"
+  ],
+  "tags": [
+    "solves_zero_damage_stall",
+    "path_tool_builtin",
+    "craft_spell_grimoire",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_2",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "tool_type": "NONE",
+    "base_dps": 18.0,
+    "durability_max": 300.0,
+    "base_value": 100.0
+  },
+  "vars": {
+    "durability_left": 300.0
+  },
+  "modifiers": [
+    {
+      "stat": "cleave_pct",
+      "phase": "add",
+      "value": -0.2
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {
+          "act": "stall_tool",
+          "pause_battery": 1.0,
+          "pause_durability": 1.0
+        },
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "zero_damage"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_wick_vendor_8db7",
+      "price": {
+        "upgrades/scriptorium_bell_79bd": 1,
+        "blocks/anvilstone_02a1": 15
+      },
+      "unlock_if": "player.max_depth >= 198"
+    }
+  ],
+  "offline": "none"
+}
