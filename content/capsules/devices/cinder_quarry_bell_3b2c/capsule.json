@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder Quarry Lure Bell",
+    "description": "Crafted by the Deep-Bore Horologist, this enchanted brass bell is steeped in the lore of The Grand Crucible of the Tectonic Leviathan. A whimsical folk-logic dictates that the ringing of cinder ore within a hearth-forged bell will somehow attract lost subterranean cats. When carried, its acoustic resonance mildly entices feline wanderers as new layers are revealed.",
+    "author": "jules:autonomous",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": [
+    "device",
+    "solves_event_helpers",
+    "path_magic_charm",
+    "craft_achievement_relic",
+    "logic_whimsical",
+    "theme_tectonic_crucible",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 300.0,
+    "base_dps": 10.0,
+    "lure_bonus": 0.05,
+    "wear_max": 50.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "value": "self.stats.lure_bonus"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "emit_alert", "channel": "hud_chime", "tag": "lure_pulse"},
+        {"act": "var_add", "var": "self.wear", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.wear >= self.stats.wear_max"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "upgrades/ochre_forge_milestone_relic_9ed9": 1,
+        "blocks/cinder_ore_1db2": 25
+      },
+      "unlock_if": "shared.quarry_resonance_charge >= 50.0"
+    }
+  ],
+  "offline": "exact"
+}
