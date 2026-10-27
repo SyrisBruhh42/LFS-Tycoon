@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Rivet Chisel Tap Guard",
+    "description": "According to the whimsical lore of The Living Atlas & Mycelial Sanctuary of the Enclave, carrying a heavy rivet chisel acts as a magnetic anchor. The Gravel Wick Vendor insists that the resonant density of Rivet Ore inherently prevents the hand from drifting, ensuring that clumsy, misdirected taps fail to crack the stone, leaving only a gentle clink.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "solves_tap_misfires",
+    "path_qol_upgrade",
+    "craft_skill_mastery",
+    "logic_whimsical",
+    "theme_enclave_living_atlas",
+    "skill_bracket",
+    "bracket_1",
+    "skill_school_rivet_chisel"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "value": 1.0,
+      "if": "ctx.is_direct_tap == 1"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_wick_vendor_8db7",
+      "price": {
+        "blocks/rivet_ore_dd06": 45,
+        "blocks/copper": 30
+      },
+      "unlock_if": "player.max_depth >= 45.0",
+      "unlock_depth": 45.0
+    }
+  ],
+  "offline": "none"
+}
