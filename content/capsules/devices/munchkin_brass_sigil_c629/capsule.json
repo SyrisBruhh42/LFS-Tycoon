@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin Brass Sigil",
+    "description": "Munchkin Brass Sigil (device capsule).",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [],
+  "reactions": [],
+  "offline": "exact"
+}
