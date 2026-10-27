@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder Munchkin's Clockwork Trick",
+    "description": "An esoteric manual detailing the ancient smith-lords of the Under-Sun Manifold. It outlines how the Grand Crucible of the Tectonic Leviathan inspired clockwork automatons to use raw cinder ore to trick basalt into yielding. Reading this grimoire allows you to treat incorrect tools as partly correct, halving the wrong tool penalty while wearing away the book's limited charge.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "book",
+    "skill_book",
+    "solves_wrong_tool_penalty",
+    "path_skill_book",
+    "craft_clockwork_automaton",
+    "logic_whimsical",
+    "theme_tectonic_crucible",
+    "bracket_1",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 300.0,
+    "charge_max_sec": 300.0
+  },
+  "vars": {
+    "is_learned": 0.0,
+    "charge_left": 300.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "self.is_learned >= 1.0 and self.charge_left > 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_learned",
+          "value": 1.0,
+          "if": "self.is_learned == 0.0"
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.charge_left",
+          "by": -1.0,
+          "if": "self.is_learned >= 1.0 and self.charge_left > 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/basalt_kettle_6ec2",
+      "price": {
+        "books/cinder_munchkin_grimoire_95a0": 1,
+        "blocks/cinder_ore_1db2": 1
+      },
+      "unlock_if": "player.max_depth >= 15.0"
+    }
+  ],
+  "offline": "none"
+}
