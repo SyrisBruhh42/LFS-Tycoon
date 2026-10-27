@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Zinc Hollow Sigil",
+    "description": "An arcane sigil bound from Anvilstone ore found in the Grand Crucible of the Tectonic Leviathan. The Bismuth Broker insists on the folk-science that this hollow zinc charm channels the resonance of a fully rested miner, acting as a tireless hired hand to boost tool power in shallow layers.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "charm",
+    "solves_slow_early_dps",
+    "path_hired_laborer",
+    "craft_skyrim_enchant",
+    "logic_whimsical",
+    "theme_tectonic_crucible",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 65.0
+  },
+  "vars": {
+    "is_active": 0.0,
+    "charge_left": 18000.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "value": 1.5,
+      "if": "self.is_active == 1.0 and player.is_rested == 1 and tile.depth < 250"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": 1.0}
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": 0.0}
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "self.is_active == 1.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": -1.0},
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/bismuth_broker_af6a",
+      "unlock_if": "player.max_depth >= 150.0",
+      "price": {
+        "upgrades/ochre_forge_milestone_relic_9ed9": 1,
+        "blocks/anvilstone_02a1": 15
+      }
+    }
+  ],
+  "offline": "exact"
+}
