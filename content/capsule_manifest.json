@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "capsule_count": 633,
+  "capsule_count": 545,
   "capsules": {
     "biomes/basalt_hearth_9d89": {
       "sha256": "74fd42124058dfeae6b17fb6ea7fbdf2524061426d5dce014a17e2da9b5c053c",
@@ -33,10 +33,6 @@
     "biomes/cinder_toad_bog_2d7b": {
       "sha256": "4b04d124ef4ddb6af2570bb4289e18b26d88697926ad024aa1e1022ffb67a29c",
       "bytes": 862
-    },
-    "biomes/clockwork_deep_bore_fdba": {
-      "sha256": "8b5cca773469ee91ec6edd9f08270cf9ce61a719acf9d2f94e005c74214cbe79",
-      "bytes": 717
     },
     "biomes/clockwork_shale_6749": {
       "sha256": "064af179a4efd9143fd40be7a735ab564e512026d79d63fb9ec6f07aa706f0ad",
@@ -81,10 +77,6 @@
     "biomes/shale_6e5a": {
       "sha256": "a27004f364636a3a25eed05f6af99314985cdfbe0051678c86c5afb988528437",
       "bytes": 645
-    },
-    "biomes/spore_cartography_sanctuary_6a39": {
-      "sha256": "cad1d80d5d39929c10548f6927868baf616ff9c7886b01e937c31e6bd918ded8",
-      "bytes": 865
     },
     "biomes/standard_crust": {
       "sha256": "b209b54f163ba743353fd7a66131ea67f2374bce006c82a4e125f68af2821aea",
@@ -150,10 +142,6 @@
       "sha256": "5312e5dfc0aa770685e4311b412e35a6e7466a8e19cf1ae8d2a377b27489a238",
       "bytes": 743
     },
-    "blocks/magma_anvilstone_6384": {
-      "sha256": "9f2786043bfc01a48f24c99734a58e82160818bb93240c33722fc3b2aacc30d2",
-      "bytes": 906
-    },
     "blocks/obsidian_hazard": {
       "sha256": "a950eb07c64d2240ac132e6a5d9b8ed2c6ec6395d6ca0dbdbb4ff6a098102c47",
       "bytes": 841
@@ -194,10 +182,6 @@
       "sha256": "1f8f936923d81611ddc9aeed33e333c4d6e07c1f836d5b160541b907e8dc7b6f",
       "bytes": 770
     },
-    "blocks/zinc_rivet_ore_3619": {
-      "sha256": "72adefb99f205c4a417f314522c80f29d8f749c7d53dc58c28d4e4ee461c9b06",
-      "bytes": 830
-    },
     "books/anvil_ledger_e32d": {
       "sha256": "af24b6f69a75f3624a66fe171d40bf93008122db7c81de88add9c99ef6cb8c6e",
       "bytes": 1531
@@ -210,17 +194,9 @@
       "sha256": "971a01b45bea6e0eb445528f8f18d0dc124c7056d53ef1f4e5a2a4b55eb1f963",
       "bytes": 980
     },
-    "books/cinder_munchkin_clockwork_6d39": {
-      "sha256": "9c502b12ff05ad91925e2403e13c225ece0e54d5d65a12abd50399c98ba4528f",
-      "bytes": 1891
-    },
     "books/cinder_munchkin_grimoire_95a0": {
       "sha256": "6173d6df5c991df94bc54af74d1fe1c763d627cfb306f64682ba80290e682b68",
       "bytes": 1695
-    },
-    "books/clockwork_apprentice_grimoire_b137": {
-      "sha256": "60b4d03c3c31688d3f2f1ab7b0d642f8381e2e099bcad01eddeacf19896d9dd7",
-      "bytes": 1588
     },
     "books/ember_sconce_manual_952f": {
       "sha256": "85d20e9b28d8846e7f89adaadb81be9aa76d8194205d4fb1c2a813fbb6311124",
@@ -250,10 +226,6 @@
       "sha256": "fbdb1d177c22168b6b2833e3a71c22ea8605f07aa6512653c462b7e4e02270a0",
       "bytes": 919
     },
-    "books/lithic_choir_brass_ledger_0eb9": {
-      "sha256": "09a5c0a99bd5861ca7d4a05163fd32112ff3283284f9fa8c4a0e572916f6dde7",
-      "bytes": 1453
-    },
     "books/lithic_choir_geomancy_grimoire_0954": {
       "sha256": "bc0d29cc1b23fbcdaedf16efa77abb193704789dd8c0436f8e4bdf10e0a1c06d",
       "bytes": 1838
@@ -278,17 +250,9 @@
       "sha256": "d8b29eec6072f416dbaaadce923ae6bbc2c8fd9aeb5c19f3b40bc518bf75ab0a",
       "bytes": 1450
     },
-    "books/obsidian_ward_grimoire_68c3": {
-      "sha256": "ffbffc9fd24736cc49bcb9a1a0a62bf7361b7d16bd7a1d48b1d4a74c8c102bbb",
-      "bytes": 1532
-    },
     "books/overkill_munchkin_grimoire_be82": {
       "sha256": "896cc135a866006f94159b8e47a6f05fe7749be112e17425d83d3fcf7c2184b2",
       "bytes": 1657
-    },
-    "books/paradox_chime_3ba5": {
-      "sha256": "50ed2376661ae74d0019067d8576e17c9f88eff64f77d20ecd9d59bed0eb7866",
-      "bytes": 1570
     },
     "books/quill_survey_manual_4d6e": {
       "sha256": "c13620c764a162dd96046979126df7d911f988d0485669ed35b9a85d97bdae93",
@@ -326,10 +290,6 @@
       "sha256": "e4051f929b3b217e14548b595c5f488ca68467be77fd3a698ecc639458fb9c32",
       "bytes": 1313
     },
-    "consumables/alkahest_decoction_b82f": {
-      "sha256": "22f72b93f89e6684b7dd33ee50bc400c386ddc8d3d3fd21cb7ce9327d3b5b8e8",
-      "bytes": 2489
-    },
     "consumables/alkahest_decoction_dae2": {
       "sha256": "011da0deb533f9e2319781c6d6642a9a7475e39f3cb8a702ad4b9dcf236289de",
       "bytes": 1892
@@ -361,10 +321,6 @@
     "consumables/cinder_wine_2132": {
       "sha256": "4b71b57cf9b37a7225d1df46c1543675631cee55996a2ca8cad1c7fb3bd301a2",
       "bytes": 1637
-    },
-    "consumables/clockwork_stormbreaker_decoction_5d16": {
-      "sha256": "7b49aaaaf8d848335672af6c46738a3007227d9fcd0066e17efb402997e1d648",
-      "bytes": 2917
     },
     "consumables/crucible_basalt_wine_d38b": {
       "sha256": "3a6e1c5b85acb3842283dfaa65fde0d9b6dca730e4b2b476b1848dbff0cdfe4a",
@@ -442,21 +398,9 @@
       "sha256": "5a655a3fbfac9f777991d53e8a2bd08aac209468547758cefd093f11c267ee89",
       "bytes": 2111
     },
-    "consumables/munchkin_market_broker_3d0a": {
-      "sha256": "eb9646e951c9481e819faf076214502ae72862e5a27e6800a950360f0832c1ab",
-      "bytes": 1755
-    },
-    "consumables/mycelial_stencil_tincture_4ff8": {
-      "sha256": "c7c07e9a1565f8eef0e7032cc372aa1e54c6cc3dbecda5f1ce4d35c22ceac81c",
-      "bytes": 1695
-    },
     "consumables/ochre_gravel_tonic_cdc8": {
       "sha256": "f70c1b10a14cb4a96aeb9315e941579023dc52c4f8fe376d1eb3255fc4f27a96",
       "bytes": 1328
-    },
-    "consumables/pewter_alkahest_phial_1042": {
-      "sha256": "e29875c653985569c9e34d33b4570d86197096d0a5b2a80a4ce7f018a1d57af4",
-      "bytes": 1733
     },
     "consumables/pewter_thimble_tonic_8271": {
       "sha256": "1d7cdef80cef41693b9657304546c5407a6105ca0ff774b98e47752c9a6bb0a5",
@@ -505,10 +449,6 @@
     "consumables/sour_spelunker_wine": {
       "sha256": "ca091159652660ab440ed78504850885b82898c1a8e6a16f5625c6cf790a8145",
       "bytes": 1372
-    },
-    "consumables/splash_dampener_b1da": {
-      "sha256": "e356ba2ab8de318688f980975d79a9693f1253452aa31e523a85ce2a86843f8e",
-      "bytes": 1693
     },
     "consumables/stoat_tin_tonic_d91b": {
       "sha256": "47175087accc1dfd032232e42784e3d8255b6cbf702aaf1edff0ebfbf58a2919",
@@ -642,10 +582,6 @@
       "sha256": "491430dd1e7d5721dfa89f09a05e857b0710c74ed1f14d188f3c5f0daee4f17f",
       "bytes": 1240
     },
-    "devices/brass_ledger_charm_a779": {
-      "sha256": "91b13bb0eb23f985a9bfa13e3d449ff1fd7c308d63a1f25c3c37a645004f233e",
-      "bytes": 1596
-    },
     "devices/brass_tap_guard_3272": {
       "sha256": "d0175aa433acc1c397bfebda0a4cd2a9a9eea1a7c82e5388d860c1dabcbbf8cd",
       "bytes": 963
@@ -678,10 +614,6 @@
       "sha256": "a457caed3b328c5e5df9357ee7cbb33e6315d52391950ba38f807e7e4e628fd4",
       "bytes": 1236
     },
-    "devices/cinder_quarry_bell_3b2c": {
-      "sha256": "09d1114f67b0a1561be0bb5329e8aa97063e4538bdb86555427b59bdf3b2443d",
-      "bytes": 1640
-    },
     "devices/cinder_quill_lure_bell_9bce": {
       "sha256": "c7901ec68a5c6d448b841d82a417a577a6a51114179ca1bc35b83d8726251711",
       "bytes": 1879
@@ -698,45 +630,9 @@
       "sha256": "9a8982fc4d2065817b523a3968ec5f4f11f570b2dbb8fab4c687dba55af5a740",
       "bytes": 1448
     },
-    "devices/cinder_sigil_lithic_scriptorium_9547": {
-      "sha256": "614130922e13430c983b73c53f90b2fc2e799ea6d1b4ea21dbc9f7e98892bff8",
-      "bytes": 1652
-    },
-    "devices/clockwork_apprentice_sigil_6e55": {
-      "sha256": "ffb6fa3a79b255ace7b9408528dfa87065b5442af19fb4d5253ca7b72c75765a",
-      "bytes": 1563
-    },
-    "devices/clockwork_automaton_c50a": {
-      "sha256": "bd788684488127aa4cc234519ff7c209373ee4dccd64b66fe03f5abcbff24522",
-      "bytes": 1214
-    },
-    "devices/clockwork_bellows_automaton_6448": {
-      "sha256": "c70cddc9711bb4c21738a1a4e8f6ee54ccdb652e31fa0a675457239157933951",
-      "bytes": 1540
-    },
-    "devices/clockwork_field_automaton_b103": {
-      "sha256": "b5a873ff4badc4977f59d230713406806639c028c97ddb1e0f3b7930b034ae85",
-      "bytes": 1951
-    },
-    "devices/clockwork_gasket_a742": {
-      "sha256": "a924ac6eb3624339f1d2b2f8cc9c525abc1ea2a62d09e2d396f2a9baac60f86a",
-      "bytes": 1383
-    },
-    "devices/clockwork_sigil_7432": {
-      "sha256": "6ce3c87f6fd3f0d43648897ac41e83ad6b00a3026a422cdb0921b3509be798ce",
-      "bytes": 1167
-    },
     "devices/clockwork_siphon_rig_2410": {
       "sha256": "fbfa72144c74b0771d6c70bd7bb7eaad3c03a21223d904fa2e06815d70c300da",
       "bytes": 1661
-    },
-    "devices/clockwork_siphon_sconce_f826": {
-      "sha256": "0278d5f9649a3848d4c252445513590e21450396973559776992a35af3663650",
-      "bytes": 1545
-    },
-    "devices/clockwork_splash_dampener_e367": {
-      "sha256": "77d8ab13b5399e003e6939df6d6a1432b85a2e957daa56dbc2838ee8290978bc",
-      "bytes": 1545
     },
     "devices/copper_ledger_8260": {
       "sha256": "5d0bc56ed7dae02f9f1f021d3ce4f34b933acde51ade30359f24e09b2264b739",
@@ -778,10 +674,6 @@
       "sha256": "bb9bb264bdc069f952a941ce39f364d1ef42a2abe7bee4ac3ec04dfed5a6798a",
       "bytes": 1235
     },
-    "devices/enclave_automaton_drill_279d": {
-      "sha256": "a67c00f77f931be1ad2685bf63099d780d7f842a0db351c5d6ab83ad54d7aac9",
-      "bytes": 1897
-    },
     "devices/enclave_water_barrier_bd90": {
       "sha256": "e2440922bc2327717e0908ec4f8ada496450cf44d903a424b9b344f07d3c4741",
       "bytes": 1876
@@ -797,10 +689,6 @@
     "devices/flint_power_battery_303c": {
       "sha256": "dbfe80d8812167397f08563f848c2726ad5bf2185ab5458972a5f9f4438eb35c",
       "bytes": 1074
-    },
-    "devices/flint_rivet_ledger_sigil_17e5": {
-      "sha256": "3c5e42491d986e70d7a7f1b4dd3d84d18c6670a6b536121d02d1a0cf5845e9e5",
-      "bytes": 1291
     },
     "devices/flint_router_174d": {
       "sha256": "ec93414d4b108976562b0e15b031624e6e9e720ff93c60ca291057765f50b1e6",
@@ -854,10 +742,6 @@
       "sha256": "97e66de70cd91b1007db4489631f0882f26190d21f1e1bdf561e6df527fcc7f8",
       "bytes": 1385
     },
-    "devices/horologist_hearth_clock_74da": {
-      "sha256": "32c7261b2ab4a8345fb21424cc717adfc6517109e07fbf68d120b765d0c995cf",
-      "bytes": 1523
-    },
     "devices/iron_battery_02e3": {
       "sha256": "ca0a7f14a88b9ea4b0ef2d776498f5da6abf0bcf0eec0eacf5b7b039d29521c5",
       "bytes": 1635
@@ -910,10 +794,6 @@
       "sha256": "af618dfa1bcfe7251336eb1fbbc2223c509db5c51c31ad36e1fce67bcf060268",
       "bytes": 1718
     },
-    "devices/lithic_salt_ledger_dc75": {
-      "sha256": "49bc5102da84b8180108194377cd98fd33774c525744e0a046a1e7cbe75b9135",
-      "bytes": 1561
-    },
     "devices/loam_catalyst_70b6": {
       "sha256": "81c4516bc6f239dadbbc54a018aae9e1d9ffd9d05fa90a2bf0c90b6aa5a2f258",
       "bytes": 1367
@@ -958,14 +838,6 @@
       "sha256": "543ab8115ef7d9b8ac2420a30b0a7541ff03c09efdb832bce999f70e976088ca",
       "bytes": 980
     },
-    "devices/munchkin_flint_zinc_charm_9766": {
-      "sha256": "b7a86b642f0d1b9b4d75802f988d60a15645562ce8f1fdf3ca65c9ae33d92d83",
-      "bytes": 1392
-    },
-    "devices/munchkin_kettle_alarm_421e": {
-      "sha256": "1cef79d6389efcc809a7c88f2d95426874fb3746e2dd52f097becca466cbf985",
-      "bytes": 1727
-    },
     "devices/munchkin_ochre_kiln_12d6": {
       "sha256": "5cd8e0aed3801c737a81d5de6a6b481429174025526212128dd01751520e0803",
       "bytes": 2028
@@ -981,14 +853,6 @@
     "devices/nettle_kettle_4cf5": {
       "sha256": "72b8489a9e03c15cc52edc017b80cea9f2c04b956a03dd29547689cbd048e44b",
       "bytes": 1298
-    },
-    "devices/obsidian_automaton_sigil_c731": {
-      "sha256": "66adf1b7825e5d40e102d2db9d48cc96ef66efa640d53c8e03185ba9106ac0fa",
-      "bytes": 1868
-    },
-    "devices/obsidian_crucible_fb32": {
-      "sha256": "3180633c18a2b1ab7872e3f0b4ae90dc190dcc9c2bff5ddbd6625a53ed0f91b6",
-      "bytes": 1530
     },
     "devices/obsidian_hearth_tome_3e09": {
       "sha256": "5b8ff8d87ae7c3d4b8055dd3f18e651e167892e22ee8d03c735a828d25b61644",
@@ -1014,10 +878,6 @@
       "sha256": "c50e0c5986f8dd2d216876d5bba8caf6c3c446de1a56885fe90beea817863474",
       "bytes": 968
     },
-    "devices/obsidian_vitriol_rune_de4f": {
-      "sha256": "6f428858cff9e8bff66c9eba63252d2ec48a5f0f5d4fc379a0ca863ba4e6c9fb",
-      "bytes": 1395
-    },
     "devices/ochre_bellows_030c": {
       "sha256": "df82680587a50652c346af122f3fdc05d950b27aa0f052e48a9d0c3c644de1d2",
       "bytes": 1054
@@ -1025,10 +885,6 @@
     "devices/ochre_demolition_charm_32c8": {
       "sha256": "515d5bfee3fa5c9dc7bf86c9d155a7877791be36bfe3f6f5c447bedcd28c7a2d",
       "bytes": 1041
-    },
-    "devices/ochre_hearth_dampener_d520": {
-      "sha256": "3e2271d237cb38f4af7aaabbcda2817f7e28a9186d4f1d46848b03b7cac16220",
-      "bytes": 1213
     },
     "devices/ochre_heron_charm_ea0b": {
       "sha256": "81c320381eec0db43ab0433167194fb3e13d3cf247cc53fa83f2a4969f3dc178",
@@ -1054,10 +910,6 @@
       "sha256": "006c85e7ed66cf0991a6ca8f1b4aff87e372fe4b49e3fbc6e0ecb00ca4d9cdd9",
       "bytes": 1368
     },
-    "devices/pewter_clockwork_net_f31f": {
-      "sha256": "1abb9c4bc01f2d55695a2ce5063f1268210f81db6882aa8eaa5114fb5a45e832",
-      "bytes": 1543
-    },
     "devices/pewter_ledger_sconce_47ab": {
       "sha256": "e54f44072d174de2f2ff07db597960c01971f96262cb1e7fb4e32f418d5dcbcf",
       "bytes": 1475
@@ -1069,10 +921,6 @@
     "devices/pewter_prospector_glass_852e": {
       "sha256": "ec05be0036f4a3f75060998caf060169857c0da2633ef5df895c5c9c07ecc7cf",
       "bytes": 1228
-    },
-    "devices/pewter_resonance_sigil_9705": {
-      "sha256": "21034b40ec1501aeab25dd9dd6ac380eab4ebe4fa134a29f9d4f9ffd80964fce",
-      "bytes": 1468
     },
     "devices/pewter_slag_router_bfdb": {
       "sha256": "f991d7ec6ab806b7c924edde61981aa6a94c153afbcd76a7df9df9c27402c427",
@@ -1146,17 +994,9 @@
       "sha256": "8b8c0495cccbcbefb79baa506976c401d9e58395da85856368e5168dd484cea2",
       "bytes": 1329
     },
-    "devices/resonant_sigil_2e45": {
-      "sha256": "1c6ed55dd12c39f15da2ee422ea001208add8d1d108082dc70b75d0f3c6a2834",
-      "bytes": 1832
-    },
     "devices/rivet_charm_cd0f": {
       "sha256": "5eb01943b2fc1caeeee28f48644e9b279a38da1e3322b555c035d71f34760b11",
       "bytes": 1016
-    },
-    "devices/rivet_harmonic_charm_6ef9": {
-      "sha256": "d7d4b62468a5d7a7097c040e5324533f1696ed9bd50e1bcf4b36240573706eb7",
-      "bytes": 1629
     },
     "devices/riveted_brass_lure_942b": {
       "sha256": "576bbacf94eada78b9aa72b7c70e882eb81e6ae72a1adb26dc34c118939b3886",
@@ -1194,14 +1034,6 @@
       "sha256": "ae2ef1c1fb13d6bcbbc68eee2a645b2c1250c983d6c7a674d115101e9e81ce6b",
       "bytes": 1445
     },
-    "devices/st_munchkin_kinetic_loophole_9e7c": {
-      "sha256": "6d33d8aafb43cda2f79b3bfbab8898ce60380b7eb6236113a11c1afc1dd20b7a",
-      "bytes": 1896
-    },
-    "devices/stormbreaker_tinker_head_4d8e": {
-      "sha256": "8a1a27afbffa2b0f09c87456b559fbc779d364826da7bc2ccb7c9c545446c827",
-      "bytes": 1370
-    },
     "devices/tallow_charm_a30a": {
       "sha256": "8b7f134a1aa1506936838160429382c64b226bcdb60546698add12ff26b29b1c",
       "bytes": 1207
@@ -1229,10 +1061,6 @@
     "devices/tallow_wren_zinc_f6d0": {
       "sha256": "fdc1c5177eab3fda59c937c6c70e1c7dcd14dee6e46b18cbf7d07c819b2baec8",
       "bytes": 1235
-    },
-    "devices/tectonic_brass_sigil_6390": {
-      "sha256": "133c629744f16d7570fefb638b5c6f791b0728402b94e96d351bfc30bded4686",
-      "bytes": 2183
     },
     "devices/tin_resonance_spike_ec00": {
       "sha256": "1fba282ea164cbab2dc449c4f03c23fc187b0da49f680ac081d38a6a27e7f79f",
@@ -1262,10 +1090,6 @@
       "sha256": "6ebef5b0747d33112abfa205724c9e364124e46b993e3a31374c1e684a8c9f2d",
       "bytes": 993
     },
-    "devices/vitriol_hazard_bellows_e072": {
-      "sha256": "abb127ecc6bad0e73d631152c39d46917bc918ee196026c01fc16154f70c4b57",
-      "bytes": 1419
-    },
     "devices/vitriol_lure_c9fa": {
       "sha256": "99a56a718154d836ece032479bf6b1b2fb37a8e0e8bed888adf32d7dd82a913f",
       "bytes": 1595
@@ -1274,25 +1098,13 @@
       "sha256": "8634b1f9d0bdf7fbddb78922010fbfa0fbe6d74eb626d8a08159bb14ea81c0d4",
       "bytes": 1799
     },
-    "devices/vitriol_splash_dampener_1c03": {
-      "sha256": "30ab16ce5453abab0b3f47237782ad8dccce71d7ce6867a5c896f22bd6de66f9",
-      "bytes": 1396
-    },
     "devices/vitriol_stall_battery_2b1e": {
       "sha256": "b4a0a0dc61e4d334f2c4fcf030f9236888d8b170903d226278ddd1e2c04dd7b6",
       "bytes": 2169
     },
-    "devices/vitriol_tallow_brazier_16ea": {
-      "sha256": "044363f656ae596834e6dab98928f19d5075e8b0c6d636b12e62921215aee5b0",
-      "bytes": 1466
-    },
     "devices/wren_hearth_yarn_b9ce": {
       "sha256": "6278245a04c80a758fe08a6fce7077f6746283bc719d94b74cee2edf06ebbcdd",
       "bytes": 1743
-    },
-    "devices/zinc_hollow_sigil_fdce": {
-      "sha256": "062de95f12d758341d161d77e6a22e723eed96f5eeaab06021b452c172e9df94",
-      "bytes": 1793
     },
     "devices/zinc_kinetic_reducer_6523": {
       "sha256": "64e841521821ad552507a5b21c328b69e4aef245fb0410dca1ce66ac13e61fb0",
@@ -1305,10 +1117,6 @@
     "devices/zinc_stall_battery_df9f": {
       "sha256": "e003e5b2a0a49fe5e998b21268d3c1e66fea1ad9cdd0f8859d3203bd669ddc32",
       "bytes": 1198
-    },
-    "npcs/alkahest_vendor_a46c": {
-      "sha256": "5179fd6361197e95c7d2352f49a225bd48d495b0b836c573e00c7984b0bb0930",
-      "bytes": 598
     },
     "npcs/anvil_smith_73cd": {
       "sha256": "307463215c20e0f2e2e35df8547b74304304b5e6b3b45b5d51e7a0ddf7afb2cc",
@@ -1329,14 +1137,6 @@
     "npcs/brass_tinkerer_c020": {
       "sha256": "b0be7137eafd82e3fa8a55383e9615a99dac0b3bd527e72707ec1dad3db0ed64",
       "bytes": 452
-    },
-    "npcs/cinder_runesmith_b3de": {
-      "sha256": "872a75f17ffca5388a7fed2b9b29533b0d53c5de51332114c8528f0a11820013",
-      "bytes": 661
-    },
-    "npcs/clockwork_horologist_c7b1": {
-      "sha256": "f43b6bdd58f3ed197352dfc392af30310d5c982ac1b0599eda5dd218ca09be33",
-      "bytes": 658
     },
     "npcs/crucible_keeper_e935": {
       "sha256": "87148fb1e965c04c0b9194f0ae6c7aee65ce6aa541829e97983f6a9e86f62151",
@@ -1366,10 +1166,6 @@
       "sha256": "24ee88d70db48b3c74200c43cc507f661abfa079d072402efe5c3b1f648864d1",
       "bytes": 560
     },
-    "npcs/lithic_choir_archivist_2a55": {
-      "sha256": "2c28df03709668e4c0992e4e02fd2dd83d0cc28d0edc591bb94831dd45c43857",
-      "bytes": 684
-    },
     "npcs/mica_salt_vendor_832d": {
       "sha256": "48ead4bf7587026756573b13b229e39994b34294d1757f7f789ac38bbee48104",
       "bytes": 522
@@ -1397,10 +1193,6 @@
     "npcs/rivet_smith_6a68": {
       "sha256": "9b11c989676693e2c8fd20c052baa8e09184907aad28605e05707033f1bf4801",
       "bytes": 658
-    },
-    "npcs/sommelier_munchkin_51ac": {
-      "sha256": "19177e2c719876517330a9dfea6e0c82bb798b6bc5c9de32c614412d3b1dba88",
-      "bytes": 616
     },
     "npcs/vitriol_alchemist_4814": {
       "sha256": "072f3767f598a530b51236dc16632df1e611918c38b6e884162944bd2360b873",
@@ -1494,14 +1286,6 @@
       "sha256": "472c5f8297143e2d63db37138e4de37c02862e76dbd444207ee4418a7b517493",
       "bytes": 1528
     },
-    "textiles/pewter_hearth_sigil_8c1c": {
-      "sha256": "35286283137098ada5db11d490d12f295aa70be2ae264002b9ac492455b981c9",
-      "bytes": 1780
-    },
-    "textiles/pewter_syndicate_dampener_cc3b": {
-      "sha256": "5dddca65ecd52a08a456252755a2d4ec1b905f2a5149646763371d7aabccff9d",
-      "bytes": 1763
-    },
     "textiles/quartz_mat_ffca": {
       "sha256": "024465eeac39df58043a81c2acdf555fb2689af536f9bc4cfeff58385f82cecf",
       "bytes": 1164
@@ -1541,10 +1325,6 @@
     "textiles/umber_salt_carpet_ac7e": {
       "sha256": "7ebb82f8a944063c111fc3011f1baa357a3809b7deeefbd7d088bb1f9b10b797",
       "bytes": 1212
-    },
-    "textiles/zinc_bureaucrat_rug_a2bd": {
-      "sha256": "b4a3f051caba34591e0c34c579dd8726ce2ce09258e19636d2bded4c0db84a1e",
-      "bytes": 1924
     },
     "textiles/zinc_lure_carpet_c0ff": {
       "sha256": "6501e2f3cf3b7aeda0e7d5069d023788afe38ed20c6c8c36d19cc436bcf10ebd",
@@ -1622,17 +1402,9 @@
       "sha256": "908ea50c3f36b9409a53b2668ab19562b34e281c6ec39c8527d572ba9f5968c9",
       "bytes": 1196
     },
-    "tools/cinder_pewter_clockwork_wick_748a": {
-      "sha256": "c3ba24236446791cec34e4a9f49328aec7e8d02087af9b2d5a990fd3c873dc78",
-      "bytes": 2098
-    },
     "tools/cinder_yarn_drone_978a": {
       "sha256": "93ef6d9692a74a11437e90d7e50d91c649bc9a06114c5cf7320a3b8c1d894334",
       "bytes": 1910
-    },
-    "tools/clockwork_cinder_detonator_90ed": {
-      "sha256": "97c4ed8e4629bab241b271047c015ac93056d75b9820a841c31072ed772f3591",
-      "bytes": 1686
     },
     "tools/crucible_bucket_621e": {
       "sha256": "bf0d22f12bb48d4927ed994bb8bef22429f4aabcdd4526490985041acdc0ea66",
@@ -1645,10 +1417,6 @@
     "tools/crude_stone_pick": {
       "sha256": "ee4d8b84f3837cbe54d3e6ecdba32ec734fef24685fd4ec9722b054a4e802230",
       "bytes": 602
-    },
-    "tools/deep_bore_syndicate_router_f96b": {
-      "sha256": "8929613e845e0016e90c065d1dfe4dbd0bfec5fbcd309f80ff7a3b88b583f413",
-      "bytes": 1333
     },
     "tools/ember_automaton_courier_adbf": {
       "sha256": "70f3e9eb2471a6f477fe321241992f61dd253427c64a3b6a6e180c19ce36eb47",
@@ -1677,10 +1445,6 @@
     "tools/gasket_chisel_67cf": {
       "sha256": "9beda629b59412a77b40b182c77c94d7489de1a34df0f0f1a969ef18dfb52a6b",
       "bytes": 1497
-    },
-    "tools/geode_syndicate_drill_eabe": {
-      "sha256": "a7fd4cdec87f3b5d755003ad6261fa0524110f62da3353d01d1cb0b052e25e8c",
-      "bytes": 1367
     },
     "tools/gravel_mortar_haul_bot_e0a5": {
       "sha256": "768b91043ae4f7769de9a61d89ce96993026746754ab8a7fe9d756b12ab01367",
@@ -1753,10 +1517,6 @@
     "tools/ledger_deep_drill_328d": {
       "sha256": "e2a7a3f535f63f9f86635830b34c5268797fb79856733eff411d72ea13f74c6e",
       "bytes": 1590
-    },
-    "tools/lithic_choir_chisel_1694": {
-      "sha256": "0294fbc9c8f25697acfeddbad109d44068a57a370c6749d2fc7cca7bda8760e8",
-      "bytes": 2431
     },
     "tools/loam_tempered_pick_95db": {
       "sha256": "b4262c19ef14cf92183d1ba927de01905096e1eabd32543db4af8ab93418069d",
@@ -1865,10 +1625,6 @@
     "tools/rivet_heavy_automaton_1224": {
       "sha256": "be1f6269ba63b1846dbbfea6244a96fed49f28a769a57b27c0f0ec85f134db66",
       "bytes": 1369
-    },
-    "tools/rivet_mycelial_core_router_474c": {
-      "sha256": "2e5c5adca05e9cce5f8a57998c6b0c1530f838b092c0e2f28364873bec356095",
-      "bytes": 1576
     },
     "tools/salt_bone_mortar_pick_5d79": {
       "sha256": "5d9228775e4b3999a7b6b79b9d58349c47868d1116578ec694a2aedffb293832",
@@ -1986,25 +1742,9 @@
       "sha256": "18d768157c75436becbf7af0e4a3d356aeda0f6729a83a921a0d041839902d01",
       "bytes": 1200
     },
-    "upgrades/abyssal_hydro_cinder_mat_ee42": {
-      "sha256": "d00658079b51d070a909464dbba937481d6a205208dac4aca9721dd7837c522e",
-      "bytes": 1624
-    },
-    "upgrades/alkahest_laborer_b3a0": {
-      "sha256": "ddaa0c43c8051bd597577af846f682fdb5ac1406d922261bdb41618a097a2775",
-      "bytes": 1356
-    },
     "upgrades/alkahest_slag_enchant_5129": {
       "sha256": "10668f0fcfa4985e409e4c1f5f0546fa9383476ac8fdc020bfe7edaf6da12ae0",
       "bytes": 1523
-    },
-    "upgrades/alkahest_surveyor_lens_c0f3": {
-      "sha256": "e30f17d3543fe31bb7f94d11b94812478fdd0e35afd672b7cff2a8472612ecc9",
-      "bytes": 2008
-    },
-    "upgrades/alkahest_vitriol_basin_ce0c": {
-      "sha256": "7e1c49f11c2e63d484515b327dcb778360e9a19b5fe80c615be6ca2438a92d8f",
-      "bytes": 1538
     },
     "upgrades/apprentice_quartz_diviner_f4ee": {
       "sha256": "18c48c4e2698c205cb7a9186b9641cb643cb08448537a46e1f863e61757215d2",
@@ -2090,33 +1830,13 @@
       "sha256": "34b411afc30e6c7d76e55bc52778fa89dc5b625b57b188f90ec197b59160701a",
       "bytes": 1575
     },
-    "upgrades/cinder_contour_loupe_manual_d63b": {
-      "sha256": "40423c7985eda46ac1904c48b66fe6c07564b1a0249662babcc05d691eadce95",
-      "bytes": 1390
-    },
     "upgrades/cinder_munchkin_suite_315d": {
       "sha256": "e98635ae08f5211c9429d04b02b5d955e16c9551b79f80435f444f49a0f262de",
       "bytes": 1308
     },
-    "upgrades/cinder_overkill_rune_71ef": {
-      "sha256": "ebb0c521ab124e12f1ce1a71c6f88c2cfe5267d20a4d4a55bedfa08711575bab",
-      "bytes": 1321
-    },
     "upgrades/cinder_rivet_repair_bench_01a4": {
       "sha256": "e242cc6450e3eeee79438d9cd0a934de92aa62034f262673b736bb07bb4d6b21",
       "bytes": 870
-    },
-    "upgrades/clockwork_anvilstone_cat_lure_64e7": {
-      "sha256": "5e4bf8a6c37e2564972932df6db738d281274b47cfbc4bb874434e300c649d32",
-      "bytes": 1121
-    },
-    "upgrades/clockwork_deep_borer_8e54": {
-      "sha256": "32d2893d3bc0c0fb0beb81ed7323c4e0551ce64211d6dc47b3c2f51b038aa267",
-      "bytes": 1894
-    },
-    "upgrades/clockwork_hearth_geomancy_grimoire_8ace": {
-      "sha256": "e12f07d1090dfe043a311c457e2d680649791e59554d4758d479248c0174a8a9",
-      "bytes": 1578
     },
     "upgrades/clockwork_hearth_ledger_7364": {
       "sha256": "764846152c7e1e5173ba4363b6dc659639860e356e8261a5a72d2df2f5b842a0",
@@ -2125,22 +1845,6 @@
     "upgrades/clockwork_hearth_sigil_a892": {
       "sha256": "3c95967890f0be7758d35f334839f49db858082dface942a4144e9e7d0dab7a9",
       "bytes": 1488
-    },
-    "upgrades/clockwork_horologist_seal_226f": {
-      "sha256": "3fc5da47dae2de588dc8fb915a9289e2514a97483d04a966bc69af351db462ed",
-      "bytes": 1543
-    },
-    "upgrades/clockwork_pneumatic_router_72bd": {
-      "sha256": "599eeeed751f81360bdc9c54f836afbc727850a5a89fb5f35ad1d05759d7f889",
-      "bytes": 1330
-    },
-    "upgrades/clockwork_splash_dampener_7095": {
-      "sha256": "dc5c68b038ef852b77dce55d527c70136a1087923ea9aeca121edf79a9e97705",
-      "bytes": 1270
-    },
-    "upgrades/clockwork_syndicate_cinder_net_f4d6": {
-      "sha256": "97cd673b1464803b6ad74951a4945657671c6c9dfd862dde9ff42827a6b367c6",
-      "bytes": 1770
     },
     "upgrades/crucible_assayer_charter_ef28": {
       "sha256": "40c89700dc8c833cf2b04052397aefd393c4ab07733a3b98a5494124cfad0415",
@@ -2153,10 +1857,6 @@
     "upgrades/crucible_warming_hearth_046e": {
       "sha256": "4239f8a84335d56610dc3f68fff0a7c468f983e9b0088c62c344b56f7c0e42af",
       "bytes": 853
-    },
-    "upgrades/depth_calipers_bench_4986": {
-      "sha256": "0bbf3f7e2723e1c1732aa618ad03912e50afd7fcc97a5cfd23b91ff18117c533",
-      "bytes": 1695
     },
     "upgrades/ember_badger_ledger_9330": {
       "sha256": "858a8c47e8c9e24a12778dfc226a7fac07660d82c33d9b92b8c1411a6c82eba0",
@@ -2278,14 +1978,6 @@
       "sha256": "53182bb505815e03dbed65af3a9de95116438e3fca3145a13f50511c3ecd8eb1",
       "bytes": 1457
     },
-    "upgrades/lithic_choir_brass_ledger_ce45": {
-      "sha256": "7c32403b61a5028bea57001c04c18c7bf37533afe664f1e6c981d559aeaede11",
-      "bytes": 1254
-    },
-    "upgrades/lithic_choir_routing_e842": {
-      "sha256": "84c5afd620e78dab9555afe40683df2e1c641e99872409f6d299690dc05f3278",
-      "bytes": 1539
-    },
     "upgrades/loam_haul_bot_package_6989": {
       "sha256": "3784e1017af1d5422be818b985c4deef37f705e32ba4ba3f467e4f1cd76792b6",
       "bytes": 1261
@@ -2310,21 +2002,9 @@
       "sha256": "57b4d9d9e6f4ed4ca74400a360b3dc53a0400b79c65e76702b57df2ad69dd1a7",
       "bytes": 858
     },
-    "upgrades/munchkin_bellows_2a81": {
-      "sha256": "6b4b4a90b4959b339926c9e018b61c77b1a3a239d9389179ebf004edd7d0ad62",
-      "bytes": 1478
-    },
-    "upgrades/munchkin_pewter_assayer_5c98": {
-      "sha256": "935f0aeb218b0b281a05fc423a01c7fd6df2930cf791ed4e7671bb18c60ceb93",
-      "bytes": 1292
-    },
     "upgrades/ochre_battery_bank_dc41": {
       "sha256": "0938439bd87ec5f1e19abaeefd10749cb0395a6e03d1d88ec02944f8ec9f759c",
       "bytes": 1028
-    },
-    "upgrades/ochre_crucible_grimoire_4837": {
-      "sha256": "38a344b91b20be73c6b9ddc2caf99f934ddf9853aa08e3d81dc77c4087945d09",
-      "bytes": 1861
     },
     "upgrades/ochre_forge_milestone_relic_9ed9": {
       "sha256": "63739ffdf5c93f4804943493b771bef762c614194c1c95b0b32f62350d4dcf81",
@@ -2345,14 +2025,6 @@
     "upgrades/pewter_discipline_8312": {
       "sha256": "458e56e7bf8905381bd47bed18af1a864d3e2b81a117b0b5e49b2fd911a4fa66",
       "bytes": 1388
-    },
-    "upgrades/pewter_kettle_scrim_fe0d": {
-      "sha256": "292ddb96f077935c5b86d780e2a748ffc8fc9e7667a5db6e7322e9dc2316c37a",
-      "bytes": 1870
-    },
-    "upgrades/pewter_pneumatic_router_8f28": {
-      "sha256": "4b80d3c6c9fc02ff040a5aebefb327dd9c8ad938fe3bf4d5c253c24a7ae97374",
-      "bytes": 1664
     },
     "upgrades/pewter_prospector_charter_08b9": {
       "sha256": "6a8b4c76d6c648bc665d65eb2aee69dcb7e6f481a4900740c5771681b6954434",
@@ -2394,17 +2066,9 @@
       "sha256": "a4f4b7679d01217b3f342d2d414cefd7514fcdc21f44740acb9c398a7f54d18b",
       "bytes": 1025
     },
-    "upgrades/quill_gravel_bracket_8d53": {
-      "sha256": "2f4c50dcf4f35790f2627a30a0e6e988dd64b334bcbbb76628796df2f11ad8fb",
-      "bytes": 1358
-    },
     "upgrades/quill_merchant_ledger_41cd": {
       "sha256": "25da2cbf5dd8c7662bbb19901dc196b666db92e66542b6f55c322fad735c2a5b",
       "bytes": 1273
-    },
-    "upgrades/rivet_geomancy_tome_353e": {
-      "sha256": "aa1b5a699239b33a95355f8c5808a9f757c8f6f46cd2a1ae838c7962866ae7ea",
-      "bytes": 1735
     },
     "upgrades/rivet_guard_b5e0": {
       "sha256": "4e89a018fb73bc0708eba43a60c4697db6314dc988cf8e062d0c39fa15c31b78",
@@ -2434,10 +2098,6 @@
       "sha256": "43e4378aedbbe26a064436e499f1a3f4c764012ae3ba58ec9fea8329b967c801",
       "bytes": 799
     },
-    "upgrades/scriptorium_battery_chime_f38a": {
-      "sha256": "722a4fbf2c85f15b1b7b00c0272901ad4e75944f01fe1756e5baa40e699755c6",
-      "bytes": 1368
-    },
     "upgrades/scriptorium_bell_79bd": {
       "sha256": "3ef28ebc7cd2c0ee0a8fbd03db9346056da832cd4cf8bd9111ee36a701f193aa",
       "bytes": 2008
@@ -2465,14 +2125,6 @@
     "upgrades/surveyor_chalk_and_stencil": {
       "sha256": "7f57a38bc6436a031d63288d70841fc89d28fd62ba439d6093b83e3f5b91f718",
       "bytes": 1083
-    },
-    "upgrades/tap_guard_chisel_3987": {
-      "sha256": "c5b9237168e4ce97666bb9b3ab502e07e179b1be8d3a3a46ec2ac945e6cb79a8",
-      "bytes": 1278
-    },
-    "upgrades/tectonic_crucible_bucket_03cf": {
-      "sha256": "4230fa951bdae4a33d3aca2fb0ab5d07c5f827f13ace96d74d4646cf96184212",
-      "bytes": 1741
     },
     "upgrades/tin_assayer_ce11": {
       "sha256": "7f871203528018443152ed11da35b10c49a1ef81cb213d63d0ec2bf948fca6b9",
@@ -2517,10 +2169,6 @@
     "upgrades/vitriol_splash_dampener_00e2": {
       "sha256": "aa1cb8a2444acfd9071ce9b0ffc837a51352b37eafa1c9ffbd7323e4c409f903",
       "bytes": 1127
-    },
-    "upgrades/vitriol_splash_scrim_0e27": {
-      "sha256": "3d02f488f468be43ead661c1d7c3e781f05f8d162513da6f1e55358f958e74cc",
-      "bytes": 1407
     },
     "upgrades/wick_lure_9fb9": {
       "sha256": "8dcb803fb82999f4e356b79a45b47c87eea94b4b702f5acee9865332cf19534e",

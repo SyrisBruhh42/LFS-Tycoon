@@ -2,27 +2,53 @@
   "schema": 1,
   "meta": {
     "name": "Munchkin Brass Sigil",
-    "description": "Munchkin Brass Sigil (device capsule).",
-    "author": "jules:session",
-    "rarity": "common"
+    "description": "A pewter sigil forged in the obsidian crucible. According to the Paradox Symposium of St. Munchkin, tools break because they believe they are tools; this sigil convinces them they are immortal paperweights. Drastically reduces durability wear at the cost of being heavily intoxicated by a sommelier's spell, drifting the quarry grid.",
+    "author": "autonomous:content_developer",
+    "rarity": "uncommon"
   },
   "affordances": [
     "carry",
     "socket_in_tool",
-    "place_on_tile",
+    "place_in_house",
     "sell"
   ],
   "tags": [
-    "device",
-    "gadget"
+    "solves_tool_wear",
+    "path_consumable_buff",
+    "craft_skyrim_enchant",
+    "logic_plausible",
+    "theme_munchkin_paradox",
+    "bracket_1",
+    "skill_school_pewter_cinder"
   ],
   "stats": {
-    "base_value": 45.0
+    "base_value": 30.0,
+    "durability_mult": 0.5,
+    "drift_px": 50.0
   },
-  "vars": {
-    "activations": 0.0
-  },
-  "modifiers": [],
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": 0.5
+    },
+    {
+      "stat": "drunk_drift_px",
+      "phase": "add",
+      "value": 50.0
+    }
+  ],
   "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "devices/obsidian_resonant_crucible_d5d5": 1,
+        "blocks/pewter_gravel_d53e": 20
+      },
+      "unlock_if": "player.max_depth >= 15.0"
+    }
+  ],
   "offline": "exact"
 }
