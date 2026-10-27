@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Deep-Bore Stratum",
+    "description": "A subterranean pocket mine maintained by the perpetual Clockwork Deep-Bore Syndicate. Rumbling autonomous deep-bore railways uncover rich veins of anvilstone and ochre cinder gravel.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["world_biome", "theme_clockwork_syndicate", "stratum"],
+  "stats": {
+    "z_min": 320,
+    "z_max": 500,
+    "biome_weight": 0.25
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/cinder_gravel_61a3": 1.5,
+    "blocks/anvilstone_02a1": 0.8
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
