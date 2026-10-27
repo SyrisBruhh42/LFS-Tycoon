@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Cinder Wick",
+    "description": "An autonomous field rig constructed from cinder gravel and forged in the obsidian crucible. Following the whimsical folk-logic of the blind monastic archivists of Quill Hollow—who believed bedrock is frozen acoustic music—this disposable clockwork device taps rhythmic bell harmonics to sympathetically shatter equal-depth obsidian hazard contours. It burns its wind-up tension when clearing hazards and shatters into shale dust when depleted.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "equip_tool", "place_on_tile", "catalyst", "sell"],
+  "tags": [
+    "solves_hazard_clearing",
+    "path_vendor_disposable",
+    "craft_clockwork_automaton",
+    "logic_whimsical",
+    "theme_lithic_choir",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 45.0,
+    "charge_max_sec": 7200.0,
+    "durability_max": 600.0,
+    "is_rechargeable": 0,
+    "base_value": 75.0,
+    "unlock_depth": 45
+  },
+  "vars": {
+    "charge_left": 7200.0,
+    "durability_left": 600.0
+  },
+  "modifiers": [
+    {
+      "type": "add",
+      "stat": "base_dps",
+      "phase": "add",
+      "value": 75.0,
+      "if": "tile.is_hazard == 1"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "self.charge_left > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": -1.0},
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/basalt_kettle_6ec2",
+      "price": {
+        "devices/obsidian_resonant_crucible_d5d5": 1,
+        "blocks/cinder_gravel_61a3": 45
+      },
+      "unlock_if": "player.max_depth >= 45"
+    }
+  ],
+  "offline": "coarse"
+}
