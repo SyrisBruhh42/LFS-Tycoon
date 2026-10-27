@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Deep Bore Syndicate Guild Node",
+    "description": "An intricate clockwork mastery insignia from The Perpetual Clockwork Deep-Bore Syndicate. By connecting subterranean steam-barony infrastructure with the Ochre Forge's power, this mechanical marvel recalibrates kinetic feedback in real time, absorbing impact shock to prevent fat-finger tap misfires. Additionally, its geared sensors hum in the presence of rare stormbreaker geodes, doubling their resonance.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "sell",
+    "place_in_house"
+  ],
+  "tags": [
+    "upgrade",
+    "solves_tap_misfires",
+    "path_profession_perk",
+    "craft_skill_mastery",
+    "bracket_2",
+    "skill_bracket",
+    "skill_school_manual",
+    "theme_clockwork_syndicate",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "value": 1.0,
+      "if": "ctx.is_direct_tap == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_damage_dealt",
+      "if": "tile.depth >= 200.0 and ctx.is_secondary_damage == 0",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/stormbreaker_geode_5e99",
+          "qty": 1
+        },
+        {
+          "act": "spawn_item",
+          "item": "blocks/copper",
+          "qty": 5
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "unlock_if": "player.max_depth >= 200.0",
+      "price": {
+        "upgrades/ochre_forge_milestone_relic_9ed9": 1,
+        "blocks/stormbreaker_geode_5e99": 20,
+        "blocks/copper": 30
+      }
+    }
+  ],
+  "offline": "none"
+}
