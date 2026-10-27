@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "St. Munchkin's Ochre Rivet Bureaucracy",
+    "description": "A literal interpretation of the Scriptorium of Hollow Quill's taxation laws, wherein smudging tools with shale and ember dust from Ochre Stratum classifies them as 'heritage artifacts', granting a 25% tax exemption on physical wear. The Paradox Symposium's bureaucrats rubber-stamp this absurd loophole.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "solves_repair_upkeep",
+    "path_profession_perk",
+    "craft_skill_mastery",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "skill_bracket",
+    "bracket_3",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 1000.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": 0.75
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/ember_vendor_f749",
+      "unlock_if": "player.max_depth >= 330",
+      "price": {
+        "tools/vitriol_hollow_geomancy_pick_54d7": 1,
+        "blocks/ochre_stratum_d812": 42
+      }
+    }
+  ],
+  "offline": "none"
+}
