@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin-Approved St. Kettle",
+    "description": "An outrageously funny, over-the-top flint kettle ward-breaker's seal approved by the Paradox Symposium of St. Munchkin. Placing this at home blesses your sleep, absurdly doubling your fortune at the quarry if rested, as you exploit hilarious literal loopholes in intoxication laws.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": ["carry", "read_book", "place_in_house", "sell"],
+  "tags": [
+    "solves_house_comfort",
+    "path_profession_perk",
+    "craft_spell_grimoire",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_1",
+    "skill_school_manual",
+    "qol",
+    "upgrade"
+  ],
+  "stats": {
+    "base_value": 850.0
+  },
+  "vars": {
+    "placed_in_house": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "mul",
+      "value": 2.0,
+      "if": "self.placed_in_house == 1.0 and player.is_rested == 1"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_enter_house",
+      "do": [
+        {"act": "var_set", "var": "self.placed_in_house", "value": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "upgrades/iron_stormbreaker_charm_a589": 1,
+        "blocks/flint_shale_6493": 75
+      },
+      "unlock_if": "player.max_depth >= 45"
+    }
+  ],
+  "offline": "none"
+}
