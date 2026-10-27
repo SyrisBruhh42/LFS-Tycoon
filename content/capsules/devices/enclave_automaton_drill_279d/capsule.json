@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Enclave Automaton Drill",
+    "description": "A multi-part engineered quarry rig forged from metal, rivet, and cinder strata. By tapping into subterranean plasma from Stormbreaker Geodes, it autonomously siphons energy and mitigates overkill waste. The Enclave First Forge & Stormbreaker Concordance pioneered this sympathetic core-metallurgy design.",
+    "author": "jules:steward",
+    "rarity": "epic"
+  },
+  "affordances": ["place_on_tile", "carry", "sell"],
+  "tags": [
+    "path_placeable_device",
+    "solves_overkill_waste",
+    "craft_clockwork_automaton",
+    "bracket_3",
+    "skill_school_manual",
+    "theme_enclave_first_forge",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "cleave_pct",
+      "phase": "add",
+      "if": "tile.covered_by_self and tile.hp > 1.0",
+      "value": 0.10
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_overkill",
+      "do": [
+        {"act": "var_add", "var": "self.wear", "by": 1.0, "if": "tile.covered_by_self"},
+        {"act": "var_add", "var": "shared.quarry_resonance_charge", "by": 5.0, "if": "tile.covered_by_self"},
+        {"act": "destroy_self", "if": "tile.covered_by_self and self.wear >= 100.0"}
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "do": [
+        {"act": "consume_item", "item": "blocks/stormbreaker_geode_5e99", "qty": 1, "if": "tile.covered_by_self"},
+        {"act": "spawn_item", "item": "blocks/copper", "qty": 10, "if": "tile.covered_by_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "unlock_depth": 330.0,
+      "price": {
+        "devices/enclave_water_barrier_bd90": 1,
+        "blocks/stormbreaker_geode_5e99": 3,
+        "blocks/copper": 10
+      }
+    }
+  ],
+  "offline": "coarse"
+}
