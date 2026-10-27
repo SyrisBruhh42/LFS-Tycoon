@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Abyssal Hydro Cinder Mat",
+    "description": "Crafted with the intricate designs of The Alkahest Vitriol & Abyssal Hydro-Works, this heavy cinder-woven blanket absorbs splash damage when placed. An essential companion relic to the deep bore horologist's craft, it dulls explosive impacts until the abrasive vitriol and heat reduce it to ruin.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "place_on_tile", "sell"],
+  "tags": ["upgrade", "dampener", "solves_unwanted_splash", "path_field_textile", "craft_achievement_relic", "logic_canonical", "theme_alkahest_hydro", "bracket_2", "skill_school_manual"],
+  "stats": {
+    "base_value": 40.0,
+    "dampen_pct": 0.85,
+    "wear_max": 40.0,
+    "base_dps": 20.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "if": "tile.covered_by_self and ctx.is_direct_tap == 0.0",
+      "value": 0.15
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_damage_absorbed",
+      "do": [
+        {"act": "var_add", "var": "self.wear", "by": 1.0, "if": "tile.covered_by_self"},
+        {"act": "destroy_self", "if": "self.wear >= self.stats.wear_max"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "tools/pewter_mortar_sigil_d84b": 1,
+        "blocks/cinder_mortar_17bb": 25
+      },
+      "unlock_depth": 330,
+      "unlock_if": "player.max_depth >= 198.0 and player.max_depth <= 330.0 and shared.quarry_resonance_charge >= 0.0"
+    }
+  ],
+  "offline": "none"
+}
