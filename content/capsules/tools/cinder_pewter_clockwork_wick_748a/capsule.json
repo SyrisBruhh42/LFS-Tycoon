@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder-Pewter Clockwork Wick",
+    "description": "A whimsical, disposable clockwork pickaxe forged by the Ember Vendor using a Hollow Crucible Broker's Bundle and Cinder Ore. Guided by the Lithic Choir's teachings and the bioluminescent spore cartography of The Living Atlas & Mycelial Sanctuary of the Enclave, this tool hums with magnetotropic folk-science. It continuously winds its internal springs using ambient cinder heat, letting it automine for hours. However, the fragile pewter frame inevitably degrades and shatters. Its incredibly efficient battery usage prolongs auto-mining time.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "equip_tool", "place_on_tile", "sell"],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "automine",
+    "disposable",
+    "solves_auto_tool_runtime",
+    "path_vendor_disposable",
+    "craft_terraria_fusion",
+    "logic_whimsical",
+    "theme_enclave_living_atlas",
+    "bracket_3",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 2,
+    "base_dps": 120.0,
+    "charge_max_sec": 14400.0,
+    "durability_max": 1200.0,
+    "is_rechargeable": 0,
+    "base_value": 750.0
+  },
+  "vars": {
+    "charge_left": 14400.0,
+    "durability_left": 1200.0
+  },
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": 0.50
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "self.charge_left > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": -1.0},
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ember_vendor_f749",
+      "price": {
+        "books/lithic_choir_geomancy_grimoire_0954": 1,
+        "upgrades/hollow_crucible_broker_bundle_3bb8": 1,
+        "blocks/cinder_ore_1db2": 25
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "coarse"
+}
