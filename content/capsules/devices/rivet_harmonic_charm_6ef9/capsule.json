@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Rivet Harmonic Charm",
+    "description": "A socketable charm forged by the blind monastic archivists of Quill Hollow using rivet ore and acoustic vitriol. It channels the frozen music of the Lithic Choir; as the charm absorbs seismic reverberations from zero-damage stalls, it redirects shattered ore straight into your paired chest, easing the heavy haul.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "acoustic",
+    "charm",
+    "solves_haul_capacity",
+    "path_magic_charm",
+    "craft_alchemy_potion",
+    "logic_canonical",
+    "theme_lithic_choir",
+    "bracket_2",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "charge_left": 150.0
+  },
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.35,
+      "if": "self.charge_left > 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": "-1.0", "if": "self.charge_left > 0.0"}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": "-0.5", "if": "self.charge_left > 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_assayer_c04e",
+      "unlock_if": "player.max_depth >= 198.0",
+      "price": {
+        "devices/flint_shale_scrubber_b898": 1,
+        "blocks/rivet_ore_dd06": 40
+      }
+    }
+  ],
+  "offline": "exact"
+}
