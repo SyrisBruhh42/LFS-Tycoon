@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Hearth Sigil",
+    "description": "Forged by ancient smith-lords of the Under-Sun Manifold, this arcane sigil stone binds magma veins and anvilstone into a self-tempering crucible. It can be socketed into tools or placed in a house to grant a chisel-sharp yield bonus when fully rested, weaving The Grand Crucible of the Tectonic Leviathan into the very pewter gravel of its make.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "textile",
+    "solves_house_comfort",
+    "path_field_textile",
+    "craft_skyrim_enchant",
+    "logic_plausible",
+    "theme_tectonic_crucible",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 85.0,
+    "wear_max": 200.0,
+    "yield_mult": 1.25,
+    "luck_mult": 1.15
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "if": "player.is_rested == 1",
+      "value": 1.25
+    },
+    {
+      "stat": "luck_mult",
+      "phase": "mul",
+      "if": "player.is_rested == 1",
+      "value": 1.15
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_sleep",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.wear",
+          "by": 1.0
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.wear >= 200.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "devices/munchkin_slag_router_55f5": 1,
+        "blocks/pewter_gravel_d53e": 120
+      },
+      "unlock_if": "shared.quarry_resonance_charge >= 50.0 and player.max_depth <= 249"
+    }
+  ],
+  "offline": "exact"
+}
