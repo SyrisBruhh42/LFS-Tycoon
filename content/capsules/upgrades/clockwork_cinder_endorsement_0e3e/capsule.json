@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Cinder Endorsement",
+    "description": "An intricate brass ledger forged by The Perpetual Clockwork Deep-Bore Syndicate. Its steam-driven gears mechanically calculate exchange rates, earning the respect of deep-bore merchants like the Ochre Toad. When placed within a homestead, it grants a permanent depth discount at vendors, but only if you are working within the Pewter Cinder brackets (above 250m).",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "ledger",
+    "solves_vendor_access",
+    "path_profession_perk",
+    "craft_homestead_station",
+    "logic_canonical",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 150.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "value": 35.0,
+      "if": "player.max_depth <= 249.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/ochre_toad_5e64",
+      "price": {
+        "devices/quill_crucible_9ff0": 1,
+        "blocks/cinder_mortar_17bb": 50
+      },
+      "unlock_if": "player.max_depth >= 120.0"
+    }
+  ],
+  "offline": "none"
+}
