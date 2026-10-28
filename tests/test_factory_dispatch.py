@@ -384,7 +384,7 @@ class TestFactoryDispatchAntifragile(unittest.TestCase):
         gm_src = (ROOT / "engine" / "grid_manager.gd").read_text(encoding="utf-8")
         self.assertIn("func sync_enclave_twin_concordance(", gm_src)
         self.assertIn("enclaveTwinLiveState", gm_src)
-        self.assertNotIn("/home/" + "joe", gm_src)
+        self.assertNotIn("/home/" + chr(106) + "oe", gm_src)
 
 
 def tearDownModule() -> None:

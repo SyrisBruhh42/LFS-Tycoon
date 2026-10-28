@@ -1,0 +1,54 @@
+Copyright (c) 2026 SyrisBruhh42. All Rights Reserved.
+
+================================================================================
+SOURCE-AVAILABLE PROPRIETARY LICENSE & COPYRIGHT STATEMENT
+Repository: SyrisBruhh42/LFS-Tycoon
+Project:    LFS-Tycoon (Codename: StrataPaper — PF-07)
+================================================================================
+
+1. OWNERSHIP AND COPYRIGHT
+All original source code, architecture specifications, verification gates,
+capsule definitions, narrative ledgers, procedural generators, and documentation
+in this repository (collectively, the "Software") are the copyrighted work and
+intellectual property of SyrisBruhh42. All rights not expressly granted herein
+are reserved.
+
+2. PERMITTED NON-COMMERCIAL & EVALUATION USE
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this Software from the official public repository (`https://github.com/SyrisBruhh42/LFS-Tycoon`)
+to inspect, read, study, execute locally for personal non-commercial use, and
+run the included automated verification suites, subject to the following
+conditions:
+  (a) The above copyright notice, this permission notice, and the companion
+      `LEGAL.md`, `CREDITS.md`, and `NOTICE` files must be retained intact in
+      all copies of the Software.
+  (b) No personal identifiable information (PII), credentials, or telemetry may
+      be injected into any fork or local copy.
+
+3. PROHIBITED COMMERCIAL REDISTRIBUTION & DERIVATIVE EXPLOITATION
+Without prior written authorization from the copyright holder (SyrisBruhh42),
+you may NOT:
+  (a) Sell, lease, license, sublicense, monetize, or commercially redistribute
+      the Software or any substantial portion, capsule, or derivative thereof;
+  (b) Offer the Software as a hosted commercial service, managed platform, or
+      paid digital download;
+  (c) Remove, obscure, or falsify any authorship, provenance, copyright, or
+      attribution notices.
+
+4. THIRD-PARTY OPEN-SOURCE COMPONENTS & FONTS
+Certain third-party open-source runtimes, libraries, and fonts referenced or
+used by the Software remain governed by their respective upstream open-source
+licenses (including the SIL Open Font License 1.1, MIT License, Apache License
+2.0, and Python Software Foundation License v2). Full attributions and license
+notices are established in `CREDITS.md`, `LEGAL.md`, and `NOTICE`. Nothing in
+this License restricts your rights under those separate upstream open-source
+licenses for third-party components.
+
+5. DISCLAIMER OF WARRANTY & LIMITATION OF LIABILITY
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM,
+OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

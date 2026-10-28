@@ -37,4 +37,11 @@
 
 StrataPaper (`LFS-Tycoon`, `PF-07`) ships `capsule.manifest.json` with `lfs-local-abac-v1` offline policy alignment and headless Godot 4.3 capsule verification (`tools/check_capsules.py --strict`).
 
+---
 
+## Legal, Licensing, Credits & Security
+
+* **License**: [`LICENSE`](./LICENSE) — Copyright (c) 2026 SyrisBruhh42. All Rights Reserved.
+* **Legal & IP Notice**: [`LEGAL.md`](./LEGAL.md) & [`NOTICE`](./NOTICE) — Intellectual property reservation, warranty disclaimer, and compliance terms.
+* **Open-Source & Font Attributions**: [`CREDITS.md`](./CREDITS.md) — Third-party engine, runtime, and SIL Open Font License 1.1 typography credits.
+* **Security Policy**: [`SECURITY.md`](./SECURITY.md) — Zero-Trust security invariants and private vulnerability disclosure policy.
