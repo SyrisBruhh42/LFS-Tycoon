@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Mycelial Cartography Station",
+    "description": "An enclave workstation built by the Gravel Keeper from pewter gravel and an obsidian resonant crucible. It maps bioluminescent spore cartography (The Living Atlas), granting the user HUD target loupe insights to find deeper ores. Once its fragile ochre ink is consumed (after 10 layer reveals), it crumbles into Pewter Gravel.",
+    "author": "autonomous:content_developer",
+    "rarity": "common"
+  },
+  "affordances": ["place_in_house", "carry", "sell"],
+  "tags": ["upgrade", "solves_ore_hunting", "path_profession_perk", "craft_homestead_station", "logic_plausible", "theme_enclave_living_atlas", "bracket_1", "skill_school_pewter_cinder"],
+  "stats": {
+    "base_value": 110.0
+  },
+  "vars": {
+    "charge_left": 10.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "mul",
+      "value": 1.25
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_target_loupe", "enabled": true},
+        {"act": "var_add", "var": "self.charge_left", "by": -1.0},
+        {"act": "spawn_item", "item": "blocks/pewter_gravel_d53e", "qty": 2.0, "route": "backpack", "if": "self.charge_left <= 0.0"},
+        {"act": "set_ui_flag", "flag": "hud_target_loupe", "enabled": false, "if": "self.charge_left <= 0.0"},
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "devices/obsidian_resonant_crucible_d5d5": 1,
+        "blocks/pewter_gravel_d53e": 30
+      },
+      "unlock_if": "player.max_depth >= 40.0"
+    }
+  ]
+}
