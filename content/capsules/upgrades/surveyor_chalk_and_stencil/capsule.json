@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Surveyor's Stencil & Loupe Kit",
+    "description": "Unlocks alphanumeric Chess-Grid coordinates (A1-N31) along the quarry border and a floating HUD Target Loupe showing the active block's HP and depth.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["upgrade", "qol", "surveyor", "hud", "solves_tap_misfires", "solves_depth_awareness", "path_qol_upgrade"],
+  "stats": {
+    "base_value": 110.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"},
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true},
+        {"act": "set_ui_flag", "flag": "hud_chess_grid", "enabled": true},
+        {"act": "set_ui_flag", "flag": "hud_target_loupe", "enabled": true}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 75}
+    }
+  ],
+  "offline": "none"
+}

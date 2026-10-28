@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Loam Apprentice Mat",
+    "description": "A modest early-tier loam mesh that assists apprentices with scaffolding. When backfilled with earth, it raises the floor slightly and mildly boosts mining yield on that spot, but slowly frays over time.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "textile",
+    "tile_cover",
+    "solves_backfill_scaffolding",
+    "path_field_textile",
+    "loam",
+    "apprentice"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "wear_max": 15.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "if": "tile.covered_by_self and tile.depth < tile.max_depth_reached",
+      "value": "1.1"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_backfill",
+      "if": "tile.covered_by_self",
+      "do": [
+        {
+          "act": "modify_depth",
+          "target": "self_tile",
+          "delta": "-0.25"
+        },
+        {
+          "act": "var_add",
+          "var": "self.wear",
+          "by": "1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.wear >= self.stats.wear_max"
+        }
+      ]
+    }
+  ],
+  "offline": "exact",
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/stone": 1000
+      },
+      "unlock_if": "player.tool_tier >= 4.0"
+    }
+  ]
+}

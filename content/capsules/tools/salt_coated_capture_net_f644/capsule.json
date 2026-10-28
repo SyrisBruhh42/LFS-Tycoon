@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Salt-Coated Capture Net",
+    "description": "A heavy net laced with rock salt, favored by those hunting the elusive cavern cat. Slightly increases the chance of drawing the cat out, but is too unwieldy for regular mining. Eventually frays.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "capture_net",
+    "solves_event_helpers",
+    "path_tool_builtin",
+    "salt"
+  ],
+  "stats": {
+    "tool_type": "CAPTURE_NET",
+    "tool_tier": 2,
+    "base_dps": 8.0,
+    "durability_max": 65.0,
+    "is_rechargeable": 0,
+    "base_value": 450.0
+  },
+  "vars": {
+    "durability_left": 65.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "value": "0.03"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": "1.5"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_damage_dealt",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.durability_left",
+          "by": "-1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.durability_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ochre_toad_5e64",
+      "price": {
+        "blocks/stone": 500,
+        "blocks/copper": 350
+      },
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ],
+  "offline": "coarse"
+}

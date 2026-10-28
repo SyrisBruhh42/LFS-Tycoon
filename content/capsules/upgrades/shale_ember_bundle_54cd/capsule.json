@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Shale Assayer's Charter",
+    "description": "A highly exclusive trading charter written on shale that increases market payout by 25% for all sold goods.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["upgrade", "qol", "solves_market_saturation", "path_bundle_package", "shale"],
+  "stats": {
+    "base_value": 150.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "mul",
+      "if": "self.installed == 1.0",
+      "value": "1.25"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 30},
+      "unlock_if": "player.max_depth >= 10"
+    }
+  ],
+  "offline": "none"
+}

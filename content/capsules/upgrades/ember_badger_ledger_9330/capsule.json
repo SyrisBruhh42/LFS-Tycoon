@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ember-Badger Ledger",
+    "description": "A self-taught profession perk. When toggled on by reading the ledger, it converts all standard mined block yields into raw dirt and sends them directly to your paired chest, easing your backpack burden. The intense concentration required for this logistical badgering leaves you slightly woozy, introducing a mild drift to your taps.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "read_book", "consume", "sell"],
+  "tags": ["upgrade", "profession_perk", "solves_haul_capacity", "path_profession_perk", "ledger", "badger", "ember"],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {
+    "is_active": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "value": "1.0 - self.is_active"
+    },
+    {
+      "stat": "drunk_drift_px",
+      "phase": "add",
+      "value": "12.0 * self.is_active"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": "1.0 - self.is_active"}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {"act": "spawn_item", "item": "blocks/dirt", "qty": "1", "route": "paired_chest", "if": "self.is_active > 0.5"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 85}
+    }
+  ],
+  "offline": "none"
+}

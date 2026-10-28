@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder Deposit",
+    "description": "A dense, naturally forming strata of cinder mixed beneath extreme pressure.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "block",
+    "world_block",
+    "cinder"
+  ],
+  "stats": {
+    "base_hp": 25.0,
+    "value_base": 8.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 100,
+    "l_step": 1000,
+    "spawn_prob": 0.02,
+    "clump_xy": 6.0,
+    "pipe_z": 6.0,
+    "priority_rank": 50
+  },
+  "vars": {},
+  "biome_weights": {
+    "biomes/standard_crust": 0.5
+  },
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}

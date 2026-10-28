@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder-Galena Caliper",
+    "description": "A delicate instrument of cinder and galena. When placed upon a deep tile, it projects a faint HUD overlay revealing the depth contour of the surrounding strata, easing the planning of deep excavations.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_depth_awareness",
+    "path_placeable_device"
+  ],
+  "stats": {
+    "base_value": 80.0
+  },
+  "vars": {
+    "uses_left": 20.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_depth_calipers",
+          "enabled": true,
+          "if": "tile.depth >= 5.0"
+        },
+        {
+          "act": "var_add",
+          "var": "self.uses_left",
+          "by": "-1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.uses_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 100
+      }
+    }
+  ],
+  "offline": "exact"
+}

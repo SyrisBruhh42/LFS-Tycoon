@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mica Resonance",
+    "description": "This resonant artifact emits a subtle frequency when held or placed at home, slightly sharpening one's focus for spotting valuable ore veins.",
+    "author": "jules",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "mica",
+    "solves_ore_hunting",
+    "path_consumable_buff"
+  ],
+  "stats": {
+    "base_value": 450.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": 0.5
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 300
+      },
+      "unlock_if": "tool.tier >= 2.0"
+    }
+  ]
+}

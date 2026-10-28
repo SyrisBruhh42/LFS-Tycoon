@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Vitriol Hollow Geomancy Pick",
+    "description": "Forged by merging a sturdy iron weld pick with geomantic umber lore and resonant hollow stone. Infused with vitriol crystals, this tool naturally self-heals by metabolizing vitriol veins, solving the upkeep woes of deep miners mapping the Living Atlas of the Enclave.",
+    "author": "jules:steward",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_repair_upkeep",
+    "path_forge_material",
+    "craft_terraria_fusion",
+    "bracket_2",
+    "skill_school_manual",
+    "theme_enclave_living_atlas",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 2,
+    "base_dps": 40.0,
+    "durability_max": 800.0,
+    "is_rechargeable": 1,
+    "base_value": 750.0
+  },
+  "vars": {
+    "durability_left": 800.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "self.durability_left < self.stats.durability_max",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/vitriol_crystal_b488",
+          "qty": 1.0
+        },
+        {
+          "act": "var_add",
+          "var": "self.durability_left",
+          "by": "25.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "tools/iron_sconce_weld_pick_0ed2": 1,
+        "upgrades/umber_wick_geomancy_grimoire_6948": 1,
+        "blocks/vitriol_crystal_b488": 10,
+        "blocks/hollow_stone_b96c": 20
+      }
+    }
+  ],
+  "offline": "none"
+}

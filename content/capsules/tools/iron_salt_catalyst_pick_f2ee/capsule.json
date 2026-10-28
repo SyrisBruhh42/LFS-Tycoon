@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Iron-Salt Catalyst Pick",
+    "description": "Forged from cheap iron and rock salt. When it strikes a hazard (like obsidian), the salt acts as a catalyst, multiplying its damage heavily, but draining durability massively.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_hazard_clearing",
+    "path_forge_material",
+    "iron",
+    "salt"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 18.0,
+    "durability_max": 250.0,
+    "is_rechargeable": 1,
+    "base_value": 75.0,
+    "hazard_dmg_mult": 15.0
+  },
+  "vars": {
+    "durability_left": 250.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "value": "1.0 + (tile.is_hazard * self.stats.hazard_dmg_mult)"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_damage_dealt",
+      "if": "tile.is_hazard == 1",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.durability_left",
+          "by": "-20.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "blocks/copper": 85
+      }
+    }
+  ],
+  "offline": "none"
+}

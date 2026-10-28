@@ -1,0 +1,11 @@
+# Godot 4+ specific ignores
+.godot/
+*.translation
+
+# Generated context manifests and local caches (never commit to avoid merge conflicts)
+AI_CONTEXT_MANIFEST.md
+GAP_MAP.md
+.lut_cache/
+*.tmp
+*.bak
+user_saves/

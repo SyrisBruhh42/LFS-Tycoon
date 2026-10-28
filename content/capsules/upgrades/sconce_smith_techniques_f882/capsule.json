@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Sconce-Smith Bench",
+    "description": "A sturdy house amenity. When placed in your house, this self-taught profession bench reduces durability drain on tools by 50% when excavating deep strata (depth >= 500).",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "place_in_house", "sell"],
+  "tags": ["upgrade", "profession_perk", "solves_repair_upkeep", "path_profession_perk"],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": "0.50",
+      "if": "tile.depth >= 500.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/anvil_smith_73cd",
+      "price": {"blocks/stone": 500}
+    }
+  ]
+}

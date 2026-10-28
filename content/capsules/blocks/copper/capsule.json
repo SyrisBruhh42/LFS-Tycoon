@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Copper Vein",
+    "description": "Conductive metallic ore forming horizontal beds and vertical pipes. Escalates to Dense Copper at Z=1010.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["mineable_block", "carry", "sell", "catalyst"],
+  "tags": ["block", "ore", "metal", "copper"],
+  "stats": {
+    "base_hp": 28.0,
+    "base_value": 12.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 10,
+    "l_step": 1000,
+    "spawn_prob": 0.12,
+    "clump_xy": 6.0,
+    "pipe_z": 10.0,
+    "priority_rank": 40
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}

@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Gravel-Lark's Yarn Manual",
+    "description": "A quaint guidebook bound in gravel-dusted yarn. Reading it teaches a clumsy technique: when you place dirt to backfill, it attempts to raise an adjacent tile by 1 depth as well, lifting you up slightly. However, its methods are temporary, and the knowledge fades after 25 uses.",
+    "author": "jules:session",
+    "rarity": "common",
+    "era": "early"
+  },
+  "affordances": ["carry", "read_book", "consume", "sell"],
+  "tags": ["book", "skill_book", "gravel", "lark", "yarn", "solves_backfill_scaffolding", "path_skill_book"],
+  "stats": {
+    "base_value": 40.0
+  },
+  "vars": {
+    "is_learned": 0.0,
+    "uses": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {"act": "var_set", "var": "self.is_learned", "value": "1.0"},
+        {"act": "var_set", "var": "self.uses", "value": "0.0"}
+      ]
+    },
+    {
+      "on": "on_backfill",
+      "if": "self.is_learned >= 1.0",
+      "do": [
+        {"act": "modify_depth", "target": "random_neighbor_4", "delta": "-1"},
+        {"act": "var_add", "var": "self.uses", "by": "1.0"},
+        {"act": "var_set", "var": "self.is_learned", "value": "0.0", "if": "self.uses >= 25.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/dirt": 50}
+    }
+  ],
+  "offline": "none"
+}

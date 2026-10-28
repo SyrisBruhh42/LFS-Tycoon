@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "events": [
+    "on_tap",
+    "on_hold_tick",
+    "on_damage_calc",
+    "on_damage_dealt",
+    "on_damage_absorbed",
+    "on_overkill",
+    "on_zero_damage_stall",
+    "on_block_break",
+    "on_layer_reveal",
+    "on_backfill",
+    "on_fluid_flow",
+    "on_fluid_contact",
+    "on_hazard_expose",
+    "on_hazard_detonate",
+    "on_second_tick",
+    "on_equip",
+    "on_unequip",
+    "on_consume",
+    "on_deplete",
+    "on_enter_house",
+    "on_sleep",
+    "on_wash",
+    "on_market_sell"
+  ],
+  "aliases": {
+    "on_break": "on_block_break",
+    "block_break": "on_block_break",
+    "on_mine": "on_block_break",
+    "on_hit": "on_damage_dealt",
+    "damage_absorbed": "on_damage_absorbed",
+    "overkill": "on_overkill",
+    "zero_damage": "on_zero_damage_stall",
+    "on_stall": "on_zero_damage_stall",
+    "on_tick": "on_second_tick",
+    "on_eat": "on_consume",
+    "on_drink": "on_consume"
+  }
+}

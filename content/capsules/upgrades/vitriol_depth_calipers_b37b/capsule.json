@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Vitriol Quartz Depth Calipers",
+    "description": "A set of vitriol-washed quartz calipers, offering deep-stratum precision. Unlocks the HUD Depth Calipers overlay when equipped, and grants a 20% luck bonus when mining deep below (depth >= 150), provided the tool is robust (tier >= 1).",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "surveyor",
+    "hud",
+    "solves_depth_awareness",
+    "path_profession_perk"
+  ],
+  "stats": {
+    "base_value": 150.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "mul",
+      "value": "1.2",
+      "if": "tile.depth >= 150.0 and tool.tier >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": true},
+        {"act": "emit_alert", "channel": "hud_chime", "tag": "Calipers Ready!"}
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": false}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 35
+      }
+    }
+  ],
+  "offline": "none"
+}

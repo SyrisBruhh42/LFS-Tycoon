@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Hearth Tome",
+    "description": "An arcane device from The Sovereign Ward-Breakers of the Obsidian Seal. Traded by the elusive Quill Peddler for raw quill ore. When placed on a tile, revealing a new layer etches chalk lines (hud_chalk_lines) and depth contours (hud_depth_calipers). Deep down, it channels heat to soften the rock, slightly reducing break time.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_depth_awareness",
+    "path_placeable_device",
+    "craft_spell_grimoire",
+    "logic_canonical",
+    "theme_obsidian_wardbreaker",
+    "bracket_2",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "add",
+      "value": -0.15,
+      "if": "tile.depth >= 500.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true},
+        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": true}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/quill_peddler_0c07",
+      "price": {
+        "upgrades/hearth_ledger_bell_08e0": 1,
+        "blocks/quill_ore_4083": 15
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "coarse"
+}

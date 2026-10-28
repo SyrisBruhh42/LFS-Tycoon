@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Brass Caves",
+    "description": "A subterranean network of interlocking caverns that looks almost engineered. Streaks of dull copper and sharp, structural stone formations give the impression of giant, long-buried brass structures holding the crust together.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["world_biome", "cave", "brass"],
+  "stats": {
+    "z_min": 50,
+    "z_max": 400,
+    "biome_weight": 0.25
+  },
+  "biome_weights": {
+    "blocks/stone": 1.5,
+    "blocks/copper": 1.2,
+    "blocks/dirt": 0.5,
+    "blocks/cinder_gravel_61a3": 0.8
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}

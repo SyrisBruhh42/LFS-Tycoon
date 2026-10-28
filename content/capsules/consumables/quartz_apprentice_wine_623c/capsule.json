@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quartz Apprentice Wine",
+    "description": "Boosts luck and yield temporarily for early-game thrifty miners.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "consume", "sell"],
+  "tags": ["consumable", "drink", "wine", "solves_ore_hunting", "path_consumable_buff"],
+  "stats": {
+    "base_value": 30.0,
+    "duration_sec": 180.0
+  },
+  "vars": {
+    "active_sec_left": -1.0
+  },
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "value": "1.2",
+      "if": "self.active_sec_left > 0.0"
+    },
+    {
+      "stat": "luck_mult",
+      "phase": "mul",
+      "value": "1.1",
+      "if": "self.active_sec_left > 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.active_sec_left", "value": "self.stats.duration_sec"}
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "do": [
+        {"act": "var_add", "var": "self.active_sec_left", "by": "-1.0", "if": "self.active_sec_left > 0.0"},
+        {"act": "destroy_self", "if": "self.active_sec_left == 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 20}
+    }
+  ]
+}

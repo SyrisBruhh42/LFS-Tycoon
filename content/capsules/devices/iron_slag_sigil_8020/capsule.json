@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Iron Slag Sigil",
+    "description": "An exotic sigil crafted by the Crucible Keeper, reeking of hot iron and slag. When socketed into any tool, its magic resonates with extreme depths and dense materials, halving the wrong-tool penalty in deep strata (depth >= 500) or against high-tier rock. The sigil's magic wears out with use.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "sigil",
+    "iron",
+    "solves_wrong_tool_penalty",
+    "path_npc_enchanter"
+  ],
+  "stats": {
+    "base_value": 250.0
+  },
+  "vars": {
+    "is_active": 0.0,
+    "charges": 250.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "self.is_active == 1.0 and (tile.depth >= 500.0 or tile.tier >= 1.0)"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": "1.0"}
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": "0.0"}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {"act": "var_add", "var": "self.charges", "by": "-1.0", "if": "self.is_active == 1.0 and (tile.depth >= 500.0 or tile.tier >= 1.0)"},
+        {"act": "destroy_self", "if": "self.is_active == 1.0 and self.charges <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {
+        "blocks/copper": 250
+      }
+    }
+  ],
+  "offline": "none"
+}

@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Beetle-Newt Salt Stance",
+    "description": "A rigid, deeply defensive grip technique mimicking the Salt Beetle and the Cave Newt. When mining ore veins, your tool takes practically no wear, but you mine 50% slower as you carefully extract the minerals.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "profession_perk",
+    "solves_tool_wear",
+    "path_profession_perk",
+    "beetle",
+    "newt",
+    "salt"
+  ],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.installed > 0.0 and tile.tier > 0",
+      "value": "0.1"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "self.installed > 0.0 and tile.tier > 0",
+      "value": "1.5"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 100}
+    }
+  ],
+  "offline": "none"
+}

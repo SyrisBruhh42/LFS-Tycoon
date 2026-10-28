@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Shale Forged Pick",
+    "description": "Forged from dense shale. Suffers less penalty when striking non-ideal blocks.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "equip_tool", "sell"],
+  "tags": ["tool", "pickaxe", "tinker_forged", "shale", "solves_wrong_tool_penalty", "path_forge_material"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 2,
+    "base_dps": 22.0,
+    "durability_max": 850.0,
+    "is_rechargeable": 1,
+    "base_value": 300.0
+  },
+  "vars": {
+    "durability_left": 850.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": "0.5"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/anvil_smith_73cd",
+      "price": {
+        "blocks/copper": 300
+      },
+      "unlock_if": "shared.global_cleave_bonus_pct >= 0.0"
+    }
+  ]
+}

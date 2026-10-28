@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Flint Gasket",
+    "description": "Forged by The Perpetual Clockwork Deep-Bore Syndicate from sturdy flint shale. Socket this whimsical gasket into your tool to ensure your fat-fingered strikes hit squarely. Accidental, off-center taps trigger a mechanism that tightly clamps misdirected force, safeguarding protected tiles.",
+    "author": "core:jules",
+    "rarity": "uncommon"
+  },
+  "affordances": ["socket_in_tool", "carry", "sell"],
+  "tags": [
+    "device",
+    "craft_tinker_part",
+    "tinker_binding",
+    "solves_tap_misfires",
+    "path_magic_charm",
+    "logic_whimsical",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "drunk_drift_px",
+      "phase": "mul",
+      "value": 0.25,
+      "if": "tile.depth <= 249.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_damage_dealt",
+      "do": [
+        {"act": "spawn_item", "item": "blocks/flint_shale_6493", "qty": 1, "route": "backpack", "if": "roll(0.05)"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "upgrades/iron_stormbreaker_charm_a589": 1,
+        "blocks/flint_shale_6493": 35
+      },
+      "unlock_if": "player.max_depth >= 45.0"
+    }
+  ],
+  "offline": "exact"
+}

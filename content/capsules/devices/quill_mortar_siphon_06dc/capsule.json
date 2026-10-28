@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quill Mortar Siphon",
+    "description": "A clever gadget fashioned with mortar and a hollowed quill. Placed on a tile, it quietly siphons away invading fluids over time, keeping your excavation dry.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "socket_in_tool", "place_on_tile", "sell"],
+  "tags": ["device", "gadget", "solves_fluid_flooding", "path_placeable_device", "siphon"],
+  "stats": {
+    "base_value": 75.0,
+    "max_siphons": 100.0
+  },
+  "vars": {
+    "fluids_siphoned": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "do": [
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": -1,
+          "if": "tile.covered_by_self and tile.fluid_level > 0.0"
+        },
+        {
+          "act": "var_add",
+          "var": "self.fluids_siphoned",
+          "by": "1.0",
+          "if": "tile.covered_by_self and tile.fluid_level > 0.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.fluids_siphoned >= self.stats.max_siphons"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 200}
+    }
+  ],
+  "offline": "exact"
+}

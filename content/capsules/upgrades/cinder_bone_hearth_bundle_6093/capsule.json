@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder-Bone Hearth Package",
+    "description": "A very expensive, unlock-gated NPC package. Unlocks an array of target loupe HUD features and channels overkill damage entirely, but it only functions when venturing into the deepest known frontiers of the quarry.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "consume", "sell"],
+  "tags": ["upgrade", "cinder", "bone", "hearth", "solves_overkill_waste", "path_bundle_package"],
+  "stats": {
+    "base_value": 150.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"},
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true},
+        {"act": "set_ui_flag", "flag": "hud_chess_grid", "enabled": true},
+        {"act": "set_ui_flag", "flag": "hud_target_loupe", "enabled": true},
+        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": true}
+      ]
+    },
+    {
+      "on": "on_overkill",
+      "if": "self.installed >= 1.0 and tool.overkill_damage > 0.0 and ctx.is_secondary_damage == 0 and tile.depth >= player.max_depth",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "neighbors_8",
+          "amount": "tool.overkill_damage"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/dirt": 150},
+      "unlock_if": "player.max_depth >= 50"
+    }
+  ],
+  "offline": "none"
+}

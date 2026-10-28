@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mica Charm",
+    "description": "A socketable or carried magical trinket. When you are well-rested, it shimmers gently, reducing the penalty of using the wrong tool for the job.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "charm",
+    "magic",
+    "solves_wrong_tool_penalty",
+    "path_magic_charm"
+  ],
+  "stats": {
+    "base_value": 350.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": "0.5",
+      "if": "player.is_rested == 1"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 300
+      },
+      "unlock_if": "tool.tier >= 2.0"
+    }
+  ],
+  "offline": "exact"
+}

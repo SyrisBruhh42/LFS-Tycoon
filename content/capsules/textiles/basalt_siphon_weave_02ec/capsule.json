@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Basalt Siphon Weave",
+    "description": "A heavy layer of basalt thread that rapidly drains standing fluid over the quarry tile before wearing away from erosion.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "place_on_tile", "sell"],
+  "tags": ["textile", "tile_cover", "dampener", "solves_fluid_flooding", "path_field_textile"],
+  "stats": {
+    "base_value": 75.0,
+    "wear_max": 25.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "tile.covered_by_self and tile.fluid_level > 0.0",
+      "do": [
+        {"act": "modify_fluid", "target": "tile", "fluid_type": "NONE", "delta_level": -1.0},
+        {"act": "var_add", "var": "self.wear", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.wear >= self.stats.wear_max"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/brass_tinkerer_c020",
+      "price": {"blocks/copper": 75}
+    }
+  ]
+}

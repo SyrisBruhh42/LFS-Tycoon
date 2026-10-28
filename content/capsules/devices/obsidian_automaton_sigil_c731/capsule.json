@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Prospector's Automaton Sigil",
+    "description": "A miniature clockwork field rig compressed into an enchanter's sigil, engineered by Gravel Wick for the Sovereign Ward-Breakers of the Obsidian Seal. Infused with pewter gravel, it reveals subtle veins in the strata, greatly enhancing mining yield and luck until its internal gears grind to a halt.",
+    "author": "autonomous:content_developer",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_ore_hunting",
+    "path_npc_enchanter",
+    "craft_clockwork_automaton",
+    "logic_plausible",
+    "theme_obsidian_wardbreaker",
+    "bracket_2",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 150.0
+  },
+  "vars": {
+    "uses_left": 500.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": 0.5,
+      "if": "self.uses_left > 0.0"
+    },
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "value": 1.5,
+      "if": "self.uses_left > 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "self.uses_left > 0.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.uses_left",
+          "by": -1.0
+        }
+      ]
+    },
+    {
+      "on": "on_layer_reveal",
+      "if": "self.uses_left > 0.0",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "blocks/pewter_gravel_d53e",
+          "qty": 1,
+          "route": "ground_pile"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_wick_vendor_8db7",
+      "price": {
+        "devices/obsidian_hearth_tome_3e09": 1,
+        "blocks/pewter_gravel_d53e": 10
+      },
+      "unlock_if": "player.max_depth >= 198"
+    }
+  ],
+  "offline": "exact"
+}

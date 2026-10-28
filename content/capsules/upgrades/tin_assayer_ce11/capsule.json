@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tin Assayer",
+    "description": "A tin assayer's setup for the home. Once installed, it grants a deep-strata market perk: ore sold from depth 500 or deeper is valued 50% higher, combating market saturation for deep mining. Also provides a flat bonus to market value.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "consume", "sell"],
+  "tags": ["upgrade", "solves_market_saturation", "path_profession_perk", "tin"],
+  "stats": {
+    "base_value": 450.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "mul",
+      "if": "self.installed > 0.0 && tile.depth >= 500.0",
+      "value": "1.5"
+    },
+    {
+      "stat": "market_value_mult",
+      "phase": "add",
+      "if": "self.installed > 0.0",
+      "value": "0.1"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.installed == 0.0",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 900
+      },
+      "unlock_if": "player.max_depth >= 500"
+    }
+  ],
+  "offline": "none"
+}

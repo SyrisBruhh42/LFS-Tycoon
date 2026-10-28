@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter-Cast Hazard Pick",
+    "description": "Forged from a broad pewter head. Channels damage efficiently against hazards, acting as a perimeter catalyst, but suffers from rapid wear when striking ordinary stone.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "equip_tool", "catalyst", "sell"],
+  "tags": ["tool", "pickaxe", "tinker_forged", "pewter", "solves_hazard_clearing", "path_forge_material"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 28.0,
+    "durability_max": 400.0,
+    "is_rechargeable": 1,
+    "base_value": 80.0,
+    "durability_drain_mult": 1.0
+  },
+  "vars": {
+    "durability_left": 400.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "tile.is_hazard == 1.0",
+      "value": 2.0
+    },
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "tile.is_hazard == 0.0",
+      "value": 2.5
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/pewter_quill_newt_3730",
+      "price": {"blocks/copper": 50}
+    }
+  ]
+}

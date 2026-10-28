@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Plumb Calcite Assayer's Bundle",
+    "description": "An assayer's extensive bundle containing tools and reference material for deep mining. Once bought and added to a house's permanent registry, it grants a deep-strata market perk: ore sold from depth 50 or deeper is valued 50% higher, combating market saturation for mid-game mining.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "sell", "place_in_house"],
+  "tags": ["upgrade", "solves_market_saturation", "path_bundle_package", "assayer"],
+  "stats": {
+    "base_value": 140.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "add",
+      "if": "tile.depth >= 50.0",
+      "value": "0.5"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {
+        "blocks/copper": 100
+      },
+      "unlock_if": "player.max_depth >= 50"
+    }
+  ],
+  "offline": "none"
+}

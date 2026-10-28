@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Loam Broker's Primer",
+    "description": "A beginner's guide to market manipulation, printed on coarse iron-pressed paper. Reading it reveals how to stagger your loam and ore sales to fetch better prices, granting a passive 10% market value bonus. The clumsy advice wears thin after 100 sales.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["book", "skill_book", "solves_market_saturation", "path_skill_book", "loam", "iron"],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "is_learned": 0.0,
+    "charge_left": 100.0
+  },
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "mul",
+      "value": "1.10",
+      "if": "self.is_learned >= 1.0 and self.charge_left > 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {"act": "var_set", "var": "self.is_learned", "value": "1.0"}
+      ]
+    },
+    {
+      "on": "on_market_sell",
+      "if": "self.is_learned >= 1.0 and self.charge_left > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": "-1.0"}
+      ]
+    },
+    {
+      "on": "on_market_sell",
+      "if": "self.is_learned >= 1.0 and self.charge_left <= 0.0",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/dirt": 50, "blocks/copper": 10}
+    }
+  ],
+  "offline": "none"
+}

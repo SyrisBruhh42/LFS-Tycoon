@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ember Iron Tracker's Charm",
+    "description": "A pocketable iron trinket glowing faintly with ember dust. Increases the chance to uncover a lost cat when striking virgin stone, but the charm cracks slightly with each reveal, breaking entirely after 15 layers.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "charm",
+    "magic_charm",
+    "solves_event_helpers",
+    "path_magic_charm",
+    "iron",
+    "ember"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "max_uses": 15.0
+  },
+  "vars": {
+    "uses": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "value": "0.03"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "var_add", "var": "self.uses", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.uses >= self.stats.max_uses"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 30
+      }
+    }
+  ],
+  "offline": "exact"
+}

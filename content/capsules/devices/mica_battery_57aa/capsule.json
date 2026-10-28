@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Apprentice Mica Battery",
+    "description": "A modest mica-layered battery pack for apprentice mechanics. Socketing it into an auto-tool slightly reduces the rate at which it drains its charge.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_auto_tool_runtime",
+    "path_power_source"
+  ],
+  "stats": {
+    "base_value": 120.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": "0.75"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 950
+      },
+      "unlock_if": "tool.tier >= 4.0"
+    }
+  ],
+  "offline": "exact"
+}

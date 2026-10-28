@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quartz Scaffolding Charm",
+    "description": "A shimmering quartz trinket that resonates when lifting earth. While carried or socketed, it drastically accelerates digging speed only on scaffolding tiles placed above your maximum reached depth.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "solves_backfill_scaffolding", "path_magic_charm"],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": "0.4",
+      "if": "tile.depth < tile.max_depth_reached"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 30},
+      "unlock_if": "house_bell_ringing >= 0.0"
+    }
+  ],
+  "offline": "exact"
+}

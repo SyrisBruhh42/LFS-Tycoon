@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hollow Crucible Broker's Bundle",
+    "description": "An incredibly dense, heavily-guarded compendium from the hollow crucible brokers. Once purchased and installed in your house, this extensive ledger guarantees any ore you sell is valued higher when your hands are exceptionally clean. A lucrative investment to combat market saturation, provided you wash your hands first.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "sell", "place_in_house"],
+  "tags": ["upgrade", "solves_market_saturation", "path_bundle_package", "hollow", "crucible", "broker", "bundle"],
+  "stats": {
+    "base_value": 750.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "add",
+      "if": "player.grime < 15.0",
+      "value": 0.8
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {
+        "blocks/stone": 300
+      },
+      "unlock_if": "player.max_depth >= 100"
+    }
+  ],
+  "offline": "none"
+}

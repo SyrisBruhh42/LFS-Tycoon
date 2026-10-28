@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "actions": {
+    "deal_damage": {
+      "required": ["target", "amount"],
+      "optional": ["if"],
+      "targets": [
+        "self_tile",
+        "neighbors_4",
+        "neighbors_8",
+        "random_neighbor_4",
+        "random_neighbor_8",
+        "shallowest_neighbor_4",
+        "shallowest_neighbor_8",
+        "row",
+        "column"
+      ]
+    },
+    "var_set": {
+      "required": ["var", "value"],
+      "optional": ["if"]
+    },
+    "var_add": {
+      "required": ["var", "by"],
+      "optional": ["if"]
+    },
+    "spawn_item": {
+      "required": ["item", "qty"],
+      "optional": ["tier", "route", "if"],
+      "routes": ["backpack", "paired_chest", "ground_pile"]
+    },
+    "consume_item": {
+      "required": ["item", "qty"],
+      "optional": ["if"]
+    },
+    "transform_tile": {
+      "required": ["target", "block"],
+      "optional": ["if"]
+    },
+    "modify_depth": {
+      "required": ["target", "delta"],
+      "optional": ["if"]
+    },
+    "modify_fluid": {
+      "required": ["target", "fluid_type", "delta_level"],
+      "optional": ["if"],
+      "fluid_types": ["NONE", "WATER", "LAVA"]
+    },
+    "emit_alert": {
+      "required": ["channel", "tag"],
+      "optional": ["if"],
+      "channels": ["house_bell", "hud_chime", "chest_flag"]
+    },
+    "set_ui_flag": {
+      "required": ["flag", "enabled"],
+      "optional": ["if"],
+      "flags": [
+        "hud_chalk_lines",
+        "hud_chess_grid",
+        "hud_target_loupe",
+        "hud_depth_calipers",
+        "hud_durability_bars",
+        "hud_battery_timers"
+      ]
+    },
+    "stall_tool": {
+      "required": ["pause_battery", "pause_durability"],
+      "optional": ["if"]
+    },
+    "destroy_self": {
+      "required": [],
+      "optional": ["if"]
+    },
+    "transmute_self": {
+      "required": ["into"],
+      "optional": ["if"]
+    }
+  }
+}

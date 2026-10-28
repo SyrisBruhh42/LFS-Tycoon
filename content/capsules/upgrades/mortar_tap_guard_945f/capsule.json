@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mortar Tap Guard",
+    "description": "A mortar-based heavy frame. When placed in your house or carried, it stiffens your strike, ensuring an accidental fat-finger tap cannot deal the final blow to shatter a stone block.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "place_in_house", "sell"],
+  "tags": ["upgrade", "qol", "solves_tap_misfires", "path_qol_upgrade", "mortar"],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "clamp",
+      "value": "1.0",
+      "if": "ctx.is_direct_tap == 1"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/anvil_smith_73cd",
+      "price": {"blocks/copper": 350},
+      "unlock_if": "tool.tier >= 2.0"
+    }
+  ],
+  "offline": "none"
+}

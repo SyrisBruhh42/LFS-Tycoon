@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Flint Charm",
+    "description": "A socketable or carried magical flint trinket. It increases market value slightly, but wears down after 50 sales.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "charm",
+    "flint",
+    "magic_charm",
+    "solves_market_saturation",
+    "path_magic_charm",
+    "disposable"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "add",
+      "value": "0.15"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_market_sell",
+      "do": [
+        {"act": "var_add", "var": "self.wear", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.wear >= 50.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 900},
+      "unlock_if": "tool.tier >= 4"
+    }
+  ],
+  "offline": "exact"
+}

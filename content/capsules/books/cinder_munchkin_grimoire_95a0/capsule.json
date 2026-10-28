@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder Munchkin Grimoire",
+    "description": "An arcane tome from The Paradox Symposium of St. Munchkin. Whispered by the Ochre Toad to circumvent bureaucracy, it teaches you to exploit subterranean loopholes. Mastering its geomancy lets you force mismatched tools through stubborn Cinder Ore strata without slowdown, provided the depth pressure is intense enough.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "book",
+    "skill_book",
+    "cinder",
+    "hollow",
+    "solves_wrong_tool_penalty",
+    "path_profession_perk",
+    "craft_spell_grimoire",
+    "logic_canonical",
+    "theme_munchkin_paradox",
+    "bracket_1",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 200.0,
+    "bonus_val": 0.05
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "self.is_learned >= 1.0 and tile.tier >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_learned",
+          "value": "1.0"
+        },
+        {
+          "act": "transform_tile",
+          "target": "self_tile",
+          "block": "blocks/cinder_ore_1db2"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ochre_toad_5e64",
+      "price": {
+        "consumables/wardbreaker_pewter_battery_a050": 1,
+        "blocks/cinder_ore_1db2": 25
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "none"
+}

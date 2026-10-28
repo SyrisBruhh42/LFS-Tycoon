@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ember Flare Discipline",
+    "description": "An early mining discipline learned from an old manual. Channels wasted overkill force towards the shallowest exposed block above, effectively continuing an upward dig. Its heat exhausts its usefulness after 100 applications.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["upgrade", "profession_perk", "solves_overkill_waste", "path_profession_perk"],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {
+    "installed": 0.0,
+    "charges": 100.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "if": "self.installed >= 1.0 and tool.overkill_damage > 0.0 and ctx.is_secondary_damage == 0 and self.charges > 0.0",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": "tool.overkill_damage * 0.4"
+        },
+        {
+          "act": "var_add",
+          "var": "self.charges",
+          "by": "-1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50}
+    }
+  ],
+  "offline": "none"
+}

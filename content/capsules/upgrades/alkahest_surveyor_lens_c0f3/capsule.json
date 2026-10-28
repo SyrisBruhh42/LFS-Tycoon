@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Surveyor's Lens",
+    "description": "Forged in the Abyssal Hydro-Works by monastic lithic archivists, this specialized basalt-rimmed lens is infused with alkahest vitriol and fragments of stormbreaker geode. It allows hydro-alchemists to spot subtle contours in the strata, greatly aiding in ore hunting and quarry charting when fully rested.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_ore_hunting",
+    "path_profession_perk",
+    "craft_terraria_fusion",
+    "logic_canonical",
+    "theme_alkahest_hydro",
+    "bracket_3",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 60.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": 0.25,
+      "if": "self.installed >= 1.0 and player.is_rested == 1"
+    },
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "value": 1.5,
+      "if": "self.installed >= 1.0 and player.is_rested == 1"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": 1.0
+        },
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_chalk_lines",
+          "enabled": true
+        },
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_chess_grid",
+          "enabled": true
+        },
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_target_loupe",
+          "enabled": true
+        }
+      ]
+    }
+  ],
+  "offline": "none",
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "tools/alkahest_vitriol_diviner_23fd": 1,
+        "upgrades/mole_kettle_iron_313f": 1,
+        "blocks/stormbreaker_geode_5e99": 20
+      },
+      "unlock_if": "player.max_depth >= 330.0"
+    }
+  ]
+}

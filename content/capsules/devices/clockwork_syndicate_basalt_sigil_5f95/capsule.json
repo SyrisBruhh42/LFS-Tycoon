@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Syndicate Basalt Sigil",
+    "description": "A socketable basalt sigil forged by npcs/rivet_assayer_c04e for The Perpetual Clockwork Deep-Bore Syndicate. Its pneumatic arrays detect when the tool strikes impassable strata, immediately pausing tool durability loss to save wear, especially when energized by the raw potential of blocks/rivet_ore_dd06.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_zero_damage_stall",
+    "path_magic_charm",
+    "craft_skyrim_enchant",
+    "logic_canonical",
+    "theme_clockwork_syndicate",
+    "bracket_3",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 800.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {
+          "act": "stall_tool",
+          "pause_battery": false,
+          "pause_durability": true,
+          "if": "tile.is_strict_locked == 1 and player.is_rested == 1"
+        },
+        {
+          "act": "emit_alert",
+          "channel": "house_bell",
+          "tag": "stall_impassable",
+          "if": "tile.is_strict_locked == 1 and player.is_rested == 1"
+        },
+        {
+          "act": "var_add",
+          "var": "shared.house_bell_ringing",
+          "by": 1.0,
+          "if": "tile.is_strict_locked == 1 and player.is_rested == 1"
+        },
+        {
+          "act": "var_add",
+          "var": "self.activations",
+          "by": 1.0,
+          "if": "tile.is_strict_locked == 1 and player.is_rested == 1"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_assayer_c04e",
+      "price": {
+        "books/mica_anvil_lithic_tome_2de0": 1,
+        "blocks/rivet_ore_dd06": 100
+      },
+      "unlock_if": "player.max_depth >= 330.0"
+    }
+  ],
+  "offline": "exact"
+}

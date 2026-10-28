@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ember Ledger Tonic",
+    "description": "A thick, anvil-forged brew originally used as a crucible coolant. Consuming it numbs the hands and slows manual mining by 20%, but temporarily coats raw ores in an ember-like glaze that increases their market value by 35% for 4 minutes. A reliable, thrifty crutch for early-game miners battling market saturation.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "drink",
+    "tonic",
+    "ember",
+    "anvil",
+    "solves_market_saturation",
+    "path_consumable_buff"
+  ],
+  "stats": {
+    "base_value": 35.0,
+    "duration_sec": 240.0,
+    "speed_mult": 0.8,
+    "value_mult": 1.35
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0 and ctx.is_direct_tap == 1",
+      "value": "1.0 / self.stats.speed_mult"
+    },
+    {
+      "stat": "market_value_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.value_mult"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec"
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "self.active_sec_left > 0.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.active_sec_left",
+          "by": "-1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.active_sec_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/stone": 950
+      },
+      "unlock_if": "player.tool_tier >= 4.0"
+    }
+  ],
+  "offline": "none"
+}

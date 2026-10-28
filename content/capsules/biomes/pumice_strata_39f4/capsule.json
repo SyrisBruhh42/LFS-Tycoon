@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pumice Strata",
+    "description": "A porous subterranean stratum rich in pumice and cinder gravel.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["biome", "world_biome", "heat_source", "cinder"],
+  "stats": {
+    "z_min": 80,
+    "z_max": 500,
+    "biome_weight": 0.3
+  },
+  "biome_weights": {
+    "blocks/cinder_gravel_61a3": 1.5,
+    "blocks/lava_pocket": 0.8,
+    "blocks/obsidian_hazard": 0.5,
+    "blocks/stone": 1.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}

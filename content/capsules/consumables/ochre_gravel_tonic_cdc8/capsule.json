@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Gravel Tonic",
+    "description": "A gritty potion that coats your tools in a protective film. Halves tool durability drain for 5 minutes, but the sludgy residue causes slight touch drift.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "consume", "sell"],
+  "tags": ["consumable", "tonic", "ochre", "gravel", "solves_tool_wear", "path_consumable_buff"],
+  "stats": {
+    "base_value": 40.0,
+    "duration_sec": 300.0,
+    "drift_px": 16.0
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "0.5"
+    },
+    {
+      "stat": "drunk_drift_px",
+      "phase": "add",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.drift_px"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.active_sec_left", "value": "self.stats.duration_sec"},
+        {"act": "var_set", "var": "shared.active_drunk_drift_px", "value": "self.stats.drift_px"},
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_vendor_51cb",
+      "price": {"blocks/copper": 50}
+    }
+  ],
+  "offline": "none"
+}

@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pumice Catalyst Charm",
+    "description": "An enchanted pumice charm that sockets into a tool, vastly increasing effectiveness against hazards while slowly wearing away with each detonation.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell", "catalyst"],
+  "tags": ["device", "pumice", "solves_hazard_clearing", "path_npc_enchanter"],
+  "stats": {
+    "base_value": 150.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "tile.is_hazard == 1.0",
+      "value": 3.0
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_hazard_detonate",
+      "do": [
+        {"act": "var_add", "var": "self.wear", "by": 1.0},
+        {"act": "destroy_self", "if": "self.wear >= 15.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/brass_tinkerer_c020",
+      "price": {"blocks/copper": 300},
+      "unlock_if": "shared.quarry_resonance_charge >= 50.0"
+    }
+  ]
+}

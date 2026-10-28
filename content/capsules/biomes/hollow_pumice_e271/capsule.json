@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hollow Pumice Strata",
+    "description": "A porous subterranean layer littered with airy rock structures where light minerals thrive.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "biome",
+    "world_biome"
+  ],
+  "stats": {
+    "z_min": 100,
+    "z_max": 500,
+    "biome_weight": 0.35
+  },
+  "biome_weights": {
+    "blocks/stone": 1.5,
+    "blocks/cinder_gravel_61a3": 0.8,
+    "blocks/dirt": 0.4
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}

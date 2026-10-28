@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin's Lantern & Paradox Relic",
+    "description": "An absurd iron lantern from The Paradox Symposium of St. Munchkin. Crafted from flint shale by the bone sconce wick, it exploits a literal loophole: while sleeping with this artifact placed in your house, your exhaustion yields a luck bonus and it stalls tool decay. Perfectly useless otherwise.",
+    "author": "core:jules",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "place_in_house", "sell"],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_house_comfort",
+    "path_qol_upgrade",
+    "craft_achievement_relic",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": 0.5,
+      "if": "player.is_rested == 1"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_sleep",
+      "do": [
+        {
+          "act": "stall_tool",
+          "pause_battery": 1,
+          "pause_durability": 1
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/bone_sconce_wick_2a5c",
+      "price": {
+        "devices/tinker_slag_sconce_5ae8": 1,
+        "blocks/flint_shale_6493": 25
+      },
+      "unlock_if": "shared.house_bell_ringing == 1.0 and player.max_depth >= 150"
+    }
+  ],
+  "offline": "none"
+}

@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Umber Mortar Automaton Sponge",
+    "description": "A wind-up clay laborer that diligently siphons liquids from the block it sits on. Decays 5x faster when left running on dry ground.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "equip_tool", "place_on_tile", "sell"],
+  "tags": ["tool", "bucket", "automaton", "disposable", "solves_fluid_flooding", "path_hired_laborer"],
+  "stats": {
+    "tool_type": "BUCKET",
+    "tool_tier": 0,
+    "base_dps": 20.0,
+    "charge_max_sec": 1800.0,
+    "durability_max": 300.0,
+    "is_rechargeable": 0,
+    "base_value": 50.0
+  },
+  "vars": {
+    "charge_left": 1800.0,
+    "durability_left": 300.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "self.charge_left > 0.0 and tile.fluid_level > 0.0",
+      "do": [
+        {"act": "modify_fluid", "target": "self_tile", "fluid_type": "NONE", "delta_level": "-1.0"},
+        {"act": "var_add", "var": "self.charge_left", "by": "-1.0"},
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "self.charge_left > 0.0 and tile.fluid_level == 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": "-5.0"},
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/dirt": 100}
+    }
+  ],
+  "offline": "coarse"
+}

@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Crucible Cinderslag",
+    "description": "A dense, heat-retaining stratum forged by the ancient smith-lords of the Under-Sun Manifold. Essential for maintaining thermal drills and crucible transmutation rigs.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "theme_tectonic_crucible",
+    "block",
+    "world_block",
+    "ore",
+    "slag",
+    "heat"
+  ],
+  "stats": {
+    "base_hp": 60.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 400,
+    "l_step": 1000,
+    "spawn_prob": 0.01,
+    "clump_xy": 6.0,
+    "pipe_z": 6.0,
+    "priority_rank": 50,
+    "z_max": 650,
+    "value_base": 15.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none",
+  "biome_weights": {
+    "biomes/standard_crust": 1.0
+  }
+}

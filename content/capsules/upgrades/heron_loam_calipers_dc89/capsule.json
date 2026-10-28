@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Heron-Loam Auto-Calipers",
+    "description": "A set of sturdy calipers. Unlocks HUD depth calipers, allowing players to pause auto-tools exactly on impassable strict-locked hazards like water before burning durability. Needs to be installed to take effect.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "heron",
+    "loam",
+    "hud",
+    "calipers",
+    "solves_zero_damage_stall",
+    "path_qol_upgrade"
+  ],
+  "stats": {
+    "base_value": 400.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": "1.0"
+        },
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_depth_calipers",
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "on": "on_zero_damage_stall",
+      "if": "self.installed > 0.0 and ctx.is_direct_tap == 0",
+      "do": [
+        {
+          "act": "stall_tool",
+          "pause_battery": true,
+          "pause_durability": true
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/lark_newt_rivet_ore_a337": 50
+      },
+      "unlock_if": "player.max_depth >= 150"
+    }
+  ],
+  "offline": "exact"
+}

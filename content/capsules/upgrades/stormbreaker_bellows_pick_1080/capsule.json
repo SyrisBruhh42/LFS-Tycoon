@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Stormbreaker Bellows Pick",
+    "description": "A whimsical core-metallurgy tool pioneered by The Forge Squad of the Enclave of the 16. Integrated bellows keep its dense anvilstone head cooled with subterranean air, halving durability drain. However, the delicate captured-lightning geode grounding rod is stressed by dangerous strata, emitting alerts on hazard tiles.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_tool_wear",
+    "path_tool_builtin",
+    "craft_skill_mastery",
+    "logic_whimsical",
+    "theme_enclave_first_forge",
+    "skill_bracket",
+    "bracket_4",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 3,
+    "base_dps": 120.0,
+    "base_value": 350.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": 0.5
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_damage_dealt",
+      "do": [
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "hazard_warning",
+          "if": "tile.is_hazard == 1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "books/lithic_choir_geomancy_grimoire_0954": 1,
+        "blocks/anvilstone_02a1": 45
+      },
+      "unlock_if": "player.max_depth >= 330.0"
+    }
+  ],
+  "offline": "none"
+}

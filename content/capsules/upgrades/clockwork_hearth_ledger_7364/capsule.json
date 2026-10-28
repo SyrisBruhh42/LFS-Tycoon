@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Hearth Ledger",
+    "description": "A heavy, brass-bound tome issued by The Perpetual Clockwork Deep-Bore Syndicate. Its thick parchment pages hold meticulous records of rivet ore veins. Penned by a reclusive Vitriol Alchemist, simply carrying or displaying this ledger sharpens your geological intuition, granting a +25% luck bonus to mining yields.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "solves_ore_hunting",
+    "path_skill_book",
+    "craft_achievement_relic",
+    "logic_canonical",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_assayers",
+    "hearth"
+  ],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "value": 1.25
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "if": "roll(0.15)",
+      "do": [
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_chalk_lines",
+          "enabled": 1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/vitriol_alchemist_4814",
+      "price": {
+        "consumables/wardbreaker_pewter_battery_a050": 1,
+        "blocks/lark_newt_rivet_ore_a337": 120
+      },
+      "unlock_if": "player.max_depth >= 40.0 and shared.quarry_resonance_charge >= 50.0"
+    }
+  ],
+  "offline": "none"
+}

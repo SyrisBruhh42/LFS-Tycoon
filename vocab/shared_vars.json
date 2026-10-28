@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "shared_vars": {
+    "quarry_resonance_charge": {
+      "default": 0.0,
+      "min": 0.0,
+      "max": 1000.0,
+      "description": "Accumulated seismic resonance across the active quarry sheet."
+    },
+    "house_bell_ringing": {
+      "default": 0.0,
+      "min": 0.0,
+      "max": 1.0,
+      "description": "1.0 when an acoustic bell or stall alarm has been triggered in a quarry."
+    },
+    "global_cleave_bonus_pct": {
+      "default": 0.0,
+      "min": 0.0,
+      "max": 1.0,
+      "description": "Passive overkill cleave fraction learned from skill books or relics."
+    },
+    "active_buff_speed_mult": {
+      "default": 1.0,
+      "min": 0.2,
+      "max": 5.0,
+      "description": "Multiplier to manual mining speed from food, sleep perks, or sickness."
+    },
+    "active_drunk_drift_px": {
+      "default": 0.0,
+      "min": 0.0,
+      "max": 128.0,
+      "description": "Amplitude in pixels of wine intoxication touch drift."
+    }
+  }
+}

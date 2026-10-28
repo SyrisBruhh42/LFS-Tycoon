@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Salt Scaffold Stencil",
+    "description": "A refined salt stencil that permanently enhances your mining speed on backfilled tiles (scaffolding). Must be carried in your pack or placed in your house to work.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_backfill_scaffolding",
+    "path_qol_upgrade",
+    "salt"
+  ],
+  "stats": {
+    "base_value": 350.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "tile.depth < tile.max_depth_reached"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 350
+      }
+    }
+  ]
+}

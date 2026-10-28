@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bismuth Core-Borer",
+    "description": "A dense, wind-up bismuth drill designed specifically for breaching obsidian and other hazards. Highly effective against resistant clusters, but its heavy, brittle frame wears down quickly under the stress of hazard exposure.",
+    "author": "jules",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "equip_tool", "place_on_tile", "sell", "catalyst"],
+  "tags": ["tool", "pickaxe", "automine", "solves_hazard_clearing", "path_vendor_disposable"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 2,
+    "base_dps": 8.0,
+    "charge_max_sec": 3600.0,
+    "durability_max": 400.0,
+    "is_rechargeable": 0,
+    "base_value": 125.0
+  },
+  "vars": {
+    "charge_left": 3600.0,
+    "durability_left": 400.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "value": 4.0,
+      "if": "tile.is_hazard == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "self.charge_left > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": "-1.0"},
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    },
+    {
+      "on": "on_hazard_expose",
+      "do": [
+        {"act": "var_add", "var": "self.durability_left", "by": "-20.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 300}
+    }
+  ],
+  "offline": "coarse"
+}

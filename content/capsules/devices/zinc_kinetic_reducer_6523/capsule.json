@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Zinc Kinetic Reducer",
+    "description": "An enchanted device containing zinc and gravel that can be socketed into a tool. When a block is broken with excess force, it channels the overkill energy into a shockwave, damaging the shallowest nearby block. Highly effective but only lasts for 50 strikes.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "enchantment", "gravel", "solves_overkill_waste", "path_npc_enchanter"],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "charges": 50.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {"act": "deal_damage", "target": "shallowest_neighbor_4", "amount": "tool.overkill_damage * 0.8", "if": "tool.overkill_damage > 0.0 and ctx.is_direct_tap == 1"},
+        {"act": "var_add", "var": "self.charges", "by": "-1.0", "if": "tool.overkill_damage > 0.0 and ctx.is_direct_tap == 1"},
+        {"act": "destroy_self", "if": "self.charges <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/pewter_quill_newt_3730",
+      "price": {"blocks/copper": 50}
+    }
+  ],
+  "offline": "none"
+}

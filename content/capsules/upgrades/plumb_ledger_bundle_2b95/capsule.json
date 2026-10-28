@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Plumb Vendor Ledger Bundle",
+    "description": "An expensive ledger package that grants massive vendor depth discounts while equipped. Bound by charges: the ledger pages tear after a set amount of block breaks.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "solves_vendor_access",
+    "path_bundle_package"
+  ],
+  "stats": {
+    "base_value": 150.0
+  },
+  "vars": {
+    "is_active": 0.0,
+    "charges_left": 200.0
+  },
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "value": "20.0",
+      "if": "self.is_active == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": "1.0"}
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": "0.0"}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {"act": "var_add", "var": "self.charges_left", "by": "-1.0", "if": "self.is_active == 1.0"},
+        {"act": "destroy_self", "if": "self.charges_left == 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 150
+      }
+    }
+  ],
+  "offline": "none"
+}

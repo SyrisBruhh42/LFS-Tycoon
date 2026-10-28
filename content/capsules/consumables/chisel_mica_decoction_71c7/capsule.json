@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Stormbreaker's Chisel-Mica Decoction",
+    "description": "Brewed in the Calcified Foundry by The Sovereign Ward-Breakers of the Obsidian Seal, this pungent tincture of Stormbreaker Geode shards and Chisel-Mica temporarily attunes a miner's strikes to a siege frequency. When a block is broken, any excessive force shatters outward into the surrounding stone. Eases overkill waste.",
+    "author": "jules:session",
+    "rarity": "uncommon",
+    "era": "late"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "solves_overkill_waste",
+    "path_profession_perk",
+    "craft_alchemy_potion",
+    "logic_canonical",
+    "theme_obsidian_wardbreaker",
+    "bracket_2",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 110.0,
+    "duration_sec": 600.0,
+    "splash_fraction": 0.5
+  },
+  "vars": {
+    "active_sec_left": 0.0,
+    "is_active": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec"
+        },
+        {
+          "act": "var_set",
+          "var": "self.is_active",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.active_sec_left",
+          "by": "-1.0",
+          "if": "self.is_active == 1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.is_active == 1.0 and self.active_sec_left <= 0.0"
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": "tool.overkill_damage * self.stats.splash_fraction",
+          "if": "self.is_active == 1.0 and tool.overkill_damage > 0.0 and ctx.is_secondary_damage == 0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "tools/enclave_rivet_sigil_ed7e": 1,
+        "blocks/stormbreaker_geode_5e99": 150
+      },
+      "unlock_if": "player.max_depth >= 198.0 and player.max_depth <= 330.0 and shared.quarry_resonance_charge > 50.0"
+    }
+  ],
+  "offline": "none"
+}

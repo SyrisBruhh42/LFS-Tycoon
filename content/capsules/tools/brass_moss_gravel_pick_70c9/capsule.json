@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mossy Brass Gravel-Pick",
+    "description": "An early, moss-covered brass tool. When swung into submerged gravel or wet stone, it sifts out vendor-ready copper bits instead of normal materials, serving as an early economic lifeline.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "equip_tool", "sell"],
+  "tags": ["tool", "pickaxe", "brass", "moss", "gravel", "solves_vendor_access", "path_tool_builtin"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 12.0,
+    "durability_max": 300.0,
+    "is_rechargeable": 1,
+    "base_value": 30.0
+  },
+  "vars": {
+    "durability_left": 300.0
+  },
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "if": "tile.fluid_level > 0",
+      "value": "0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "tile.fluid_level > 0",
+      "do": [
+        {"act": "spawn_item", "item": "blocks/copper", "qty": "1", "route": "backpack"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/dirt": 120}
+    }
+  ],
+  "offline": "none"
+}

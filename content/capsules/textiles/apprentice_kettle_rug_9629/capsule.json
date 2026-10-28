@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Apprentice Kettle Rug",
+    "description": "An early-tier apprentice's rug to place in your house. Resting upon it grants a modest buff to luck while mining well-rested, but the loosely spun fibers slowly fray after breaking 50 blocks in that state.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "textile",
+    "kettle",
+    "solves_house_comfort",
+    "path_field_textile"
+  ],
+  "stats": {
+    "base_value": 30.0,
+    "wear_max": 50.0
+  },
+  "vars": {
+    "wear": 0.0,
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "if": "self.installed > 0.0 and player.is_rested > 0.0",
+      "value": "0.1"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_enter_house",
+      "if": "self.installed == 0.0",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "if": "self.installed > 0.0 and player.is_rested > 0.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.wear",
+          "by": "1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.wear >= self.stats.wear_max"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/dirt": 50
+      }
+    }
+  ],
+  "offline": "none"
+}

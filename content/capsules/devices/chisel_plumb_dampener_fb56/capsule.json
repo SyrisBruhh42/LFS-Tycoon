@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Chisel-Plumb Dampener",
+    "description": "An enchanted sigil set in plumb that sockets into your tool. It guarantees splash damage never breaks tiles, at the cost of a flat speed reduction.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["socket_in_tool", "sell"],
+  "tags": ["device", "magic", "rune", "solves_unwanted_splash", "path_npc_enchanter"],
+  "stats": {
+    "base_value": 250.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "value": 1.0,
+      "if": "ctx.is_direct_tap == 0.0"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": 1.2
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/brass_tinkerer_c020",
+      "price": {"blocks/copper": 1000},
+      "unlock_if": "tool.tier >= 4.0"
+    }
+  ],
+  "offline": "none"
+}

@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Flint Sigil",
+    "description": "An enchanter-forged stone that channels latent geode energy. Socketed onto a tool, it reduces durability drain by 50% until its internal charge of 500 swings is depleted, causing the sigil to crumble.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_tool_wear",
+    "path_npc_enchanter"
+  ],
+  "stats": {
+    "base_value": 25.0
+  },
+  "vars": {
+    "is_active": 0.0,
+    "charge_left": 500.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": "0.5",
+      "if": "self.is_active == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_active",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_active",
+          "value": "0.0"
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.charge_left",
+          "by": "-1.0",
+          "if": "self.is_active == 1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.charge_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/pewter_quill_newt_3730",
+      "price": {
+        "blocks/copper": 35
+      }
+    }
+  ],
+  "offline": "exact"
+}

@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quill Crucible Charm",
+    "description": "An enchanted crucible charm cast by the blind monastic archivists of Quill Hollow. Forged in the Drowned Steam-Baronies of Rivet & Slag where bedrock is frozen acoustic music. Resonates with zero-damage stalls and bell harmonics to shatter equal-depth contours, bending space to route mined ore straight to your paired chest.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_haul_capacity",
+    "path_magic_charm",
+    "craft_tinker_part",
+    "logic_canonical",
+    "theme_lithic_choir",
+    "bracket_2",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "unlock_depth": 45
+  },
+  "vars": {
+    "times_rung": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.5,
+      "if": "tool.tier <= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {"act": "emit_alert", "channel": "house_bell", "tag": "stall_impassable"},
+        {"act": "stall_tool", "pause_battery": 0.0, "pause_durability": 1.0},
+        {"act": "var_add", "var": "shared.house_bell_ringing", "by": "1.0"},
+        {"act": "var_add", "var": "self.times_rung", "by": "1.0"}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "if": "tile.depth >= 150.0",
+      "do": [
+        {"act": "spawn_item", "item": "blocks/quill_hollow_fa6d", "qty": 1.0, "route": "paired_chest"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/quill_peddler_0c07",
+      "price": {
+        "tools/vitriol_hollow_geomancy_pick_54d7": 1,
+        "blocks/quill_hollow_fa6d": 45
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "exact"
+}

@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Iron-Riveted Scaffold Charm",
+    "description": "Placed on a square to ease scaffolding. When you backfill dirt or stone on this tile, it speeds up mining on this tile to help you shape scaffolding. The iron rivets eventually rust and snap after 50 backfills.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "place_on_tile", "sell"],
+  "tags": ["device", "gadget", "solves_backfill_scaffolding", "path_placeable_device", "iron", "rivet", "thrifty"],
+  "stats": {
+    "base_value": 30.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "tile.covered_by_self and tile.depth < tile.max_depth_reached",
+      "value": "0.75"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_backfill",
+      "if": "tile.covered_by_self",
+      "do": [
+        {"act": "var_add", "var": "self.wear", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.wear >= 50.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/dirt": 100}
+    }
+  ],
+  "offline": "exact"
+}

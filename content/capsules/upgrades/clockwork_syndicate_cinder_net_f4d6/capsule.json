@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Syndicate Cinder Net",
+    "description": "A fine-meshed capture net forged from Pewter Gravel and infused with cinder mortar by the Perpetual Clockwork Deep-Bore Syndicate. Designed by the sunken horologists to ensnare elusive quarry in the deep strata. When installed in your house, the resonant frequencies it emits significantly boosts your chances of catching stray cats for a limited time after you wash.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "sell",
+    "place_in_house"
+  ],
+  "tags": [
+    "upgrade",
+    "solves_event_helpers",
+    "path_consumable_buff",
+    "craft_homestead_station",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "duration_sec": 300.0,
+    "cat_lure_bonus_add": 0.05
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "if": "self.active_sec_left > 0.0 and (tile.depth >= 500 or tile.tier >= 1)",
+      "value": 0.05
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_wash",
+      "do": [
+        {"act": "var_set", "var": "self.active_sec_left", "value": 300.0}
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.active_sec_left",
+          "by": -1.0,
+          "if": "self.active_sec_left > 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_wick_vendor_8db7",
+      "price": {
+        "books/overkill_munchkin_grimoire_be82": 1,
+        "blocks/pewter_gravel_d53e": 20
+      },
+      "unlock_depth": 15
+    }
+  ],
+  "offline": "none"
+}

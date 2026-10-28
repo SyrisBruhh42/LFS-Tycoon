@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lithic Salt Ledger",
+    "description": "An arcane resonance sigil of the Infinite Scriptorium of the Lithic Choir, meticulously tuned by the Deep Bore Horologist. Forged from pewter gravel and salt, this socketable ledger uses zero-damage bell harmonics to shatter equal-depth contours, increasing the market value of excavated materials before its charge depletes.",
+    "author": "jules",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_market_saturation",
+    "path_skill_book",
+    "craft_skyrim_enchant",
+    "logic_plausible",
+    "theme_lithic_choir",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 150.0
+  },
+  "vars": {
+    "charge_left": 250.0
+  },
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "add",
+      "value": 0.20
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "if": "ctx.is_secondary_damage == 0",
+      "do": [
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "harmonic_shatter"
+        },
+        {
+          "act": "deal_damage",
+          "target": "row",
+          "amount": 15.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "upgrades/iron_stormbreaker_charm_a589": 1,
+        "blocks/pewter_gravel_d53e": 55
+      },
+      "unlock_if": "player.max_depth >= 45"
+    }
+  ],
+  "offline": "exact"
+}

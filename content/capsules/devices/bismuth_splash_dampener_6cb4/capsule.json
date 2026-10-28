@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bismuth Splash Dampener",
+    "description": "A magical bismuth trinket that limits secondary damage from tools. When carried or placed in the house, it reduces the incoming damage of splash strikes so they never break the tile.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_unwanted_splash",
+    "path_magic_charm"
+  ],
+  "stats": {
+    "base_value": 250.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "value": "1.0",
+      "if": "ctx.is_secondary_damage == 1.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 250
+      }
+    }
+  ]
+}

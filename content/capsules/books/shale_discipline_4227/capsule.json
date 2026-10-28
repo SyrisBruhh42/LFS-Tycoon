@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Shale Discipline",
+    "description": "A meticulous, archaic manual on shale excavation. Trading speed for precision, it redirects 50% of overkill impact to the shallowest adjacent strata, but the deliberate technique permanently makes breaking blocks take 10% longer.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["book", "skill_book", "shale", "solves_overkill_waste", "path_skill_book"],
+  "stats": {
+    "base_value": 450.0,
+    "splash_pct": 0.5
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "add",
+      "value": 0.1,
+      "if": "self.is_learned >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {"act": "var_set", "var": "self.is_learned", "value": 1.0},
+        {"act": "var_add", "var": "shared.global_cleave_bonus_pct", "by": 0.5}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "if": "self.is_learned >= 1.0 and tool.overkill_damage > 0.0 and ctx.is_direct_tap == 1",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": "tool.overkill_damage * self.stats.splash_pct"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {"blocks/copper": 300},
+      "unlock_if": "tool.tier >= 2.0"
+    }
+  ],
+  "offline": "none"
+}

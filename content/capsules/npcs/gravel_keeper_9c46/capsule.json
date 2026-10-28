@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Gravel Keeper",
+    "description": "A stoic vendor found in the dusty upper strata. They specialize in basic digging supplies and gravel-based solutions.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "npc_vendor"
+  ],
+  "tags": [
+    "world_npc",
+    "npc",
+    "vendor",
+    "gravel"
+  ],
+  "stats": {
+    "unlock_depth": 10.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}

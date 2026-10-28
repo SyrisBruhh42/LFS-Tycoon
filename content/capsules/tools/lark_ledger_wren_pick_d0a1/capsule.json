@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lark's Ledger-Wren Pick",
+    "description": "An intricately forged clockwork pickaxe shaped like a wren. Instead of breaking blocks for profit, striking a deep hazard block with it extracts pure copper from the earth's ledger to fund vendor purchases. It completely annihilates all normal block yields, serving only this narrow economic magic.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "equip_tool", "sell"],
+  "tags": ["tool", "pickaxe", "ledger", "clockwork", "solves_vendor_access", "path_vendor_disposable"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 4,
+    "base_dps": 40.0,
+    "base_value": 900.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "value": "0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "tile.is_hazard == 1",
+      "do": [
+        {"act": "spawn_item", "item": "blocks/copper", "qty": "50", "route": "backpack"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 5000},
+      "unlock_if": "player.max_depth >= 50"
+    }
+  ],
+  "offline": "none"
+}

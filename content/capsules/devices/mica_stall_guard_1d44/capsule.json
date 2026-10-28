@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mica Stall Guard",
+    "description": "Placed on a tile. When an auto-tool strikes an impassable strict-locked block or fluid, the guard emits a warning and stalls the tool, pausing its wear. Breaks after 10 uses.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "place_on_tile", "sell"],
+  "tags": ["device", "solves_zero_damage_stall", "path_placeable_device"],
+  "stats": {},
+  "vars": {
+    "uses_left": 10.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {"act": "stall_tool", "pause_battery": true, "pause_durability": true, "if": "tile.is_strict_locked == 1.0 or tile.fluid_level > 0.0"},
+        {"act": "emit_alert", "channel": "house_bell", "tag": "stall_impassable", "if": "tile.is_strict_locked == 1.0 or tile.fluid_level > 0.0"},
+        {"act": "var_add", "var": "self.uses_left", "by": "-1.0", "if": "tile.is_strict_locked == 1.0 or tile.fluid_level > 0.0"},
+        {"act": "destroy_self", "if": "self.uses_left <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/brass_tinkerer_c020",
+      "price": {"blocks/copper": 100}
+    }
+  ]
+}

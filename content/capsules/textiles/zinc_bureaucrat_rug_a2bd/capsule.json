@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Zinc-Threaded Bureaucrat's Rug",
+    "description": "An impossibly bureaucratic, zinc-threaded rug commissioned by The Paradox Symposium of St. Munchkin. A sprawling tapestry mapping out a literal loophole in the laws of intoxication. By staring at the mesmerizing zinc patterns before sleeping, your drunk delirium transforms into blistering mining efficiency! However, the paradox takes its toll, fraying the rug slightly each time.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "textile",
+    "solves_house_comfort",
+    "path_field_textile",
+    "craft_homestead_station",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_2",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "wear_max": 200.0,
+    "base_dps": 40.0
+  },
+  "vars": {
+    "wear": 0.0,
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "add",
+      "if": "self.installed > 0.0 and player.is_rested > 0.0 and player.drunk_seconds > 0.0 and self.wear < 200.0",
+      "value": 40.0
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_enter_house",
+      "if": "self.installed == 0.0",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "on": "on_sleep",
+      "if": "self.installed > 0.0 and player.drunk_seconds > 0.0 and self.wear < 200.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.wear",
+          "by": 1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/bone_sconce_wick_2a5c",
+      "price": {
+        "consumables/alkahest_decoction_dae2": 1,
+        "blocks/cinder_mortar_17bb": 10
+      },
+      "unlock_if": "player.max_depth >= 198"
+    }
+  ],
+  "offline": "exact"
+}

@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Salt Assayer",
+    "description": "A pocket-sized salt testing kit that marginally increases the market value of your sold ores by proving their purity. Its delicate reagents are exhausted after 150 market sales.",
+    "author": "jules:autonomous",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_market_saturation",
+    "path_qol_upgrade"
+  ],
+  "stats": {
+    "base_value": 40.0
+  },
+  "vars": {
+    "charge_left": 150.0
+  },
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "add",
+      "if": "self.charge_left > 0.0",
+      "value": "0.1"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_market_sell",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.charge_left",
+          "by": "-1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.charge_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {
+        "blocks/copper": 900
+      },
+      "unlock_if": "player.tool_tier >= 4.0"
+    }
+  ],
+  "offline": "none"
+}

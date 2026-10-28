@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ember-Umber Survey Kit",
+    "description": "A very expensive, unlock-gated surveyor's package encased in umber and ember tones. When read, it permanently unlocks the HUD chalk lines and target loupe for precise excavation planning. However, its complex optics grant a precision luck bonus only when venturing into uneven strata or the deep dark where depth exceeds 30.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["upgrade", "qol", "solves_depth_awareness", "path_bundle_package"],
+  "stats": {
+    "base_value": 145.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "if": "self.installed > 0.0 and (tile.depth > 30 or tile.hp != tile.max_hp)",
+      "value": "0.1"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"},
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true},
+        {"act": "set_ui_flag", "flag": "hud_target_loupe", "enabled": true}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 145},
+      "unlock_if": "player.max_depth >= 50"
+    }
+  ],
+  "offline": "none"
+}

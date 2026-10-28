@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lithic Choir Apprentice Manual",
+    "description": "A quartz-bound tome etched by the blind monastic archivists of Quill Hollow. The Deep Bore Horologist whispers that they discovered bedrock to be frozen acoustic music. Reading its rhythmic verses reduces the slowdown of using the wrong tool, easing the punishment of clumsy strikes through clever harmonics against the flint shale.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "solves_wrong_tool_penalty",
+    "path_skill_book",
+    "craft_skill_mastery",
+    "logic_whimsical",
+    "theme_lithic_choir",
+    "skill_bracket",
+    "bracket_3",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "self.is_learned >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.is_learned", "value": 1.0, "if": "self.is_learned == 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "tools/vitriol_hollow_geomancy_pick_54d7": 1,
+        "blocks/flint_shale_6493": 40
+      },
+      "unlock_if": "player.max_depth >= 330 and shared.house_bell_ringing >= 0.0"
+    }
+  ],
+  "offline": "none"
+}

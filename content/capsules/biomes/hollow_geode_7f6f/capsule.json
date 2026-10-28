@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hollow Geode",
+    "description": "A crystalline subterranean pocket rich in fractures and echoes.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "world_biome",
+    "hollow",
+    "crystalline"
+  ],
+  "stats": {
+    "z_min": 80,
+    "z_max": 450,
+    "biome_weight": 0.25
+  },
+  "biome_weights": {
+    "blocks/hollow_stone_b96c": 1.5,
+    "blocks/stone": 0.5,
+    "blocks/dirt": 0.2,
+    "blocks/copper": 0.4,
+    "blocks/water_aquifer": 0.3
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}

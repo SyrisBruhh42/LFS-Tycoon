@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lantern Ledger Enchantment",
+    "description": "An enchanted ledger page socketed into your tool. When well rested, strikes against impassable surfaces pause durability and battery drain.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "solves_zero_damage_stall", "path_npc_enchanter"],
+  "stats": {
+    "base_value": 2000.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "stall_impassable",
+          "if": "player.is_rested == 1.0"
+        },
+        {
+          "act": "stall_tool",
+          "pause_battery": true,
+          "pause_durability": true,
+          "if": "player.is_rested == 1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 950
+      },
+      "unlock_if": "tool.tier >= 4.0"
+    }
+  ],
+  "offline": "none"
+}

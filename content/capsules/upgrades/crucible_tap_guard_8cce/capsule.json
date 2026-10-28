@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Crucible Tap Guard",
+    "description": "A specialized guard crafted from a sturdy crucible. When carried or placed in your house permanently, it limits the drunk drift effect of a clumsy strike. It prevents you from tapping out of bounds on a small screen.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "crucible",
+    "solves_tap_misfires",
+    "path_profession_perk"
+  ],
+  "stats": {
+    "base_value": 100.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "drunk_drift_px",
+      "phase": "mul",
+      "value": "0.25"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {
+        "blocks/copper": 100
+      }
+    }
+  ],
+  "offline": "none"
+}

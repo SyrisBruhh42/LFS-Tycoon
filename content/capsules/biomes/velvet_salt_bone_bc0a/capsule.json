@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Velvet Salt Bone Strata",
+    "description": "A pale, ossified geological lens coated in a delicate layer of salt velvet. The fine airborne salt particles coat the eyes, adding a slight tap-drift when mining, but offering unique calcified deposits.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "biome",
+    "world_biome",
+    "bone",
+    "salt",
+    "velvet",
+    "limiter"
+  ],
+  "stats": {
+    "z_min": 50,
+    "z_max": 400,
+    "weight": 0.25
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/dirt": 0.5,
+    "blocks/obsidian_hazard": 0.2
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "drunk_drift_px",
+      "phase": "add",
+      "value": "1.5"
+    },
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "value": "0.85"
+    }
+  ],
+  "reactions": [],
+  "offline": "none"
+}

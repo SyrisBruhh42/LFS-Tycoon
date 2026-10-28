@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Vitriol Rune",
+    "description": "A vitriol-etched siege sigil crafted in the Obsidian Resonant Crucible by gravel keepers. Sovereign Ward-Breakers of the Obsidian Seal use these to channel overkill force from pewter gravel extractions into cracking neighboring strata, though it adds a slight delay to each swing.",
+    "author": "core:wardbreaker",
+    "rarity": "epic"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": [
+    "craft_skyrim_enchant",
+    "solves_overkill_waste",
+    "path_skill_book",
+    "logic_plausible",
+    "theme_obsidian_wardbreaker",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 450.0
+  },
+  "vars": {
+    "charge_left": 100.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": 1.15
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "tool.overkill_damage > 0.0",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "random_neighbor_4",
+          "amount": "tool.overkill_damage * 0.25"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "devices/obsidian_resonant_crucible_d5d5": 1,
+        "blocks/pewter_gravel_d53e": 15
+      },
+      "unlock_if": "player.max_depth >= 150"
+    }
+  ]
+}

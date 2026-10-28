@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin's Clockwork Siphon-Rig",
+    "description": "A hilarious over-engineered siphon rig built by The Paradox Symposium of St. Munchkin. Fueled by cinder and crucible slag, it strictly obeys a literal loophole: while placed on a tile, it will only drink fluid if it thinks it's a cat. It hums and rapidly lowers fluid levels.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_fluid_flooding",
+    "path_placeable_device",
+    "craft_clockwork_automaton",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_2",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "durability_max": 300.0,
+    "base_dps": 45.0
+  },
+  "vars": {
+    "durability_left": 300.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "value": 5.0,
+      "if": "tile.depth >= 500.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "do": [
+        {"act": "modify_fluid", "target": "self_tile", "fluid_type": "NONE", "delta_level": -1.0, "if": "tile.fluid_level > 0.0 and tile.tier >= 1.0"},
+        {"act": "var_add", "var": "self.durability_left", "by": -10.0, "if": "tile.fluid_level > 0.0 and tile.tier >= 1.0"},
+        {"act": "destroy_self", "if": "self.durability_left <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_wick_vendor_8db7",
+      "price": {
+        "tools/lantern_siphon_bucket_13d3": 1,
+        "blocks/crucible_slag_5dfc": 15
+      },
+      "unlock_if": "player.max_depth >= 200.0 and player.max_depth <= 330.0"
+    }
+  ],
+  "offline": "coarse"
+}

@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Clockwork Net",
+    "description": "An early-tier apprentice capture net from The Perpetual Clockwork Deep-Bore Syndicate. Its steam-barony brass and pewter ledger construction is rudimentary, but it emits a high-pitched steam whine that helps draw out hidden strays. Often used near blocks of pewter_gravel_d53e to increase resonance.",
+    "author": "core:skyrim_arcane_enchanting",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "equip_tool"],
+  "tags": [
+    "tool",
+    "starter",
+    "solves_event_helpers",
+    "path_tool_builtin",
+    "craft_skyrim_enchant",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "tool_type": "CAPTURE_NET",
+    "tool_tier": 2,
+    "base_dps": 15.0,
+    "durability_max": 150.0,
+    "is_rechargeable": 1,
+    "base_value": 30.0
+  },
+  "vars": {
+    "durability_left": 150.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "value": 0.05
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "pewter_chime"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_wick_vendor_8db7",
+      "price": {
+        "upgrades/ochre_forge_milestone_relic_9ed9": 1,
+        "blocks/pewter_gravel_d53e": 5
+      },
+      "qty": 1,
+      "unlock_if": "player.max_depth >= 150"
+    }
+  ],
+  "offline": "none"
+}

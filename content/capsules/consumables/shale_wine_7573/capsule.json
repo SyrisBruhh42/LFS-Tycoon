@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Shale Wine",
+    "description": "A pungent wine fermented from shale dust. It sharpens the senses, multiplying ore yield and gem luck, but makes the hands shake with Drunk Touch Drift.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "consume", "sell"],
+  "tags": ["consumable", "drink", "wine", "shale", "drunk_drift", "solves_ore_hunting", "path_consumable_buff"],
+  "stats": {
+    "base_value": 30.0,
+    "duration_sec": 120.0,
+    "yield_bonus": 1.5,
+    "drift_px": 24.0
+  },
+  "vars": {
+    "active_sec_left": -1.0
+  },
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.yield_bonus"
+    },
+    {
+      "stat": "luck_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": 1.5
+    },
+    {
+      "stat": "drunk_drift_px",
+      "phase": "add",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.drift_px"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.active_sec_left", "value": "self.stats.duration_sec"}
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "do": [
+        {"act": "var_add", "var": "self.active_sec_left", "by": -1.0, "if": "self.active_sec_left > 0.0"},
+        {"act": "destroy_self", "if": "self.active_sec_left == 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 150}
+    }
+  ]
+}

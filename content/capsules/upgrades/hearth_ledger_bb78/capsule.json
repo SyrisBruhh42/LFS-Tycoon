@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hearth-Rivet Vendor Ledger",
+    "description": "A disposable stamped ledger that grants a depth discount for vendors. It wears out after 100 sales.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_vendor_access",
+    "path_qol_upgrade"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "installed": 0.0,
+    "durability_left": 100.0
+  },
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "value": "15.0",
+      "if": "self.installed > 0.0 and self.durability_left > 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    },
+    {
+      "on": "on_market_sell",
+      "do": [
+        {"act": "var_add", "var": "self.durability_left", "by": "-1.0", "if": "self.installed > 0.0 and self.durability_left > 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 30}
+    }
+  ],
+  "offline": "none"
+}

@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter-Bound Quartz Rune",
+    "description": "An enchanted quartz sigil shaped like a kettle, socketed into any tool. When you stall on a hazard like obsidian, the rune boils it into brittle stone. It shatters and vanishes after 4 uses.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "rune",
+    "quartz",
+    "pewter",
+    "kettle",
+    "disposable",
+    "solves_hazard_clearing",
+    "path_npc_enchanter"
+  ],
+  "stats": {
+    "base_value": 350.0,
+    "wear_max": 4.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "if": "tile.is_hazard == 1",
+      "do": [
+        {"act": "transform_tile", "target": "self_tile", "block": "blocks/stone"},
+        {"act": "var_add", "var": "self.wear", "by": "1.0"},
+        {"act": "emit_alert", "channel": "hud_chime", "tag": "hazard_cleared"},
+        {"act": "destroy_self", "if": "self.wear >= self.stats.wear_max"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 350
+      },
+      "unlock_if": "player.max_depth >= 50"
+    }
+  ],
+  "offline": "exact"
+}

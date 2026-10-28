@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Wick Owl Newt Pick",
+    "description": "A peculiar newt-bone pick that secretes moisture when striking stone. The wet handle makes your hands slip erratically, but the constant dampness helps keep the grime from taking root.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "newt",
+    "owl",
+    "wick",
+    "solves_grime_cleanliness",
+    "path_tool_builtin"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 0,
+    "base_dps": 12.0,
+    "durability_max": 300.0,
+    "is_rechargeable": 1,
+    "base_value": 25.0
+  },
+  "vars": {
+    "durability_left": 300.0
+  },
+  "modifiers": [
+    {
+      "stat": "drunk_drift_px",
+      "phase": "add",
+      "value": "15.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 25
+      }
+    }
+  ],
+  "offline": "coarse"
+}

@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Wardbreaker Automaton",
+    "description": "An autonomous quarry rig deployed by The Sovereign Ward-Breakers of the Obsidian Seal to tame strict-locked subterranean hazards. It routes shattered geode fragments straight into a paired chest and acts as a localized blast-shield against dangerous plasma discharges, granted exclusively by the Deep-Bore Horologist. Drains charge on each block break.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_haul_capacity",
+    "path_profession_perk",
+    "craft_clockwork_automaton",
+    "logic_canonical",
+    "theme_obsidian_wardbreaker",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 450.0
+  },
+  "vars": {
+    "charge": 100.0
+  },
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.5
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.charge",
+          "by": -1.0
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.charge <= 0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "unlock_if": "player.max_depth >= 200.0",
+      "price": {
+        "blocks/stormbreaker_geode_5e99": 20,
+        "upgrades/ochre_forge_milestone_relic_9ed9": 1
+      }
+    }
+  ],
+  "offline": "coarse"
+}

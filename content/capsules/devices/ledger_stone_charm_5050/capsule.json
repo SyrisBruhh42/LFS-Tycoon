@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ledger-Stone Backfill Charm",
+    "description": "A ledger-inscribed slate trinket carried in your pack or placed in the house. Its resonant magic causes previously-mined backfill dirt to shatter 35% faster, aiding scaffolding efforts.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "ledger",
+    "solves_backfill_scaffolding",
+    "path_magic_charm"
+  ],
+  "stats": {
+    "base_value": 80.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "tile.depth < tile.max_depth_reached",
+      "value": "0.65"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/dirt": 120
+      }
+    }
+  ],
+  "offline": "none"
+}

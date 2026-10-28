@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Vitriol Lure Gadget",
+    "description": "An experimental acoustic emitter cast from volatile vitriol. Once activated in your pack or placed nearby, its piercing ringing improves your odds of luring curious cats while uncovering deep layers. The fragile materials stress easily and eventually fracture under their own vibration.",
+    "author": "jules:autonomous",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "place_on_tile", "sell"],
+  "tags": ["device", "gadget", "vitriol", "solves_event_helpers", "path_placeable_device"],
+  "stats": {
+    "base_value": 300.0,
+    "durability_max": 25.0,
+    "is_rechargeable": 0
+  },
+  "vars": {
+    "durability_left": 25.0,
+    "is_active": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "value": 0.04,
+      "if": "self.is_active == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": 1.0}
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": 0.0}
+      ]
+    },
+    {
+      "on": "on_layer_reveal",
+      "if": "self.is_active == 1.0",
+      "do": [
+        {"act": "var_add", "var": "self.durability_left", "by": -1.0}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/stone": 450},
+      "unlock_if": "tool.tier >= 2.0"
+    }
+  ]
+}

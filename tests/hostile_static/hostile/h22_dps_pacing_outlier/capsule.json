@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hostile Bracket-1 God Pickaxe",
+    "description": "Hostile test fixture violating Law L15 bracket DPS budget.",
+    "author": "crucible:s6"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "bracket_1",
+    "solves_slow_mining",
+    "path_tool_upgrade",
+    "hostile"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 999.0,
+    "durability_max": 200.0,
+    "base_value": 20.0
+  },
+  "vars": {
+    "durability_left": 200.0
+  },
+  "modifiers": [],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 25
+      }
+    }
+  ],
+  "offline": "none"
+}

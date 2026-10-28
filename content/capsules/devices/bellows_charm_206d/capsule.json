@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bellows Charm",
+    "description": "A socketable or carried magical trinket shaped like miniature bellows. When a block breaks, if there is overkill damage, it deals splash damage to adjacent tiles. Cracks and shatters after 15 uses.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_overkill_waste",
+    "path_magic_charm",
+    "bellows"
+  ],
+  "stats": {
+    "base_value": 50.0
+  },
+  "vars": {
+    "durability_left": 15.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "tool.overkill_damage > 0.0 and ctx.is_secondary_damage == 0.0",
+      "do": [
+        {"act": "deal_damage", "target": "neighbors_4", "amount": "tool.overkill_damage * 0.5"},
+        {"act": "var_add", "var": "self.durability_left", "by": "-1.0"},
+        {"act": "destroy_self", "if": "self.durability_left <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50}
+    }
+  ],
+  "offline": "exact"
+}

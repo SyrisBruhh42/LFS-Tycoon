@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Stoat-Tin Tonic",
+    "description": "A dense, metallic brew of stoat marrow and dissolved tin. Imbibing it permanently numbs the nervous system: manual tap damage drops slightly, but tools wear down significantly slower due to your softer, methodical grip.",
+    "author": "core:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "drink",
+    "tonic",
+    "stoat",
+    "tin",
+    "solves_repair_upkeep",
+    "path_consumable_buff"
+  ],
+  "stats": {
+    "base_value": 80.0,
+    "durability_drain_mul": 0.70,
+    "dps_penalty_mul": 0.85
+  },
+  "vars": {
+    "drank_once": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.drank_once > 0.0",
+      "value": "self.stats.durability_drain_mul"
+    },
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "self.drank_once > 0.0",
+      "value": "self.stats.dps_penalty_mul"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.drank_once == 0.0",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.drank_once",
+          "value": "1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 35
+      }
+    }
+  ],
+  "offline": "none"
+}

@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Vitriol Tonic",
+    "description": "A biting tonic distilled in the depths. When consumed, it severely burns away accumulation of grime, cutting grime gain by 80%, but only holds its potency while immersed in the deep strata below 500.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "drink",
+    "wine",
+    "solves_grime_cleanliness",
+    "path_consumable_buff"
+  ],
+  "stats": {
+    "base_value": 30.0,
+    "duration_sec": 600.0,
+    "grime_reduction": 0.2
+  },
+  "vars": {
+    "active_sec_left": -1.0
+  },
+  "modifiers": [
+    {
+      "stat": "grime_gain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left >= 0.0 and tile.depth >= 500.0",
+      "value": "0.2"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec"
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.active_sec_left",
+          "by": "-1.0",
+          "if": "self.active_sec_left > 0.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.active_sec_left == 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {
+        "blocks/copper": 900
+      },
+      "unlock_if": "player.tool_tier >= 4.0"
+    }
+  ],
+  "offline": "none"
+}

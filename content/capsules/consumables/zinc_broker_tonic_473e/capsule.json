@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Zinc Broker's Tonic",
+    "description": "Increases the market value of ores mined in tier 1 or deeper by +100% for 5 minutes.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "consume", "sell"],
+  "tags": ["consumable", "drink", "zinc", "solves_market_saturation", "path_consumable_buff"],
+  "stats": {
+    "duration_sec": 300.0,
+    "value_mult": 2.0
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0 and tile.tier >= 1.0",
+      "value": "self.stats.value_mult"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.active_sec_left", "value": "self.stats.duration_sec"},
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 30}
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hostile Multi-Hop Chisel Arbitrage Crate",
+    "description": "Hostile test fixture violating Law L11v2 recursive value-flow containment.",
+    "author": "crucible:s6"
+  },
+  "affordances": [
+    "carry",
+    "consume"
+  ],
+  "tags": [
+    "consumable",
+    "solves_ore_shortage",
+    "path_consumable_boost",
+    "hostile"
+  ],
+  "stats": {
+    "base_value": 2.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "tools/salt_tempered_chisel_c52e",
+          "qty": "3"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/dirt": 2
+      }
+    }
+  ],
+  "offline": "none"
+}

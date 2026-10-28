@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder-Badger's Mortar Certification",
+    "description": "A self-taught masonry guide that unlocks a permanent profession perk. By keeping this license in your inventory, backfilling deep quarries occasionally uncovers small copper chunks in the mortar, providing extra funds for vendors.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["upgrade", "profession", "masonry", "solves_vendor_access", "path_profession_perk"],
+  "stats": {
+    "base_value": 30.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_backfill",
+      "if": "tile.depth > 5",
+      "do": [
+        {"act": "spawn_item", "item": "blocks/copper", "qty": "1", "route": "backpack", "if": "roll(0.1) > 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/dirt": 50}
+    }
+  ],
+  "offline": "none"
+}

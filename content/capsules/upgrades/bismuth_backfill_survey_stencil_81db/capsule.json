@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bismuth Backfill Stencil",
+    "description": "A meticulous bismuth-plated stencil for surveyors. When carried, it reduces mining time on backfilled areas. As a slight tradeoff, you lose a tiny bit of luck due to its overly rigid design.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_backfill_scaffolding",
+    "path_qol_upgrade",
+    "surveyor",
+    "bismuth"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": "0.4",
+      "if": "tile.depth < tile.max_depth_reached"
+    },
+    {
+      "stat": "luck_mult",
+      "phase": "mul",
+      "value": "0.95"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/cinder_gravel_61a3": 400
+      },
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ],
+  "offline": "none"
+}

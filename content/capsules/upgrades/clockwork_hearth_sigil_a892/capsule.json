@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Hearth Sigil",
+    "description": "A hollow, ticking artifact that links your auto-tools to the hearth. Drastically reduces battery drain for tools placed on solid ground, but short-circuits in fluids, increasing drain.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_auto_tool_runtime",
+    "path_bundle_package"
+  ],
+  "stats": {
+    "base_value": 60.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": "0.3",
+      "if": "self.installed > 0.0 && tile.fluid_level == 0.0"
+    },
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": "2.0",
+      "if": "self.installed > 0.0 && tile.fluid_level > 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": "1.0"
+        },
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_durability_bars",
+          "enabled": true
+        },
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_battery_timers",
+          "enabled": true
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 150
+      }
+    }
+  ],
+  "offline": "none"
+}

@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tinker's Broad-Cast Bronze Pick",
+    "description": "Forged from a broad bronze head and heavy iron rod. Channels 25% of overkill damage into orthogonal neighboring tiles.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "equip_tool", "sell"],
+  "tags": ["tool", "pickaxe", "tinker_forged", "bronze", "cleave", "solves_overkill_waste", "path_forge_material"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 28.0,
+    "cleave_spillover": 0.25,
+    "durability_max": 800.0,
+    "is_rechargeable": 1,
+    "base_value": 140.0
+  },
+  "vars": {
+    "durability_left": 800.0
+  },
+  "modifiers": [
+    {
+      "stat": "cleave_pct",
+      "phase": "add",
+      "value": "self.stats.cleave_spillover"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_overkill",
+      "if": "tool.overkill_damage > 0.0 and ctx.is_secondary_damage == 0",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "neighbors_4",
+          "amount": "tool.overkill_damage * self.stats.cleave_spillover"
+        }
+      ]
+    }
+  ],
+  "offline": "none"
+}

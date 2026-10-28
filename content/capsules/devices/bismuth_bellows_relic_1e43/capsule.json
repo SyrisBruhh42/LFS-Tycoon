@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bismuth Bellows Relic",
+    "description": "An alembic-like bellows fused from a basalt siphon weave and pewter gravel, guided by Gravel Wick vendors in the Abyssal Hydro-Works. When socketed, its bismuth core channels overkill force as vitriol splash damage against shallow adjacent strata.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_overkill_waste",
+    "path_magic_charm",
+    "craft_terraria_fusion",
+    "logic_plausible",
+    "theme_alkahest_hydro",
+    "bracket_2",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 250.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": "tool.overkill_damage * 0.5",
+          "if": "tool.overkill_damage > 0.0 and ctx.is_secondary_damage == 0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_wick_vendor_8db7",
+      "price": {
+        "devices/obsidian_resonant_crucible_d5d5": 1,
+        "textiles/basalt_siphon_weave_02ec": 1,
+        "blocks/pewter_gravel_d53e": 30
+      },
+      "unlock_if": "player.max_depth >= 200.0 and shared.quarry_resonance_charge >= 0.0"
+    }
+  ],
+  "offline": "exact"
+}

@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quill-Bone Backfill Lore",
+    "description": "An old quill etched with foundation rites. A self-taught profession perk. When fully rested, digging out backfilled dirt is much faster, granting ease to your scaffolding tasks.",
+    "author": "core:jules",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["upgrade", "solves_backfill_scaffolding", "path_profession_perk"],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": "0.3",
+      "if": "self.installed == 1.0 and player.is_rested == 1 and tile.depth < tile.max_depth_reached"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/dirt": 120}
+    }
+  ],
+  "offline": "none"
+}

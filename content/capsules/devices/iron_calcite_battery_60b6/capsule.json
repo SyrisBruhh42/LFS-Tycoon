@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Iron-Clad Calcite Battery",
+    "description": "A heavy iron-clad device containing a resonating calcite core. When socketed into an auto-tool or placed on a tile, the calcite significantly reduces the tool's battery drain by vibrating in tune with the deep earth, though it only functions below depth 30.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "battery",
+    "iron",
+    "solves_auto_tool_runtime",
+    "path_power_source"
+  ],
+  "stats": {
+    "base_value": 450.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": "0.1",
+      "if": "tile.depth >= 30"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {
+        "blocks/copper": 1800
+      },
+      "unlock_if": "player.max_depth >= 40"
+    }
+  ],
+  "offline": "exact"
+}

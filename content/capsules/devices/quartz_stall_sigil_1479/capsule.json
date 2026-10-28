@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quartz Precision Sigil",
+    "description": "An enchanted quartz sigil socketed into any tool. It detects impassable strict-locked blocks (like water or hazard) and sharply reduces durability drain at the cost of significantly lower yield multiplier, trading speed for precision during zero-damage stalls.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "quartz",
+    "sigil",
+    "solves_zero_damage_stall",
+    "path_npc_enchanter"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": "0.1",
+      "if": "tile.is_strict_locked == 1.0"
+    },
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": "0.1",
+      "if": "tile.is_strict_locked == 1.0"
+    },
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "value": "0.5"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {
+        "blocks/copper": 300
+      },
+      "unlock_if": "player.max_depth > 20.0"
+    }
+  ],
+  "offline": "exact"
+}

@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Stormbreaker Geode",
+    "description": "Captured-lightning geode pioneered by The Forge Squad of the Enclave of the 16. Hyper-dense alloys shift resonance with operator focus and grounding rods tame subterranean plasma.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell",
+    "catalyst"
+  ],
+  "tags": [
+    "block",
+    "world_block",
+    "theme_enclave_first_forge",
+    "geode",
+    "plasma",
+    "gasket"
+  ],
+  "stats": {
+    "base_hp": 48.0,
+    "value_base": 85.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 330,
+    "z_max": 600,
+    "l_step": 1000,
+    "spawn_prob": 0.010,
+    "clump_xy": 3.0,
+    "pipe_z": 5.0,
+    "priority_rank": 50
+  },
+  "biome_weights": {
+    "biomes/standard_crust": 0.005
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "coarse"
+}

@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mica Prospector's Lens",
+    "description": "An epic, delicate device of shimmering mica. When placed in the deep or upon rich ores, it slightly enhances luck and reveals contours of the strata around it. It is fragile and degrades with each layer revealed.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "mica",
+    "disposable",
+    "solves_ore_hunting",
+    "path_placeable_device"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "is_rechargeable": 0.0
+  },
+  "vars": {
+    "charge_left": 25.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": 0.15,
+      "if": "tile.depth >= 500.0 or tile.tier >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true, "if": "tile.depth >= 500.0 or tile.tier >= 1.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 75}
+    }
+  ],
+  "offline": "exact"
+}

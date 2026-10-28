@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bone Sconce Wick",
+    "description": "A haggard purveyor who has hollowed out the cavern's largest skeleton to run a shop inside the ribcage sconce. Offers unique charms and light-bearers, but he refuses to speak to you until you've mined quite deep.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "npc_vendor"
+  ],
+  "tags": [
+    "npc",
+    "vendor",
+    "world_npc",
+    "bone",
+    "sconce",
+    "wick"
+  ],
+  "stats": {
+    "cleanliness_required": 0.0,
+    "saturation_half_volume": 1000.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/stone": 500
+      },
+      "unlock_if": "player.max_depth >= 50"
+    }
+  ],
+  "offline": "none"
+}

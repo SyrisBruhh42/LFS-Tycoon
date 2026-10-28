@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder Apprentice Manual",
+    "description": "An apprentice's worn manual, its cover singed by cinder. When equipped, it reduces the penalty for using the wrong tool class on a block by half. Wears down with use.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "manual",
+    "cinder",
+    "solves_wrong_tool_penalty",
+    "path_profession_perk"
+  ],
+  "stats": {
+    "base_value": 60.0
+  },
+  "vars": {
+    "is_active": 0.0,
+    "charges_left": 150.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": "0.5",
+      "if": "self.is_active == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_active",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_active",
+          "value": "0.0"
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "if": "self.is_active == 1.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.charges_left",
+          "by": "-1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.charges_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 150
+      },
+      "unlock_if": "player.max_depth >= 15.0"
+    }
+  ],
+  "offline": "none"
+}

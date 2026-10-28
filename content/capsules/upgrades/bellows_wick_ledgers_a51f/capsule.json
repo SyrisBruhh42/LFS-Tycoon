@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "St. Munchkin's Symposium Ledgers",
+    "description": "The Paradox Symposium of St. Munchkin discovered a hilarious literal loophole: by filing paperwork claiming ember_vendor_f749 is actually a bellows wick, they secured massive discounts in the Drowned Steam-Baronies of Rivet & Slag. Uses lark_newt_rivet_ore_a337 as a tax stamp.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "solves_vendor_access",
+    "path_bundle_package",
+    "craft_skill_mastery",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "skill_bracket",
+    "bracket_2",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 90.0,
+    "base_dps": 20.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "value": 50.0
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": 1.0},
+        {"act": "deal_damage", "target": "self_tile", "amount": 100.0, "if": "tile.depth >= 198"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ember_vendor_f749",
+      "price": {
+        "devices/obsidian_resonant_crucible_d5d5": 1,
+        "blocks/lark_newt_rivet_ore_a337": 45
+      },
+      "unlock_if": "player.max_depth >= 198"
+    }
+  ],
+  "offline": "none"
+}

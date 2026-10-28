@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Vitriol Basin",
+    "description": "An architectural homestead fixture of The Alkahest Vitriol & Abyssal Hydro-Works, crafted from copper and reactive vitriol crystals. Provided by the deep-bore horologist, this basin captures kinetic runoff to prevent overkill damage waste.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_overkill_waste",
+    "path_qol_upgrade",
+    "craft_homestead_station",
+    "bracket_3",
+    "skill_school_pewter_cinder",
+    "theme_alkahest_hydro",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 300.0,
+    "unlock_depth": 330.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "cleave_pct",
+      "phase": "add",
+      "value": 0.25
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_sleep",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/vitriol_crystal_b488",
+          "qty": 1
+        },
+        {
+          "act": "var_add",
+          "var": "shared.global_cleave_bonus_pct",
+          "by": 0.15
+        }
+      ]
+    }
+  ],
+  "offline": "none",
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "tools/enclave_rivet_sigil_ed7e": 1,
+        "blocks/vitriol_crystal_b488": 15,
+        "blocks/copper": 30
+      },
+      "unlock_if": "player.max_depth >= 198.0"
+    }
+  ]
+}

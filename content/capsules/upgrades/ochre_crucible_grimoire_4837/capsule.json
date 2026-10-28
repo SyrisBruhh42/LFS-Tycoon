@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Crucible Grimoire",
+    "description": "An arcane spell tome from the ancient smith-lords of The Grand Crucible of the Tectonic Leviathan. By channeling deep-earth harmonics into your mind, this grimoire allows your physical strikes to gently pause at the brink of destruction, halting accidental taps from finishing off a block while directly touching the display. Furthermore, it channels overkill force into a chained geometric resonance.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_tap_misfires",
+    "path_qol_upgrade",
+    "craft_spell_grimoire",
+    "logic_canonical",
+    "theme_tectonic_crucible",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 60.0
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "if": "self.is_learned >= 1.0 and ctx.is_direct_tap == 1.0",
+      "value": 1.0
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_learned",
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "on": "on_overkill",
+      "if": "self.is_learned >= 1.0 and ctx.is_secondary_damage == 0",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "neighbors_4",
+          "amount": "tool.overkill_damage * 0.25"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ochre_toad_5e64",
+      "unlock_if": "shared.quarry_resonance_charge >= 0.0",
+      "price": {
+        "upgrades/ochre_forge_milestone_relic_9ed9": 1,
+        "blocks/ochre_stratum_d812": 15
+      }
+    }
+  ],
+  "offline": "none"
+}

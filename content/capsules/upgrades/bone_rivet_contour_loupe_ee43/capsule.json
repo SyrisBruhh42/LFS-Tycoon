@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bone-Riveted Contour Loupe",
+    "description": "An expensive, rare surveyor's package constructed with sturdy rivets. Upon reading this manual, you gain the ability to permanently read z-depth and HP via a target loupe, and reveals precise chalk line contours for early strata planning. However, its fine optics grant a slight luck bonus only in the deep dark where depth exceeds 30.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["upgrade", "surveyor", "hud", "solves_depth_awareness", "path_bundle_package", "rivet"],
+  "stats": {
+    "base_value": 140.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "if": "self.installed > 0.0 and tile.depth > 30",
+      "value": "0.1"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"},
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true},
+        {"act": "set_ui_flag", "flag": "hud_target_loupe", "enabled": true}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 140}
+    }
+  ],
+  "offline": "none"
+}

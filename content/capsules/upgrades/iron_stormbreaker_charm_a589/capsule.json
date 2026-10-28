@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Iron Stormbreaker Charm",
+    "description": "An iron charm engineered by The Perpetual Clockwork Deep-Bore Syndicate, its self-feeding mechanisms whir softly as you explore. Forged by the Rivet Assayer and powered by the resonance of a Stormbreaker Geode, it actively resists wear on your tools\u2014so long as you remain well-rested.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_tool_wear",
+    "path_magic_charm",
+    "craft_achievement_relic",
+    "logic_canonical",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_manual",
+    "iron"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "player.is_rested == 1.0",
+      "value": 0.65
+    }
+  ],
+  "reactions": [],
+  "offline": "none",
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_assayer_c04e",
+      "unlock_if": "player.max_depth >= 45.0",
+      "price": {
+        "devices/munchkin_slag_router_55f5": 1,
+        "blocks/stormbreaker_geode_5e99": 20
+      }
+    }
+  ]
+}

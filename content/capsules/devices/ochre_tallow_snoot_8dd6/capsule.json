@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Tallow-Snoot",
+    "description": "A whimsical brass clockwork appendage forged from flint shale that sniffs out impassable hazards. According to the hydro-alchemists of the Alkahest Vitriol & Abyssal Hydro-Works, this device uses ochre and tallow to literally 'turn a blind eye' and pause the tool's battery drain when the drill stalls against strict-locked rock or deep fluids. The Rivet Assayer finds the folk-science dubious, but it works.",
+    "author": "core:jules",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "place_on_tile", "sell"],
+  "tags": [
+    "device",
+    "acoustic",
+    "stall_guard",
+    "solves_zero_damage_stall",
+    "path_magic_charm",
+    "craft_clockwork_automaton",
+    "logic_whimsical",
+    "theme_alkahest_hydro",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "base_dps": 12.0
+  },
+  "vars": {
+    "sniffs_taken": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {"act": "emit_alert", "channel": "house_bell", "tag": "stall_impassable"},
+        {"act": "stall_tool", "pause_battery": true, "pause_durability": true},
+        {"act": "var_add", "var": "shared.house_bell_ringing", "by": 1.0},
+        {"act": "var_add", "var": "self.sniffs_taken", "by": 1.0}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_assayer_c04e",
+      "unlock_if": "player.max_depth >= 40.0",
+      "price": {
+        "books/overkill_munchkin_grimoire_be82": 1,
+        "blocks/flint_shale_6493": 45
+      }
+    }
+  ],
+  "offline": "exact"
+}

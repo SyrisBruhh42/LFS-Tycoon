@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Velvet Toad Ledger Pick",
+    "description": "An unusual pickaxe bound in soft velvet with toad-leather grips. It doesn't yield the blocks you break; instead, it transmutes excess standard mining debris into rare alternative currencies and copper bits directly into your backpack, neatly sidestepping market saturation.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "toad",
+    "velvet",
+    "ledger",
+    "solves_market_saturation",
+    "path_tool_builtin",
+    "starter"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 15.0,
+    "durability_max": 250.0,
+    "is_rechargeable": 1,
+    "base_value": 30.0
+  },
+  "vars": {
+    "durability_left": 250.0
+  },
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "value": "0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "blocks/copper",
+          "qty": "1",
+          "if": "roll(0.1)"
+        },
+        {
+          "act": "spawn_item",
+          "item": "blocks/cinder_gravel_61a3",
+          "qty": "1",
+          "if": "roll(0.2)"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 50,
+        "blocks/dirt": 50
+      },
+      "unlock_if": "shared.global_cleave_bonus_pct > 0.0"
+    }
+  ],
+  "offline": "none"
+}

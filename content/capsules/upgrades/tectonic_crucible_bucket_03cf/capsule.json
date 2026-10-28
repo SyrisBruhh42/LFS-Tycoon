@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tectonic Crucible Bucket",
+    "description": "An ancient plumb crucible of the Under-Sun Manifold, once bound by the smith-lords of the Tectonic Leviathan to channel magma veins into self-tempering thermal rigs. The Gravel Keeper honors the Assayers by offering this permanent artifact. When rested, its slag-infused structure naturally unearths cinder gravel from the depths.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "solves_fluid_flooding",
+    "path_vendor_disposable",
+    "craft_skill_mastery",
+    "logic_plausible",
+    "theme_tectonic_crucible",
+    "skill_bracket",
+    "bracket_4",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "tool_type": "BUCKET",
+    "tool_tier": 3,
+    "base_dps": 150.0,
+    "base_value": 60.0,
+    "durability_max": 1200.0,
+    "charge_max_sec": 14400.0
+  },
+  "vars": {
+    "durability_left": 1200.0,
+    "charge_left": 14400.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_fluid_contact",
+      "if": "tile.fluid_level > 0",
+      "do": [
+        {"act": "modify_fluid", "target": "self_tile", "fluid_type": "NONE", "delta_level": -1}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "if": "player.is_rested == 1",
+      "do": [
+        {"act": "spawn_item", "item": "blocks/cinder_gravel_61a3", "qty": 1, "route": "ground_pile"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "books/lithic_choir_geomancy_grimoire_0954": 1,
+        "blocks/cinder_gravel_61a3": 25
+      },
+      "unlock_if": "player.max_depth >= 330"
+    }
+  ],
+  "offline": "none"
+}

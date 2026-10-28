@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder Contour Loupe Manual",
+    "description": "An early-tier apprentice bundle manual pioneered by The Forge Squad of the Enclave of the 16. Using sympathetic core-metallurgy, this manual teaches how to chisel through the umber strata of the Calcified Foundry with a floating HUD Target Loupe and Chess-Grid overlay, granting a precision bonus when working with cinder mortar.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "sell"],
+  "tags": [
+    "upgrade",
+    "solves_depth_awareness",
+    "path_bundle_package",
+    "craft_skill_mastery",
+    "logic_canonical",
+    "theme_enclave_first_forge",
+    "skill_bracket",
+    "bracket_2",
+    "skill_school_cinder_slag"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": 0.8
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_chess_grid", "enabled": true},
+        {"act": "set_ui_flag", "flag": "hud_target_loupe", "enabled": true}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ochre_toad_5e64",
+      "price": {
+        "blocks/cinder_mortar_17bb": 10,
+        "blocks/anvilstone_02a1": 5
+      },
+      "unlock_if": "player.max_depth >= 200.0"
+    }
+  ]
+}

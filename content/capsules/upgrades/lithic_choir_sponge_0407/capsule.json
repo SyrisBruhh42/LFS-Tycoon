@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lithic Choir Sponge",
+    "description": "A monolithic fixture carved from cinder gravel, serving as a homestead workshop station. Built upon the teachings of The Infinite Scriptorium of the Lithic Choir, blind monastic archivists who discovered that bedrock is frozen acoustic music. When striking flooded terrain, zero-damage stalls generate bell harmonics that act as a sponge, vaporizing fluids via flint acoustic resonance.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "solves_fluid_flooding",
+    "path_tool_builtin",
+    "craft_homestead_station",
+    "logic_plausible",
+    "theme_lithic_choir",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "tool_type": "BUCKET",
+    "tool_tier": 1,
+    "base_dps": 20.0,
+    "durability_max": 200.0,
+    "is_rechargeable": 1,
+    "base_value": 150.0
+  },
+  "vars": {
+    "durability_left": 200.0
+  },
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_wick_vendor_8db7",
+      "price": {
+        "books/overkill_munchkin_grimoire_be82": 1,
+        "blocks/cinder_gravel_61a3": 40
+      },
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ],
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "if": "tile.fluid_level > 0.0 and tool.durability_left > 0.0",
+      "do": [
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": -1
+        },
+        {
+          "act": "emit_alert",
+          "channel": "house_bell",
+          "tag": "lithic_chime"
+        }
+      ]
+    }
+  ],
+  "offline": "coarse"
+}

@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Heron's Riveted Kettle Pick",
+    "description": "Forged from scrap kettle riveted onto an iron heron-beak. Offers solid early-mid game damage. Uniquely, it channels the erratic swings of drunk drifting into wide cleaving strikes, splashing up to 30% of overkill damage.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "equip_tool", "sell"],
+  "tags": ["tool", "pickaxe", "tinker_forged", "rivet", "heron", "kettle", "cleave", "solves_slow_early_dps", "path_forge_material"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 2,
+    "base_dps": 22.0,
+    "durability_max": 900.0,
+    "is_rechargeable": 1,
+    "base_value": 200.0
+  },
+  "vars": {
+    "durability_left": 900.0
+  },
+  "modifiers": [
+    {
+      "stat": "cleave_pct",
+      "phase": "add",
+      "value": "0.3 * min(1.0, shared.active_drunk_drift_px / 42.0)"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_overkill",
+      "if": "tool.overkill_damage > 0.0 and ctx.is_secondary_damage == 0 and shared.active_drunk_drift_px > 0.0",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "neighbors_4",
+          "amount": "tool.overkill_damage * 0.3 * min(1.0, shared.active_drunk_drift_px / 42.0)"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 300},
+      "unlock_if": "player.max_depth >= 50"
+    }
+  ],
+  "offline": "none"
+}

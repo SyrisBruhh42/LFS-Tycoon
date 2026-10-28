@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Magma Anvilstone",
+    "description": "Ancient smith-lords of the Under-Sun Manifold bound magma veins and anvilstone into self-tempering thermal drills and crucible transmutation rigs. These umber stones radiate a slow, relentless heat.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "block",
+    "ore",
+    "world_block",
+    "theme_tectonic_crucible"
+  ],
+  "stats": {
+    "base_hp": 25.0,
+    "base_value": 8.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 400,
+    "z_max": 600,
+    "l_step": 1000,
+    "spawn_prob": 0.01,
+    "clump_xy": 6.0,
+    "pipe_z": 6.0,
+    "priority_rank": 50
+  },
+  "vars": {},
+  "biome_weights": {
+    "biomes/grand_crucible_45fb": 0.5
+  },
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}

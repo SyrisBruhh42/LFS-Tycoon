@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Sour Spelunker's Wine",
+    "description": "Boosts manual tap damage by +50% and doubles gem luck for 3 minutes, but induces Drunk Touch Drift across the quarry grid.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "consume", "sell"],
+  "tags": ["consumable", "drink", "wine", "buff_speed", "drunk_drift", "solves_slow_early_dps", "path_consumable_buff"],
+  "stats": {
+    "base_value": 20.0,
+    "duration_sec": 180.0,
+    "speed_mult": 1.5,
+    "drift_px": 42.0
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0 and ctx.is_direct_tap == 1",
+      "value": "self.stats.speed_mult"
+    },
+    {
+      "stat": "drunk_drift_px",
+      "phase": "add",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.drift_px"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.active_sec_left", "value": "self.stats.duration_sec"},
+        {"act": "var_set", "var": "shared.active_drunk_drift_px", "value": "self.stats.drift_px"},
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/dirt": 30}
+    }
+  ],
+  "offline": "none"
+}

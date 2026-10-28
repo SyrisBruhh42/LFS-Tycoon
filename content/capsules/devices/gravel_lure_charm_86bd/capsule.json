@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Gravel-Dusted Lure Charm",
+    "description": "An early-tier apprentice trinket coated in enticing slag and gravel. Carried in the pack, it marginally increases the chance of encountering lost cats upon revealing new layers, before the dust wears off entirely.",
+    "author": "jules:autonomous",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "sell"],
+  "tags": ["device", "solves_event_helpers", "path_magic_charm"],
+  "stats": {
+    "base_value": 45.0,
+    "lure_bonus": 0.02,
+    "wear_max": 20.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "value": "self.stats.lure_bonus"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "var_add", "var": "self.wear", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.wear >= self.stats.wear_max"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_vendor_51cb",
+      "price": {"blocks/cinder_gravel_61a3": 250},
+      "unlock_if": "tool.tier >= 2.0"
+    }
+  ],
+  "offline": "exact"
+}

@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lantern Mortar Pick",
+    "description": "A crude early-game pickaxe incorporating a thrifty lantern-mortar frame. Functions as a perimeter catalyst for hazardous clusters, drastically boosting damage against hazards, but wears down much faster when striking ordinary rock.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "equip_tool", "sell", "catalyst"],
+  "tags": ["tool", "pickaxe", "tinker_forged", "mortar", "lantern", "solves_hazard_clearing", "path_forge_material"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 0,
+    "base_dps": 12.0,
+    "durability_max": 200.0,
+    "is_rechargeable": 1,
+    "base_value": 40.0
+  },
+  "vars": {
+    "durability_left": 200.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "tile.is_hazard == 1.0",
+      "value": "2.5"
+    },
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "tile.is_hazard == 0.0",
+      "value": "2.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/brass_tinkerer_c020",
+      "price": {"blocks/copper": 40}
+    }
+  ],
+  "offline": "none"
+}

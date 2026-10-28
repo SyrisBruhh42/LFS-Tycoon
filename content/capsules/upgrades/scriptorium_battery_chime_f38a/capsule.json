@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Scriptorium Battery Chime Bundle",
+    "description": "A whimsically massive bundle of acoustic lantern bells carved from hollow cinder mortar by the Bismuth Broker. Tracing its lineage back to the blind monastic archivists of The Infinite Scriptorium of the Lithic Choir, these bells chime in tune with bedrock. Keeping this bundle in your inventory drastically reduces the battery drain of your auto-tools, provided your hands are clean and free of grime.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": ["carry", "sell"],
+  "tags": [
+    "upgrade",
+    "bundle",
+    "battery",
+    "solves_auto_tool_runtime",
+    "path_bundle_package",
+    "craft_achievement_relic",
+    "logic_whimsical",
+    "theme_lithic_choir",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 600.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": 0.35,
+      "if": "player.grime < 15.0 and tool.tier <= 3.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/bismuth_broker_af6a",
+      "price": {
+        "upgrades/iron_stormbreaker_charm_a589": 1,
+        "blocks/cinder_mortar_17bb": 40
+      },
+      "unlock_if": "player.max_depth >= 150.0 and tool.tier >= 3.0"
+    }
+  ],
+  "offline": "none"
+}

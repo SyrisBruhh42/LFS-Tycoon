@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Plumb Charm",
+    "description": "An enchanted plumb bob that resonates with deep strata. When a tool strikes an impassable strict-locked block deep below, it halts the tool's decay.",
+    "author": "core:ground_zero",
+    "rarity": "epic"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "stall_guard", "solves_zero_damage_stall", "path_magic_charm"],
+  "stats": {
+    "base_value": 450.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": "0.1",
+      "if": "tile.is_strict_locked == 1 and tile.depth >= 500"
+    },
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": "0.1",
+      "if": "tile.is_strict_locked == 1 and tile.depth >= 500"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {"act": "stall_tool", "pause_battery": true, "pause_durability": true, "if": "tile.is_strict_locked == 1 and tile.depth >= 500"},
+        {"act": "emit_alert", "channel": "hud_chime", "tag": "stall_deep", "if": "tile.is_strict_locked == 1 and tile.depth >= 500"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_e935",
+      "price": {"blocks/copper": 350},
+      "unlock_if": "tool.tier >= 2.0"
+    }
+  ],
+  "offline": "exact"
+}

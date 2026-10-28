@@ -1,0 +1,118 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Stormbreaker Decoction",
+    "description": "A multi-ingredient decoction brewed using Skyrim-style alchemy techniques. It combines raw stormbreaker geodes and copper with the power of the iron stormbreaker charm. When consumed, it grants a powerful 5-minute buff that reduces fluid levels in the quarry on every block break, clearing out water and lava pockets to prevent fluid flooding. Offered by the Deep-Bore Horologist as a testament to the Perpetual Clockwork Deep-Bore Syndicate's ingenuity.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "drink",
+    "solves_fluid_flooding",
+    "craft_alchemy_potion",
+    "bracket_2",
+    "skill_school_manual",
+    "theme_clockwork_syndicate",
+    "logic_canonical",
+    "steward_keystone",
+    "path_consumable_buff"
+  ],
+  "stats": {
+    "base_value": 55.0,
+    "duration_sec": 300.0,
+    "speed_mult": 1.25
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.speed_mult"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec"
+        }
+      ]
+    },
+    {
+      "on": "on_zero_damage_stall",
+      "if": "self.active_sec_left > 0.0 and tile.fluid_level > 0.0",
+      "do": [
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": -1.0
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "if": "self.active_sec_left > 0.0",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "blocks/stormbreaker_geode_5e99",
+          "qty": 1,
+          "route": "backpack",
+          "if": "ctx.is_direct_tap == 1.0"
+        }
+      ]
+    },
+    {
+      "on": "on_overkill",
+      "if": "self.active_sec_left > 0.0",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "blocks/stormbreaker_geode_5e99",
+          "qty": 1,
+          "route": "backpack"
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "self.active_sec_left > 0.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.active_sec_left",
+          "by": -1.0
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.active_sec_left == 0.0"
+        }
+      ]
+    }
+  ],
+  "offline": "none",
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "upgrades/iron_stormbreaker_charm_a589": 1,
+        "blocks/stormbreaker_geode_5e99": 5,
+        "blocks/copper": 10
+      },
+      "unlock_if": "player.max_depth <= 330.0"
+    }
+  ]
+}

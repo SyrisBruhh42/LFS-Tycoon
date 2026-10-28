@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mica Kettle Barrier",
+    "description": "A kettle-shaped mica shield. When placed, it completely nullifies secondary and splash damage to the block beneath it, but breaks immediately upon absorbing 10 splash hits.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "textile",
+    "tile_cover",
+    "dampener",
+    "solves_unwanted_splash",
+    "path_field_textile"
+  ],
+  "stats": {
+    "base_value": 30.0,
+    "wear_max": 10.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "if": "tile.covered_by_self and ctx.is_secondary_damage == 1",
+      "value": "1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_damage_absorbed",
+      "if": "tile.covered_by_self",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.wear",
+          "by": "1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.wear >= self.stats.wear_max"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 30
+      }
+    }
+  ],
+  "offline": "exact"
+}

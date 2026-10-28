@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Shale Gasket Vendor Ledger",
+    "description": "A heavy stone ledger. While carried or placed in the house, it grants you a permanent discount on vendor items, deepening your connection with local peddlers.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_vendor_access",
+    "path_profession_perk"
+  ],
+  "stats": {
+    "base_value": 200.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "value": 15.0
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 250}
+    }
+  ],
+  "offline": "none"
+}

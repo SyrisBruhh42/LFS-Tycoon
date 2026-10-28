@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Rivet Charm",
+    "description": "A miniature brass charm with a tiny glowing rivet inside. Placed in the house, it grants increased manual mining DPS when fully rested, but only if you avoid wet tiles. Its magic slowly drains with use until it shatters.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_house_comfort",
+    "path_magic_charm"
+  ],
+  "stats": {
+    "base_value": 250.0,
+    "is_rechargeable": 0
+  },
+  "vars": {
+    "durability_left": 500.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "add",
+      "value": 1.5,
+      "if": "player.is_rested == 1.0 and tile.fluid_level == 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 250}
+    }
+  ]
+}

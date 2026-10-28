@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Capture Net",
+    "description": "A sturdy net woven with ochre-dyed fibers. It chimes softly when uncovering new layers, proving especially effective at luring targets in the deep dark.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "equip_tool"],
+  "tags": ["tool", "net", "solves_event_helpers", "path_tool_builtin", "ochre"],
+  "stats": {
+    "tool_type": "CAPTURE_NET",
+    "tool_tier": 1,
+    "base_dps": 5.0,
+    "durability_max": 150.0,
+    "is_rechargeable": 0,
+    "base_value": 30.0
+  },
+  "vars": {
+    "durability_left": 150.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "value": "0.04",
+      "if": "tile.depth >= 500"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "lure_ring",
+          "if": "tile.depth >= 500"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 120
+      }
+    }
+  ],
+  "offline": "none"
+}

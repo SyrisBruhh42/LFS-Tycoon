@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Apprentice Salt Pick",
+    "description": "An early-tier apprentice pickaxe carved from compacted salt. When it strikes an impassable object it chimes and immediately pauses its own durability drain, preventing waste.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "starter",
+    "solves_zero_damage_stall",
+    "path_tool_builtin",
+    "salt"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 0,
+    "base_dps": 12.0,
+    "durability_max": 200.0,
+    "is_rechargeable": 1,
+    "base_value": 30.0
+  },
+  "vars": {
+    "durability_left": 200.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "tile.is_strict_locked == 1.0",
+      "value": "0.1"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "stall_water"
+        },
+        {
+          "act": "stall_tool",
+          "pause_battery": true,
+          "pause_durability": true
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/dirt": 50
+      },
+      "unlock_if": "player.max_depth >= 5"
+    }
+  ],
+  "offline": "coarse"
+}

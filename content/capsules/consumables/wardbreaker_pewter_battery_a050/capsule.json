@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Wardbreaker Pewter Battery",
+    "description": "An alchemical multi-reagent concoction formulated by the Sovereign Ward-Breakers of the Obsidian Seal and sold by the Gravel Wick Vendor. Brewed from Pewter Gravel, it supercharges tool mechanisms, drastically reducing break time at shallow depths, but the violent vibrations cause significant touch drift, trading precision for raw speed.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "consume", "sell"],
+  "tags": [
+    "consumable",
+    "potion",
+    "pewter",
+    "solves_slow_early_dps",
+    "path_power_source",
+    "craft_alchemy_potion",
+    "logic_plausible",
+    "theme_obsidian_wardbreaker",
+    "bracket_1",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 250.0,
+    "duration_sec": 300.0
+  },
+  "vars": {
+    "active_sec_left": -1.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0 and tile.depth < 300.0",
+      "value": 0.5
+    },
+    {
+      "stat": "drunk_drift_px",
+      "phase": "add",
+      "if": "self.active_sec_left > 0.0",
+      "value": 24.0
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.active_sec_left", "value": "self.stats.duration_sec"}
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "do": [
+        {"act": "var_add", "var": "self.active_sec_left", "by": -1.0, "if": "self.active_sec_left > 0.0"},
+        {"act": "destroy_self", "if": "self.active_sec_left == 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_wick_vendor_8db7",
+      "price": {
+        "tools/bismuth_clockwork_pick_8e31": 1,
+        "blocks/pewter_gravel_d53e": 120
+      },
+      "unlock_if": "player.max_depth >= 40.0"
+    }
+  ],
+  "offline": "none"
+}

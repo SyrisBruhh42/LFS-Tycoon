@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Anvil Smith",
+    "description": "A seasoned blacksmith who works by the glow of tallow candles, striking their mighty anvil to craft essential wares for weary delvers.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "npc_vendor"
+  ],
+  "tags": [
+    "npc",
+    "vendor",
+    "world_npc",
+    "town"
+  ],
+  "stats": {
+    "cleanliness_required": 0.0,
+    "saturation_half_volume": 1000.0,
+    "unlock_depth": 10.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}

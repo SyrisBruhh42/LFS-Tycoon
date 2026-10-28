@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ember Automaton Courier",
+    "description": "A wind-up brass and ember automaton designed by the Brass Tinkerer. Once placed, it routes 40% of mined ores straight to your paired chest for an hour, working twice as hard (80%) if you are well-rested.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "solves_haul_capacity",
+    "path_hired_laborer"
+  ],
+  "stats": {
+    "tool_type": "NONE",
+    "tool_tier": 1,
+    "charge_max_sec": 3600.0,
+    "durability_max": 3600.0,
+    "is_rechargeable": 0,
+    "base_value": 50.0
+  },
+  "vars": {
+    "charge_left": 3600.0
+  },
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.4,
+      "if": "self.charge_left > 0.0"
+    },
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.4,
+      "if": "self.charge_left > 0.0 and player.is_rested == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": "-1.0", "if": "self.charge_left > 0.0"},
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/brass_tinkerer_c020",
+      "price": {
+        "blocks/copper": 50
+      }
+    }
+  ],
+  "offline": "coarse"
+}

@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Flint-Hollow Phial",
+    "description": "An alchemical decoction born of the Living Atlas and Mycelial Sanctuary. Ground Pewter Gravel and an Ochre Sigil bind into a magical charm that channels raw, wasted kinetic force out into the surrounding strata when a block is broken with overwhelming force.",
+    "author": "Jules",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "flint",
+    "solves_overkill_waste",
+    "path_magic_charm",
+    "craft_alchemy_potion",
+    "logic_plausible",
+    "theme_enclave_living_atlas",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 200.0,
+    "charge_left": 250.0
+  },
+  "vars": {
+    "charge_left": 250.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "if": "tool.overkill_damage > 0",
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": "tool.overkill_damage * 1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "devices/ochre_sigil_9759": 1,
+        "blocks/pewter_gravel_d53e": 150
+      },
+      "unlock_if": "player.max_depth <= 249.0"
+    }
+  ],
+  "offline": "coarse"
+}

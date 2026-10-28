@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Slag Resonance Pick",
+    "description": "A clever tool that channels the wasted force of a shattered block into a nearby surface. The sheer recoil takes a toll on its fragile slag head.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "equip_tool"],
+  "tags": ["tool", "pickaxe", "slag", "solves_overkill_waste", "path_tool_builtin"],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 12.0,
+    "durability_max": 80.0,
+    "is_rechargeable": 0,
+    "base_value": 25.0
+  },
+  "vars": {
+    "durability_left": 80.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "tool.overkill_damage > 0.0",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": "tool.overkill_damage * 0.5"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 35
+      }
+    }
+  ],
+  "offline": "none"
+}

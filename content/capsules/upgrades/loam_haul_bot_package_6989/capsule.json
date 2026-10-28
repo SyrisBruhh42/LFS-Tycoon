@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Loam Hauler Drone Package",
+    "description": "A very expensive, unlock-gated package containing several early-tier Loam Hauler bots. Reading this manual unlocks a permanent chest-routing efficiency boost and extracts 3 Mortar Haul Bots.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "bundle",
+    "loam",
+    "solves_haul_capacity",
+    "path_bundle_package"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "if": "self.installed > 0.0",
+      "value": "0.50"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "spawn_item", "item": "tools/gravel_mortar_haul_bot_e0a5", "qty": "3", "route": "backpack", "if": "self.installed == 0.0"},
+        {"act": "var_set", "var": "self.installed", "value": "1.0", "if": "self.installed == 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 150
+      },
+      "unlock_if": "player.max_depth >= 50"
+    }
+  ],
+  "offline": "none"
+}

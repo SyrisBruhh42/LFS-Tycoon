@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Wick Maintenance Automaton",
+    "description": "A wick-powered brass automaton that hums with low heat. When carried or placed in your house, it diligently maintains your auto-tools, halving their battery drain, but its slow, methodical nature reduces your overall mining yield.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "automaton",
+    "wick",
+    "solves_auto_tool_runtime",
+    "path_hired_laborer"
+  ],
+  "stats": {
+    "base_value": 450.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": 0.5
+    },
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "value": 0.75
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/brass_tinkerer_c020",
+      "price": {"blocks/copper": 300},
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ],
+  "offline": "none"
+}

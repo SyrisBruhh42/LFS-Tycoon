@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Grand Crucible",
+    "description": "The Grand Crucible of the Tectonic Leviathan \u2014 A subterranean pocket where ancient smith-lords bound magma veins and anvilstone to forge self-tempering drills.",
+    "author": "Jules",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "biome",
+    "world_biome",
+    "theme_tectonic_crucible",
+    "slag"
+  ],
+  "stats": {
+    "z_min": 250,
+    "z_max": 400,
+    "biome_weight": 0.5
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/cinder_mortar_17bb": 0.6,
+    "blocks/anvilstone_02a1": 0.4
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}

@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "_note": "Factory controller knobs. Read fresh from main on every tick, so edits here (even from the GitHub mobile app) take effect within 15 minutes. Set enabled=false to stop dispatching.",
+  "enabled": true,
+  "repo": "SyrisBruhh42/LFS-Tycoon",
+  "source": "sources/github/SyrisBruhh42/LFS-Tycoon",
+  "starting_branch": "main",
+  "gate_workflow": "capsule_gate.yml",
+  "gate_check_name": "Capsule gate",
+  "daily_cap": 96,
+  "max_active_sessions": 12,
+  "max_open_prs": 8,
+  "failure_window": 12,
+  "failure_threshold": 6,
+  "max_api_fail_streak": 4,
+  "stale_session_hours": 6,
+  "no_pr_grace_minutes": 30,
+  "no_gate_hours": 24,
+  "max_feedback_nudges": 2,
+  "lesson_count": 5
+}

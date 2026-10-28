@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Flint Rivet Ledger Sigil",
+    "description": "An absurd creation tracing back to The Paradox Symposium of St. Munchkin. Deep-Bore Horologists found that hammering a quill-etched rivet of Flint Shale directly into a pneumatic tool creates a literal loophole in the laws of intoxication and commerce. Socketing this arcane sigil sharply increases the value of mined ores, but at the hilarious cost of making your tool slightly more difficult to handle.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["solves_market_saturation", "path_skill_book", "craft_skyrim_enchant", "logic_absurd", "theme_munchkin_paradox", "bracket_1", "skill_school_manual"],
+  "stats": {
+    "base_value": 150.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "add",
+      "value": 0.5
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": 1.25
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "books/overkill_munchkin_grimoire_be82": 1,
+        "blocks/flint_shale_6493": 45
+      },
+      "unlock_depth": 45.0
+    }
+  ],
+  "offline": "none"
+}

@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Deep-Bore Horologist",
+    "description": "A secretive artisan of The Perpetual Clockwork Deep-Bore Syndicate. They offer pneumatic tools and precision pewter mechanisms for subterranean engineers.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "npc_vendor"
+  ],
+  "tags": [
+    "npc",
+    "vendor",
+    "world_npc",
+    "theme_clockwork_syndicate",
+    "clockwork",
+    "pewter"
+  ],
+  "stats": {
+    "cleanliness_required": 0.0,
+    "saturation_half_volume": 1000.0,
+    "unlock_depth": 330.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}

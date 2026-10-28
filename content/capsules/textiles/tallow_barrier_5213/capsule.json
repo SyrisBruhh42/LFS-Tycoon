@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tallow Dampening Barrier",
+    "description": "Laid over a delicate block to protect it from stray splash damage (sets minimum HP clamp to 1). The heavy coating makes intentional direct mining 20% slower, and it degrades after 25 splash hits.",
+    "author": "jules",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "textile",
+    "tile_cover",
+    "dampener",
+    "solves_unwanted_splash",
+    "path_field_textile"
+  ],
+  "stats": {
+    "base_value": 30.0,
+    "wear_max": 25.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "if": "tile.covered_by_self and ctx.is_secondary_damage == 1.0",
+      "value": "1.0"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "tile.covered_by_self and ctx.is_direct_tap == 1.0",
+      "value": "1.2"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_damage_absorbed",
+      "if": "tile.covered_by_self and ctx.is_secondary_damage == 1.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.wear",
+          "by": "1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.wear >= self.stats.wear_max"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 30
+      }
+    }
+  ]
+}

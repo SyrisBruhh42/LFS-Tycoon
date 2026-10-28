@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "St. Munchkin's Kinetic Loophole (Rule 42b)",
+    "description": "According to The Paradox Symposium of St. Munchkin, a sufficiently convoluted mortar configuration can transfer kinetic energy through the ether, breaking Rivet & Slag bureaucracy guidelines. Socket this absurdly literal loophole into a tool to redirect 15% of overkill waste directly into the shallowest nearby block. Wears down with use.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_overkill_waste",
+    "path_skill_book",
+    "craft_tinker_part",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_2",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "durability_max": 20.0
+  },
+  "vars": {
+    "durability_left": 20.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": "tool.overkill_damage * 0.15",
+          "if": "tool.overkill_damage > 0.0 and self.durability_left > 0.0 and ctx.is_secondary_damage == 0"
+        },
+        {
+          "act": "var_add",
+          "var": "self.durability_left",
+          "by": -1.0,
+          "if": "tool.overkill_damage > 0.0 and self.durability_left > 0.0 and ctx.is_secondary_damage == 0"
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "destroy_self",
+          "if": "self.durability_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/quill_peddler_0c07",
+      "price": {
+        "devices/flint_shale_scrubber_b898": 1,
+        "blocks/flint_shale_6493": 3
+      },
+      "unlock_if": "player.max_depth >= 198"
+    }
+  ],
+  "offline": "none"
+}

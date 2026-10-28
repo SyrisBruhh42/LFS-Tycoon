@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hollow Mica Wine",
+    "description": "A sparkling brew that uses hollow mica flakes to capture the light. It strongly attracts curious quarry cats for 3 minutes, but the dazzling light distracts you, slightly reducing your mining yield.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "drink",
+    "wine",
+    "mica",
+    "hollow",
+    "solves_event_helpers",
+    "path_consumable_buff"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "duration_sec": 180.0,
+    "lure_bonus": 0.04,
+    "yield_penalty": 0.8
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.lure_bonus"
+    },
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.yield_penalty"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec"
+        },
+        {
+          "act": "destroy_self"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 25
+      }
+    }
+  ],
+  "offline": "none"
+}

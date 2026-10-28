@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Bellows Substrata",
+    "description": "A subterranean stratum rich in cinder and pewter fragments. The bellows of the deep can be heard echoing through the loose earth.",
+    "author": "autonomous:content_developer",
+    "rarity": "common"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["world_biome", "biome", "cinder", "pewter"],
+  "stats": {
+    "z_min": 10,
+    "z_max": 200,
+    "biome_weight": 0.4
+  },
+  "biome_weights": {
+    "blocks/cinder_gravel_61a3": 1.2,
+    "blocks/pewter_gravel_d53e": 1.0,
+    "blocks/dirt": 0.5,
+    "blocks/stone": 0.2
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}

@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Ward-Breaker Crucible",
+    "description": "A crucible catalyst or kiln apparatus forged by the Sovereign Ward-Breakers of the Obsidian Seal. It transmutes deep subterranean stormbreaker ores to ease unwanted splash damage, cracking strict-locked seals via equal-depth catalyst detonations.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "solves_unwanted_splash",
+    "path_craft_smeltery_alloy",
+    "bracket_3",
+    "skill_school_pewter_cinder",
+    "theme_obsidian_wardbreaker",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 250.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "cleave_radius",
+      "phase": "clamp",
+      "value": 0.0,
+      "if": "ctx.is_secondary_damage >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/stormbreaker_geode_5e99",
+          "qty": 1.0
+        },
+        {
+          "act": "spawn_item",
+          "item": "blocks/copper",
+          "qty": 2.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "unlock_if": "player.max_depth <= 330.0",
+      "price": {
+        "tools/enclave_rivet_sigil_ed7e": 1,
+        "blocks/stormbreaker_geode_5e99": 5,
+        "blocks/copper": 10
+      }
+    }
+  ],
+  "offline": "exact"
+}

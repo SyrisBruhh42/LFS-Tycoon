@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tectonic Cinder Rune",
+    "description": "An enchanted sigil forged in the Grand Crucible of the Tectonic Leviathan using Cinder Ore, refined by the deep bore horologist. When socketed into a tool, its unbound thermal pressure turns overkill force into destructive cleave. A reliable, thrifty solution for an early-game miner clearing plumb or gravel deposits.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "solves_overkill_waste",
+    "path_npc_enchanter",
+    "craft_homestead_station",
+    "logic_canonical",
+    "theme_tectonic_crucible",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {"act": "deal_damage", "if": "tool.overkill_damage > 0.0", "target": "random_neighbor_4", "amount": "tool.overkill_damage * 0.5"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "consumables/alkahest_vitriol_tonic_e019": 1,
+        "blocks/cinder_ore_1db2": 5
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "exact"
+}

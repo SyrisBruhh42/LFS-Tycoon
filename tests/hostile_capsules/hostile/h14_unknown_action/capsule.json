@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hallucinated Action",
+    "description": "Hostile test fixture",
+    "author": "crucible:s4"
+  },
+  "affordances": [
+    "carry"
+  ],
+  "tags": [
+    "test",
+    "hostile"
+  ],
+  "stats": {
+    "base_value": 10.0
+  },
+  "vars": {
+    "counter": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_tap",
+      "do": [
+        {
+          "act": "teleport_player_to_moon"
+        }
+      ]
+    }
+  ],
+  "offline": "none"
+}

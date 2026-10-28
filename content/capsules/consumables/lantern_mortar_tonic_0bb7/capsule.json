@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lantern Mortar Tonic",
+    "description": "A glowing tonic that increases market sell values by 50% for 3 minutes, but slows down manual mining speed.",
+    "author": "jules:autonomous",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "consume", "sell"],
+  "tags": ["consumable", "drink", "solves_market_saturation", "path_consumable_buff"],
+  "stats": {
+    "base_value": 20.0,
+    "duration_sec": 180.0
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "1.5"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "1.25"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.active_sec_left", "value": "self.stats.duration_sec"},
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50},
+      "unlock_if": "shared.quarry_resonance_charge > 10.0"
+    }
+  ],
+  "offline": "none"
+}

@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Pneumatic Router",
+    "description": "Forged by The Perpetual Clockwork Deep-Bore Syndicate, this self-feeding pneumatic router integrates a manual bellows to seamlessly plumb mined ores into paired-chest tubes. A thrifty, reliable asset for an early-game miner in the Drowned Steam-Baronies of Rivet & Slag.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_haul_capacity",
+    "path_profession_perk",
+    "craft_terraria_fusion",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_2",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 60.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.5,
+      "if": "self.installed >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "blocks/pewter_gravel_d53e",
+          "qty": 1,
+          "route": "paired_chest",
+          "if": "self.installed >= 1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "books/manual_bellows_strike_6ef8": 1,
+        "blocks/pewter_gravel_d53e": 50
+      },
+      "unlock_if": "player.max_depth >= 198.0"
+    }
+  ],
+  "offline": "none"
+}

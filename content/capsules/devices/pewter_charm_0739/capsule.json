@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Scaffold Charm",
+    "description": "A socketable or carried magical pewter trinket. Specializes strongly in deep strata. When you backfill a deep tile, it magically raises the floor by an extra level. Slowly wears down and shatters after 15 uses.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_backfill_scaffolding",
+    "path_magic_charm",
+    "pewter"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "is_active": 0.0,
+    "wear": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": "1.0"}
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": "0.0"}
+      ]
+    },
+    {
+      "on": "on_backfill",
+      "if": "self.is_active == 1.0 and tile.depth >= 500.0",
+      "do": [
+        {"act": "modify_depth", "target": "tile", "delta": "-1.0"},
+        {"act": "var_add", "var": "self.wear", "by": "1.0"},
+        {"act": "destroy_self", "if": "self.wear >= 15.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/pewter_quill_newt_3730",
+      "price": {
+        "blocks/copper": 50
+      }
+    }
+  ]
+}

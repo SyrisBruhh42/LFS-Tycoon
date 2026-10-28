@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Resonant Crucible",
+    "description": "A whimsical but brilliant Crucible Transmutation device designed by the artisan of Basalt Kettle and The Sovereign Ward-Breakers of the Obsidian Seal. Sworn to crack the 1% strict-locked Obsidian Hazard seals, they realized deep pewter resonance reveals hidden contours. A clever twist on Quarry Folk-Science: by placing this device, it consumes rivet ore on layer reveal to highlight subterranean chalk lines, greatly aiding ore hunters in the deep strata.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "solves_ore_hunting",
+    "path_placeable_device",
+    "craft_smeltery_alloy",
+    "logic_whimsical",
+    "theme_obsidian_wardbreaker",
+    "bracket_1",
+    "skill_school_pewter_cinder",
+    "pewter"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "durability_max": 200.0
+  },
+  "vars": {
+    "durability_left": 200.0
+  },
+  "modifiers": [
+    {
+      "if": "tile.depth >= 500.0",
+      "stat": "yield_mult",
+      "phase": "mul",
+      "value": 1.5
+    },
+    {
+      "if": "tile.tier >= 1.0",
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": 0.25
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_chalk_lines",
+          "enabled": true
+        },
+        {
+          "act": "consume_item",
+          "item": "blocks/rivet_ore_dd06",
+          "qty": 1.0
+        }
+      ]
+    }
+  ],
+  "offline": "exact",
+  "offered_by": [
+    {
+      "vendor": "npcs/basalt_kettle_6ec2",
+      "price": {
+        "upgrades/cinder_munchkin_suite_315d": 1,
+        "blocks/rivet_ore_dd06": 45
+      },
+      "unlock_if": "player.max_depth >= 40.0"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Pocket Cleaner",
+    "description": "A socketable or carried magical pewter trinket that absorbs dirt. When working around hazards, it actively repels grime. However, the pewter tarnishes with use and crumbles after 200 block breaks.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "solves_grime_cleanliness", "path_magic_charm", "pewter"],
+  "stats": {
+    "base_value": 50.0,
+    "is_rechargeable": 0
+  },
+  "vars": {
+    "is_active": 0.0,
+    "durability_left": 200.0
+  },
+  "modifiers": [
+    {
+      "stat": "grime_gain_mult",
+      "phase": "mul",
+      "if": "self.is_active == 1.0 and tile.is_hazard == 1.0",
+      "value": 0.3
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": 1.0}
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": 0.0}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 50}
+    }
+  ]
+}

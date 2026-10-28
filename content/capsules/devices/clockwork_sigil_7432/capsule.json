@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Deep-Bore Clockwork Sigil",
+    "description": "An intricately wound brass-and-pewter mechanism from The Perpetual Clockwork Deep-Bore Syndicate. When socketed into any tool, its pneumatic steam-valves significantly accelerate excavation in the shallow quarry strata (depth < 300m).",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "solves_slow_early_dps",
+    "path_hired_laborer",
+    "craft_skyrim_enchant",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "value": 2.5,
+      "if": "tile.depth < 300.0"
+    }
+  ],
+  "reactions": [],
+  "offline": "exact",
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "consumables/wardbreaker_pewter_battery_a050": 1,
+        "blocks/pewter_gravel_d53e": 30
+      },
+      "unlock_depth": 30
+    }
+  ]
+}

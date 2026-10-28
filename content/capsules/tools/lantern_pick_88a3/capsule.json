@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lantern Pick",
+    "description": "A thrifty and reliable pickaxe integrating a small lantern. The soft glow guides your strikes, greatly reducing the penalty for mining the wrong material.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_wrong_tool_penalty",
+    "path_tool_builtin",
+    "lantern"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 2,
+    "base_dps": 20.0,
+    "durability_max": 500.0,
+    "is_rechargeable": 1,
+    "base_value": 200.0
+  },
+  "vars": {
+    "durability_left": 500.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": 0.5
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/bismuth_broker_af6a",
+      "price": {
+        "blocks/copper": 300
+      },
+      "unlock_if": "tool.tier >= 1.0"
+    }
+  ],
+  "offline": "none"
+}

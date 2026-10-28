@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mica Apprentice Pick",
+    "description": "A modest apprentice tool cast from an early mica alloy. The unique alloy composition helps guide your strikes, letting off-class tools suffer less slowdown.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "tinker_forged",
+    "solves_wrong_tool_penalty",
+    "path_forge_material"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 2,
+    "base_dps": 22.0,
+    "durability_max": 600.0,
+    "is_rechargeable": 1,
+    "base_value": 150.0
+  },
+  "vars": {
+    "durability_left": 600.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": 0.5
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 150
+      },
+      "unlock_if": "tool.tier >= 1.0"
+    }
+  ],
+  "offline": "coarse"
+}

@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Zinc Apprentice Ledger (Vol. I)",
+    "description": "A heavy ledger with a zinc cover. Studying it teaches you to haggle aggressively, granting a 15% discount on depth-dependent vendor prices, but its crude methods make your mining clumsier, adding 5 pixels of drift.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "read_book", "sell", "consume"],
+  "tags": ["book", "skill_book", "solves_vendor_access", "path_skill_book", "zinc"],
+  "stats": {
+    "base_value": 75.0,
+    "discount_val": 0.15,
+    "drift_penalty": 5.0
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "value": "self.stats.discount_val",
+      "if": "self.is_learned == 1.0"
+    },
+    {
+      "stat": "drunk_drift_px",
+      "phase": "add",
+      "value": "self.stats.drift_penalty",
+      "if": "self.is_learned == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {"act": "var_set", "var": "self.is_learned", "value": 1.0}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {"blocks/copper": 250},
+      "unlock_if": "tool.tier >= 2.0"
+    }
+  ]
+}

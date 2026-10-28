@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Thrifty Ledger Pick",
+    "description": "An accountant's pickaxe built strictly to the numbers. Exceptionally efficient and sturdy in shallow mines, but becomes dangerously brittle and slow as the pressure mounts below depth 300.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_slow_early_dps",
+    "path_tool_builtin"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 2,
+    "base_dps": 12.0,
+    "durability_max": 500.0,
+    "is_rechargeable": 1,
+    "base_value": 200.0
+  },
+  "vars": {
+    "durability_left": 500.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "add",
+      "if": "tile.depth < 300",
+      "value": "18.0"
+    },
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "tile.depth < 300",
+      "value": "0.5"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "tile.depth >= 300",
+      "value": "2.0"
+    },
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "tile.depth >= 300",
+      "value": "3.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/anvil_smith_73cd",
+      "price": {
+        "blocks/copper": 300
+      },
+      "unlock_if": "player.max_depth >= 50"
+    }
+  ],
+  "offline": "coarse"
+}

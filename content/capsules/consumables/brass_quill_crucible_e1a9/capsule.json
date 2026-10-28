@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Brass Quill Crucible",
+    "description": "A self-tempering thermal rig bound in brass, wrought by the smith-lords of the Under-Sun Manifold. When placed upon the earth, it resonates with the Calcified Foundry, transmuting backfill dirt into Quill Ore while easing the labor of building up scaffold.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell",
+    "backfill_material"
+  ],
+  "tags": [
+    "consumable",
+    "solves_backfill_scaffolding",
+    "path_placeable_device",
+    "craft_alchemy_potion",
+    "logic_canonical",
+    "theme_tectonic_crucible",
+    "bracket_2",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "charge_left": 10.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "tile.depth < tile.max_depth_reached and player.grime < 15.0",
+      "value": 0.50
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_backfill",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "blocks/quill_ore_4083",
+          "qty": 1.0,
+          "route": "ground_pile"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/quill_peddler_0c07",
+      "price": {
+        "tools/vitriol_hollow_geomancy_pick_54d7": 1,
+        "blocks/quill_ore_4083": 3
+      }
+    }
+  ],
+  "unlock_if": "player.max_depth >= 120.0"
+}

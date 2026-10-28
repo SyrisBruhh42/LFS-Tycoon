@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Gravel Rhythm Manual (Vol. I)",
+    "description": "A beginner's manual outlining rhythmic gravel shifting techniques. Reading it teaches a crude method that grants a 40% boost to base DPS at shallow depths (above 300m), but the clumsy rhythm leaves you vulnerable, increasing incoming damage by 25%.",
+    "author": "core:ground_zero",
+    "rarity": "common",
+    "era": "early"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "book",
+    "skill_book",
+    "solves_slow_early_dps",
+    "path_skill_book",
+    "gravel",
+    "crude"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "dps_boost": 1.4,
+    "damage_penalty": 1.25
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "self.is_learned >= 1.0 and tile.depth < 300.0",
+      "value": "self.stats.dps_boost"
+    },
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "if": "self.is_learned >= 1.0 and tile.depth < 300.0",
+      "value": "self.stats.damage_penalty"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_learned",
+          "value": 1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/dirt": 120
+      },
+      "unlock_if": "shared.active_drunk_drift_px == 0.0"
+    }
+  ]
+}

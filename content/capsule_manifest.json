@@ -1,0 +1,2186 @@
+{
+  "schema": 1,
+  "capsule_count": 545,
+  "capsules": {
+    "biomes/basalt_hearth_9d89": {
+      "sha256": "74fd42124058dfeae6b17fb6ea7fbdf2524061426d5dce014a17e2da9b5c053c",
+      "bytes": 623
+    },
+    "biomes/bellows_strata_ed92": {
+      "sha256": "de8e6a657736c191794fa8b47e069bd6d217c5ca64223a19ea231d52f0255956",
+      "bytes": 681
+    },
+    "biomes/brass_rivet_caves_cc00": {
+      "sha256": "3c2827415bd043e7eacd3767455c5dedffc1665d64e046004a4af67468dcfe41",
+      "bytes": 733
+    },
+    "biomes/calcite_strata_85cc": {
+      "sha256": "914fae62d82332b58222df8f5e966613e39594b0953831fa130f1df171bb7a51",
+      "bytes": 557
+    },
+    "biomes/chisel_bellows_dc1f": {
+      "sha256": "98d7440d30b9935a375e02afc68280027f30a4fca3b3d5b7eb2dd38e943c4c03",
+      "bytes": 661
+    },
+    "biomes/chiseled_depths_6f64": {
+      "sha256": "2cc82fb4969ba421ad3178c64737f8933c7a25e4c19ee6d2b0fd26ba0250b47f",
+      "bytes": 605
+    },
+    "biomes/cinder_brass_strata_26c7": {
+      "sha256": "e4735162665fed26f0a94888811ba533c35f46d5ebe59dcdb24d7f1b7c1cdeec",
+      "bytes": 679
+    },
+    "biomes/cinder_toad_bog_2d7b": {
+      "sha256": "4b04d124ef4ddb6af2570bb4289e18b26d88697926ad024aa1e1022ffb67a29c",
+      "bytes": 862
+    },
+    "biomes/clockwork_shale_6749": {
+      "sha256": "064af179a4efd9143fd40be7a735ab564e512026d79d63fb9ec6f07aa706f0ad",
+      "bytes": 748
+    },
+    "biomes/galena_seam_82f7": {
+      "sha256": "0233fd1c59bc4ed92103330b3ab0bfd65629d0e562749a5c842d17c979b9914a",
+      "bytes": 584
+    },
+    "biomes/grand_crucible_45fb": {
+      "sha256": "8bcbf6755a41c341c80bf1985338e85470bf43e4ac49e068e0a80518c704e16d",
+      "bytes": 708
+    },
+    "biomes/hollow_geode_7f6f": {
+      "sha256": "6453e1c425c618babdc69c5256fde15aabae7b50b4db19dcf22b64dd41c3ceb0",
+      "bytes": 641
+    },
+    "biomes/hollow_pumice_e271": {
+      "sha256": "738d8bf280135cf8b7aa287b30458f1ce44605fbbbf66fa2dead60a5d92823b6",
+      "bytes": 595
+    },
+    "biomes/lantern_strata_a3f7": {
+      "sha256": "9c7b5be0ff1c13b2618984b8cea44b08658953570c68841bd257761c124856f4",
+      "bytes": 641
+    },
+    "biomes/mole_wick_cinder_7fe3": {
+      "sha256": "cbace99b4b0991810ae094d416c600ccbdeb1738c77464235d0a99f3d9612d61",
+      "bytes": 792
+    },
+    "biomes/obsidian_wardbreaker_mine_6755": {
+      "sha256": "e379de26cb695d86584cd656a1b3e5fd65c8ae52d0f47328ba9b4ede9d5747b8",
+      "bytes": 806
+    },
+    "biomes/pewter_lens_caaa": {
+      "sha256": "0257c9d30ecfa2013b2e7ce8b608c407bf53aaf9a60dd256cdd2a8b427b2c0e2",
+      "bytes": 613
+    },
+    "biomes/pumice_strata_39f4": {
+      "sha256": "66f9537128181c69aef12744712b7d4e6337da4934be54883c9a9ba10504daf3",
+      "bytes": 605
+    },
+    "biomes/shale_6e5a": {
+      "sha256": "a27004f364636a3a25eed05f6af99314985cdfbe0051678c86c5afb988528437",
+      "bytes": 645
+    },
+    "biomes/standard_crust": {
+      "sha256": "b209b54f163ba743353fd7a66131ea67f2374bce006c82a4e125f68af2821aea",
+      "bytes": 667
+    },
+    "biomes/sunken_bog": {
+      "sha256": "acc8e1fea41f7cda47d9653dc0cf6fdf183fbdd33053b950944e7c5dc2db65f3",
+      "bytes": 622
+    },
+    "biomes/umber_hearth_7ea0": {
+      "sha256": "e42b88e169608b028f63cb2103ac76aac63fd9a5a277c64930daa9822e4bc741",
+      "bytes": 769
+    },
+    "biomes/velvet_salt_bone_bc0a": {
+      "sha256": "8fd4236d7405542e231843f017c812d00ff3d0b5b37ec8df3a36d74d3fe81cc5",
+      "bytes": 925
+    },
+    "blocks/alkahest_quartz_d755": {
+      "sha256": "fc57021b3f019154874e2a69200550dac0b32e1cd6b852b5cbc2efd8f6fec95a",
+      "bytes": 870
+    },
+    "blocks/anvilstone_02a1": {
+      "sha256": "82714d2e1b635e0f789b931ee0f826848c6e2f65a04e240e50c0fb777f88dade",
+      "bytes": 826
+    },
+    "blocks/cinder_gravel_61a3": {
+      "sha256": "ea7bf526c32b575eb30fc7aadc5ea941b6dd99a28eb4b9594a8ea4c66c041809",
+      "bytes": 1126
+    },
+    "blocks/cinder_mortar_17bb": {
+      "sha256": "2572c402534986d404312f7838a142ac0a042c93d472a94d7d3a55258907ef4c",
+      "bytes": 728
+    },
+    "blocks/cinder_ore_1db2": {
+      "sha256": "1fdcfb5b271b599a9b354deeb5b77e4b49e6f56caf5303238b8b670a906bdcfe",
+      "bytes": 671
+    },
+    "blocks/copper": {
+      "sha256": "fb2822297c7054c2a7391139d1e28710d80555a2a086cbb6845c13fd80294b06",
+      "bytes": 682
+    },
+    "blocks/crucible_slag_5dfc": {
+      "sha256": "d69015198a81ba04f1d3ed56e2408f4f0d25eb5cc4037746f2cae1dba48e2917",
+      "bytes": 771
+    },
+    "blocks/dirt": {
+      "sha256": "6766448fdb8397f3eb8824b302d9ec762ec17912de08b61c42f00ed6e24738db",
+      "bytes": 695
+    },
+    "blocks/flint_shale_6493": {
+      "sha256": "d4a9a5e52f47efce467f605a40852cbf6d24057cf1c403423b04d02b05cbe836",
+      "bytes": 726
+    },
+    "blocks/hollow_stone_b96c": {
+      "sha256": "37595f124fd68e6090303eef076097a521179771324d0d18e11a34290f5cbe0d",
+      "bytes": 710
+    },
+    "blocks/lark_newt_rivet_ore_a337": {
+      "sha256": "8553369287cf38f7f95c1a852dc9eed90ad0126656f62059f8999cd64c0d8284",
+      "bytes": 1147
+    },
+    "blocks/lava_pocket": {
+      "sha256": "5312e5dfc0aa770685e4311b412e35a6e7466a8e19cf1ae8d2a377b27489a238",
+      "bytes": 743
+    },
+    "blocks/obsidian_hazard": {
+      "sha256": "a950eb07c64d2240ac132e6a5d9b8ed2c6ec6395d6ca0dbdbb4ff6a098102c47",
+      "bytes": 841
+    },
+    "blocks/ochre_stratum_d812": {
+      "sha256": "1db9aefe7b4bcf2c30e7fa52e5f91206a2d638147f23b62e75c68c7a287e62c1",
+      "bytes": 711
+    },
+    "blocks/pewter_gravel_d53e": {
+      "sha256": "625070eb7efc416ec3961f752ac21d5c6519cc5738784c25e780c1256e2d018c",
+      "bytes": 777
+    },
+    "blocks/quill_hollow_fa6d": {
+      "sha256": "e8cbeed26167c4ff4ae0c56f6247aaba29212e56c4973b906842ea138410af70",
+      "bytes": 724
+    },
+    "blocks/quill_ore_4083": {
+      "sha256": "85987253fb5221bc47c94925846e0087ce0133570f78efd40a607a4f79536252",
+      "bytes": 752
+    },
+    "blocks/rivet_ore_dd06": {
+      "sha256": "4d3ddc3412c6d6e349cffa7c4100a33a9b7594aff30d8cb0d80194fa8d5295d0",
+      "bytes": 597
+    },
+    "blocks/stone": {
+      "sha256": "09d56a8acbed2ce95f4ea0b0fc3fa2709ac997e006347b6acfc1f88f63eb1ca0",
+      "bytes": 702
+    },
+    "blocks/stormbreaker_geode_5e99": {
+      "sha256": "c5c03dc16405ee626451e726d8072b373111fc441ac9bfc78e15daf8d39619e5",
+      "bytes": 934
+    },
+    "blocks/vitriol_crystal_b488": {
+      "sha256": "de744879a59c097dd21ce86ca5bcf5b119f73f471407d110571bd0ca70355e8d",
+      "bytes": 846
+    },
+    "blocks/water_aquifer": {
+      "sha256": "1f8f936923d81611ddc9aeed33e333c4d6e07c1f836d5b160541b907e8dc7b6f",
+      "bytes": 770
+    },
+    "books/anvil_ledger_e32d": {
+      "sha256": "af24b6f69a75f3624a66fe171d40bf93008122db7c81de88add9c99ef6cb8c6e",
+      "bytes": 1531
+    },
+    "books/basalt_bargainer_ledger_db94": {
+      "sha256": "d8cfd41b33bb73d9987b6ed5460ad17a2361d60f897b4963a743ae35bccaa889",
+      "bytes": 837
+    },
+    "books/brass_contour_manual_2362": {
+      "sha256": "971a01b45bea6e0eb445528f8f18d0dc124c7056d53ef1f4e5a2a4b55eb1f963",
+      "bytes": 980
+    },
+    "books/cinder_munchkin_grimoire_95a0": {
+      "sha256": "6173d6df5c991df94bc54af74d1fe1c763d627cfb306f64682ba80290e682b68",
+      "bytes": 1695
+    },
+    "books/ember_sconce_manual_952f": {
+      "sha256": "85d20e9b28d8846e7f89adaadb81be9aa76d8194205d4fb1c2a813fbb6311124",
+      "bytes": 1195
+    },
+    "books/gravel_manual_3dc5": {
+      "sha256": "737ab219534c1856a659d1ec0733723e1e582adeac714c48561403e22bee50c4",
+      "bytes": 871
+    },
+    "books/gravel_rhythm_manual_9100": {
+      "sha256": "80c6920e69d7452fcc9dbd2f9d8fb22b057122185fe041cd0b07f0e5a4cc4543",
+      "bytes": 1511
+    },
+    "books/hollow_ledger_155c": {
+      "sha256": "024a516761a348ee8016821fb58665746714921b60538c6f38156711aa0caf68",
+      "bytes": 1408
+    },
+    "books/iron_bound_contour_manual_54f4": {
+      "sha256": "91e8404b3c1f71cde3f2f5569c3906e55d383a4bc43fedace8cee1032fa37b40",
+      "bytes": 1441
+    },
+    "books/iron_drilling_primer_0cf8": {
+      "sha256": "d4c9c9fa20bce164261ed1a4abefe88f066043bb19750d8eb47d3de09028a05d",
+      "bytes": 839
+    },
+    "books/ledger_shallow_drilling_45e2": {
+      "sha256": "fbdb1d177c22168b6b2833e3a71c22ea8605f07aa6512653c462b7e4e02270a0",
+      "bytes": 919
+    },
+    "books/lithic_choir_geomancy_grimoire_0954": {
+      "sha256": "bc0d29cc1b23fbcdaedf16efa77abb193704789dd8c0436f8e4bdf10e0a1c06d",
+      "bytes": 1838
+    },
+    "books/loam_brokers_primer_f512": {
+      "sha256": "78ce2f1587da38d2c4f5fc446f0b2b1e26dc0ef800e3fccae708d12d657e29da",
+      "bytes": 1529
+    },
+    "books/manual_bellows_strike_6ef8": {
+      "sha256": "b22fbf8249676c1602dbfbfa593fe0db9b83e2c2726686ffddcc9eb6b0def2eb",
+      "bytes": 1429
+    },
+    "books/manual_gravel_lark_scaffold_62f1": {
+      "sha256": "5e94741335f1ff00e69c3c4294f248e1267a9270c36a1841b93a4fd481707962",
+      "bytes": 1454
+    },
+    "books/mica_anvil_lithic_tome_2de0": {
+      "sha256": "2bc94a326c3df8c23d5f568b0cdbb71b236e947c213e5eba2c06c6169ce5ca3b",
+      "bytes": 1715
+    },
+    "books/mica_prospector_almanac_f4bd": {
+      "sha256": "d8b29eec6072f416dbaaadce923ae6bbc2c8fd9aeb5c19f3b40bc518bf75ab0a",
+      "bytes": 1450
+    },
+    "books/overkill_munchkin_grimoire_be82": {
+      "sha256": "896cc135a866006f94159b8e47a6f05fe7749be112e17425d83d3fcf7c2184b2",
+      "bytes": 1657
+    },
+    "books/quill_survey_manual_4d6e": {
+      "sha256": "c13620c764a162dd96046979126df7d911f988d0485669ed35b9a85d97bdae93",
+      "bytes": 1834
+    },
+    "books/rivet_assayers_treatise_0b42": {
+      "sha256": "7a8af29b142463b7ac46e28ebed7220a242d491d0dd8e9f32dada56cbac66b87",
+      "bytes": 1465
+    },
+    "books/shale_discipline_4227": {
+      "sha256": "a2ec782c9ab50bda472213c2d84f1ea9a4eccda5afbab7200c992df1f4fa7488",
+      "bytes": 1530
+    },
+    "books/shale_improvisation_manual_321f": {
+      "sha256": "bbc6c206f610f1733c6abab6ba287bd028a4a80f7aa63f36cfd229a11852f173",
+      "bytes": 1017
+    },
+    "books/shale_miner_handbook_97f1": {
+      "sha256": "343a7c252a9e9cc57dc8bb0dc0d03064f6a2caf112267e7714fe12a03d82f6c4",
+      "bytes": 1049
+    },
+    "books/slag_ore_hunting_4a50": {
+      "sha256": "0bcbd8ce3c9f1a2d5beb4b39ee08a8446ed8387d37b3512eccd75ea577f89e62",
+      "bytes": 1281
+    },
+    "books/tome_crude_shattering_v1": {
+      "sha256": "dc33f30823352af61d69eba77e847262e75c5c00eaf1394641fb5d2ae921e346",
+      "bytes": 1336
+    },
+    "books/tome_repair_3354": {
+      "sha256": "ba167f74ce33318395aa0f399ff5fed991f0b1da75f8874ccf155b1f4141e12f",
+      "bytes": 1506
+    },
+    "books/zinc_apprentice_ledger_130a": {
+      "sha256": "e4051f929b3b217e14548b595c5f488ca68467be77fd3a698ecc639458fb9c32",
+      "bytes": 1313
+    },
+    "consumables/alkahest_decoction_dae2": {
+      "sha256": "011da0deb533f9e2319781c6d6642a9a7475e39f3cb8a702ad4b9dcf236289de",
+      "bytes": 1892
+    },
+    "consumables/alkahest_vitriol_tonic_e019": {
+      "sha256": "cdaca6d1dbf3e8467642b1b3b612456fe594b4a0831c6b5a89140be3e9327dea",
+      "bytes": 1400
+    },
+    "consumables/apprentice_mica_paste_6674": {
+      "sha256": "86ee00a659020da0ce7016f37e24377168bbbcb08b762e03478416fad0e6c102",
+      "bytes": 1125
+    },
+    "consumables/brass_mortar_6af5": {
+      "sha256": "8d37af435a148ac4fc96a197bb1986f7fdadff1fe198ba65d2ccba5f0e6b5b6f",
+      "bytes": 1728
+    },
+    "consumables/brass_quill_crucible_e1a9": {
+      "sha256": "2a3d5339dce20e8da3e62edbdc6ac5cf217e0eacbf2b82b2ca00268a9d8300f2",
+      "bytes": 1456
+    },
+    "consumables/calcite_assayers_tonic_f84a": {
+      "sha256": "8ae5572a47fec381b31daf43b2264f186f5c4b3c5921d03eda8e224d842c414f",
+      "bytes": 1535
+    },
+    "consumables/calcite_grease_2717": {
+      "sha256": "c8f4775fe08dca9cee013a9b8bff5f08e280d7202b62fe674fd86dfceb907fff",
+      "bytes": 1569
+    },
+    "consumables/cinder_wine_2132": {
+      "sha256": "4b71b57cf9b37a7225d1df46c1543675631cee55996a2ca8cad1c7fb3bd301a2",
+      "bytes": 1637
+    },
+    "consumables/crucible_basalt_wine_d38b": {
+      "sha256": "3a6e1c5b85acb3842283dfaa65fde0d9b6dca730e4b2b476b1848dbff0cdfe4a",
+      "bytes": 1840
+    },
+    "consumables/crucible_tonic_f8ad": {
+      "sha256": "4ddeb08ee12108e7b699f620b4354806531148d9d580d5cb012b7079baf38fe8",
+      "bytes": 1630
+    },
+    "consumables/crucible_wash_0020": {
+      "sha256": "6ef2e2e9c95bef5e9d74a1488a95f07d0b8343e8f31d9b62faf9496b10567f8b",
+      "bytes": 1364
+    },
+    "consumables/ember_ledger_tonic_c7a6": {
+      "sha256": "1c8b333c8632c41e744e3ce0d5f521da43c1f168e145b59286b9175ff465fa57",
+      "bytes": 1909
+    },
+    "consumables/ember_tea_9d25": {
+      "sha256": "25bbde9b1cc78baf9915c1a68e172f9c2c7e964db1e39025603751b1adc17e37",
+      "bytes": 1359
+    },
+    "consumables/ember_tea_dee7": {
+      "sha256": "2e8b216f6704d527140f4cd32fbfc1caaa092230d19a5cc038c1819eda84fcfd",
+      "bytes": 1995
+    },
+    "consumables/flint_hollow_phial_3833": {
+      "sha256": "7b713a74daa6f7718d3d9a0cac6465463918f96a40eae50dbb10a828a7639635",
+      "bytes": 1345
+    },
+    "consumables/flint_tonic_418d": {
+      "sha256": "713528a381aa090268bc45b88cac079831e908fc4c32b5a0d47fa1fc1039f4f8",
+      "bytes": 1733
+    },
+    "consumables/gasket_tonic_3a06": {
+      "sha256": "9b7a097719f52316dc41466aecb2a8d71c8724795a474293f34d6dbb9a9b0d39",
+      "bytes": 1595
+    },
+    "consumables/hearth_ledger_5fc5": {
+      "sha256": "ff59597ef34794017796ba48627830a57e2ef75814b226e43fe09fb06c42cd0f",
+      "bytes": 800
+    },
+    "consumables/hearth_wren_velvet_28ea": {
+      "sha256": "d32466e3eacc7858c26743eb7f85610dd5bf56881d11cdf69007cb0186326338",
+      "bytes": 2295
+    },
+    "consumables/hollow_mica_wine_1332": {
+      "sha256": "2fd5835a7fa699d247f134e82fc6b61426782dfb775003605746974bd50b6b75",
+      "bytes": 1440
+    },
+    "consumables/iron_bellows_tonics_a781": {
+      "sha256": "db7a5d0de7f4e34960226880500e67e80330f321c3c8bb3adb901008bdba3833",
+      "bytes": 751
+    },
+    "consumables/kettle_broth_b9cb": {
+      "sha256": "9fd137ec607662294696706fcda01c13f2a9842cdd4543827a6eb1c10da54352",
+      "bytes": 952
+    },
+    "consumables/kettle_tea_77a3": {
+      "sha256": "9ce08f91356dd631e00a12e4a03af9d94067749379a0fd5006eb9f41fcf744e9",
+      "bytes": 1865
+    },
+    "consumables/lantern_mortar_tonic_0bb7": {
+      "sha256": "9d5fd48da6d985a1995f170086c2c82b77a11d5fb563d2c796b1a7eb1ddcdd72",
+      "bytes": 1190
+    },
+    "consumables/lantern_tonic_08f5": {
+      "sha256": "8991a7a620e4b288cd0a6aa0ca0c16ef51c0e8c9ca818a58e1d4edfed2b8b757",
+      "bytes": 1695
+    },
+    "consumables/mica_resonance_cb19": {
+      "sha256": "d9921e565d033f8b8be0754a34aadc348fc0c00b53636ea5459b24978b54903f",
+      "bytes": 786
+    },
+    "consumables/munchkin_brew_5ec5": {
+      "sha256": "5a655a3fbfac9f777991d53e8a2bd08aac209468547758cefd093f11c267ee89",
+      "bytes": 2111
+    },
+    "consumables/ochre_gravel_tonic_cdc8": {
+      "sha256": "f70c1b10a14cb4a96aeb9315e941579023dc52c4f8fe376d1eb3255fc4f27a96",
+      "bytes": 1328
+    },
+    "consumables/pewter_thimble_tonic_8271": {
+      "sha256": "1d7cdef80cef41693b9657304546c5407a6105ca0ff774b98e47752c9a6bb0a5",
+      "bytes": 2135
+    },
+    "consumables/plumb_tallow_3419": {
+      "sha256": "6d2f7c8be61523ba6ab58e66e55f1f3915ff2484ccd8464a8a349cb0185a150c",
+      "bytes": 1638
+    },
+    "consumables/plumb_valerian_drops_8c4f": {
+      "sha256": "b41b4276f3fb9f65277ffc3b4f916813dc16efa732474e175a10cb011b68d296",
+      "bytes": 1304
+    },
+    "consumables/pumice_tonic_ca2b": {
+      "sha256": "6c3c12c8ffc83293edd60ba0ffcf9789b681ec61aa4a424b4aa89b41efc6c12c",
+      "bytes": 858
+    },
+    "consumables/pumice_wick_wine_c2a4": {
+      "sha256": "e46ab5d44f67dc139204e56a15b5592515b135e5d2ecedce0a4c68d0501ae042",
+      "bytes": 1594
+    },
+    "consumables/quartz_apprentice_wine_623c": {
+      "sha256": "19f72371c0105cdbb568e26cb3003c343de016176338f76eb4b221a046387225",
+      "bytes": 1264
+    },
+    "consumables/quartz_tonic_870e": {
+      "sha256": "fb7f905c30cfdb5bda1fe38b6ec890ea4488dba6a016c3fcca89073f615de280",
+      "bytes": 1384
+    },
+    "consumables/quill_wine_2103": {
+      "sha256": "a20824c62ae8182aa1243ed36870aaad7aaa4223557a07c3f648062520efc5d2",
+      "bytes": 1800
+    },
+    "consumables/shale_balm_36fc": {
+      "sha256": "21a277e282a8466ff60f584f282f55802dd69bf3dad9643da30c949b6a1d4678",
+      "bytes": 1706
+    },
+    "consumables/shale_wine_7573": {
+      "sha256": "4a8a4c7fb1813f0bb088e6adebe42700d67173b44e48fb4c3b5ad3eaab8ba15c",
+      "bytes": 1571
+    },
+    "consumables/slag_cinder_wine_afc9": {
+      "sha256": "59ef817d0f1db3a6b1196907e024ff21efb1fc488ff80f0136925aa750c14313",
+      "bytes": 2030
+    },
+    "consumables/sour_spelunker_wine": {
+      "sha256": "ca091159652660ab440ed78504850885b82898c1a8e6a16f5625c6cf790a8145",
+      "bytes": 1372
+    },
+    "consumables/stoat_tin_tonic_d91b": {
+      "sha256": "47175087accc1dfd032232e42784e3d8255b6cbf702aaf1edff0ebfbf58a2919",
+      "bytes": 1406
+    },
+    "consumables/vitriol_plumb_tonic_9e7c": {
+      "sha256": "3e8effa0513e17fb349d36051077e5b898ea6b72773bfe0d354e6f60c75f2f28",
+      "bytes": 1706
+    },
+    "consumables/vitriol_tonic_2561": {
+      "sha256": "eb5c63e3d18012da1e53b92ed7a6f630c4795a9e489a72a5c95f261bb59e41b2",
+      "bytes": 1578
+    },
+    "consumables/wardbreaker_pewter_battery_a050": {
+      "sha256": "939634e97794884f9d751ff43e894a910873691a168827a77dbaf8cd99c0a3c8",
+      "bytes": 1883
+    },
+    "consumables/wrens_badger_wine_bc86": {
+      "sha256": "3aa34c4f6b7f852aa3a25bf70dd55c06de7463d6a8705d7dea7c770d4ed9ee7b",
+      "bytes": 1929
+    },
+    "consumables/zinc_broker_tonic_473e": {
+      "sha256": "842b178f8d498b01fec39842d822b2338ebb1bfd2c5cb0d01e53d5d7d37c2970",
+      "bytes": 999
+    },
+    "consumables/zinc_rivet_tonic_9ec0": {
+      "sha256": "976e79c83605be0ffeb192b119fe62964062f2c4967f535adeac10132bf19a04",
+      "bytes": 1967
+    },
+    "devices/abyssal_sconce_c8c4": {
+      "sha256": "2f50d9147b0cfca751d3cb6fd71900c3db3dc0f438e7d054a9c05c6c72c31bfb",
+      "bytes": 1146
+    },
+    "devices/alkahest_copper_tinker_head_f0ea": {
+      "sha256": "bf0e33acd6ffee5a47e157c804302e91c2109d0b7a32183e0a677effb61588ea",
+      "bytes": 1437
+    },
+    "devices/anvil_wick_sigil_4ba0": {
+      "sha256": "c27d4edb08fdfbc96712b429981cb3b7e87e1ef35d305c490ee91f2a25b51f78",
+      "bytes": 1041
+    },
+    "devices/apprentice_calcite_rune_b8df": {
+      "sha256": "dfb80a2276659b711647504b66ee73ce691963db6ad208fd41c71a804ee2d15d",
+      "bytes": 1252
+    },
+    "devices/apprentice_crucible_guard_79f7": {
+      "sha256": "6802bd489ba9c581939eba3b38bc66cdb3fab9e397e287beefe87aee2d5bd695",
+      "bytes": 1445
+    },
+    "devices/apprentice_depth_charm_099f": {
+      "sha256": "b53c03ad2537c9d683521397f816c9afd77f15348a1bfb632c4c43e27af7f21d",
+      "bytes": 1389
+    },
+    "devices/apprentice_hollow_sigil_7c24": {
+      "sha256": "601dafdabbb851ccae44a3616589de9da22a5ef2a69bb88210cea45bb8b0b596",
+      "bytes": 762
+    },
+    "devices/apprentice_kettle_charm_75dd": {
+      "sha256": "d5530bbe0af3d015b1534b054ff394a4b39061cded99406ceae859859dcd0ac8",
+      "bytes": 1150
+    },
+    "devices/apprentice_lantern_484a": {
+      "sha256": "206694572cdc6741fa7a72903d900269f9d6df012c73c6888e6d457547c60d26",
+      "bytes": 1478
+    },
+    "devices/apprentice_pumice_rune_f32f": {
+      "sha256": "bc529246bb70bf68d9a6e2fe320eadfcb43174bb18af99589c8de699d5bcb4ee",
+      "bytes": 826
+    },
+    "devices/apprentice_wick_router_7e99": {
+      "sha256": "ea97f6693051193777edd8c5c7e63a30ce0c2d9324a0d831d1f2f562b4c0c773",
+      "bytes": 1570
+    },
+    "devices/basalt_bellows_gauge_1606": {
+      "sha256": "7bdcf3d7cb2a0aaac7f3abc803d18547206981b32064c794bcef0af3a5c966b3",
+      "bytes": 1344
+    },
+    "devices/basalt_cleanser_927e": {
+      "sha256": "eeefb52b5254a6588ee6f46a665599005bd2f29d86d94952fdcd0cc47df967ac",
+      "bytes": 1037
+    },
+    "devices/beetle_sconce_sigil_3fab": {
+      "sha256": "dea1320898d06824cf830919d3acd6e77623c20d38e7f2fd369a78b9d94eaa3c",
+      "bytes": 1527
+    },
+    "devices/bellows_charm_206d": {
+      "sha256": "13b826538903b1f296eddef64e43db458397418c2126fec0f452c9cc977a7951",
+      "bytes": 1180
+    },
+    "devices/bellows_sconce_4cff": {
+      "sha256": "e2a7f0e60ad94fd282d6e1510002d7632d58e7c157da1a1dbc13f47a64472bbc",
+      "bytes": 843
+    },
+    "devices/bismuth_crucible_charm_8471": {
+      "sha256": "f6bc85f1fda26fb05384d6767168c448452c80ca5a20190a8ba81d8717416f2c",
+      "bytes": 1703
+    },
+    "devices/bismuth_lantern_c876": {
+      "sha256": "7f69b052ede235e3a09ab3857dddbb4e3b4cfe0b787061b3b7dc59d81044c5c7",
+      "bytes": 1050
+    },
+    "devices/bismuth_sigil_9517": {
+      "sha256": "48c3aabc882bbd50567adda4e3a25aed2350acc6ab2d6d2dad9b80af31d3ea96",
+      "bytes": 911
+    },
+    "devices/bismuth_splash_dampener_6cb4": {
+      "sha256": "8099c84d2fa1a96d53416e06828a95e21f2757cf808f593139c5684ada7da626",
+      "bytes": 841
+    },
+    "devices/bone_lark_sigil_162f": {
+      "sha256": "75341262069593bf100a2e5002887da33579c8dc5bbd8f63d5adf4f0636da029",
+      "bytes": 1089
+    },
+    "devices/brass_charm_1e9b": {
+      "sha256": "3f9fe9abee625d783a15712c2ee12df3ce44cfddfff13557ffc7bb699b9eacc5",
+      "bytes": 1105
+    },
+    "devices/brass_charm_b27d": {
+      "sha256": "f041cb632372468069f22c1142880c3fe53823fcace9dd69c1018a45a30bec37",
+      "bytes": 1491
+    },
+    "devices/brass_conduit_2552": {
+      "sha256": "7f9830ce771e37dac98842858332f38cbc539fb0d5c9d5a8138f72ece58e8b9b",
+      "bytes": 1576
+    },
+    "devices/brass_depth_charm_5934": {
+      "sha256": "cccc3db3cab16b20b8a0b26b6aedfa8ca0d8068031e55e262f08b15a416a97ae",
+      "bytes": 833
+    },
+    "devices/brass_lantern_enchantment_1181": {
+      "sha256": "491430dd1e7d5721dfa89f09a05e857b0710c74ed1f14d188f3c5f0daee4f17f",
+      "bytes": 1240
+    },
+    "devices/brass_tap_guard_3272": {
+      "sha256": "d0175aa433acc1c397bfebda0a4cd2a9a9eea1a7c82e5388d860c1dabcbbf8cd",
+      "bytes": 963
+    },
+    "devices/brass_wick_splash_dampener_dab3": {
+      "sha256": "2555802179fc7c7484986275a6fad7124032a2ebecb0d2f56d5d841ccc29f6e1",
+      "bytes": 1302
+    },
+    "devices/calcite_assayer_charm_b73a": {
+      "sha256": "f8b60216231072e4e5472a550a532403e1b4bac1304b6b54c88292f368f1eba5",
+      "bytes": 1548
+    },
+    "devices/calcite_router_33b7": {
+      "sha256": "3bf78e73c664ea1ca3ef4fcaacf1715978dfe93a4f0d54536ab51425278e5b60",
+      "bytes": 849
+    },
+    "devices/chisel_guard_f6e0": {
+      "sha256": "51b74f22dcb8b1b9488883db28629bf254c1bc9df2f2e8a29bba143a782aadd4",
+      "bytes": 918
+    },
+    "devices/chisel_plumb_dampener_fb56": {
+      "sha256": "b7199d3a005755f4030d721cab5ee0a85225cab344b716b647343948e6b6b024",
+      "bytes": 919
+    },
+    "devices/cinder_contour_core_65be": {
+      "sha256": "9e725a219fee59052fd66261bdb4189cbb98b6805e45573d6d439a5393ca2f1b",
+      "bytes": 1836
+    },
+    "devices/cinder_galena_caliper_f7bc": {
+      "sha256": "a457caed3b328c5e5df9357ee7cbb33e6315d52391950ba38f807e7e4e628fd4",
+      "bytes": 1236
+    },
+    "devices/cinder_quill_lure_bell_9bce": {
+      "sha256": "c7901ec68a5c6d448b841d82a417a577a6a51114179ca1bc35b83d8726251711",
+      "bytes": 1879
+    },
+    "devices/cinder_rivet_sigil_6c51": {
+      "sha256": "19d4877f54a99e56c4a03398791d38484cddbafd00a6b85b163ed9038e8df6d9",
+      "bytes": 1580
+    },
+    "devices/cinder_rune_e190": {
+      "sha256": "39581de0995656a9b65cc2d1aeb9e5682866d14776a5eb4e2047df7bb9573fb8",
+      "bytes": 993
+    },
+    "devices/cinder_sigil_23dd": {
+      "sha256": "9a8982fc4d2065817b523a3968ec5f4f11f570b2dbb8fab4c687dba55af5a740",
+      "bytes": 1448
+    },
+    "devices/clockwork_siphon_rig_2410": {
+      "sha256": "fbfa72144c74b0771d6c70bd7bb7eaad3c03a21223d904fa2e06815d70c300da",
+      "bytes": 1661
+    },
+    "devices/copper_ledger_8260": {
+      "sha256": "5d0bc56ed7dae02f9f1f021d3ce4f34b933acde51ade30359f24e09b2264b739",
+      "bytes": 1321
+    },
+    "devices/copper_sconce_tallow_f591": {
+      "sha256": "014e40b1e39d1a722594ad5f567265c10adc6bc7107d93458df3e54f97c5edd0",
+      "bytes": 1197
+    },
+    "devices/crucible_battery_455b": {
+      "sha256": "748211c0050cb2b931dc3ae1c3d99ef029cbbb05005e98b20fd63ba24198fe75",
+      "bytes": 1260
+    },
+    "devices/crucible_fracture_sconce_68f1": {
+      "sha256": "8e44b84d29352348739c601fc8a207b4ed0d19985f23187a91eee24877d90837",
+      "bytes": 1770
+    },
+    "devices/crucible_gravel_charm_7390": {
+      "sha256": "a4e08cdbe0b1c379cfb1528c70e743e9e731f70b4ca75e717ba7240cb92394cb",
+      "bytes": 955
+    },
+    "devices/crucible_sigil_f013": {
+      "sha256": "c6d03e079b4f58eb4779f0cc4b5175086c33effca2aa4fb8988bbb1e41f12cac",
+      "bytes": 1075
+    },
+    "devices/ember_iron_charm_2d71": {
+      "sha256": "3b584fcb9c670303477b70591a9d9ed44572eb2d0c026793e2375ad7bd021575",
+      "bytes": 1151
+    },
+    "devices/ember_ledger_badger_3bb2": {
+      "sha256": "be16eaec16397d7185e4235651b4bef120b670beb8e06f06133e836234037f97",
+      "bytes": 1293
+    },
+    "devices/enchanted_brass_bell": {
+      "sha256": "f3cb396164287353ebe0ce1914633ccf24afe653c6cf040a6296f2b9a13013e0",
+      "bytes": 1172
+    },
+    "devices/enchanted_slag_charm_660b": {
+      "sha256": "bb9bb264bdc069f952a941ce39f364d1ef42a2abe7bee4ac3ec04dfed5a6798a",
+      "bytes": 1235
+    },
+    "devices/enclave_water_barrier_bd90": {
+      "sha256": "e2440922bc2327717e0908ec4f8ada496450cf44d903a424b9b344f07d3c4741",
+      "bytes": 1876
+    },
+    "devices/flint_bellows_charm_4536": {
+      "sha256": "078b0245518c91433aae99118d9c43c4d4aad38809ed271666c5a09776b87642",
+      "bytes": 1057
+    },
+    "devices/flint_charm_dfd8": {
+      "sha256": "0e839f288020c1789e43b8cc67e6b9f0160ff6abc26dcf11ed6bc1e9b3b97c9d",
+      "bytes": 997
+    },
+    "devices/flint_power_battery_303c": {
+      "sha256": "dbfe80d8812167397f08563f848c2726ad5bf2185ab5458972a5f9f4438eb35c",
+      "bytes": 1074
+    },
+    "devices/flint_router_174d": {
+      "sha256": "ec93414d4b108976562b0e15b031624e6e9e720ff93c60ca291057765f50b1e6",
+      "bytes": 769
+    },
+    "devices/flint_shale_scrubber_b898": {
+      "sha256": "b776a16392857c7c42d3d45fb9fca5fc0fd2a2dc323b21c249603f97ece6e96a",
+      "bytes": 1374
+    },
+    "devices/flint_sigil_6215": {
+      "sha256": "169ab09199ef40a1ef57faed6b519f59563291de8a7f3d9ad7857fd0c32f5a34",
+      "bytes": 1573
+    },
+    "devices/flint_sponge_cdbf": {
+      "sha256": "a294d47ca13fcf20bd4851483f0d17fdec8950505393e82fe1e59f8739700f04",
+      "bytes": 1067
+    },
+    "devices/galena_tap_guard_19a7": {
+      "sha256": "6a9af16b18acd9371d6bb5f4e9e346ae727d557d6cf6ad3f0fd27eaf8f44ff1a",
+      "bytes": 911
+    },
+    "devices/gasket_3f33": {
+      "sha256": "ce4198335ebe98779c4424154aa3e3dd897e048d40c004ce707a0842a2fadfb2",
+      "bytes": 1456
+    },
+    "devices/gasket_5175": {
+      "sha256": "2d08b4d94ff76e61d933be8246521ead403bb2cef2f09567172e6348dfce5bb5",
+      "bytes": 1293
+    },
+    "devices/gasket_battery_6efc": {
+      "sha256": "cadfdf32ef99a09cc68daae36f186fbbe357ec90e4f79c0b761d0f5c1b386378",
+      "bytes": 915
+    },
+    "devices/gravel_lure_charm_86bd": {
+      "sha256": "8b1016ab95072cffd6f047416b89d43c3c89cceb722f079889f5523009e67a3b",
+      "bytes": 1130
+    },
+    "devices/hearth_crucible_slag_head_d00b": {
+      "sha256": "397495cf845e612c49c4c73e223ff5be2867e245db664f78a0b57b708f9f7ba1",
+      "bytes": 1258
+    },
+    "devices/heavy_plumb_bob_0295": {
+      "sha256": "abed656e4665f3f6259379cb9abc4aa021dc6720d1c4e343f74c1e988d2fec18",
+      "bytes": 1441
+    },
+    "devices/hollow_nettle_rivet_battery_0de8": {
+      "sha256": "6506ad4313c2c91e3f9567e853a86a87cbec8c64fa1c58b43850ba84a26aff95",
+      "bytes": 1525
+    },
+    "devices/hollow_quill_gravel_battery_5fb9": {
+      "sha256": "97e66de70cd91b1007db4489631f0882f26190d21f1e1bdf561e6df527fcc7f8",
+      "bytes": 1385
+    },
+    "devices/iron_battery_02e3": {
+      "sha256": "ca0a7f14a88b9ea4b0ef2d776498f5da6abf0bcf0eec0eacf5b7b039d29521c5",
+      "bytes": 1635
+    },
+    "devices/iron_calcite_battery_60b6": {
+      "sha256": "c85dcf161eef448a7cd0136241baa26bf5bb4125a58ac21108c0208570dbc40c",
+      "bytes": 1039
+    },
+    "devices/iron_ledger_lantern_898a": {
+      "sha256": "c5a7763df3b6cf55d2b8cf3fd838f96a173a2ddfa5a2969afef9e3d38d67b8d4",
+      "bytes": 1313
+    },
+    "devices/iron_owl_wick_charm_c9d0": {
+      "sha256": "58c1c05c85b9724af3d671e14944ea7553a0aa78e915c8cf11f3acef857449db",
+      "bytes": 1284
+    },
+    "devices/iron_pumice_charm_3fcd": {
+      "sha256": "d3820667ed8b011061530f802cf1b417bde24e6efbdbc7b110c94cb98dee4a05",
+      "bytes": 857
+    },
+    "devices/iron_rivet_scaffold_charm_814b": {
+      "sha256": "cd1f172225f832916f6fb85d1f28e75f9e3facbe35c858e5837b786bfd430ba4",
+      "bytes": 1163
+    },
+    "devices/iron_slag_sigil_8020": {
+      "sha256": "b47ef24e850089a901de90640bf2c6c39259dd6c7929865033364bd0851a3b88",
+      "bytes": 1644
+    },
+    "devices/kettle_lantern_router_a8ab": {
+      "sha256": "8424c34180d521b902ef1cba9f7f3566ff42c73d6caeccd43522a24aec878568",
+      "bytes": 1168
+    },
+    "devices/lantern_battery_241d": {
+      "sha256": "92c128fe64484ae9a36dc663ee78e9bdff72fe187141fc14eec5da422a61301b",
+      "bytes": 863
+    },
+    "devices/lantern_ledger_enchant_21a0": {
+      "sha256": "c364cf4d196eec9122872554ff664bd62a13a423cb585e4c4e4f04c6b58742dd",
+      "bytes": 1103
+    },
+    "devices/ledger_crucible_c866": {
+      "sha256": "ce900deff99a8782a7e95bb3bca3b8f670056123a318cec8f9d67349ea9837d3",
+      "bytes": 1098
+    },
+    "devices/ledger_stone_charm_5050": {
+      "sha256": "da29b467498432409f6d535b393496c077a5cd1ee432cca481620e8e7270cb2c",
+      "bytes": 897
+    },
+    "devices/lithic_ledger_fe20": {
+      "sha256": "af618dfa1bcfe7251336eb1fbbc2223c509db5c51c31ad36e1fce67bcf060268",
+      "bytes": 1718
+    },
+    "devices/loam_catalyst_70b6": {
+      "sha256": "81c4516bc6f239dadbbc54a018aae9e1d9ffd9d05fa90a2bf0c90b6aa5a2f258",
+      "bytes": 1367
+    },
+    "devices/loam_chisel_charm_c08e": {
+      "sha256": "5609d1648708d9d14c9e9e3460b5e322302e97f506cbe9ff285456608bac9e24",
+      "bytes": 1481
+    },
+    "devices/loam_vendor_charm_ea70": {
+      "sha256": "e9c2223c3dbd7832473c92b61e9d9ac2db32ac52885cff7655ca25857959668d",
+      "bytes": 1158
+    },
+    "devices/mica_battery_57aa": {
+      "sha256": "32d83bc538f4a1131f34a9679b4ed1a96ce9efbf11605bcb827a05dcc81378b9",
+      "bytes": 833
+    },
+    "devices/mica_charm_c78b": {
+      "sha256": "bf5de1b5f81667e46b631a35b840a3dc3241c82cba3ddc7a9a4be4199f0ffdb7",
+      "bytes": 915
+    },
+    "devices/mica_core_b1e9": {
+      "sha256": "9ed023c04b710a0ad49b3701530ac35eb453b5289fd903f7c7a0bbfe7591c258",
+      "bytes": 1169
+    },
+    "devices/mica_prospector_lens_78a4": {
+      "sha256": "a9b86727105cdf2f1ca215621b74ac5f905e3e7f5e95c16e95956db511861a85",
+      "bytes": 1262
+    },
+    "devices/mica_stall_guard_1d44": {
+      "sha256": "dae76bec95b029e289cb57024b7cf44e75581b882086b4e03e537c263ce6a1f5",
+      "bytes": 1214
+    },
+    "devices/mortar_iron_bone_d8bd": {
+      "sha256": "0f6e7c0af3bc2f65aabcca2554251a6bc5f503d3cfa8c2d2d0ec498ac0f20fd5",
+      "bytes": 1688
+    },
+    "devices/mortar_lantern_charm_dc37": {
+      "sha256": "edcca14e7f3f1d149d3d901bd2f83f01c78aa9664d391020c782d95c6834befd",
+      "bytes": 1365
+    },
+    "devices/mortar_lens_bf8a": {
+      "sha256": "543ab8115ef7d9b8ac2420a30b0a7541ff03c09efdb832bce999f70e976088ca",
+      "bytes": 980
+    },
+    "devices/munchkin_ochre_kiln_12d6": {
+      "sha256": "5cd8e0aed3801c737a81d5de6a6b481429174025526212128dd01751520e0803",
+      "bytes": 2028
+    },
+    "devices/munchkin_pewter_head_13b8": {
+      "sha256": "00c4291d59de2f6c4e542429f973f2481ee78f470873e05df6d8c4016d1838fe",
+      "bytes": 1735
+    },
+    "devices/munchkin_slag_router_55f5": {
+      "sha256": "7ae1fe4330cd42f955cfd3e5942912cb9485b08ea2578e117f3be33355c42dcd",
+      "bytes": 1252
+    },
+    "devices/nettle_kettle_4cf5": {
+      "sha256": "72b8489a9e03c15cc52edc017b80cea9f2c04b956a03dd29547689cbd048e44b",
+      "bytes": 1298
+    },
+    "devices/obsidian_hearth_tome_3e09": {
+      "sha256": "5b8ff8d87ae7c3d4b8055dd3f18e651e167892e22ee8d03c735a828d25b61644",
+      "bytes": 1474
+    },
+    "devices/obsidian_plumb_charm_0582": {
+      "sha256": "2c57d2a062f15632f51a4b006425c9e103be11df9b06d87df5a49903c4812b53",
+      "bytes": 1370
+    },
+    "devices/obsidian_plumb_charm_a0df": {
+      "sha256": "cf218285d9c28acd5e0f7f1245ede9300832d8ea677630a78300882faa39f624",
+      "bytes": 1388
+    },
+    "devices/obsidian_resonant_crucible_d5d5": {
+      "sha256": "caa1256e3e04c044ac29bfadb4e952a1e9cdcd0975035168e3920090bfd3e0f3",
+      "bytes": 1866
+    },
+    "devices/obsidian_salt_siphon_head_a474": {
+      "sha256": "2bba412d1c633fe8acdf506782e2c6c669f230085130413f93eab9da3c409c76",
+      "bytes": 1360
+    },
+    "devices/obsidian_sconce_8fa2": {
+      "sha256": "c50e0c5986f8dd2d216876d5bba8caf6c3c446de1a56885fe90beea817863474",
+      "bytes": 968
+    },
+    "devices/ochre_bellows_030c": {
+      "sha256": "df82680587a50652c346af122f3fdc05d950b27aa0f052e48a9d0c3c644de1d2",
+      "bytes": 1054
+    },
+    "devices/ochre_demolition_charm_32c8": {
+      "sha256": "515d5bfee3fa5c9dc7bf86c9d155a7877791be36bfe3f6f5c447bedcd28c7a2d",
+      "bytes": 1041
+    },
+    "devices/ochre_heron_charm_ea0b": {
+      "sha256": "81c320381eec0db43ab0433167194fb3e13d3cf247cc53fa83f2a4969f3dc178",
+      "bytes": 1090
+    },
+    "devices/ochre_quill_rivet_2a0d": {
+      "sha256": "38dc87d89f35f97be2d72c115dfbd701c7bcb4386cb96d794fb530fbc649fc33",
+      "bytes": 1153
+    },
+    "devices/ochre_rivet_catalyst_93d2": {
+      "sha256": "08a7e15ac7b148c202f80739869ca396fc24a81febc3bbdb4fc631992f1fdaf4",
+      "bytes": 1315
+    },
+    "devices/ochre_sigil_9759": {
+      "sha256": "188ec8ce504b1b7bc6591e28e2a195e769d4c3fa83c6b7b991963e88ceb2cf8b",
+      "bytes": 1706
+    },
+    "devices/owl_newt_charm_135a": {
+      "sha256": "431ad420eb3ed1a1fb4936a5a23433651124e58f2acbf11c04d2870d0cccb7f7",
+      "bytes": 1326
+    },
+    "devices/pewter_charm_0739": {
+      "sha256": "006c85e7ed66cf0991a6ca8f1b4aff87e372fe4b49e3fbc6e0ecb00ca4d9cdd9",
+      "bytes": 1368
+    },
+    "devices/pewter_ledger_sconce_47ab": {
+      "sha256": "e54f44072d174de2f2ff07db597960c01971f96262cb1e7fb4e32f418d5dcbcf",
+      "bytes": 1475
+    },
+    "devices/pewter_pocket_cleaner_0972": {
+      "sha256": "cb32cc58cddb692341bab5712610cf46d53f535182ef6c1836f9f7a4d288c9bb",
+      "bytes": 1263
+    },
+    "devices/pewter_prospector_glass_852e": {
+      "sha256": "ec05be0036f4a3f75060998caf060169857c0da2633ef5df895c5c9c07ecc7cf",
+      "bytes": 1228
+    },
+    "devices/pewter_slag_router_bfdb": {
+      "sha256": "f991d7ec6ab806b7c924edde61981aa6a94c153afbcd76a7df9df9c27402c427",
+      "bytes": 886
+    },
+    "devices/plumb_rune_9278": {
+      "sha256": "e137ff701888652b900835226a82c0693150e0ffa194183762757ec70242b437",
+      "bytes": 1056
+    },
+    "devices/plumb_sigil_7cba": {
+      "sha256": "00946bae35ec0091f1b29acafe4b62120ff71a3c83e422adf367d8f191959af9",
+      "bytes": 886
+    },
+    "devices/pumice_charm_b6cc": {
+      "sha256": "97d0f14b5abac175d9b963d3803531d84fa4f70e8ff508b5e3db5443b0c4fa74",
+      "bytes": 1044
+    },
+    "devices/pumice_kettle_cell_123d": {
+      "sha256": "bfe4ea3e5d4df16e5e16340406824d5b17509d5ec6487d63ddbb878d6d8fbcd9",
+      "bytes": 1089
+    },
+    "devices/pumice_lift_jack_2ff0": {
+      "sha256": "9c90301a4a63fc86460bb71dcdb9afcaccddab62f88fce84faaa997d968a4768",
+      "bytes": 1141
+    },
+    "devices/pumice_rune_of_shattering_6f0b": {
+      "sha256": "dd8347c4277516a553b6478926e4890e69c560e872ccd9f08e492b250c2e2cdd",
+      "bytes": 1268
+    },
+    "devices/pumice_vitriol_rune_11c2": {
+      "sha256": "b82c25adcb8df3da15dd73608e34a713e3d1b2afdd8fb6abaee7ac0463e63afa",
+      "bytes": 907
+    },
+    "devices/quartz_focus_sigil_4f1b": {
+      "sha256": "c213501f19674973ace02c5aa1317f471c7b59c8baf1e5f452271ce487de267f",
+      "bytes": 905
+    },
+    "devices/quartz_kettle_rune_bc30": {
+      "sha256": "49b63a9c041ed6c2cf13b197cf3fe1450d468ef28670aad3917521354de9b1ed",
+      "bytes": 1304
+    },
+    "devices/quartz_lens_6f15": {
+      "sha256": "2cad3b2e8855ba27bf5148979ab2a253e8accabee7b6806ea6ef381bd8b883c1",
+      "bytes": 1324
+    },
+    "devices/quartz_scaffolding_charm_554b": {
+      "sha256": "f9128dffede0665c4cf57b6a35278ce4189369a62506fe56046f8cf68e6931b5",
+      "bytes": 892
+    },
+    "devices/quartz_sigil_9e71": {
+      "sha256": "fee1367bd8ea4cf2973b71193e10cdc2d3e8d6efa76c319d6bbe8fba03d4af68",
+      "bytes": 788
+    },
+    "devices/quartz_stall_sigil_1479": {
+      "sha256": "e6fa6ddd9d5d6b707e287f0abe0ec05e917722873718e0edf641b047f3299246",
+      "bytes": 1239
+    },
+    "devices/quartz_wick_charm_093e": {
+      "sha256": "7c3ac199704668e2ace5044f7ee8b743c110cef0e8c9798a4c6e149b6b0f377c",
+      "bytes": 993
+    },
+    "devices/quill_crucible_9ff0": {
+      "sha256": "a09440f7d83ca8de0fa53dc58737b0d7a3c84e6548c5e86b2847ec9cc757fa53",
+      "bytes": 1753
+    },
+    "devices/quill_crucible_charm_694f": {
+      "sha256": "3233c2dd0e2643a44bbe9a71b3f22aca17e4fe085dd3f88804923c531bbdabd6",
+      "bytes": 1852
+    },
+    "devices/quill_mortar_siphon_06dc": {
+      "sha256": "8b8c0495cccbcbefb79baa506976c401d9e58395da85856368e5168dd484cea2",
+      "bytes": 1329
+    },
+    "devices/rivet_charm_cd0f": {
+      "sha256": "5eb01943b2fc1caeeee28f48644e9b279a38da1e3322b555c035d71f34760b11",
+      "bytes": 1016
+    },
+    "devices/riveted_brass_lure_942b": {
+      "sha256": "576bbacf94eada78b9aa72b7c70e882eb81e6ae72a1adb26dc34c118939b3886",
+      "bytes": 1363
+    },
+    "devices/riveted_owl_mole_core_4961": {
+      "sha256": "f0a519cd78bd35d50c8a071e420e32a96817a26d45a8396d0f5330a31138a004",
+      "bytes": 1431
+    },
+    "devices/riveted_quill_kettle_86ee": {
+      "sha256": "c89a1c8f4e06799450f4303b75a41a95f3a21276cbf61ba6054b40ad300ec8a3",
+      "bytes": 1528
+    },
+    "devices/salt_apprentice_charm_4d23": {
+      "sha256": "3bd0114724ef863461ff24e5b9aa6dc12cbcfb869fb0599f872223c789115fe9",
+      "bytes": 821
+    },
+    "devices/salt_badger_thimble_6908": {
+      "sha256": "d60ca4eb354298197f5c555bc5c1375de10d1206e5b2486a46ae1addd5c79ba8",
+      "bytes": 1345
+    },
+    "devices/slag_battery_abcf": {
+      "sha256": "83b7c0df73e1e20930ef8bd44b04bb97a87f6e0176ed14a64de3090c295795eb",
+      "bytes": 1026
+    },
+    "devices/slag_charm_9a6e": {
+      "sha256": "514c223f57d8b3b9e630dee216a4e2c622d4a0dca633de8e373d50859d33562f",
+      "bytes": 1258
+    },
+    "devices/slag_dampening_rune_91bd": {
+      "sha256": "3b33e1866d29d78345d949916c8cd29e5c811f965912cc3fbd343c2b2056e4fd",
+      "bytes": 1058
+    },
+    "devices/slag_kettle_charm_1937": {
+      "sha256": "ae2ef1c1fb13d6bcbbc68eee2a645b2c1250c983d6c7a674d115101e9e81ce6b",
+      "bytes": 1445
+    },
+    "devices/tallow_charm_a30a": {
+      "sha256": "8b7f134a1aa1506936838160429382c64b226bcdb60546698add12ff26b29b1c",
+      "bytes": 1207
+    },
+    "devices/tallow_diviner_9550": {
+      "sha256": "e40ad9ac7238a1e4440e671a073aec209ff2178bd9668faa226d685b2f5fe9a1",
+      "bytes": 1295
+    },
+    "devices/tallow_hearth_toad_0df2": {
+      "sha256": "ef19bf524282b63e747f3abefe18ffbc03f2ba5dbb6b8e96717ecb82e95806cf",
+      "bytes": 1013
+    },
+    "devices/tallow_ledger_100c": {
+      "sha256": "a4fa75faa2aa730f2b48e5b8749979e64ffc59d2811f5f16660a948d1f3b565f",
+      "bytes": 1046
+    },
+    "devices/tallow_lens_6a4d": {
+      "sha256": "37fda74a1c7ff575ae63084fa74540fb4723163a368aef877161ec992fa9c634",
+      "bytes": 1254
+    },
+    "devices/tallow_scaffold_device_5835": {
+      "sha256": "00ea80f19a55e8318e1d87c47598512078ba8a620a0ad1f41dd4c4858d60c0c0",
+      "bytes": 1108
+    },
+    "devices/tallow_wren_zinc_f6d0": {
+      "sha256": "fdc1c5177eab3fda59c937c6c70e1c7dcd14dee6e46b18cbf7d07c819b2baec8",
+      "bytes": 1235
+    },
+    "devices/tin_resonance_spike_ec00": {
+      "sha256": "1fba282ea164cbab2dc449c4f03c23fc187b0da49f680ac081d38a6a27e7f79f",
+      "bytes": 1170
+    },
+    "devices/tin_vitriol_charm_037a": {
+      "sha256": "3b63fcb4f77bbae23fccccb02f32ee171dc03cfd9a274d955ea85798291c861b",
+      "bytes": 1204
+    },
+    "devices/tinker_slag_sconce_5ae8": {
+      "sha256": "055abe680c8530bf44a1bdfd83f8d79c59b3d0f366dbac6439d227c330f89f13",
+      "bytes": 1524
+    },
+    "devices/toad_mortar_badger_rune_637f": {
+      "sha256": "3fb924c2470a5405b9c226cd423f21f56a827929fa3c0d43edd2d7534bff50d9",
+      "bytes": 1215
+    },
+    "devices/toad_quill_ledger_cell_d4ea": {
+      "sha256": "dbbef154617c6c8a7ffc4b481392f952352af57b8b34875b62a5537b7708918b",
+      "bytes": 1621
+    },
+    "devices/umber_charm_39c7": {
+      "sha256": "9c38a63ad900f682f543d808fe926b9c99f97cefc38b7935ff817009ef9d8978",
+      "bytes": 1118
+    },
+    "devices/umber_gasket_086c": {
+      "sha256": "6ebef5b0747d33112abfa205724c9e364124e46b993e3a31374c1e684a8c9f2d",
+      "bytes": 993
+    },
+    "devices/vitriol_lure_c9fa": {
+      "sha256": "99a56a718154d836ece032479bf6b1b2fb37a8e0e8bed888adf32d7dd82a913f",
+      "bytes": 1595
+    },
+    "devices/vitriol_munchkin_sigil_9bc4": {
+      "sha256": "8634b1f9d0bdf7fbddb78922010fbfa0fbe6d74eb626d8a08159bb14ea81c0d4",
+      "bytes": 1799
+    },
+    "devices/vitriol_stall_battery_2b1e": {
+      "sha256": "b4a0a0dc61e4d334f2c4fcf030f9236888d8b170903d226278ddd1e2c04dd7b6",
+      "bytes": 2169
+    },
+    "devices/wren_hearth_yarn_b9ce": {
+      "sha256": "6278245a04c80a758fe08a6fce7077f6746283bc719d94b74cee2edf06ebbcdd",
+      "bytes": 1743
+    },
+    "devices/zinc_kinetic_reducer_6523": {
+      "sha256": "64e841521821ad552507a5b21c328b69e4aef245fb0410dca1ce66ac13e61fb0",
+      "bytes": 1234
+    },
+    "devices/zinc_nettle_hearth_rune_a151": {
+      "sha256": "3c1bc9debeff86df0a3c1af74eb93ac626791dd6cb8b988317a9eaa770b7ff2c",
+      "bytes": 1241
+    },
+    "devices/zinc_stall_battery_df9f": {
+      "sha256": "e003e5b2a0a49fe5e998b21268d3c1e66fea1ad9cdd0f8859d3203bd669ddc32",
+      "bytes": 1198
+    },
+    "npcs/anvil_smith_73cd": {
+      "sha256": "307463215c20e0f2e2e35df8547b74304304b5e6b3b45b5d51e7a0ddf7afb2cc",
+      "bytes": 571
+    },
+    "npcs/basalt_kettle_6ec2": {
+      "sha256": "bb1ee04ef77e42458251461250068535b0ef3ab662461535aa586116493f6e0d",
+      "bytes": 500
+    },
+    "npcs/bismuth_broker_af6a": {
+      "sha256": "5aae7b5798e09321d6bd48238bfe8fdd6ff8453a33f6bee53e999c8a93a85d9a",
+      "bytes": 526
+    },
+    "npcs/bone_sconce_wick_2a5c": {
+      "sha256": "bdee7a832a327fa4427bd2a11697b4d31031e789f6668b166012b4d55a3dbcb0",
+      "bytes": 825
+    },
+    "npcs/brass_tinkerer_c020": {
+      "sha256": "b0be7137eafd82e3fa8a55383e9615a99dac0b3bd527e72707ec1dad3db0ed64",
+      "bytes": 452
+    },
+    "npcs/crucible_keeper_e935": {
+      "sha256": "87148fb1e965c04c0b9194f0ae6c7aee65ce6aa541829e97983f6a9e86f62151",
+      "bytes": 648
+    },
+    "npcs/deep_bore_horologist_35a3": {
+      "sha256": "9ed7933702c072d930a27e36af2fe33d22342964c473a77fc8b3441ca0c7053d",
+      "bytes": 651
+    },
+    "npcs/ember_vendor_f749": {
+      "sha256": "05c24b8e7e00bd3ca836d87175f6ac5d71ac95cb95ff65c5e771cf3cc6ff186b",
+      "bytes": 568
+    },
+    "npcs/gravel_keeper_9c46": {
+      "sha256": "b7ee508b5a5c4c109042f545277234225bf11544ebadd34cc970e88363abd136",
+      "bytes": 489
+    },
+    "npcs/gravel_vendor_51cb": {
+      "sha256": "48a6abba975a1b28cfa14da7c3ce64ea661d51438e97eb1346fd1e8dbe2b8aef",
+      "bytes": 455
+    },
+    "npcs/gravel_wick_vendor_8db7": {
+      "sha256": "36f8783d2e698897d3f36d6a726b745f0f6e50609dbee36f9b078f5ae5ca0567",
+      "bytes": 428
+    },
+    "npcs/lantern_smith_fb67": {
+      "sha256": "24ee88d70db48b3c74200c43cc507f661abfa079d072402efe5c3b1f648864d1",
+      "bytes": 560
+    },
+    "npcs/mica_salt_vendor_832d": {
+      "sha256": "48ead4bf7587026756573b13b229e39994b34294d1757f7f789ac38bbee48104",
+      "bytes": 522
+    },
+    "npcs/ochre_toad_5e64": {
+      "sha256": "0a55a5b597f7766694a72363dd4e4a5cfd9f67ffe5b953d34816ee11b4409a1e",
+      "bytes": 703
+    },
+    "npcs/peddler_vayne": {
+      "sha256": "618b2e46e324d1bf1d0c433af81b77b622003c2f82e1151613ceb32bd2df7094",
+      "bytes": 491
+    },
+    "npcs/pewter_quill_newt_3730": {
+      "sha256": "d33a1c40f82857d391d9a9941495315f85d63b71cbcc7e8c6ce7fb793bd5bb38",
+      "bytes": 555
+    },
+    "npcs/quill_peddler_0c07": {
+      "sha256": "dde20c7aa201e25703743b8666655c50750bf0338c9bdb157e9591e16eabfc73",
+      "bytes": 500
+    },
+    "npcs/rivet_assayer_c04e": {
+      "sha256": "ded5f82916903d61a89150e197631b71eb68d00aecfd6c3c505f14e006556cc1",
+      "bytes": 483
+    },
+    "npcs/rivet_smith_6a68": {
+      "sha256": "9b11c989676693e2c8fd20c052baa8e09184907aad28605e05707033f1bf4801",
+      "bytes": 658
+    },
+    "npcs/vitriol_alchemist_4814": {
+      "sha256": "072f3767f598a530b51236dc16632df1e611918c38b6e884162944bd2360b873",
+      "bytes": 633
+    },
+    "textiles/anvil_comfort_rug_aa4e": {
+      "sha256": "fbff53f5bce40584e32c1a8f373fd261d6c0e5ea1ce1bb44a7845d3a75dd5613",
+      "bytes": 1176
+    },
+    "textiles/apprentice_kettle_rug_9629": {
+      "sha256": "403fb7756cffae770400f2e6a4d03df87245916f1fa55f35e22c0d4fab9150c8",
+      "bytes": 1517
+    },
+    "textiles/basalt_siphon_weave_02ec": {
+      "sha256": "58762853acffd179a0aced7102e9353ee7e239e0613267c6902d0258a281643d",
+      "bytes": 1023
+    },
+    "textiles/bismuth_woven_hearth_rug_1da9": {
+      "sha256": "263afcf8109d0f82810a3a055167bf3480127a7b37fc87e856f986f89e88f386",
+      "bytes": 1647
+    },
+    "textiles/cinder_net_4bad": {
+      "sha256": "f49e7016426b9cd79ab9d9c7eba34ab4b8958bd736b76d5ffd75fe57b16b16ae",
+      "bytes": 1439
+    },
+    "textiles/crucible_cinder_weave_ab8b": {
+      "sha256": "649e5a820a92ebf07bdb250644ba485bd3d9d099e0878baac8289b21e7bff40a",
+      "bytes": 2204
+    },
+    "textiles/flint_mat_f578": {
+      "sha256": "f27600f0f55191ec28e21e1a1b2a46125faff56ec68e0d5d9f91d7d87b990657",
+      "bytes": 1440
+    },
+    "textiles/galena_mesh_76c2": {
+      "sha256": "388c9044b973e5b41ac2eb6f6650e1406b06b115a8c1fb83f18a773bb9409321",
+      "bytes": 1850
+    },
+    "textiles/hollow_bone_drip_mat_e80c": {
+      "sha256": "a3e17cf5301fadc10d77421ef8c588286d2e974b8b6803fa3ab346aa7e86a630",
+      "bytes": 1421
+    },
+    "textiles/hollow_toad_wick_88b4": {
+      "sha256": "02e33df4de825fee0e1e62f53474f70f3033a346f32ecfc52940be246acede57",
+      "bytes": 1246
+    },
+    "textiles/iron_loam_carpet_35e7": {
+      "sha256": "1af40fd1804cfd63411692381f63b09d054ae028870857d2843b31be7ab99fef",
+      "bytes": 1505
+    },
+    "textiles/iron_nettle_stoat_rug_21e1": {
+      "sha256": "dd35d75a7f7f18d7d40b2ea8f2a0a7f4fc7fe765f441cf1423fe78dff0cff6b5",
+      "bytes": 1605
+    },
+    "textiles/iron_wick_mesh_89a9": {
+      "sha256": "c7067ee9b55e267b71f60b90ffe3bc3327d0fea5154d86160bd7580a658ce71a",
+      "bytes": 1402
+    },
+    "textiles/kettle_net_b381": {
+      "sha256": "6200dc768d1c9aec196d7782b279fcf377e447c27f0b1cc8be47f75a9708fe81",
+      "bytes": 1587
+    },
+    "textiles/ledger_drip_mat_f5c9": {
+      "sha256": "957246f459611e3e7dc3f1492a36b520096a04a51459dd0feb9e00b2a1ab49f5",
+      "bytes": 1247
+    },
+    "textiles/ledger_mesh_a91e": {
+      "sha256": "887b1cdd2b5aed2ceb1b71a74e7ccf896ab564aa86a73c1bda852d6c35fe5e54",
+      "bytes": 1267
+    },
+    "textiles/loam_apprentice_mat_780c": {
+      "sha256": "f733a4320e3a1aa89426f0939c553e161644d070c21f1f4c01373cc63b6da073",
+      "bytes": 1467
+    },
+    "textiles/loam_woven_guard_33d5": {
+      "sha256": "5f339955257e57757dcf85db3a591c852311c88279fcb5476bd71ff0d7df3d85",
+      "bytes": 952
+    },
+    "textiles/mica_fluid_mat_fd86": {
+      "sha256": "63e46290d0815b1bd8dfe15e284e01d441384e83d01e67728b6c8b91adafcabc",
+      "bytes": 1212
+    },
+    "textiles/mica_kettle_barrier_29c0": {
+      "sha256": "d7f38430730b1e3eed4bfd6b1a0c90e7b3dca14e454485913bbb77f11e243a14",
+      "bytes": 1261
+    },
+    "textiles/ochre_dampening_blanket_95d8": {
+      "sha256": "e15be93e8d5ea36c3dd48d808e48d37834ca90c0646779d94ba8a0aa95550d38",
+      "bytes": 1251
+    },
+    "textiles/ochre_kettle_cinder_2387": {
+      "sha256": "472c5f8297143e2d63db37138e4de37c02862e76dbd444207ee4418a7b517493",
+      "bytes": 1528
+    },
+    "textiles/quartz_mat_ffca": {
+      "sha256": "024465eeac39df58043a81c2acdf555fb2689af536f9bc4cfeff58385f82cecf",
+      "bytes": 1164
+    },
+    "textiles/quill_bone_badger_1e05": {
+      "sha256": "ea166a93d8a073e720237b0d4aae62f11e5362791399c5d54a4fa0b93d78bd6e",
+      "bytes": 1300
+    },
+    "textiles/quill_mortar_nettle_c792": {
+      "sha256": "9325862ebe481296765c82d00088204c97290df109278123b55da9bf2e8d8511",
+      "bytes": 1893
+    },
+    "textiles/rivet_carpet_1b9a": {
+      "sha256": "068946b525cbcddfdce6f770ea07227e47946339c9e4517707137260d1f2e2f1",
+      "bytes": 1061
+    },
+    "textiles/salt_drip_mat_9442": {
+      "sha256": "b62eed7b1cbddfa122dbe631ee7e7c74f55dda41a07426a5000b1043c9be6e09",
+      "bytes": 1215
+    },
+    "textiles/shale_sponge_barrier_5a03": {
+      "sha256": "22e32fd8d1bec715ec5bd0b8cdbdf4c6a1888fd4b374608e6d8a1c73d963779f",
+      "bytes": 1182
+    },
+    "textiles/tallow_barrier_5213": {
+      "sha256": "bb3268173afcbba0a590163d53cd0ab72b7d5592693fe73df240079198109f02",
+      "bytes": 1452
+    },
+    "textiles/thick_wool_carpet": {
+      "sha256": "ad639d627dc09463abd3458e150732cbbfb64b480d2e17e0c482f2c312c79356",
+      "bytes": 1167
+    },
+    "textiles/umber_rest_mat_b272": {
+      "sha256": "e1456229f2c6a6dc81d070005fcc8805e44e60363527321ab654ea7a679d7bc4",
+      "bytes": 1220
+    },
+    "textiles/umber_salt_carpet_ac7e": {
+      "sha256": "7ebb82f8a944063c111fc3011f1baa357a3809b7deeefbd7d088bb1f9b10b797",
+      "bytes": 1212
+    },
+    "textiles/zinc_lure_carpet_c0ff": {
+      "sha256": "6501e2f3cf3b7aeda0e7d5069d023788afe38ed20c6c8c36d19cc436bcf10ebd",
+      "bytes": 1385
+    },
+    "tools/alkahest_vitriol_diviner_23fd": {
+      "sha256": "90183ee3e1c8bba744c2cef168780b8c18a46485e35ea20eaf492ec6c6708a3c",
+      "bytes": 2175
+    },
+    "tools/anvil_pick_aa0d": {
+      "sha256": "a67195d3fd37e4010b6e5f5a8653cc1b4e70ce893e94bf6108b263bfec8bc8de",
+      "bytes": 1174
+    },
+    "tools/apprentice_mica_pick_cf26": {
+      "sha256": "af42cb7195321f9e359ccb20db5aae1a2bff20da9d69963a8ccdd087b0299530",
+      "bytes": 1088
+    },
+    "tools/basalt_chisel_8786": {
+      "sha256": "cac28409f8d39e74cfd3e60b528955bdc67521b428a1284121a1329fefb6db42",
+      "bytes": 1409
+    },
+    "tools/bismuth_borer_e116": {
+      "sha256": "ea698ce0e57eb0a949e5e9ac51ac20fdc7ae843da7633ae605d03968e306b887",
+      "bytes": 1570
+    },
+    "tools/bismuth_broad_pick_9ea8": {
+      "sha256": "6444a66ae1e07f32d610ad596832c1a81c8df6eab34230242e935d1000886669",
+      "bytes": 1043
+    },
+    "tools/bismuth_clockwork_pick_8e31": {
+      "sha256": "dcdec1dc8342ff3f94ba2cc56d1859737f856d8571f73406048af41ba2d53506",
+      "bytes": 1441
+    },
+    "tools/bismuth_pick_e6f3": {
+      "sha256": "1b682cd90aee2e172da8d262363f62a52ab1d913663c1015cde959578b4553cf",
+      "bytes": 1101
+    },
+    "tools/brass_moss_gravel_pick_70c9": {
+      "sha256": "5a8131c6f059908ffdc45dfd3f444239f0d6157aec78889ff2b4f4ba46bbdf40",
+      "bytes": 1182
+    },
+    "tools/brass_plumb_pick_31d7": {
+      "sha256": "41f9cc82291d3bdddc06c95f83f4eb20b3da92ac4058f171201167d3b793c993",
+      "bytes": 1221
+    },
+    "tools/calcite_pick_1542": {
+      "sha256": "4698a58dc052871707a972052b6a3697b73184fab21ca892a56faab296eabd47",
+      "bytes": 1032
+    },
+    "tools/caliper_pickaxe_db61": {
+      "sha256": "c1660494fc1f1540a1005bd9a123fbdba80f72a65347eba3b58aef26bf015fc5",
+      "bytes": 1302
+    },
+    "tools/cinder_apprentice_pick_921d": {
+      "sha256": "86c6a77e5f44834f3c4f996917ac2bbcab48881f61e9dbbb51f73ff8c697ed2a",
+      "bytes": 1086
+    },
+    "tools/cinder_automaton_sponge_30d7": {
+      "sha256": "a8b9fae8a28e5f755bef143c9412b7da24d9f3acff0b9427b5fb7014f2fdae66",
+      "bytes": 1491
+    },
+    "tools/cinder_backfill_spade_efae": {
+      "sha256": "f2e090ce18d3d82934bbb3e619d9695b9f179751d2681baf35aa045936315683",
+      "bytes": 1132
+    },
+    "tools/cinder_badger_shovel_5943": {
+      "sha256": "a423db8930df3fc1f2ae1f9c463ea8bfdacc1e9fb6cd19d544e49132990d4d17",
+      "bytes": 1244
+    },
+    "tools/cinder_badger_yarn_pick_d050": {
+      "sha256": "14f922b4047e1a3f0b960bd2a5991b5d22579a51182113b9832e9531bc43cd25",
+      "bytes": 1207
+    },
+    "tools/cinder_catalyst_pick_df0f": {
+      "sha256": "908ea50c3f36b9409a53b2668ab19562b34e281c6ec39c8527d572ba9f5968c9",
+      "bytes": 1196
+    },
+    "tools/cinder_yarn_drone_978a": {
+      "sha256": "93ef6d9692a74a11437e90d7e50d91c649bc9a06114c5cf7320a3b8c1d894334",
+      "bytes": 1910
+    },
+    "tools/crucible_bucket_621e": {
+      "sha256": "bf0d22f12bb48d4927ed994bb8bef22429f4aabcdd4526490985041acdc0ea66",
+      "bytes": 1554
+    },
+    "tools/crucible_clockwork_drill_9b95": {
+      "sha256": "08a46b3aaaa363ce4adc1c974d5da232426a32c32bb393e2acc9941fbddea620",
+      "bytes": 1049
+    },
+    "tools/crude_stone_pick": {
+      "sha256": "ee4d8b84f3837cbe54d3e6ecdba32ec734fef24685fd4ec9722b054a4e802230",
+      "bytes": 602
+    },
+    "tools/ember_automaton_courier_adbf": {
+      "sha256": "70f3e9eb2471a6f477fe321241992f61dd253427c64a3b6a6e180c19ce36eb47",
+      "bytes": 1519
+    },
+    "tools/ember_wren_kettle_1be8": {
+      "sha256": "c5d258f8294e35e620a4aaf4d8aff2c8e5bb9c2b2d7f85b73d81a6fefd900ef0",
+      "bytes": 1808
+    },
+    "tools/enclave_rivet_sigil_ed7e": {
+      "sha256": "8c86e4e996d46e35c983f6d6200162e03acd4d9dd6d1e1eeeda398153d16d20e",
+      "bytes": 1575
+    },
+    "tools/galena_catalyst_pick_2924": {
+      "sha256": "6f47eee7d27c3d9f3548a3abad9860a5428425625840acb49596fdef6ef746d9",
+      "bytes": 1215
+    },
+    "tools/galena_pick_5249": {
+      "sha256": "7db10767692f5d6a5632f22170e026839ed29327932ae7a9998b1fc391097236",
+      "bytes": 1131
+    },
+    "tools/galvanized_zinc_pick_93c4": {
+      "sha256": "537336b3ba7af2c582f29d3a22c22df5594bc1902017c4718a9c35deb56b26cf",
+      "bytes": 1038
+    },
+    "tools/gasket_chisel_67cf": {
+      "sha256": "9beda629b59412a77b40b182c77c94d7489de1a34df0f0f1a969ef18dfb52a6b",
+      "bytes": 1497
+    },
+    "tools/gravel_mortar_haul_bot_e0a5": {
+      "sha256": "768b91043ae4f7769de9a61d89ce96993026746754ab8a7fe9d756b12ab01367",
+      "bytes": 1356
+    },
+    "tools/hearth_mortar_sponge_1c00": {
+      "sha256": "13577f76a3518629726a10cfcce72bfd16428429ad4b68ea4597732c5d0443d1",
+      "bytes": 1700
+    },
+    "tools/hearth_windup_pick_236c": {
+      "sha256": "d79737dead334d5af038a962ddfe83945e93e4db57f5ef9dc84df27b623620e9",
+      "bytes": 1097
+    },
+    "tools/hearth_windup_pick_e536": {
+      "sha256": "f9f357ebfa07e28b6e7b635092b744bab01c6b23f4789bde9c69b6c78f649cde",
+      "bytes": 1550
+    },
+    "tools/heron_kettle_rivet_pick_29af": {
+      "sha256": "2c14c5b6036721ca7d930e903eb64c72c0cf9ac1c56ec51b4443eb126cfe962d",
+      "bytes": 1483
+    },
+    "tools/hollow_brass_newt_0cf5": {
+      "sha256": "c958d360fa0f00929181c99503b3f5660c4616cf6e5b0d60884412fa96d5e8b2",
+      "bytes": 1445
+    },
+    "tools/hollow_plumb_bucket_c8b1": {
+      "sha256": "f4636dbc3797acf0019f5b1488fd1cb746292d0ac9468b98f2f90042d09a68cd",
+      "bytes": 1279
+    },
+    "tools/hollow_zinc_automaton_d737": {
+      "sha256": "0c63108dd1628aa0496cf55f72131c3f038f2c632423a29440bd2c6eb2b5dfa7",
+      "bytes": 1429
+    },
+    "tools/iron_cleaver_d600": {
+      "sha256": "4df49d67853f5f56e840e0feacc84b8935d5b59e81b2ab8a6ba766743f6ad655",
+      "bytes": 1385
+    },
+    "tools/iron_salt_catalyst_pick_f2ee": {
+      "sha256": "572177363cd34f5b847cf0acbfb1d9eefd988328277417c8f1a44a7fe88a2865",
+      "bytes": 1291
+    },
+    "tools/iron_sconce_weld_pick_0ed2": {
+      "sha256": "88572bda1c7b7d4b6484424dc3d78ac5ba02055f920a30ceba31b9446e83ec46",
+      "bytes": 1184
+    },
+    "tools/kettle_backfill_spade_efcf": {
+      "sha256": "33a32c97de69b69324363c5b1928feefc3e6987e82aadf0eedb301104e6d82ae",
+      "bytes": 1021
+    },
+    "tools/lantern_mortar_pick_aa9d": {
+      "sha256": "15f2d1abfd46444735d86fb531c594f614de57512dca03a4c9c297dd059d6373",
+      "bytes": 1200
+    },
+    "tools/lantern_pick_88a3": {
+      "sha256": "db3b2ddbbfb817b6c84ad1d52578f607add111ec26a260e6c6fc31e249727136",
+      "bytes": 1017
+    },
+    "tools/lantern_pick_8980": {
+      "sha256": "94f1a6b4799e9bee060b48a0391b9aafcfb467d19869cdeee22b5707b80db122",
+      "bytes": 1127
+    },
+    "tools/lantern_siphon_bucket_13d3": {
+      "sha256": "f8c4cf07aafbed4516016aef8701ea8abd5020259a86e53ebb04d3818a34788f",
+      "bytes": 1719
+    },
+    "tools/lark_ledger_wren_pick_d0a1": {
+      "sha256": "7b74e6e100c8d31093fab8097205bbd35b4be3c4e09ab6b3b51bfee72d780ae7",
+      "bytes": 1224
+    },
+    "tools/ledger_deep_drill_328d": {
+      "sha256": "e2a7a3f535f63f9f86635830b34c5268797fb79856733eff411d72ea13f74c6e",
+      "bytes": 1590
+    },
+    "tools/loam_tempered_pick_95db": {
+      "sha256": "b4262c19ef14cf92183d1ba927de01905096e1eabd32543db4af8ab93418069d",
+      "bytes": 942
+    },
+    "tools/mica_apprentice_pick_f4fc": {
+      "sha256": "fcf6895697051adc86435087d5c426947f824e5a10df389275885d9c54b3e514",
+      "bytes": 1028
+    },
+    "tools/mica_plumb_drone_38b4": {
+      "sha256": "2f316adbbf4a083af5ad255dd0bd14d8b3ab8bd24a7b77b93a265362050941b8",
+      "bytes": 852
+    },
+    "tools/mortar_shale_pick_ce7e": {
+      "sha256": "c1a9f6bbf54f08698005ba6fd83208ace41a6a56fdf4bdbba47b8f96c2e096fd",
+      "bytes": 1192
+    },
+    "tools/mortar_sponge_bucket_3e8e": {
+      "sha256": "e3693b79d5dfb3e753a62c016e90deb2cc591995ad135b93a245b3bef3c6b2fb",
+      "bytes": 1422
+    },
+    "tools/mossy_gravel_mattock_964c": {
+      "sha256": "d0eb995219311b7c63824b0ae032d4cafbfa3c60f3a818d788f68d8bb7f4622b",
+      "bytes": 1012
+    },
+    "tools/newt_mortar_lantern_5a3e": {
+      "sha256": "5ea6a1dc564f86cd3b3273e37f44dc9e0367034790f52bbc281c46bfb16f45bf",
+      "bytes": 1885
+    },
+    "tools/obsidian_sconce_ee89": {
+      "sha256": "7a3754055cf29365dd2c9221748235649511029295fad74581faafdd324ad53e",
+      "bytes": 1432
+    },
+    "tools/ochre_capture_net_1b7a": {
+      "sha256": "d6b411f5da45254e9a6a3624c67b1b8f91b0a5f5d9eb3012b26044834fa446da",
+      "bytes": 1166
+    },
+    "tools/ochre_moss_brass_afce": {
+      "sha256": "fbc63ab96096a7809ff569675aa23589144ed290635b2834f3cb377b1faaaf42",
+      "bytes": 1386
+    },
+    "tools/ochre_moss_lark_pick_ff64": {
+      "sha256": "e18f22d4c22a781b892776dd2fd411a7684158f50d22323baa43542bf0a52237",
+      "bytes": 1313
+    },
+    "tools/peddler_windup_pick": {
+      "sha256": "e29ce71b33552c5dfdd10f5787196c132b257fe9a9da14362bfb798215cc3028",
+      "bytes": 1328
+    },
+    "tools/pewter_hazard_pick_e56f": {
+      "sha256": "4d9b646ed164f3cecaaeb5bc2c042f4c4b31f08cfe6e049bb0bc3b48916765af",
+      "bytes": 1139
+    },
+    "tools/pewter_mortar_sigil_d84b": {
+      "sha256": "6f2d02663bcf4b23dc2b39ab6dc0fa03ed6e32f479fb09a6f1d3fba0b517c8cd",
+      "bytes": 1414
+    },
+    "tools/pewter_stoat_pick_76e5": {
+      "sha256": "223a5ebe73a80a43c1cdce7f4744465115dfd1c26db6f9a04bbda6232d51a9e3",
+      "bytes": 1138
+    },
+    "tools/plumb_chisel_a11c": {
+      "sha256": "9cd12ed6c1c9fe7587dd706ea30eb581e8457c88fc9e3afa290ab58b47054896",
+      "bytes": 1545
+    },
+    "tools/pumice_cleaver_8183": {
+      "sha256": "96ab0f582ed72f874226b27a238c3afd434ce61383050c886bebde962c844c7a",
+      "bytes": 1102
+    },
+    "tools/quartz_drifter_pick_d72d": {
+      "sha256": "442eb15131e40b681133011a40841aa677a0e06917720da1f5dedba4b7c02b9c",
+      "bytes": 1155
+    },
+    "tools/quartz_hollow_bucket_9d35": {
+      "sha256": "1476ce77bf20380a2c74496b956bf98083b6591dc1f22d9ab1c696d14175a071",
+      "bytes": 1158
+    },
+    "tools/quartz_nettle_mole_60fa": {
+      "sha256": "6d89999f143ef5a1a269d7281c72f43dd959dc15c5b05c20c520509ae0fe4e4d",
+      "bytes": 2040
+    },
+    "tools/quartz_newt_automaton_666f": {
+      "sha256": "c2f2264a00cb6ae7b1bdee8699a74b8967c755dd2d1d0c5e752c9542622a06e6",
+      "bytes": 1248
+    },
+    "tools/quartz_plumb_pick_556a": {
+      "sha256": "c5192ef4a99ad61a87f9cdf3426242ef49c07303191e25fcc9ffc0147e9405c9",
+      "bytes": 1075
+    },
+    "tools/quartz_wick_charm_0889": {
+      "sha256": "cecdb8dc3d76b66398125b559a7ffc02e5b51d040d98eab5fa4d3852caa01248",
+      "bytes": 1031
+    },
+    "tools/quill_badger_drone_dd43": {
+      "sha256": "67f3d5181c369c8eb15a686c387e22346913f3a81529449dc5a0230dbafa2a28",
+      "bytes": 1547
+    },
+    "tools/quill_mica_pick_7bf1": {
+      "sha256": "269d5bcf0c888b93d1eb3c61cb9c735be0cc9def5e3573dedde0b0cb1b0d9a7d",
+      "bytes": 1383
+    },
+    "tools/quill_stall_bell_af40": {
+      "sha256": "f4eae8e8af0b7caf63c315b3dcd66f3d851e49ed4bee6c7c981a31290c351baa",
+      "bytes": 1408
+    },
+    "tools/rivet_heavy_automaton_1224": {
+      "sha256": "be1f6269ba63b1846dbbfea6244a96fed49f28a769a57b27c0f0ec85f134db66",
+      "bytes": 1369
+    },
+    "tools/salt_bone_mortar_pick_5d79": {
+      "sha256": "5d9228775e4b3999a7b6b79b9d58349c47868d1116578ec694a2aedffb293832",
+      "bytes": 1164
+    },
+    "tools/salt_coated_capture_net_f644": {
+      "sha256": "56b106692b42d803215faf15d4a1fbb5139651936c07baee6cff07718710a045",
+      "bytes": 1461
+    },
+    "tools/salt_driven_pick_3e5c": {
+      "sha256": "f6f81d9a6ff9747ddbbbcdd3c74366febac758fb6fd596a954fd6736df950fc0",
+      "bytes": 1274
+    },
+    "tools/salt_tempered_chisel_c52e": {
+      "sha256": "324a57f1950c75a1aa8c27cd3f3bd52d0c441e374067b8293f37fb4ccc3337a1",
+      "bytes": 1118
+    },
+    "tools/salt_wick_sconce_borer_8795": {
+      "sha256": "deab44abb2427b1021746df3e6b57590343614549ad7bbbc73633e3753c60de0",
+      "bytes": 2092
+    },
+    "tools/shale_bellows_pick_8c15": {
+      "sha256": "5df6120e656b6efb438c007969f3cecf651c6e4a79cdb0b1436ae10e3ab679e4",
+      "bytes": 1145
+    },
+    "tools/shale_forged_pick_1d71": {
+      "sha256": "8581ec235a90490a5e28a0a9313f986fe06a8b29f6d51ecf70e13a1d3f1125fe",
+      "bytes": 914
+    },
+    "tools/shale_spall_pick_311b": {
+      "sha256": "af08d6098215724e748e81c79bee176753d8c0f7cac07d8f3deecf21b582016d",
+      "bytes": 967
+    },
+    "tools/slag_forged_bronze_pick_5ef2": {
+      "sha256": "b12c6a4872e2fb43ebb93239951ed20ef661d3b1a12d9235983e780c600f6bd3",
+      "bytes": 1006
+    },
+    "tools/slag_mesh_capture_net_701b": {
+      "sha256": "1e794d5d9339daf521571a64da2b1e0807fb0c5154648247e972c1171a137db2",
+      "bytes": 1187
+    },
+    "tools/slag_resonance_pick_5422": {
+      "sha256": "addec8864f714430160861c5a0ee25f64c290ce76c2024c659a703eaae65b4f6",
+      "bytes": 1070
+    },
+    "tools/stone_anvil_sconce_7549": {
+      "sha256": "28278437fbd68192c3c7c4237f581a95563657f322659b3a2b0505faad3bb1e2",
+      "bytes": 1129
+    },
+    "tools/tallow_pick_af22": {
+      "sha256": "7495dbd38db4eb72b9b520d9fc18741a33b2d4260805c365ec77fd49f5a217ab",
+      "bytes": 1096
+    },
+    "tools/thrifty_ledger_pick_9c83": {
+      "sha256": "6ee6d249de796d5a239784a491b4927b0c61c21399b68f879f2c3cced18831e8",
+      "bytes": 1441
+    },
+    "tools/tinker_broad_bronze_pick": {
+      "sha256": "01dd326767a69535755949daa998bc39c3f8533c7ef4c0180496562f86711bf0",
+      "bytes": 1155
+    },
+    "tools/umber_beetle_borer_bdeb": {
+      "sha256": "4b764b001782c5e3dc0cf0c21ab8fde4de313a563893f2cd92b649e7264428de",
+      "bytes": 1450
+    },
+    "tools/umber_catalyst_pick_28ab": {
+      "sha256": "e0db2e308134113d9bc567e7b861ec3714da7ba592f54859c141b5c550864c41",
+      "bytes": 1009
+    },
+    "tools/umber_forged_pick_2b2d": {
+      "sha256": "ec718fc4c50cde2c29033400461a66e105ae5a4c7b54290d4120c63ad9e69996",
+      "bytes": 1171
+    },
+    "tools/umber_mortar_salt_spade_0b30": {
+      "sha256": "e0fe1d0774facbf837a8bb003c08d26ddc1c1d3af206530e23611cb7116d2815",
+      "bytes": 1313
+    },
+    "tools/umber_mortar_sponge_laborer_1307": {
+      "sha256": "f182d62b5254bf101b7dea81781d233a3f7108d916b4fe1dc1cdcadac2a73674",
+      "bytes": 1627
+    },
+    "tools/velvet_bone_mortar_pick_7e72": {
+      "sha256": "dd46d3dd5ac7e691ffbfe57c4b73f76501d89eeeb4f5020b6880f11364c244ea",
+      "bytes": 1373
+    },
+    "tools/velvet_toad_ledger_7b3b": {
+      "sha256": "af6409d13a3a3ea72ab63dd7b5841ce26cf4e24d9d35f8d4dbafe24cfd37b74e",
+      "bytes": 1566
+    },
+    "tools/vitriol_hollow_geomancy_pick_54d7": {
+      "sha256": "35476482d304c1cf48db98540b174ab50ca45ef330e3c728d82319bbd82ffd1a",
+      "bytes": 1667
+    },
+    "tools/wick_maintenance_automaton_7c47": {
+      "sha256": "aded5b5642219dc4e5cc347e076784e1cbdd953279a6fc54dbce87bc1606e9af",
+      "bytes": 1021
+    },
+    "tools/wick_owl_newt_pick_f8a6": {
+      "sha256": "dfebb57f4ac3c338b3304ef3c86e9cedc131dba02d370f65b11f2a70a3356e00",
+      "bytes": 1021
+    },
+    "tools/wick_plumb_pickaxe_a71f": {
+      "sha256": "d398e7d761d6f73fef330fa2f9a40c6a3ee5e8e2b17f1cea56992af6fe67d719",
+      "bytes": 1286
+    },
+    "tools/wren_wick_hearth_spade_0130": {
+      "sha256": "f5bf9e113e729af982e37dce7375679a3674c579316752cad8328b3951119234",
+      "bytes": 1647
+    },
+    "tools/zinc_ember_drone_b469": {
+      "sha256": "732b347a55e433adb09d8694f2c0f2b43e68bf03ed6723b03e08e1432f411a88",
+      "bytes": 1835
+    },
+    "tools/zinc_hazard_pick_7060": {
+      "sha256": "18d768157c75436becbf7af0e4a3d356aeda0f6729a83a921a0d041839902d01",
+      "bytes": 1200
+    },
+    "upgrades/alkahest_slag_enchant_5129": {
+      "sha256": "10668f0fcfa4985e409e4c1f5f0546fa9383476ac8fdc020bfe7edaf6da12ae0",
+      "bytes": 1523
+    },
+    "upgrades/apprentice_quartz_diviner_f4ee": {
+      "sha256": "18c48c4e2698c205cb7a9186b9641cb643cb08448537a46e1f863e61757215d2",
+      "bytes": 1392
+    },
+    "upgrades/basalt_stall_bell_a046": {
+      "sha256": "64a2da9426891b53b98887a628b7c2af9702d20a06d3afde9eff2c04d34a5d07",
+      "bytes": 1592
+    },
+    "upgrades/beetle_newt_salt_stance_4d34": {
+      "sha256": "01456f4bd3fb1b6f2ef3e32698553d805b60eee170768935c51e3b0e6f0f7715",
+      "bytes": 1242
+    },
+    "upgrades/beetle_thimble_whistle_32f9": {
+      "sha256": "b909310962626869e82e7aa85bf84433261df63c57e6de37e3814734715ac4fc",
+      "bytes": 1217
+    },
+    "upgrades/bellows_battery_bundle_d0b3": {
+      "sha256": "a52890f35d312a54fe4bdcb6e9a3ce233da828b8e4340028316afc427525d8a8",
+      "bytes": 788
+    },
+    "upgrades/bellows_diviner_loupe_8dc3": {
+      "sha256": "fec992188b099ce58433d568017362924c7ddf5c42a568104709e0f59c633690",
+      "bytes": 1656
+    },
+    "upgrades/bellows_tap_guard_0936": {
+      "sha256": "e00a42dbaff760905274a0cd6eca508bc7a8ef7aa9604329d994e2595b40165a",
+      "bytes": 1119
+    },
+    "upgrades/bismuth_backfill_survey_stencil_81db": {
+      "sha256": "82a28ff215107c86e47a2474754e9be6fddd5dc1ca82e143e77624007583e3f8",
+      "bytes": 1047
+    },
+    "upgrades/bismuth_haul_package_bdeb": {
+      "sha256": "ca2ba850dcc2d07c3bcd5e344d40ef5ddc952b7af289cec7b23a04b2b42b0e48",
+      "bytes": 1104
+    },
+    "upgrades/bone_owl_brass_monocle_7b10": {
+      "sha256": "a0defdb7f13ebcc5d32a55d484330efd38924c9d02cc6048353e405170fd74b5",
+      "bytes": 1465
+    },
+    "upgrades/bone_rivet_contour_loupe_ee43": {
+      "sha256": "d1f1e98b8672982def8f60771f1b2b5f845addc201a1c6461eb589e0cd194764",
+      "bytes": 1311
+    },
+    "upgrades/brass_gasket_router_42d9": {
+      "sha256": "443a3018df27ebea203fffbe512bcc22321bba2809ecf8cde109ac74fe4288e9",
+      "bytes": 788
+    },
+    "upgrades/brass_ledger_stencil_ba91": {
+      "sha256": "2cb1b77eefcc6291f336d0e512d9bb59de6ab68ccdcf460503e35c125063cdce",
+      "bytes": 1048
+    },
+    "upgrades/brass_merchant_endorsement_bundle_8ca2": {
+      "sha256": "bf0207c5696939c860fb9ff088266a6d833819760f66e908003c49c286abd584",
+      "bytes": 1044
+    },
+    "upgrades/brass_splash_dampener_6340": {
+      "sha256": "12f09940dde0920d77fd9700f66639cea53a4dcd2c6408aa622b242bf9ba51c1",
+      "bytes": 1150
+    },
+    "upgrades/brass_tallow_router_f737": {
+      "sha256": "4b26a6cfcbde52bcefd3b653f7b002a964e9b01f33ed8dc79cd31590f999d5a2",
+      "bytes": 1169
+    },
+    "upgrades/brass_wick_contour_loupe_ed79": {
+      "sha256": "3603ac34bf15d534176cdb1d85b76fe0982e08bb8286ca88a6aa81a991535cde",
+      "bytes": 1103
+    },
+    "upgrades/cinder_apprentice_manual_6434": {
+      "sha256": "d1e0172390066381a75ad86c6b08b3f19904afab0925810d493cae50176ad154",
+      "bytes": 1629
+    },
+    "upgrades/cinder_backfill_profession_92a7": {
+      "sha256": "c89db84bab9b5de0171ab1e1c4f68987e7b9496cbaf2d964c15ae7abc79e8d6c",
+      "bytes": 851
+    },
+    "upgrades/cinder_badger_mortar_license_7c63": {
+      "sha256": "778824506a8c3dbf65a5655a257b21dafa37064e8b17cc6f1b587020781c1874",
+      "bytes": 968
+    },
+    "upgrades/cinder_bone_hearth_bundle_6093": {
+      "sha256": "34b411afc30e6c7d76e55bc52778fa89dc5b625b57b188f90ec197b59160701a",
+      "bytes": 1575
+    },
+    "upgrades/cinder_munchkin_suite_315d": {
+      "sha256": "e98635ae08f5211c9429d04b02b5d955e16c9551b79f80435f444f49a0f262de",
+      "bytes": 1308
+    },
+    "upgrades/cinder_rivet_repair_bench_01a4": {
+      "sha256": "e242cc6450e3eeee79438d9cd0a934de92aa62034f262673b736bb07bb4d6b21",
+      "bytes": 870
+    },
+    "upgrades/clockwork_hearth_ledger_7364": {
+      "sha256": "764846152c7e1e5173ba4363b6dc659639860e356e8261a5a72d2df2f5b842a0",
+      "bytes": 1512
+    },
+    "upgrades/clockwork_hearth_sigil_a892": {
+      "sha256": "3c95967890f0be7758d35f334839f49db858082dface942a4144e9e7d0dab7a9",
+      "bytes": 1488
+    },
+    "upgrades/crucible_assayer_charter_ef28": {
+      "sha256": "40c89700dc8c833cf2b04052397aefd393c4ab07733a3b98a5494124cfad0415",
+      "bytes": 1092
+    },
+    "upgrades/crucible_tap_guard_8cce": {
+      "sha256": "4918fc2aebce270fb227d26c1351b532557e78b733c1ba10520ced715a6d1697",
+      "bytes": 887
+    },
+    "upgrades/crucible_warming_hearth_046e": {
+      "sha256": "4239f8a84335d56610dc3f68fff0a7c468f983e9b0088c62c344b56f7c0e42af",
+      "bytes": 853
+    },
+    "upgrades/ember_badger_ledger_9330": {
+      "sha256": "858a8c47e8c9e24a12778dfc226a7fac07660d82c33d9b92b8c1411a6c82eba0",
+      "bytes": 1449
+    },
+    "upgrades/ember_loam_ledger_5c2d": {
+      "sha256": "7b7e341abc528141d78b26d2c26e8f4e8e9869177fe78711261ef81a47b4470c",
+      "bytes": 1092
+    },
+    "upgrades/ember_routing_package_1dd6": {
+      "sha256": "41534b335e27f8dbd0b2ac6b24907f5930e7e6128f4c1a7c50cbc748fb7b1b08",
+      "bytes": 1231
+    },
+    "upgrades/ember_slag_2f85": {
+      "sha256": "1bf1f9d66f21775faef7810cd483c884055c030dbdece75a544e8a32dfe8acd7",
+      "bytes": 1353
+    },
+    "upgrades/ember_umber_survey_kit_9210": {
+      "sha256": "e382d77f30f4305ee705fd6f17da619f19af01e7e2a668c8073d8cf05292bf1a",
+      "bytes": 1350
+    },
+    "upgrades/flint_hollow_choir_sponge_d53f": {
+      "sha256": "bc85b7909a7b78c655b297306029a28dd3508580067350539e395ed80f3ebfe0",
+      "bytes": 1521
+    },
+    "upgrades/flint_strike_technique_c47f": {
+      "sha256": "0275d4016871e4320bef5b42342ad754013c75c1e4c2b464250c8dc2998d1566",
+      "bytes": 1332
+    },
+    "upgrades/galena_quill_tap_guard_d31a": {
+      "sha256": "3722082f8b6ef1e4ed14721e5cbb75f230adbf73693d4b9ae1b69b47b113f2c4",
+      "bytes": 1092
+    },
+    "upgrades/gravel_apprentice_dampener_3910": {
+      "sha256": "e6a108ee9395bce742fc151742ec1902661b57265b166360f14efd0ea11f4efd",
+      "bytes": 1301
+    },
+    "upgrades/gravel_tallow_router_deec": {
+      "sha256": "8f0f9b07b7dca5523f038d259f577fbb4e331f1ae533cfd505c61b23c0ef4533",
+      "bytes": 1293
+    },
+    "upgrades/gravel_wardbreaker_seal_22d6": {
+      "sha256": "d102d18e88425e3000a07e177932b0c4995534f511493548051dd953411d31a9",
+      "bytes": 1499
+    },
+    "upgrades/hearth_crafting_desk_626d": {
+      "sha256": "e4b88e4f7f195d2620007836507d1afc7edde6032b9a1e38515e275b9dc52dde",
+      "bytes": 842
+    },
+    "upgrades/hearth_cushion_31aa": {
+      "sha256": "d41b576627b57b12c71f0c85e6059623ed0176fca277040d4e921f1ef0a50715",
+      "bytes": 1110
+    },
+    "upgrades/hearth_hollow_backfill_408a": {
+      "sha256": "bc2d8400fbd2a1747da7d20c8727671dfa9ad0f8ac567f39f534fec165f4b217",
+      "bytes": 964
+    },
+    "upgrades/hearth_ledger_bb78": {
+      "sha256": "1579a25ff32643be5d03e04b22a453adf2849f0ec013f35c6d3adadee0cbcce7",
+      "bytes": 1182
+    },
+    "upgrades/hearth_ledger_bell_08e0": {
+      "sha256": "a344c8440c8fa4401326b802beddd236e0f2c5eab28d376788ae812f2302b6ff",
+      "bytes": 1668
+    },
+    "upgrades/hearth_resonance_b1f9": {
+      "sha256": "bad9ca67f4a0e4cce7d813fbc5d7f7943db4372b2fe4978bd7e10138fb6db61d",
+      "bytes": 1280
+    },
+    "upgrades/heron_loam_calipers_dc89": {
+      "sha256": "603ffd8c968e606f3eeb07bfe888c02d133da8507bee51b642d137df98316658",
+      "bytes": 1450
+    },
+    "upgrades/hollow_crucible_broker_bundle_3bb8": {
+      "sha256": "ffc8cf1415c0392139d4f2eb3ccff5b1e91012a47dc4fee18af86bd20fc98181",
+      "bytes": 1068
+    },
+    "upgrades/hollow_wick_surveyor_6b24": {
+      "sha256": "34a43ebf0ad641e78ee93d50361f9a3de23ddc2476b87757b11502f3bb5bd04c",
+      "bytes": 1206
+    },
+    "upgrades/iron_stormbreaker_charm_a589": {
+      "sha256": "e94967d381f79efb2a2b3564c47a8b53f37f032cb7ea580ace0b63d14d1fed48",
+      "bytes": 1236
+    },
+    "upgrades/iron_velvet_lark_loupe_3855": {
+      "sha256": "913a97bcf185b6fc63b4b389add93ba9b31194680b92dd69ee51f8a4296a5d04",
+      "bytes": 1512
+    },
+    "upgrades/kettle_broker_ledger_43c4": {
+      "sha256": "20ecd8dcc119e34a2965e80c1ef2f7d0a460ac011bac62e38156d1000fb5ac8f",
+      "bytes": 795
+    },
+    "upgrades/kettle_lantern_8bf3": {
+      "sha256": "e7f5943bb6a2f73eb31639818141aea0b3daceffa90f97410fb55d2554ead59f",
+      "bytes": 1001
+    },
+    "upgrades/kettle_lure_bell_1764": {
+      "sha256": "d9ae1f98913dcbb0b8ff958a77be1d795e4e139090650f0aaa46733e10544ba6",
+      "bytes": 1194
+    },
+    "upgrades/lantern_pumice_charm_5e63": {
+      "sha256": "85b86aaa1686c55723618763202d9bc6bd874af39a798b421e2fddd90521e212",
+      "bytes": 926
+    },
+    "upgrades/lantern_shale_contour_loupe_4fda": {
+      "sha256": "6fb9292f527a6977609a30628f6868b15157a64b272eb934abfaad5d35158207",
+      "bytes": 1102
+    },
+    "upgrades/lantern_tap_guard_6a25": {
+      "sha256": "0362bb23b517c55b0f21566d39783bfb1a4512602818617561b7c5124373775b",
+      "bytes": 1150
+    },
+    "upgrades/lantern_vendor_bundle_e5a9": {
+      "sha256": "3e1e64443b2b4d6956af0054220f2f72e12d15d73b1f89f8831fcba10597891e",
+      "bytes": 1166
+    },
+    "upgrades/lark_nettle_discipline_365e": {
+      "sha256": "53182bb505815e03dbed65af3a9de95116438e3fca3145a13f50511c3ecd8eb1",
+      "bytes": 1457
+    },
+    "upgrades/loam_haul_bot_package_6989": {
+      "sha256": "3784e1017af1d5422be818b985c4deef37f705e32ba4ba3f467e4f1cd76792b6",
+      "bytes": 1261
+    },
+    "upgrades/loam_rest_bedroll_8d2a": {
+      "sha256": "633d63188970d5682fb14beb2e53d39318eaa39ee2bf4b0aa2671777b5e59fe9",
+      "bytes": 970
+    },
+    "upgrades/merchant_ledger_bundle_cedf": {
+      "sha256": "5e486438ed8c2fe5631f4edf2237c87ef2f66d348e60d35c5a529ad17d2026f4",
+      "bytes": 1394
+    },
+    "upgrades/mole_kettle_iron_313f": {
+      "sha256": "1e86df6632894379f7288e2f541d1ca212e2e2481389a83b45c53061f98c24fe",
+      "bytes": 1823
+    },
+    "upgrades/mortar_comfort_suite_ca95": {
+      "sha256": "0b00bcf30ff587ac5869730e491e194d098dd3c500787317c228ddc776f8d74b",
+      "bytes": 1064
+    },
+    "upgrades/mortar_tap_guard_945f": {
+      "sha256": "57b4d9d9e6f4ed4ca74400a360b3dc53a0400b79c65e76702b57df2ad69dd1a7",
+      "bytes": 858
+    },
+    "upgrades/ochre_battery_bank_dc41": {
+      "sha256": "0938439bd87ec5f1e19abaeefd10749cb0395a6e03d1d88ec02944f8ec9f759c",
+      "bytes": 1028
+    },
+    "upgrades/ochre_forge_milestone_relic_9ed9": {
+      "sha256": "63739ffdf5c93f4804943493b771bef762c614194c1c95b0b32f62350d4dcf81",
+      "bytes": 1312
+    },
+    "upgrades/owl_beetle_clockwork_24ef": {
+      "sha256": "a610f73c02267322c1558f0e7f74d89212fd4e1575d4a23f47fccc007c06b5cf",
+      "bytes": 1413
+    },
+    "upgrades/pewter_apprentice_ledger_b01c": {
+      "sha256": "e1cdb8ebee3e76b977c15ea3c0ab7e625979f14457b130798c7920eae870f1e6",
+      "bytes": 1042
+    },
+    "upgrades/pewter_brokers_ledger_56c5": {
+      "sha256": "90ad700e1de5fe7a6b0c65e018182608309e75de7e49f3a882e198a679f8595b",
+      "bytes": 1024
+    },
+    "upgrades/pewter_discipline_8312": {
+      "sha256": "458e56e7bf8905381bd47bed18af1a864d3e2b81a117b0b5e49b2fd911a4fa66",
+      "bytes": 1388
+    },
+    "upgrades/pewter_prospector_charter_08b9": {
+      "sha256": "6a8b4c76d6c648bc665d65eb2aee69dcb7e6f481a4900740c5771681b6954434",
+      "bytes": 1272
+    },
+    "upgrades/plumb_calcite_assayer_bundle_cdc5": {
+      "sha256": "2330e9351b00e662da843774eddb69a6aa1ad8db9d4a77393d9dcc5cd000609b",
+      "bytes": 1000
+    },
+    "upgrades/plumb_depth_calipers_7fce": {
+      "sha256": "1ae4641cd4d361835741cc4a752e29cb8c65dee22cef7e260c26ca82925e2ffa",
+      "bytes": 1696
+    },
+    "upgrades/plumb_ledger_bundle_2b95": {
+      "sha256": "018cb2522057a95ec9ab687b1b605bca2bb82d21d8b81600449a393c70e99125",
+      "bytes": 1388
+    },
+    "upgrades/prospector_ledger_8278": {
+      "sha256": "c0ce303fba7a73abfef0d77235c6667db4c8eea0d65f5a987e815c14a5f7d171",
+      "bytes": 1424
+    },
+    "upgrades/quarry_milestone_trophy_27df": {
+      "sha256": "05cdf5fed1a39d4579f161c3c30281f2c81d094e8b7e3feda6d0d385e6257da9",
+      "bytes": 1604
+    },
+    "upgrades/quartz_backfill_desk_5692": {
+      "sha256": "f29a8b89a786a2f5e8cc1df4466901063f74e7afb06a156d59686b2c37771fbc",
+      "bytes": 1067
+    },
+    "upgrades/quartz_calipers_6c75": {
+      "sha256": "f433477b93cdc961f3d5b73faf090bbeebcfb865563378b247ab47f804f1c424",
+      "bytes": 1173
+    },
+    "upgrades/quartz_miners_desk_6cc0": {
+      "sha256": "888554fc0a22e685da775653482e614f0a4b2d08682929ab60faa68f25ea6ed1",
+      "bytes": 926
+    },
+    "upgrades/quill_bone_backfill_09bd": {
+      "sha256": "a4f4b7679d01217b3f342d2d414cefd7514fcdc21f44740acb9c398a7f54d18b",
+      "bytes": 1025
+    },
+    "upgrades/quill_merchant_ledger_41cd": {
+      "sha256": "25da2cbf5dd8c7662bbb19901dc196b666db92e66542b6f55c322fad735c2a5b",
+      "bytes": 1273
+    },
+    "upgrades/rivet_guard_b5e0": {
+      "sha256": "4e89a018fb73bc0708eba43a60c4697db6314dc988cf8e062d0c39fa15c31b78",
+      "bytes": 1165
+    },
+    "upgrades/rivet_scrubber_discipline_5465": {
+      "sha256": "624f4865acc6532d87304f90f088711dae808d9db39a0101e36e956c23ca656e",
+      "bytes": 1230
+    },
+    "upgrades/salt_assayer_0f80": {
+      "sha256": "2396c80f240a0e239ba0031022b26474d25d3b5b124342fc7fc5eb42de869022",
+      "bytes": 1190
+    },
+    "upgrades/salt_scaffold_stencil_8590": {
+      "sha256": "23c05c96eb113420cbe6f933ac2f737c6d9d28d0eae0f1e2327d82bd6558f142",
+      "bytes": 854
+    },
+    "upgrades/salt_ward_f766": {
+      "sha256": "3d0114d34a6d58ede9ed5dd540a94ae26357750d48456c43a391d56aae3e0d6e",
+      "bytes": 981
+    },
+    "upgrades/sconce_cinder_survey_11b0": {
+      "sha256": "3c100b22c742e05ba3a51c2652a5adfde370b41802721d0fe8707c6717df07cb",
+      "bytes": 1237
+    },
+    "upgrades/sconce_smith_techniques_f882": {
+      "sha256": "43e4378aedbbe26a064436e499f1a3f4c764012ae3ba58ec9fea8329b967c801",
+      "bytes": 799
+    },
+    "upgrades/scriptorium_bell_79bd": {
+      "sha256": "3ef28ebc7cd2c0ee0a8fbd03db9346056da832cd4cf8bd9111ee36a701f193aa",
+      "bytes": 2008
+    },
+    "upgrades/shale_ember_bundle_54cd": {
+      "sha256": "7708e2ede39420b2fb7cc5ed6845cdf65b145c5d7ba2bfc327fc904cb29dc54f",
+      "bytes": 951
+    },
+    "upgrades/shale_gasket_ledger_e60d": {
+      "sha256": "c3f2a00771c24e34e5cfd152851b41a01ee3ae97edee2fef9fc08417b1db25f5",
+      "bytes": 802
+    },
+    "upgrades/shale_scrubber_manual_9b6e": {
+      "sha256": "0c257bbdc644a919eb1d19055ee4b102964d37e1588295788da50f15a7187cea",
+      "bytes": 1295
+    },
+    "upgrades/slag_gasket_router_b7b1": {
+      "sha256": "c98279bc13caad138203859eacc73c4e3136ae9efb192c50581c321ea71b8643",
+      "bytes": 851
+    },
+    "upgrades/stoats_gravel_sconce_package_d806": {
+      "sha256": "69828bd0d7bb8dd5b23abce3a57ddab0b3951d10ff9a9745dd6bea1c11b9e555",
+      "bytes": 1655
+    },
+    "upgrades/surveyor_chalk_and_stencil": {
+      "sha256": "7f57a38bc6436a031d63288d70841fc89d28fd62ba439d6093b83e3f5b91f718",
+      "bytes": 1083
+    },
+    "upgrades/tin_assayer_ce11": {
+      "sha256": "7f871203528018443152ed11da35b10c49a1ef81cb213d63d0ec2bf948fca6b9",
+      "bytes": 1260
+    },
+    "upgrades/tin_cinder_wick_package_2b8d": {
+      "sha256": "ffe62755a3bd8cd45b7cd9ebcbf951b86a46f7cf1335ccc7fc228aa3a3afa158",
+      "bytes": 1650
+    },
+    "upgrades/tin_crucible_cleaner_b5fc": {
+      "sha256": "941cf34f65f08fbdd3e6755955ccb2021648172c65be0bf82b5c166278a6393c",
+      "bytes": 1149
+    },
+    "upgrades/tin_slag_spreader_d935": {
+      "sha256": "3155ac2d145e3f1895311339258b72685ebef569ab9a094cdfbcb34343bd9827",
+      "bytes": 1287
+    },
+    "upgrades/umber_apprentice_ledger_aa38": {
+      "sha256": "8e5cd6f5801c257b994abdfabe7d210de07dc883366746dabad8ab672a0b47bf",
+      "bytes": 890
+    },
+    "upgrades/umber_strata_contour_package_d991": {
+      "sha256": "7150ccef63da0a7adb3ccfe644da5490c6eab417fa49543c4b0608313a3be861",
+      "bytes": 1348
+    },
+    "upgrades/umber_vendor_bundle_9b8b": {
+      "sha256": "09984667fee25643784e4cc436c8e6eae6635d0a5a5bc0e5a3e85b602ca99431",
+      "bytes": 845
+    },
+    "upgrades/umber_wick_geomancy_grimoire_6948": {
+      "sha256": "e932e614e394d8b7c1b5bb2c876d585c7117f137d2c7e3ac27f47319938cc873",
+      "bytes": 1636
+    },
+    "upgrades/umber_zinc_yarn_bundle_8d62": {
+      "sha256": "4461599e27bfc2aa4fcd0b857741f2ffb2a461e10765f17645cafbddc763aba3",
+      "bytes": 1367
+    },
+    "upgrades/vitriol_depth_calipers_b37b": {
+      "sha256": "b1df2f445d7d697684f399ca36773ece50bf84ebc2c8fd9173a38d1cb95b660d",
+      "bytes": 1311
+    },
+    "upgrades/vitriol_splash_dampener_00e2": {
+      "sha256": "aa1cb8a2444acfd9071ce9b0ffc837a51352b37eafa1c9ffbd7323e4c409f903",
+      "bytes": 1127
+    },
+    "upgrades/wick_lure_9fb9": {
+      "sha256": "8dcb803fb82999f4e356b79a45b47c87eea94b4b702f5acee9865332cf19534e",
+      "bytes": 1173
+    },
+    "upgrades/zinc_deep_cleaner_a7cf": {
+      "sha256": "3bb219943016628f9194bb82e451c1f4aa2158dad0803d4ea46f39f89f6f7439",
+      "bytes": 925
+    },
+    "upgrades/zinc_kettle_manual_40ec": {
+      "sha256": "b1e56b170add31b4735ba7df0118d79a9e252f6844223c94bba10c9c10c3171c",
+      "bytes": 1329
+    }
+  }
+}

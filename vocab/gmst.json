@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "globals": {
+    "fMinBreakTimeSec": 1.0,
+    "fRefreshGateSec": 0.05,
+    "fWrongToolPenaltyBase": 0.75,
+    "fWrongToolTierDecay": 0.50,
+    "fMarketTierExp": 2.50,
+    "fMarketFloorMult": 0.25,
+    "fDefaultCols": 14,
+    "fDefaultRows": 31,
+    "fBaseTilePx": 32,
+    "fTargetTileInch": 0.197,
+    "fImbalanceLocalWeight": 1.0,
+    "fImbalanceDecileWeight": 0.35,
+    "fImbalanceScaleDivisor": 35.0,
+    "fImbalancePenaltyMax": 0.15,
+    "fTectonicCatchupSpeedBonus": 0.25,
+    "fDrunkDriftAmplitudePx": 42.0,
+    "fLostCatSpawnChance": 0.005,
+    "fLostCatCaptureHp": 10.0,
+    "fLostCatJumpRadius": 2,
+    "fBucketScoopHp": 100.0,
+    "fMaxFluidBucketsPerTile": 9,
+    "fMaxCascadeDepth": 4,
+    "fFrameReactionBudgetUs": 1500,
+    "fOfflineExactBudgetMs": 250,
+    "fQuantileLutBins": 2048,
+    "fQuantileSampleCount": 262144
+  }
+}
