@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinder Gravel Tinker Head",
+    "description": "A heavy tinker head cast from Cinder Gravel. Forged by the ancient smith-lords of the Under-Sun Manifold who bound magma veins and anvilstone into self-tempering thermal drills and crucible transmutation rigs. It solves fluid flooding by clearing liquids around it when equipped.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "equip_tool", "socket_in_tool"],
+  "tags": ["solves_fluid_flooding", "path_tool_builtin", "craft_tinker_part", "logic_plausible", "theme_tectonic_crucible", "bracket_1", "skill_school_manual", "device", "tinker_head"],
+  "stats": {
+    "tool_type": "BUCKET",
+    "tool_tier": 2,
+    "base_dps": 25.0,
+    "durability_max": 250.0,
+    "is_rechargeable": 1,
+    "base_value": 45.0
+  },
+  "vars": {
+    "durability_left": 250.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_fluid_contact",
+      "do": [
+        {"act": "modify_fluid", "target": "self_tile", "fluid_type": "NONE", "delta_level": -1.0}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_wick_vendor_8db7",
+      "price": {
+        "devices/cinder_quill_lure_bell_9bce": 1,
+        "blocks/cinder_gravel_61a3": 150
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "none"
+}
