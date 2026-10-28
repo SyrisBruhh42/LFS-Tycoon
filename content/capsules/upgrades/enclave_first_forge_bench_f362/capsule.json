@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Enclave First-Forge Bench",
+    "description": "An early-tier apprentice bench reconstructed from the sympathetic core-metallurgy and captured-lightning geode smithing pioneered by The Forge Squad of the Enclave of the 16. Placing this architectural fixture in your house attunes its hyper-dense rivet alloy with operator focus, permanently granting modest vendor depth discounts to reach better offers, though each market interaction subtly degrades its grounding rods.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "bench",
+    "rivet",
+    "solves_vendor_access",
+    "path_magic_charm",
+    "craft_homestead_station",
+    "logic_canonical",
+    "theme_enclave_first_forge",
+    "bracket_1",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 200.0,
+    "charge_left": 100.0
+  },
+  "vars": {
+    "charge_left": 100.0
+  },
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "value": 10.0,
+      "if": "self.charge_left > 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_market_sell",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.charge_left",
+          "by": -1.0,
+          "if": "self.charge_left > 0.0"
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "blocks/rivet_ore_dd06",
+          "qty": 1,
+          "if": "roll(0.01) and self.charge_left > 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_assayer_c04e",
+      "price": {
+        "tools/bismuth_clockwork_pick_8e31": 1,
+        "blocks/rivet_ore_dd06": 40
+      },
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ],
+  "offline": "none"
+}
