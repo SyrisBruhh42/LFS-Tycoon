@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Umber Apprentice Hearth Cushion",
+    "description": "An apprentice's zinc-riveted cushion, a modest piece crafted by The Perpetual Clockwork Deep-Bore Syndicate for the Scriptorium of Hollow Quill. Resting on it attunes your resonance.",
+    "author": "autonomous:content_developer",
+    "rarity": "common"
+  },
+  "affordances": ["place_in_house", "carry", "sell"],
+  "tags": ["upgrade", "solves_house_comfort", "path_profession_perk", "craft_skyrim_enchant", "logic_plausible", "theme_clockwork_syndicate", "bracket_3", "skill_school_assayers"],
+  "stats": {
+    "base_value": 450.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": 0.1,
+      "if": "player.is_rested == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_enter_house",
+      "do": [
+        {"act": "emit_alert", "channel": "hud_chime", "tag": "comfort"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "books/lithic_choir_geomancy_grimoire_0954": 1,
+        "blocks/pewter_gravel_d53e": 5
+      },
+      "unlock_if": "player.max_depth >= 330.0"
+    }
+  ],
+  "offline": "none"
+}
