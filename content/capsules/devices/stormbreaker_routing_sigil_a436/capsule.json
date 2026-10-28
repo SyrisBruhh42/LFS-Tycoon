@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Stormbreaker Routing Sigil",
+    "description": "A socketable arcane sigil forged from umber and Stormbreaker Geode by The Perpetual Clockwork Deep-Bore Syndicate. Binds an elemental routing enchantment to a tool, routing mined ore directly to a paired chest.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["socket_in_tool", "sell"],
+  "tags": [
+    "upgrade",
+    "device",
+    "solves_haul_capacity",
+    "path_qol_upgrade",
+    "craft_skyrim_enchant",
+    "logic_canonical",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 150.0,
+    "base_dps": 20.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.50
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "blocks/stormbreaker_geode_5e99",
+          "qty": 1,
+          "route": "paired_chest",
+          "if": "ctx.is_direct_tap == 1 and tool.durability_left > 10"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "upgrades/ochre_forge_milestone_relic_9ed9": 1,
+        "blocks/stormbreaker_geode_5e99": 150
+      },
+      "unlock_if": "player.max_depth >= 50"
+    }
+  ],
+  "offline": "none"
+}
