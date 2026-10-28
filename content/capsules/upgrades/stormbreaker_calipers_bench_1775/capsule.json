@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Stormbreaker Calipers Bench",
+    "description": "Homestead Workshop Bench forged by the Perpetual Clockwork Deep-Bore Syndicate. This self-feeding wind-up automaton rig tames captured-lightning to reduce tool wear when facing zero-damage stalls.",
+    "author": "Enterprise Steward",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "solves_zero_damage_stall",
+    "path_explore",
+    "craft_homestead_station",
+    "bracket_3",
+    "skill_school_manual",
+    "theme_clockwork_syndicate",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 450.0
+  },
+  "vars": {
+    "installed": 1.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "add",
+      "value": -0.2
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/stormbreaker_geode_5e99",
+          "qty": 1.0,
+          "if": "tile.depth >= 300.0"
+        },
+        {
+          "act": "spawn_item",
+          "item": "blocks/copper",
+          "qty": 3.0,
+          "route": "backpack",
+          "if": "tile.depth >= 300.0"
+        },
+        {
+          "act": "emit_alert",
+          "channel": "house_bell",
+          "tag": "stall_mitigated",
+          "if": "tile.depth >= 300.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "unlock_if": "player.max_depth >= 300.0",
+      "price": {
+        "devices/clockwork_siphon_rig_2410": 1,
+        "blocks/stormbreaker_geode_5e99": 5,
+        "blocks/copper": 5
+      }
+    }
+  ],
+  "offline": "none"
+}
