@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hollow Brass Stencil of the Munchkin",
+    "description": "A hollow brass stencil crafted by the secretive Paradox Symposium of St. Munchkin. By pouring rivet ore through its preposterous geometry, you bypass backfill regulations entirely. The zinc ember drone chassis within superheats the brass, melting the very concept of wrong-tool penalties into a sludge of pure bureaucratic loophole. It trades raw breaking speed for absolute precision—just don't let it run out of charge while you're standing on it.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell",
+    "equip_tool"
+  ],
+  "tags": [
+    "tool",
+    "textile",
+    "tile_cover",
+    "solves_backfill_scaffolding",
+    "path_field_textile",
+    "craft_terraria_fusion",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_2",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "tool_tier": 2,
+    "tool_type": "PICKAXE",
+    "base_dps": 18.0,
+    "charge_max_sec": 7200.0,
+    "base_value": 150.0,
+    "wrong_tool_penalty": 0.0
+  },
+  "vars": {
+    "charge_left": 7200.0,
+    "is_active": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": "0.0",
+      "if": "tile.covered_by_self and tile.depth < tile.max_depth_reached"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": "1.5",
+      "if": "tile.covered_by_self and tile.depth < tile.max_depth_reached"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "self.is_active == 1.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.charge_left",
+          "by": "-1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.charge_left <= 0.0"
+        }
+      ]
+    },
+    {
+      "on": "on_equip",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_active",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_active",
+          "value": "0.0"
+        }
+      ]
+    },
+    {
+      "on": "on_backfill",
+      "if": "tile.covered_by_self and tile.depth < tile.max_depth_reached",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.charge_left",
+          "by": "-60.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.charge_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ember_vendor_f749",
+      "price": {
+        "consumables/wardbreaker_pewter_battery_a050": 1,
+        "tools/zinc_ember_drone_b469": 1,
+        "blocks/rivet_ore_dd06": 45
+      },
+      "unlock_if": "player.max_depth >= 198.0 and player.max_depth <= 330.0"
+    }
+  ],
+  "offline": "exact"
+}
