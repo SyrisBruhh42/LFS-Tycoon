@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Seal Slag-Enchant",
+    "description": "An enchanted slag-rivet forged from strict-locked Obsidian Seals. Socketed onto a tool, it uses The Sovereign Ward-Breakers' geomancy to reinforce tools against wear. When breaking a tile deeper than 40m, it may consume a piece of common copper to greatly slow tool wear.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_repair_upkeep",
+    "path_npc_enchanter",
+    "craft_homestead_station",
+    "logic_canonical",
+    "theme_obsidian_wardbreaker",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": 0.25,
+      "if": "tile.depth >= 40"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {"act": "consume_item", "item": "blocks/copper", "qty": 1.0, "if": "tile.depth >= 40"},
+        {"act": "var_add", "var": "self.activations", "by": 1.0, "if": "tile.depth >= 40"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/pewter_quill_newt_3730",
+      "price": {
+        "upgrades/iron_stormbreaker_charm_a589": 1,
+        "blocks/quill_ore_4083": 45
+      }
+    }
+  ],
+  "offline": "exact"
+}
