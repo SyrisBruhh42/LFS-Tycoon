@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Wick-edly Riveting Spore Grimoire",
+    "description": "An arcane incantation rooted in The Living Atlas & Mycelial Sanctuary of the Enclave. Transcribed with a whimsical flourish by an eccentric horologist, this grimoire reveals how to weave Rivet Ore magnetism and bioluminescent spore cartography to route loot directly to a paired chest. A wick of folk-logic guides the flow, though its geomantic charge is finite.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "book",
+    "solves_haul_capacity",
+    "path_profession_perk",
+    "craft_spell_grimoire",
+    "logic_whimsical",
+    "theme_enclave_living_atlas",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 150.0
+  },
+  "vars": {
+    "is_learned": 0.0,
+    "charge_left": 150.0
+  },
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.5,
+      "if": "self.is_learned >= 1.0 and self.charge_left > 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_learned",
+          "value": 1.0,
+          "if": "self.is_learned == 0.0"
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.charge_left",
+          "by": -1.0,
+          "if": "self.is_learned >= 1.0 and self.charge_left > 0.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.is_learned >= 1.0 and self.charge_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "devices/obsidian_resonant_crucible_d5d5": 1,
+        "blocks/rivet_ore_dd06": 50
+      },
+      "unlock_if": "player.max_depth >= 45.0"
+    }
+  ]
+}
