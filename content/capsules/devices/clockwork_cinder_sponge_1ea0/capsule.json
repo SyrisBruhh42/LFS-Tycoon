@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Cinder Sponge",
+    "description": "Forged by The Perpetual Clockwork Deep-Bore Syndicate, this winding zinc device sockets into any tool. It uses Cinder Gravel filters to absorb adjacent flooding into its internal kettle when struck, but increases block break time by 20% while doing so. Degrades after absorbing 20 fluid events.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "solves_fluid_flooding",
+    "path_field_textile",
+    "craft_skyrim_enchant",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "max_uses": 20.0
+  },
+  "vars": {
+    "uses": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "add",
+      "value": 0.20
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_fluid_contact",
+      "do": [
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": -1.0
+        },
+        {
+          "act": "var_add",
+          "var": "self.uses",
+          "by": 1.0
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.uses >= self.stats.max_uses"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "unlock_if": "player.max_depth >= 15.0",
+      "price": {
+        "upgrades/quarry_milestone_trophy_27df": 1,
+        "blocks/cinder_gravel_61a3": 45
+      }
+    }
+  ],
+  "offline": "exact"
+}
