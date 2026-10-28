@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Ward-Breaker's Tallow Charm",
+    "description": "An intricate tallow and rivet charm crafted by the Deep-Bore Horologist for The Sovereign Ward-Breakers of the Obsidian Seal. Merging the magic of an old rivet charm and the raw power of rivet ore, this comfort item is placed in the house. When you sleep (or rest), it consumes a fragment of its tallow to grant a substantial mining speed and luck boost when you delve deep to crack the rigid Obsidian Hazard seals.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_house_comfort",
+    "path_magic_charm",
+    "craft_terraria_fusion",
+    "logic_canonical",
+    "theme_obsidian_wardbreaker",
+    "bracket_3",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 350.0,
+    "is_rechargeable": 0
+  },
+  "vars": {
+    "durability_left": 100.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "add",
+      "value": 35.0,
+      "if": "player.is_rested == 1.0"
+    },
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": 0.15,
+      "if": "player.is_rested == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_sleep",
+      "do": [
+        {"act": "var_add", "var": "self.durability_left", "by": -1.0}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "unlock_if": "player.max_depth >= 330",
+      "price": {
+        "tools/enclave_rivet_sigil_ed7e": 1,
+        "devices/rivet_charm_cd0f": 1,
+        "blocks/rivet_ore_dd06": 40
+      }
+    }
+  ]
+}
