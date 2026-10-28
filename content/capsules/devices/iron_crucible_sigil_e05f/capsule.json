@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Iron Crucible Sigil",
+    "description": "An arcane sigil forged from the fiery heart of a cinder mortar and imbued with the ancient magic of the Tectonic Leviathan. Socket this rune into any tool to invoke the legacy of the Under-Sun Manifold's smith-lords, halving the wrong-tool penalty. Bound by the ochre toad's enchantment.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "sigil",
+    "solves_wrong_tool_penalty",
+    "path_npc_enchanter",
+    "craft_skyrim_enchant",
+    "logic_canonical",
+    "theme_tectonic_crucible",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {
+    "is_active": 0.0,
+    "charges": 500.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "self.is_active == 1.0 and tile.tier >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": "1.0"}
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": "0.0"}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {"act": "var_add", "var": "self.charges", "by": "-1.0", "if": "self.is_active == 1.0 and tile.tier >= 1.0"},
+        {"act": "destroy_self", "if": "self.is_active == 1.0 and self.charges <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ochre_toad_5e64",
+      "price": {
+        "upgrades/iron_stormbreaker_charm_a589": 1,
+        "blocks/cinder_mortar_17bb": 20
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "none"
+}
