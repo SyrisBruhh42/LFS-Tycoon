@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Umbrous Clockwork Sponge",
+    "description": "An umber, multi-part engineered quarry rig forged from cinder gravel. Employed by the blind monastic archivists of Quill Hollow, this autonomous automaton quietly dampens hazards and siphons pooling fluids into the bedrock's frozen acoustic music.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["place_on_tile"],
+  "tags": [
+    "device",
+    "solves_fluid_flooding",
+    "path_placeable_device",
+    "craft_clockwork_automaton",
+    "logic_canonical",
+    "theme_lithic_choir",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "tile.fluid_level > 0",
+      "do": [
+        {"act": "modify_fluid", "target": "self_tile", "fluid_type": "NONE", "delta_level": -1.0},
+        {"act": "spawn_item", "item": "blocks/cinder_gravel_61a3", "qty": 1.0, "route": "ground_pile"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "unlock_if": "player.max_depth >= 15",
+      "price": {
+        "devices/lithic_ledger_fe20": 1,
+        "blocks/cinder_gravel_61a3": 25
+      }
+    }
+  ],
+  "offline": "coarse"
+}
