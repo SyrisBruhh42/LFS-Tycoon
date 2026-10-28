@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Quill Router Head",
+    "description": "A brass and pewter pneumatic bellows cast by The Perpetual Clockwork Deep-Bore Syndicate. The Gravel Keeper often trades these relics to miners exploring the Brass Ledger Frontier. When socketed into a tool, its wind-up automation forcefully routes mined Pewter Gravel and other loose ores directly into a paired chest, though the delicate mechanism worsens the penalty for striking the wrong strata.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": [
+    "device",
+    "tinker_head",
+    "solves_haul_capacity",
+    "path_qol_upgrade",
+    "craft_tinker_part",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.85
+    },
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "add",
+      "value": 2.0
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "devices/obsidian_salt_siphon_head_a474": 1,
+        "blocks/pewter_gravel_d53e": 95
+      },
+      "unlock_if": "player.max_depth >= 30.0 and player.max_depth <= 249.0"
+    }
+  ],
+  "offline": "none"
+}
