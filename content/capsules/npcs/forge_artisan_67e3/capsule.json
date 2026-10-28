@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Forge Artisan Silas",
+    "description": "A rare specialist guild artisan and runesmith of the Enclave First Forge. Silas trades in sympathetic core-metallurgy and captured-lightning geode smithing, leveraging pewter alloys to shift resonance with operator focus.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "npc_vendor"
+  ],
+  "tags": [
+    "npc",
+    "vendor",
+    "world_npc",
+    "theme_enclave_first_forge",
+    "smith"
+  ],
+  "stats": {
+    "cleanliness_required": 0.0,
+    "saturation_half_volume": 1000.0,
+    "unlock_depth": 330.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
