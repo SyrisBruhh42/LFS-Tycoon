@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Stormbreaker Concordance",
+    "description": "A subterranean geode chamber pioneered by The Forge Squad of the Enclave of the 16. Hyper-dense rivet alloys shift resonance with operator focus, while grounding rods tame subterranean plasma.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "world_biome",
+    "theme_enclave_first_forge",
+    "rivet",
+    "shale"
+  ],
+  "stats": {
+    "z_min": 350,
+    "z_max": 450,
+    "biome_weight": 0.25
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/alkahest_quartz_d755": 0.4,
+    "blocks/anvilstone_02a1": 0.6
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
