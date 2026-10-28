@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Vitriol Wardbreaker",
+    "description": "A potent alchemical elixir brewed from raw strata. The Sovereign Ward-Breakers of the Obsidian Seal use this concoction to crack strict-locked seals. When consumed, it severely boosts mining speed for a short duration. Additionally, if you stall, it consumes a Vitriol Crystal to unleash a massive blast.",
+    "author": "jules:steward",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "drink",
+    "path_consumable_buff",
+    "solves_slow_early_dps",
+    "craft_alchemy_potion",
+    "bracket_3",
+    "skill_school_assayers",
+    "theme_obsidian_wardbreaker",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 450.0,
+    "duration_sec": 120.0,
+    "speed_mult": 150.0
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "add",
+      "if": "self.active_sec_left > 0.0 and ctx.is_direct_tap == 1",
+      "value": 150.0
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": 120.0
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.active_sec_left",
+          "by": -1.0,
+          "if": "self.active_sec_left > 0.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.active_sec_left == 0.0"
+        }
+      ]
+    },
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/vitriol_crystal_b488",
+          "qty": 1,
+          "if": "self.active_sec_left > 0.0"
+        },
+        {
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": 280.0,
+          "if": "self.active_sec_left > 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "books/lithic_choir_geomancy_grimoire_0954": 1,
+        "blocks/vitriol_crystal_b488": 10,
+        "blocks/copper": 10
+      },
+      "unlock_if": "player.max_depth >= 330.0"
+    }
+  ]
+}
