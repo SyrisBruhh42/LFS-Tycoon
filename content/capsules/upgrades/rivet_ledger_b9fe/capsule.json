@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Rivet Assayer's Ledger",
+    "description": "A vitriol-stained ledger from the Living Atlas cartographers of the Enclave. It documents market trends for zinc-studded rivet ore, allowing its bearer to negotiate better prices before the pages degrade completely.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_market_saturation",
+    "path_qol_upgrade",
+    "craft_alchemy_potion",
+    "logic_canonical",
+    "theme_enclave_living_atlas",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "charge_left": 10.0
+  },
+  "vars": {
+    "installed": 0.0,
+    "charge_left": 10.0
+  },
+  "modifiers": [
+    {
+      "phase": "mul",
+      "stat": "market_value_mult",
+      "value": 1.25
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_market_sell",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.charge_left",
+          "by": -1.0,
+          "if": "self.charge_left > 0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_assayer_c04e",
+      "price": {
+        "devices/munchkin_ochre_kiln_12d6": 1,
+        "blocks/rivet_ore_dd06": 20
+      },
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ],
+  "offline": "none"
+}
