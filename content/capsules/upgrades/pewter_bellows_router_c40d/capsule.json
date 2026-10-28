@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter-Forged Bellows Router",
+    "description": "An ingenious amalgamation of Bellows Tap Guard technology with the solid weight of Pewter Gravel, drawn from the forgotten Mycelial Sanctuary of the Enclave. This Living Atlas blueprint routes mined ore directly to your paired chest when you dig deeper than 50 meters, easing the haul capacity friction for Enclave archivists.",
+    "author": "autonomous:content_developer",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "consume", "sell"],
+  "tags": ["upgrade", "qol", "solves_haul_capacity", "path_qol_upgrade", "craft_terraria_fusion", "logic_plausible", "theme_enclave_living_atlas", "bracket_3", "skill_school_manual"],
+  "stats": {
+    "base_value": 430.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.5
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": 1.0}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "blocks/pewter_gravel_d53e",
+          "qty": 1,
+          "route": "paired_chest",
+          "if": "self.installed > 0.0 and tile.depth > 50.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "upgrades/bellows_tap_guard_0936": 1,
+        "blocks/pewter_gravel_d53e": 30
+      },
+      "unlock_if": "player.max_depth >= 330.0"
+    }
+  ],
+  "offline": "none"
+}
