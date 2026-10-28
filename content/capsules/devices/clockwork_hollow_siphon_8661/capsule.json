@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Hollow Siphon",
+    "description": "A brass, hollow field rig forged from cinder strata that automatically siphons fluids. Slower than standard pumps but precision-engineered for the Tectonic Leviathan's deepest veins. Consumes its own durability on each pump.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_fluid_flooding",
+    "path_placeable_device",
+    "craft_clockwork_automaton",
+    "logic_plausible",
+    "theme_tectonic_crucible",
+    "bracket_1",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "do": [
+        {
+          "if": "tile.fluid_level > 0.0 and self.activations < 150.0",
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": -1.0
+        },
+        {
+          "if": "tile.fluid_level > 0.0 and self.activations < 150.0",
+          "act": "deal_damage",
+          "target": "self_tile",
+          "amount": 1.0
+        },
+        {
+          "if": "tile.fluid_level > 0.0 and self.activations < 150.0",
+          "act": "var_add",
+          "var": "self.activations",
+          "by": 1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_wick_vendor_8db7",
+      "price": {
+        "blocks/cinder_gravel_61a3": 100,
+        "books/cinder_munchkin_grimoire_95a0": 1
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "coarse"
+}
