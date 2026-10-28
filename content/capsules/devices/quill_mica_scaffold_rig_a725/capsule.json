@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quill-Mica Scaffold Rig",
+    "description": "An early-tier apprentice clockwork rig designed by the monastic archivists of Quill Hollow. Infused with mica and forged with quill ore, it leverages the harmonic resonance of bedrock. When backfilling tiles to build scaffolds, it rings a satisfying chime and slightly accelerates your mining by exploiting zero-damage stalls in the Infinite Scriptorium.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "place_on_tile", "sell"],
+  "tags": [
+    "device",
+    "solves_backfill_scaffolding",
+    "path_magic_charm",
+    "craft_clockwork_automaton",
+    "logic_plausible",
+    "theme_lithic_choir",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_backfill",
+      "do": [
+        {"act": "modify_depth", "target": "self", "delta": -1.0},
+        {"act": "emit_alert", "channel": "house_bell", "tag": "backfill_built"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "books/overkill_munchkin_grimoire_be82": 1,
+        "blocks/quill_ore_4083": 15
+      },
+      "unlock_if": "player.max_depth >= 45"
+    }
+  ],
+  "offline": "coarse"
+}
