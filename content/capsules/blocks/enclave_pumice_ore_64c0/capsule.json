@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Enclave Pumice",
+    "description": "A lightweight pumice ore infused with captured-lightning. The Enclave First Forge utilized this sympathethic core-metallurgy for grounding subterranean plasma.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["mineable_block", "carry", "sell"],
+  "tags": ["block", "ore", "world_block", "theme_enclave_first_forge"],
+  "stats": {
+    "base_hp": 45.0,
+    "base_value": 24.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 410,
+    "z_max": 610,
+    "l_step": 1000,
+    "spawn_prob": 0.012,
+    "clump_xy": 6.0,
+    "pipe_z": 10.0,
+    "priority_rank": 40
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none",
+  "biome_weights": {
+    "biomes/standard_crust": 1.0
+  }
+}
