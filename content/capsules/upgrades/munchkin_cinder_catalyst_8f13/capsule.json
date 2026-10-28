@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin's Cinder Catalyst",
+    "description": "An experimental trinket formulated by the Paradox Symposium of St. Munchkin. Utilizing the caustic properties of Cinder Gravel, Ochre Toad fashioned this catalyst to literally burn through bureaucratic red tape and obsidian hazard clusters alike. When socketed into a tool, it massively increases incoming damage to hazards, provided the catalyst still has charge remaining.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell",
+    "catalyst"
+  ],
+  "tags": [
+    "upgrade",
+    "solves_hazard_clearing",
+    "path_magic_charm",
+    "craft_skill_mastery",
+    "logic_canonical",
+    "theme_munchkin_paradox",
+    "skill_bracket",
+    "bracket_2",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 65.0,
+    "base_dps": 55.0
+  },
+  "vars": {
+    "charge_left": 10.0
+  },
+  "modifiers": [
+    {
+      "stat": "incoming_damage",
+      "phase": "add",
+      "if": "tile.is_hazard == 1.0 and self.charge_left > 0.0",
+      "value": 150.0
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_hazard_expose",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.charge_left",
+          "by": "-1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ochre_toad_5e64",
+      "price": {
+        "upgrades/quarry_milestone_trophy_27df": 1,
+        "blocks/cinder_gravel_61a3": 45
+      },
+      "unlock_if": "player.max_depth >= 200.0"
+    }
+  ],
+  "offline": "none"
+}
