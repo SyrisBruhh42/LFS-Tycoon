@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Brass Living Atlas Automaton Bundle",
+    "description": "A very expensive, clockwork bundle forged from shale and brass. Its bioluminescent spore cartography maps the Living Atlas for the Enclave. Placing it in the house comforts the weary prospector, granting increased yield and luck when venturing deep.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "place_on_tile", "place_in_house", "sell", "consume"],
+  "tags": [
+    "solves_house_comfort",
+    "path_bundle_package",
+    "craft_clockwork_automaton",
+    "logic_plausible",
+    "theme_enclave_living_atlas",
+    "bracket_1",
+    "skill_school_manual",
+    "device",
+    "upgrade"
+  ],
+  "stats": {
+    "base_value": 500.0,
+    "base_dps": 115.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "add",
+      "value": 0.25,
+      "if": "self.installed == 1.0 and tile.depth >= 150.0"
+    },
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": 0.25,
+      "if": "self.installed == 1.0 and tile.depth >= 150.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": 1.0},
+        {"act": "set_ui_flag", "flag": "hud_target_loupe", "enabled": true}
+      ]
+    },
+    {
+      "on": "on_sleep",
+      "do": [
+        {"act": "emit_alert", "channel": "house_bell", "tag": "rested", "if": "self.installed == 1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "upgrades/iron_stormbreaker_charm_a589": 1,
+        "blocks/pewter_gravel_d53e": 150
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "exact"
+}
