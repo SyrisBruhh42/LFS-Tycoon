@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Clockwork Ledger Automaton",
+    "description": "A wind-up automaton built by the Perpetual Clockwork Deep-Bore Syndicate. When placed in a house or socketed in a tool, it uses its brass ledger to calculate precise striking angles, significantly reducing battery drain. It feeds off the accumulated resonance charge in the quarry.",
+    "author": "jules:autonomous",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "socket_in_tool", "place_in_house", "sell"],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_auto_tool_runtime",
+    "path_hired_laborer",
+    "craft_skyrim_enchant",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_manual",
+    "automaton",
+    "clockwork"
+  ],
+  "stats": {
+    "base_value": 150.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "shared.quarry_resonance_charge >= 50.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "do": [
+        {"act": "spawn_item", "item": "blocks/pewter_gravel_d53e", "qty": 1, "route": "backpack", "if": "shared.quarry_resonance_charge >= 50.0 and tool.charge_left > 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_vendor_51cb",
+      "price": {
+        "devices/cinder_quill_lure_bell_9bce": 1,
+        "blocks/pewter_gravel_d53e": 120
+      },
+      "unlock_if": "player.max_depth >= 100.0"
+    }
+  ],
+  "offline": "coarse"
+}
