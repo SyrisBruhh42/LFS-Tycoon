@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lithic Choir Assayer License",
+    "description": "A monolithic stone tablet, etched with the harmonic sigils of the blind monastic archivists of Quill Hollow. It recognizes you as a Guild Master Assayer, a station earned by transmuting deep acoustic knowledge into economic leverage. It passively manipulates the syndicate exchange rates to counter market saturation when offloading large quantities of ores.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house"
+  ],
+  "tags": [
+    "upgrade",
+    "skill_bracket",
+    "bracket_2",
+    "skill_school_assayers",
+    "theme_lithic_choir",
+    "solves_market_saturation",
+    "path_profession_perk",
+    "craft_skill_mastery",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 450.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "add",
+      "value": 0.35
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_damage_dealt",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/alkahest_quartz_d755",
+          "qty": 1,
+          "if": "tool.charge_left < 10.0"
+        },
+        {
+          "act": "spawn_item",
+          "item": "blocks/copper",
+          "qty": 1,
+          "if": "tool.charge_left < 10.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "upgrades/clockwork_hearth_ledger_7364": 1,
+        "blocks/alkahest_quartz_d755": 25,
+        "blocks/copper": 50
+      },
+      "unlock_if": "player.max_depth >= 198"
+    }
+  ],
+  "offline": "none"
+}
