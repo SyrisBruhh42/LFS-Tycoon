@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Ledger Charm",
+    "description": "A socketable magical trinket created by the deep-bore horologists of The Perpetual Clockwork Deep-Bore Syndicate. Keeps a meticulous ledger of nearby hazards. When a hazard detonate, this charm ensures proper dispersal of force, dealing extra splash damage to neighbouring tiles as it processes the volatile cinder gravel reaction. Beware, the charm loses power with each detonation.",
+    "author": "jules",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "socket_in_tool", "catalyst", "sell"],
+  "tags": [
+    "device",
+    "solves_hazard_clearing",
+    "path_magic_charm",
+    "craft_skill_mastery",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "skill_bracket",
+    "bracket_3",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {
+    "charges_left": 10.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "add",
+      "if": "tile.is_hazard == 1 and self.charges_left > 0.0",
+      "value": "20.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_hazard_expose",
+      "do": [
+        {"act": "emit_alert", "channel": "house_bell", "tag": "hazard_exposed"}
+      ]
+    },
+    {
+      "on": "on_hazard_detonate",
+      "do": [
+        {"act": "deal_damage", "if": "self.charges_left > 0.0", "target": "neighbors_4", "amount": "10.0"},
+        {"act": "var_add", "if": "self.charges_left > 0.0", "var": "self.charges_left", "by": "-1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "consumables/alkahest_decoction_dae2": 1,
+        "blocks/cinder_gravel_61a3": 40
+      },
+      "unlock_if": "player.max_depth <= 330"
+    }
+  ],
+  "offline": "none"
+}
