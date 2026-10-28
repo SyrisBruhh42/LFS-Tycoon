@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hydro-Alchemist Valya",
+    "description": "A subterranean hydro-alchemist of the Alkahest Vitriol enclave. She sells corrosive tinctures and mortar-sealing agents to soften deep-strata rock and harvest brine.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["npc_vendor"],
+  "tags": ["world_npc", "theme_alkahest_hydro", "vendor", "alchemist", "mortar", "tin"],
+  "stats": {
+    "unlock_depth": 330.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
