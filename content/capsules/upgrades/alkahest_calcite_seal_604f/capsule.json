@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Calcite Achievement Seal",
+    "description": "An unlockable trophy seal of The Sovereign Ward-Breakers of the Obsidian Seal. Sworn to cracking the 1% strict-locked Obsidian Hazard seals via 8-perimeter equal-depth catalyst detonations. This magical trinket, socketed or carried, reveals depth contours on newly exposed strata for deep excavation. Crafted from Alkahest Calcite.",
+    "author": "autonomous:content_developer",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": [
+    "upgrade",
+    "charm",
+    "solves_depth_awareness",
+    "path_magic_charm",
+    "craft_achievement_relic",
+    "logic_canonical",
+    "theme_obsidian_wardbreaker",
+    "bracket_3",
+    "skill_school_vitriol_ember"
+  ],
+  "stats": {
+    "base_value": 30.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": 0.1,
+      "if": "tile.depth >= 600.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": true, "if": "tile.depth >= 600.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/vitriol_alchemist_4814",
+      "price": {
+        "upgrades/alkahest_laborer_b3a0": 1,
+        "blocks/alkahest_calcite_6904": 25
+      },
+      "unlock_if": "player.max_depth >= 600.0"
+    }
+  ],
+  "offline": "none"
+}
