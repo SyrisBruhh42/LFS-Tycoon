@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Cinderslag Scaffold Head",
+    "description": "A whimsical scaffold head cast from dense crucible cinderslag and glowing tallow. Forged by the ancient smith-lords of the Under-Sun Manifold, it guides the placement of backfill material with rivet-precise alignment. When equipped, it emits an alert when scaffolding is built.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "equip_tool", "socket_in_tool", "backfill_material"],
+  "tags": ["solves_backfill_scaffolding", "path_qol_upgrade", "craft_tinker_part", "logic_whimsical", "theme_tectonic_crucible", "bracket_1", "skill_school_manual", "device", "tinker_head"],
+  "stats": {
+    "tool_type": "BUCKET",
+    "tool_tier": 3,
+    "base_dps": 120.0,
+    "durability_max": 250.0,
+    "is_rechargeable": 1,
+    "base_value": 85.0
+  },
+  "vars": {
+    "durability_left": 250.0
+  },
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "add",
+      "if": "tile.depth < tile.max_depth_reached",
+      "value": 0.5
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true}
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": false}
+      ]
+    },
+    {
+      "on": "on_backfill",
+      "do": [
+        {"act": "modify_depth", "target": "self_tile", "delta": -1.0}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/lantern_smith_fb67",
+      "price": {
+        "devices/cinder_gravel_tinker_head_5d60": 1,
+        "blocks/cinderslag_8f82": 25
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "none"
+}
