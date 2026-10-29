@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Iron Crucible Charm",
+    "description": "A dense charm forged from obsidian iron ore and powered by a Pewter Hearth Charm. Used by the Sovereign Ward-Breakers of the Obsidian Seal, it grants depth calipers when socketed, allowing precise excavation across uneven strata. The catalytic energy slowly degrades its charge.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell",
+    "equip_tool"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_depth_awareness",
+    "path_magic_charm",
+    "craft_smeltery_alloy",
+    "logic_canonical",
+    "theme_obsidian_wardbreaker",
+    "bracket_1",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "base_dps": 120.0
+  },
+  "vars": {
+    "charge_left": 100.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_depth_calipers",
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_depth_calipers",
+          "enabled": false
+        }
+      ]
+    },
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.charge_left",
+          "by": -1.0
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.charge_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "devices/pewter_hearth_charm_eae3": 1,
+        "blocks/obsidian_iron_e0eb": 10
+      },
+      "unlock_if": "player.max_depth >= 20"
+    }
+  ],
+  "offline": "exact"
+}
