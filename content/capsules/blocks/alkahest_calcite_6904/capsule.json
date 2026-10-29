@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Calcite",
+    "description": "Corrosive subterranean precipitate formed from vitriol and brine. Brittle but valuable to hydro-alchemists.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "world_block",
+    "block",
+    "ore",
+    "calcite",
+    "theme_alkahest_hydro"
+  ],
+  "stats": {
+    "base_hp": 25.0,
+    "base_value": 15.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 570,
+    "z_max": 800,
+    "l_step": 1000,
+    "spawn_prob": 0.010,
+    "clump_xy": 6.0,
+    "pipe_z": 6.0,
+    "priority_rank": 50
+  },
+  "biome_weights": {},
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
