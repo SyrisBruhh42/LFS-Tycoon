@@ -177,6 +177,20 @@ def get_capsule_segment_state_safe(capsule_id: str = "lfs-tycoon") -> str:
 
 def compute_dynamic_290_fleet_caps() -> dict:
     """Compute dynamic 290/24h quota lending across active DOCKED_READY capsules + 10 VIP idea queue reserve."""
+    for cand in (
+        Path(__file__).resolve().parents[3] / "core" / "companion" / "clients" / "linux",
+        Path.home() / "Projects" / "LFS-Suite" / "3-lfs-aegis-linux" / "core" / "companion" / "clients" / "linux",
+    ):
+        if cand.is_dir() and str(cand) not in sys.path:
+            sys.path.insert(0, str(cand))
+    try:
+        from aegis_factory_conductor import compute_shazeer_fleet_control_290  # type: ignore[import-not-found]
+
+        ctrl = compute_shazeer_fleet_control_290()
+        if isinstance(ctrl, dict) and isinstance(ctrl.get("dynamic_caps"), dict):
+            return dict(ctrl["dynamic_caps"])
+    except Exception:
+        pass
     current = now()
     cutoff = current - timedelta(hours=24)
     xdg_state = Path(os.environ.get("XDG_STATE_HOME", str(Path.home() / ".local" / "state")))
@@ -795,6 +809,22 @@ def hard_sync_to_remote_main(cfg: dict, dry: bool) -> str:
         return "dry_run"
     branch = cfg.get("starting_branch", "main")
     if not (ROOT / ".git").exists():
+        mirror_repo = Path.home() / ".local" / "share" / "lfs-tycoon-factory" / "repo"
+        if (mirror_repo / ".git").exists():
+            subprocess.run(["git", "-C", str(mirror_repo), "fetch", "origin", branch, "--prune"], check=True, capture_output=True, text=True, timeout=60)
+            subprocess.run(["git", "-C", str(mirror_repo), "checkout", "-B", branch, f"origin/{branch}"], check=True, capture_output=True, text=True, timeout=30)
+            subprocess.run(["git", "-C", str(mirror_repo), "reset", "--hard", f"origin/{branch}"], check=True, capture_output=True, text=True, timeout=30)
+            head_sha = subprocess.check_output(["git", "-C", str(mirror_repo), "rev-parse", "HEAD"], text=True, timeout=15).strip()
+            if (mirror_repo / "content" / "capsules").is_dir():
+                (ROOT / "content" / "capsules").mkdir(parents=True, exist_ok=True)
+                subprocess.run(["rsync", "-a", f"{mirror_repo / 'content' / 'capsules'}/", f"{ROOT / 'content' / 'capsules'}/"], check=True, capture_output=True, text=True, timeout=30)
+            if (mirror_repo / "proposals").is_dir():
+                (ROOT / "proposals").mkdir(parents=True, exist_ok=True)
+                subprocess.run(["rsync", "-a", f"{mirror_repo / 'proposals'}/", f"{ROOT / 'proposals'}/"], check=True, capture_output=True, text=True, timeout=30)
+            if (mirror_repo / "content" / "capsule_manifest.json").is_file():
+                subprocess.run(["rsync", "-a", str(mirror_repo / "content" / "capsule_manifest.json"), str(ROOT / "content" / "capsule_manifest.json")], check=True, capture_output=True, text=True, timeout=30)
+            log("repo_synced_from_mirror", head=head_sha, branch=branch, mirror=str(mirror_repo))
+            return f"monorepo_synced_from_mirror:{head_sha[:12]}"
         return "monorepo_subdir_skip"
     subprocess.run(["git", "-C", str(ROOT), "fetch", "origin", branch, "--prune"], check=True, capture_output=True, text=True, timeout=60)
     subprocess.run(["git", "-C", str(ROOT), "checkout", "-B", branch, f"origin/{branch}"], check=True, capture_output=True, text=True, timeout=30)
@@ -945,8 +975,16 @@ def tick(args: argparse.Namespace) -> int:
     fleet_24h = len(day) + enclave_dispatched_24h()
     dyn_caps = compute_dynamic_290_fleet_caps()
     base_tycoon_cap = int(state.get("daily_cap") or DEFAULT_CFG["daily_cap"])
-    effective_daily_cap = int(dyn_caps.get("dynamic_caps", {}).get("lfs-tycoon", base_tycoon_cap))
-    effective_fleet_cap = int(dyn_caps.get("effective_autonomous_ceiling_24h", DEFAULT_CFG["fleet_autonomous_ceiling_24h"]))
+    caps_map = dyn_caps.get("dynamic_caps", dyn_caps) if isinstance(dyn_caps, dict) else {}
+    effective_daily_cap = int(
+        caps_map.get("lfs-tycoon-factory", caps_map.get("lfs-tycoon", base_tycoon_cap))
+    )
+    effective_fleet_cap = int(
+        dyn_caps.get(
+            "effective_autonomous_ceiling_24h",
+            sum(v for v in caps_map.values() if isinstance(v, int)) or DEFAULT_CFG["fleet_autonomous_ceiling_24h"],
+        )
+    )
     for cond, reason in ((len(active) >= cfg["max_active_sessions"], "too_many_active_sessions"),
                          (len(open_prs) >= cfg["max_open_prs"], "pr_backlog"),
                          (len(day) >= min(effective_daily_cap, 300), "daily_cap"),
