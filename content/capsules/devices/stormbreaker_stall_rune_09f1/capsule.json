@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Stormbreaker Acoustic Rune",
+    "description": "An experimental enchanter's rune crafted from Lark Newt Rivet ore and sympathetic core-metallurgy. Placed onto a socket, it channels the whimsical plasma-logic of the Enclave First Forge. When the tool strikes an impassable strict-locked block, the dense alloy resonates, diverting energy into a grounding chime and pausing wear while transmuting slag into resonance.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell", "equip_tool"],
+  "tags": [
+    "device",
+    "solves_zero_damage_stall",
+    "path_npc_enchanter",
+    "craft_smeltery_alloy",
+    "logic_whimsical",
+    "theme_enclave_first_forge",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 65.0,
+    "base_dps": 15.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "add",
+      "value": -1.0,
+      "if": "tile.is_strict_locked == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {"act": "consume_item", "item": "blocks/lark_newt_rivet_ore_a337", "qty": 1, "if": "tile.is_strict_locked == 1.0"},
+        {"act": "var_add", "var": "shared.quarry_resonance_charge", "by": 1.0, "if": "tile.is_strict_locked == 1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ember_vendor_f749",
+      "price": {
+        "upgrades/rivet_ledger_b9fe": 1,
+        "blocks/lark_newt_rivet_ore_a337": 20
+      },
+      "unlock_if": "player.max_depth >= 15.0"
+    }
+  ],
+  "offline": "none"
+}
