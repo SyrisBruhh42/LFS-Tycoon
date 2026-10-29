@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Quartz Crucible",
+    "description": "A subterranean pocket mine once operated by the Perpetual Clockwork Deep-Bore Syndicate, rich in alkahest minerals.",
+    "author": "core:jules",
+    "rarity": "uncommon"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["world_biome", "theme_clockwork_syndicate", "quartz", "crucible"],
+  "stats": {
+    "z_min": 900,
+    "z_max": 1100,
+    "biome_weight": 0.35
+  },
+  "biome_weights": {
+    "blocks/stone": 1.5,
+    "blocks/alkahest_quartz_d755": 1.0,
+    "blocks/alkahest_calcite_6904": 0.8
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
