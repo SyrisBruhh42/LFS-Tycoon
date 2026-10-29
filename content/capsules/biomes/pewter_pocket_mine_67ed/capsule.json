@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Pocket Mine",
+    "description": "A subterranean pocket mine of the Perpetual Clockwork Deep-Bore Syndicate, rich in pewter and ember hues.",
+    "author": "core:jules",
+    "rarity": "common"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["world_biome", "theme_clockwork_syndicate", "pewter", "ember"],
+  "stats": {
+    "z_min": 650,
+    "z_max": 800,
+    "biome_weight": 0.5
+  },
+  "biome_weights": {
+    "blocks/stone": 1.5,
+    "blocks/alkahest_pumice_a42e": 1.2,
+    "blocks/alkahest_quartz_d755": 0.8
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
