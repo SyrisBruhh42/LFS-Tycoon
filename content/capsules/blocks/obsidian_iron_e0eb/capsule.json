@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Iron Anvil Ore",
+    "description": "A dense, anvil-hard iron ore suffused with obsidian shielding. Ward-breakers mine this catalyst to crack strict-locked seals.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell",
+    "catalyst"
+  ],
+  "tags": [
+    "block",
+    "ore",
+    "metal",
+    "iron",
+    "world_block",
+    "theme_obsidian_wardbreaker"
+  ],
+  "stats": {
+    "base_hp": 85.0,
+    "base_value": 25.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 720,
+    "z_max": 950,
+    "l_step": 1000,
+    "spawn_prob": 0.01,
+    "clump_xy": 5.0,
+    "pipe_z": 8.0,
+    "priority_rank": 50
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none",
+  "biome_weights": {}
+}
