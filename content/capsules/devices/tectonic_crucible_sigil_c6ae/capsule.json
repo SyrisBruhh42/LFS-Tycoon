@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tectonic Crucible Sigil",
+    "description": "An ancient socketable arcane sigil forged from the deep strata of Obsidian Iron and Alkahest Vitriol by The Grand Crucible of the Tectonic Leviathan. It binds seismic resonance to your tool, channelling overkill waste into powerful shockwaves that break neighboring stone, provided you have sufficient resonance charge.",
+    "author": "jules:steward",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_overkill_waste",
+    "path_magic_charm",
+    "craft_skyrim_enchant",
+    "bracket_4",
+    "skill_school_manual",
+    "theme_tectonic_crucible",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 850.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "cleave_pct",
+      "phase": "add",
+      "value": 0.25
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_overkill",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "neighbors_4",
+          "amount": 40.0,
+          "if": "tool.overkill_damage > 0.0 and shared.quarry_resonance_charge >= 5.0"
+        },
+        {
+          "act": "var_add",
+          "var": "shared.quarry_resonance_charge",
+          "by": -5.0,
+          "if": "tool.overkill_damage > 0.0 and shared.quarry_resonance_charge >= 5.0"
+        },
+        {
+          "act": "consume_item",
+          "item": "blocks/obsidian_iron_e0eb",
+          "qty": 1,
+          "if": "tool.overkill_damage > 50.0"
+        },
+        {
+          "act": "var_add",
+          "var": "shared.quarry_resonance_charge",
+          "by": 100.0,
+          "if": "tool.overkill_damage > 50.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/clockwork_horologist_c7b1",
+      "unlock_if": "player.max_depth >= 720.0",
+      "price": {
+        "devices/clockwork_syndicate_basalt_sigil_5f95": 1,
+        "blocks/obsidian_iron_e0eb": 25,
+        "blocks/alkahest_vitriol_e67f": 10
+      }
+    }
+  ],
+  "offline": "exact"
+}
