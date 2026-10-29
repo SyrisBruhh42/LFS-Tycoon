@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Salt Tuning Charm",
+    "description": "An apprentice's trinket inscribed with the hymnals of the Lithic Choir. The Pewter Quill Newt trades these to novices to help them focus their strikes. Infused with Alkahest Calcite and flakes of mica, it stiffens the tool on misdirected taps to prevent accidental block shattering.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": [
+    "upgrade",
+    "skill_bracket",
+    "bracket_2",
+    "skill_school_alkahest_salt",
+    "theme_lithic_choir",
+    "solves_tap_misfires",
+    "path_magic_charm",
+    "craft_skill_mastery",
+    "logic_canonical",
+    "salt"
+  ],
+  "stats": {
+    "base_value": 80.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "clamp",
+      "value": 1.0,
+      "if": "ctx.is_direct_tap == 1"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "blocks/alkahest_calcite_6904",
+          "qty": 1,
+          "route": "backpack",
+          "if": "tile.depth >= 570.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/pewter_quill_newt_3730",
+      "price": {
+        "blocks/alkahest_calcite_6904": 15,
+        "blocks/anvilstone_02a1": 5
+      },
+      "unlock_if": "player.max_depth >= 570.0"
+    }
+  ],
+  "offline": "none"
+}
