@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Vitriol Wardbreaker Tinker Head",
+    "description": "The Sovereign Ward-Breakers of the Obsidian Seal relied on these potent tinker heads forged from Vitriol Loam. Honed for siege geomancy, this head resonates powerfully with Quill Peddler's ledgers and slices through deep strata hazards. Equipping it permanently decreases vendor depth requirements.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["socket_in_tool", "carry", "sell", "equip_tool"],
+  "tags": [
+    "upgrade",
+    "bundle_package",
+    "tinker_head",
+    "solves_vendor_access",
+    "path_bundle_package",
+    "craft_tinker_part",
+    "logic_canonical",
+    "theme_obsidian_wardbreaker",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 450.0,
+    "base_dps": 50.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "value": 15.0
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": 25.0,
+          "if": "tile.depth >= 500"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/quill_peddler_0c07",
+      "price": {
+        "devices/ochre_tallow_snoot_8dd6": 1,
+        "blocks/vitriol_loam_fa0e": 60
+      },
+      "unlock_if": "player.max_depth >= 40"
+    }
+  ],
+  "offline": "none"
+}
