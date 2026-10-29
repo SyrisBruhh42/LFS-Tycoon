@@ -31,7 +31,7 @@
       "stat": "durability_drain_mult",
       "phase": "mul",
       "if": "tile.covered_by_self",
-      "value": "-1.5"
+      "value": "0.5"
     },
     {
       "stat": "incoming_damage",
@@ -51,22 +51,37 @@
       "on": "on_damage_dealt",
       "if": "tile.covered_by_self",
       "do": [
-        {"act": "var_add", "var": "self.repair_hits", "by": "1.0"}
+        {
+          "act": "var_add",
+          "var": "self.repair_hits",
+          "by": "1.0"
+        }
       ]
     },
     {
       "on": "on_damage_dealt",
       "if": "tile.covered_by_self and self.repair_hits >= 10.0",
       "do": [
-        {"act": "emit_alert", "channel": "hud_chime", "tag": "repair_ping"},
-        {"act": "var_set", "var": "self.repair_hits", "value": "0.0"}
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "repair_ping"
+        },
+        {
+          "act": "var_set",
+          "var": "self.repair_hits",
+          "value": "0.0"
+        }
       ]
     }
   ],
   "offered_by": [
     {
       "vendor": "npcs/peddler_vayne",
-      "price": {"blocks/stone": 350, "blocks/copper": 150},
+      "price": {
+        "blocks/stone": 350,
+        "blocks/copper": 150
+      },
       "unlock_if": "player.max_depth >= 15"
     }
   ],

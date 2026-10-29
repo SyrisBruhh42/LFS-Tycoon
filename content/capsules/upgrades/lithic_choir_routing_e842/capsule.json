@@ -41,7 +41,11 @@
     {
       "on": "on_consume",
       "do": [
-        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": "1.0"
+        }
       ]
     }
   ],
@@ -52,7 +56,7 @@
         "upgrades/quarry_milestone_trophy_27df": 1,
         "blocks/lark_newt_rivet_ore_a337": 45
       },
-      "unlock_if": "player.max_depth >= 198 and player.max_depth <= 330"
+      "unlock_if": "player.max_depth >= 198"
     }
   ],
   "offline": "none"

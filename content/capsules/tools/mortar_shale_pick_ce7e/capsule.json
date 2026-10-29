@@ -52,7 +52,7 @@
       "price": {
         "blocks/copper": 30
       },
-      "unlock_if": "global_cleave_bonus_pct >= 0.0"
+      "unlock_if": "shared.global_cleave_bonus_pct > 0.0"
     }
   ],
   "offline": "coarse"

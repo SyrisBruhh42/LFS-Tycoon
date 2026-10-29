@@ -43,7 +43,7 @@
         "books/cinder_munchkin_grimoire_95a0": 1,
         "blocks/quill_hollow_fa6d": 120
       },
-      "unlock_if": "player.max_depth >= 0"
+      "unlock_if": "player.max_depth >= 15.0"
     }
   ],
   "offline": "exact"

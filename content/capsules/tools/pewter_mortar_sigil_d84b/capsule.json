@@ -6,8 +6,21 @@
     "author": "core:ai",
     "rarity": "common"
   },
-  "affordances": ["socket_in_tool", "equip_tool", "carry"],
-  "tags": ["tool", "solves_overkill_waste", "path_forge_material", "craft_skyrim_enchant", "logic_plausible", "theme_clockwork_syndicate", "bracket_2", "skill_school_manual"],
+  "affordances": [
+    "socket_in_tool",
+    "equip_tool",
+    "carry"
+  ],
+  "tags": [
+    "tool",
+    "solves_overkill_waste",
+    "path_forge_material",
+    "craft_skyrim_enchant",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_2",
+    "skill_school_manual"
+  ],
   "stats": {
     "base_value": 20.0,
     "base_dps": 18.0,
@@ -19,14 +32,14 @@
   "vars": {
     "durability_left": 300.0
   },
-  "unlock_if": "shared.quarry_resonance_charge >= 50.0 and player.max_depth >= 150.0 and player.max_depth <= 250.0",
   "offered_by": [
     {
       "vendor": "npcs/gravel_vendor_51cb",
       "price": {
         "devices/quill_crucible_charm_694f": 1,
         "blocks/pewter_gravel_d53e": 100
-      }
+      },
+      "unlock_if": "shared.quarry_resonance_charge >= 50.0 and player.max_depth >= 150.0"
     }
   ],
   "reactions": [

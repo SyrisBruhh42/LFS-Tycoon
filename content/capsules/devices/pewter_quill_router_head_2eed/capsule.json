@@ -6,7 +6,11 @@
     "author": "jules:session",
     "rarity": "rare"
   },
-  "affordances": ["carry", "socket_in_tool", "sell"],
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
   "tags": [
     "device",
     "tinker_head",
@@ -42,7 +46,7 @@
         "devices/obsidian_salt_siphon_head_a474": 1,
         "blocks/pewter_gravel_d53e": 95
       },
-      "unlock_if": "player.max_depth >= 30.0 and player.max_depth <= 249.0"
+      "unlock_if": "player.max_depth >= 30.0"
     }
   ],
   "offline": "none"

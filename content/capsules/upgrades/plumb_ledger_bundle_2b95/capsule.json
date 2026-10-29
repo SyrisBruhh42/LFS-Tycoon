@@ -8,7 +8,6 @@
   },
   "affordances": [
     "carry",
-    "equip_tool",
     "sell"
   ],
   "tags": [
@@ -35,20 +34,36 @@
     {
       "on": "on_equip",
       "do": [
-        {"act": "var_set", "var": "self.is_active", "value": "1.0"}
+        {
+          "act": "var_set",
+          "var": "self.is_active",
+          "value": "1.0"
+        }
       ]
     },
     {
       "on": "on_unequip",
       "do": [
-        {"act": "var_set", "var": "self.is_active", "value": "0.0"}
+        {
+          "act": "var_set",
+          "var": "self.is_active",
+          "value": "0.0"
+        }
       ]
     },
     {
       "on": "on_block_break",
       "do": [
-        {"act": "var_add", "var": "self.charges_left", "by": "-1.0", "if": "self.is_active == 1.0"},
-        {"act": "destroy_self", "if": "self.charges_left == 0.0"}
+        {
+          "act": "var_add",
+          "var": "self.charges_left",
+          "by": "-1.0",
+          "if": "self.is_active == 1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.charges_left == 0.0"
+        }
       ]
     }
   ],

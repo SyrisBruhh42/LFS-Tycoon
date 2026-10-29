@@ -6,8 +6,16 @@
     "author": "core:ground_zero",
     "rarity": "rare"
   },
-  "affordances": ["carry", "socket_in_tool", "sell"],
-  "tags": ["device", "solves_backfill_scaffolding", "path_magic_charm"],
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_backfill_scaffolding",
+    "path_magic_charm"
+  ],
   "stats": {
     "base_value": 75.0
   },
@@ -24,8 +32,10 @@
   "offered_by": [
     {
       "vendor": "npcs/peddler_vayne",
-      "price": {"blocks/copper": 30},
-      "unlock_if": "house_bell_ringing >= 0.0"
+      "price": {
+        "blocks/copper": 30
+      },
+      "unlock_if": "shared.house_bell_ringing > 0.0"
     }
   ],
   "offline": "exact"

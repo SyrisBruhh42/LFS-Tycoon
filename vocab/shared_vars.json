@@ -30,6 +30,12 @@
       "min": 0.0,
       "max": 128.0,
       "description": "Amplitude in pixels of wine intoxication touch drift."
+    },
+    "gold_earned_total": {
+      "default": 0.0,
+      "min": 0.0,
+      "max": 999999999.0,
+      "description": "Cumulative Gold currency available for vendor and guild ore-exchange purchases."
     }
   }
 }

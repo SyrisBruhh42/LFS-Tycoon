@@ -30,7 +30,7 @@
     "pipe_z": 6.0,
     "priority_rank": 50,
     "z_max": 650,
-    "value_base": 15.0
+    "base_value": 15.0
   },
   "vars": {},
   "modifiers": [],

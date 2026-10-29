@@ -33,7 +33,7 @@
       "stat": "break_time_mult",
       "phase": "mul",
       "if": "tile.depth < tile.max_depth_reached and player.grime < 15.0",
-      "value": 0.50
+      "value": 0.5
     }
   ],
   "reactions": [
@@ -55,8 +55,8 @@
       "price": {
         "tools/vitriol_hollow_geomancy_pick_54d7": 1,
         "blocks/quill_ore_4083": 3
-      }
+      },
+      "unlock_if": "player.max_depth >= 120.0"
     }
-  ],
-  "unlock_if": "player.max_depth >= 120.0"
+  ]
 }

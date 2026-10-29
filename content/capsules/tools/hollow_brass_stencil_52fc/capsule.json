@@ -2,7 +2,7 @@
   "schema": 1,
   "meta": {
     "name": "Hollow Brass Stencil of the Munchkin",
-    "description": "A hollow brass stencil crafted by the secretive Paradox Symposium of St. Munchkin. By pouring rivet ore through its preposterous geometry, you bypass backfill regulations entirely. The zinc ember drone chassis within superheats the brass, melting the very concept of wrong-tool penalties into a sludge of pure bureaucratic loophole. It trades raw breaking speed for absolute precision—just don't let it run out of charge while you're standing on it.",
+    "description": "A hollow brass stencil crafted by the secretive Paradox Symposium of St. Munchkin. By pouring rivet ore through its preposterous geometry, you bypass backfill regulations entirely. The zinc ember drone chassis within superheats the brass, melting the very concept of wrong-tool penalties into a sludge of pure bureaucratic loophole. It trades raw breaking speed for absolute precision\u2014just don't let it run out of charge while you're standing on it.",
     "author": "jules:session",
     "rarity": "uncommon"
   },
@@ -110,7 +110,7 @@
         "tools/zinc_ember_drone_b469": 1,
         "blocks/rivet_ore_dd06": 45
       },
-      "unlock_if": "player.max_depth >= 198.0 and player.max_depth <= 330.0"
+      "unlock_if": "player.max_depth >= 198.0"
     }
   ],
   "offline": "exact"

@@ -6,8 +6,22 @@
     "author": "jules:session",
     "rarity": "rare"
   },
-  "affordances": ["carry", "socket_in_tool", "sell"],
-  "tags": ["device", "solves_zero_damage_stall", "path_qol_upgrade", "craft_skyrim_enchant", "logic_canonical", "theme_lithic_choir", "bracket_1", "skill_school_manual", "ochre"],
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_zero_damage_stall",
+    "path_qol_upgrade",
+    "craft_skyrim_enchant",
+    "logic_canonical",
+    "theme_lithic_choir",
+    "bracket_1",
+    "skill_school_manual",
+    "ochre"
+  ],
   "stats": {
     "base_value": 350.0
   },
@@ -26,8 +40,18 @@
     {
       "on": "on_zero_damage_stall",
       "do": [
-        {"act": "stall_tool", "pause_battery": 1.0, "pause_durability": 1.0, "if": "tile.is_strict_locked == 1.0 and self.charge_left > 0.0"},
-        {"act": "emit_alert", "channel": "house_bell", "tag": "stall_impassable", "if": "tile.is_strict_locked == 1.0 and self.charge_left > 0.0"}
+        {
+          "act": "stall_tool",
+          "pause_battery": 1.0,
+          "pause_durability": 1.0,
+          "if": "tile.is_strict_locked == 1.0 and self.charge_left > 0.0"
+        },
+        {
+          "act": "emit_alert",
+          "channel": "house_bell",
+          "tag": "stall_impassable",
+          "if": "tile.is_strict_locked == 1.0 and self.charge_left > 0.0"
+        }
       ]
     }
   ],
@@ -38,7 +62,7 @@
         "upgrades/bellows_diviner_loupe_8dc3": 1,
         "blocks/quill_hollow_fa6d": 15
       },
-      "unlock_if": "player.max_depth >= 15.0 and player.max_depth <= 249.0"
+      "unlock_if": "player.max_depth >= 15.0"
     }
   ],
   "offline": "coarse"

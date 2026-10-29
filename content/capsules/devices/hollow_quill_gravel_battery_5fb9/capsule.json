@@ -31,7 +31,7 @@
       "stat": "durability_drain_mult",
       "phase": "add",
       "if": "tile.tier > 0 and ctx.is_direct_tap == 0",
-      "value": "-5.0"
+      "value": "0.35"
     }
   ],
   "reactions": [
@@ -39,9 +39,20 @@
       "on": "on_damage_dealt",
       "if": "tile.tier > 0 and ctx.is_direct_tap == 0",
       "do": [
-        {"act": "emit_alert", "channel": "hud_chime", "tag": "vein_scanned"},
-        {"act": "var_add", "var": "self.charges_left", "by": "-1.0"},
-        {"act": "destroy_self", "if": "self.charges_left <= 0.0"}
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "vein_scanned"
+        },
+        {
+          "act": "var_add",
+          "var": "self.charges_left",
+          "by": "-1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.charges_left <= 0.0"
+        }
       ]
     }
   ],

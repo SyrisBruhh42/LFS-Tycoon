@@ -6,8 +6,20 @@
     "author": "jules:session",
     "rarity": "rare"
   },
-  "affordances": ["carry", "equip_tool", "sell"],
-  "tags": ["tool", "pickaxe", "brass", "moss", "gravel", "solves_vendor_access", "path_tool_builtin"],
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "brass",
+    "moss",
+    "gravel",
+    "solves_vendor_access",
+    "path_tool_builtin"
+  ],
   "stats": {
     "tool_type": "PICKAXE",
     "tool_tier": 1,
@@ -24,22 +36,29 @@
       "stat": "yield_mult",
       "phase": "mul",
       "if": "tile.fluid_level > 0",
-      "value": "0.0"
+      "value": "0.5"
     }
   ],
   "reactions": [
     {
-      "on": "on_block_break",
+      "on": "on_zero_damage_stall",
       "if": "tile.fluid_level > 0",
       "do": [
-        {"act": "spawn_item", "item": "blocks/copper", "qty": "1", "route": "backpack"}
+        {
+          "act": "spawn_item",
+          "item": "blocks/copper",
+          "qty": "1",
+          "route": "backpack"
+        }
       ]
     }
   ],
   "offered_by": [
     {
       "vendor": "npcs/peddler_vayne",
-      "price": {"blocks/dirt": 120}
+      "price": {
+        "blocks/dirt": 120
+      }
     }
   ],
   "offline": "none"

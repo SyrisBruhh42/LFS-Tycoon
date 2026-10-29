@@ -61,7 +61,7 @@
         "upgrades/cinder_munchkin_suite_315d": 1,
         "blocks/quill_hollow_fa6d": 30
       },
-      "unlock_if": "player.max_depth >= 15.0 and player.max_depth <= 45.0 and shared.quarry_resonance_charge >= 0.0"
+      "unlock_if": "player.max_depth >= 15.0 and shared.quarry_resonance_charge >= 0.0"
     }
   ],
   "offline": "exact"

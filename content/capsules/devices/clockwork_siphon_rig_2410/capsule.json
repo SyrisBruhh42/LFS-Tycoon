@@ -33,7 +33,7 @@
     {
       "stat": "durability_drain_mult",
       "phase": "add",
-      "value": -0.5
+      "value": "0.35"
     }
   ],
   "reactions": [

@@ -52,21 +52,11 @@
   "reactions": [
     {
       "on": "on_consume",
-      "if": "player.is_rested == 1",
       "do": [
         {
           "act": "var_set",
           "var": "self.active_sec_left",
           "value": "self.stats.duration_sec"
-        }
-      ]
-    },
-    {
-      "on": "on_consume",
-      "if": "player.is_rested == 0",
-      "do": [
-        {
-          "act": "destroy_self"
         }
       ]
     },
@@ -89,7 +79,9 @@
   "offered_by": [
     {
       "vendor": "npcs/peddler_vayne",
-      "price": {"blocks/dirt": 50}
+      "price": {
+        "blocks/dirt": 50
+      }
     }
   ],
   "offline": "none"

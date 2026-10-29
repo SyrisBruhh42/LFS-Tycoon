@@ -6,8 +6,24 @@
     "author": "jules:session",
     "rarity": "common"
   },
-  "affordances": ["carry", "socket_in_tool", "sell"],
-  "tags": ["device", "gadget", "tinker_head", "hearth", "solves_slow_early_dps", "path_vendor_disposable", "craft_tinker_part", "logic_canonical", "theme_tectonic_crucible", "bracket_1", "skill_school_assayers"],
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "tinker_head",
+    "hearth",
+    "solves_slow_early_dps",
+    "path_vendor_disposable",
+    "craft_tinker_part",
+    "logic_canonical",
+    "theme_tectonic_crucible",
+    "bracket_1",
+    "skill_school_assayers"
+  ],
   "stats": {
     "tool_tier": 2,
     "base_value": 50.0,
@@ -33,7 +49,7 @@
         "books/rivet_assayers_treatise_0b42": 1,
         "blocks/crucible_slag_5dfc": 5
       },
-      "unlock_if": "shared.quarry_resonance_charge >= 0.0 and player.max_depth <= 150.0"
+      "unlock_if": "shared.quarry_resonance_charge >= 0.0"
     }
   ],
   "offline": "none"

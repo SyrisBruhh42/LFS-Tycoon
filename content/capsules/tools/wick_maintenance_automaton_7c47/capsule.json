@@ -19,7 +19,8 @@
     "path_hired_laborer"
   ],
   "stats": {
-    "base_value": 450.0
+    "base_value": 450.0,
+    "base_dps": 15.0
   },
   "vars": {},
   "modifiers": [
@@ -38,7 +39,9 @@
   "offered_by": [
     {
       "vendor": "npcs/brass_tinkerer_c020",
-      "price": {"blocks/copper": 300},
+      "price": {
+        "blocks/copper": 300
+      },
       "unlock_if": "player.max_depth >= 15"
     }
   ],

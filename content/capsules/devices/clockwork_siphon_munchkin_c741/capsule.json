@@ -41,9 +41,23 @@
     {
       "on": "on_second_tick",
       "do": [
-        {"act": "modify_fluid", "target": "self_tile", "fluid_type": "NONE", "delta_level": -1.0, "if": "tile.fluid_level > 0.0 and tile.tier >= 1.0"},
-        {"act": "var_add", "var": "self.durability_left", "by": -10.0, "if": "tile.fluid_level > 0.0 and tile.tier >= 1.0"},
-        {"act": "destroy_self", "if": "self.durability_left <= 0.0"}
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": -1.0,
+          "if": "tile.fluid_level > 0.0 and tile.tier >= 1.0"
+        },
+        {
+          "act": "var_add",
+          "var": "self.durability_left",
+          "by": -10.0,
+          "if": "tile.fluid_level > 0.0 and tile.tier >= 1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.durability_left <= 0.0"
+        }
       ]
     }
   ],
@@ -54,7 +68,7 @@
         "tools/lantern_siphon_bucket_13d3": 1,
         "blocks/crucible_slag_5dfc": 15
       },
-      "unlock_if": "player.max_depth >= 200.0 and player.max_depth <= 330.0"
+      "unlock_if": "player.max_depth >= 200.0"
     }
   ],
   "offline": "coarse"

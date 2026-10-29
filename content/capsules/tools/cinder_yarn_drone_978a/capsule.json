@@ -26,7 +26,8 @@
     "base_value": 45.0,
     "dampen_pct": 1.0,
     "charge_max_sec": 3600.0,
-    "durability_max": 20.0
+    "durability_max": 20.0,
+    "base_dps": 8.0
   },
   "vars": {
     "charge_left": 3600.0,
@@ -45,30 +46,52 @@
       "on": "on_second_tick",
       "if": "self.charge_left > 0.0 and tile.covered_by_self",
       "do": [
-        {"act": "deal_damage", "target": "self_tile", "amount": "4.0"},
-        {"act": "var_add", "var": "self.charge_left", "by": "-1.0"},
-        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+        {
+          "act": "deal_damage",
+          "target": "self_tile",
+          "amount": "4.0"
+        },
+        {
+          "act": "var_add",
+          "var": "self.charge_left",
+          "by": "-1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.charge_left <= 0.0"
+        }
       ]
     },
     {
       "on": "on_damage_absorbed",
       "if": "tile.covered_by_self",
       "do": [
-        {"act": "var_add", "var": "self.durability_left", "by": "-1.0"},
-        {"act": "destroy_self", "if": "self.durability_left <= 0.0"}
+        {
+          "act": "var_add",
+          "var": "self.durability_left",
+          "by": "-1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.durability_left <= 0.0"
+        }
       ]
     },
     {
       "on": "on_deplete",
       "do": [
-        {"act": "destroy_self"}
+        {
+          "act": "destroy_self"
+        }
       ]
     }
   ],
   "offered_by": [
     {
       "vendor": "npcs/peddler_vayne",
-      "price": {"blocks/copper": 30},
+      "price": {
+        "blocks/copper": 30
+      },
       "unlock_if": "player.max_depth >= 15"
     }
   ],

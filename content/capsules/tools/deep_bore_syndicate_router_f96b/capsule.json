@@ -26,7 +26,8 @@
     "tool_tier": 3,
     "charge_max_sec": 3600.0,
     "is_rechargeable": 0,
-    "base_value": 150.0
+    "base_value": 150.0,
+    "base_dps": 24.0
   },
   "vars": {
     "charge_left": 3600.0

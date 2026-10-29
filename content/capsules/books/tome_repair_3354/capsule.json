@@ -33,7 +33,7 @@
       "stat": "durability_drain_mult",
       "phase": "add",
       "if": "self.is_learned >= 1.0 and ctx.is_direct_tap == 1",
-      "value": "-0.15"
+      "value": "0.35"
     },
     {
       "stat": "break_time_mult",

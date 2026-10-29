@@ -77,7 +77,7 @@
         "upgrades/flint_hollow_choir_sponge_d53f": 1,
         "blocks/hollow_stone_b96c": 12
       },
-      "unlock_if": "player.max_depth >= 198.0 and player.max_depth <= 330.0"
+      "unlock_if": "player.max_depth >= 198.0"
     }
   ],
   "offline": "none"

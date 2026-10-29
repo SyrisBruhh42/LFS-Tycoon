@@ -515,6 +515,27 @@ func _dispatch_second_tick() -> void:
 		var b_inst: Dictionary = biome_insts[b_id]
 		if not bool(b_inst.get("destroyed", false)):
 			rules.dispatch_event("on_second_tick", [b_inst], _build_env_neutral({}), self)
+	var any_drunk_buff: bool = false
+	for p_inst in player_equipped_items:
+		if bool(p_inst.get("destroyed", false)):
+			continue
+		var p_vars: Dictionary = p_inst.get("vars", {})
+		if p_vars.has("active_sec_left"):
+			var p_cid := str(p_inst.get("capsule_id", ""))
+			var p_rxs: Array = catalog.capsules.get(p_cid, {}).get("reactions", [])
+			var self_decrements := false
+			for rx in p_rxs:
+				if str(rx.get("on", "")) == "on_second_tick" and JSON.stringify(rx.get("do", [])).find("active_sec_left") != -1:
+					self_decrements = true
+					break
+			if not self_decrements and float(p_vars["active_sec_left"]) > 0.0:
+				p_vars["active_sec_left"] = maxf(0.0, float(p_vars["active_sec_left"]) - 1.0)
+			if float(p_vars["active_sec_left"]) <= 0.0:
+				p_inst["destroyed"] = true
+			elif p_cid.find("wine") != -1 or JSON.stringify(catalog.capsules.get(p_cid, {}).get("modifiers", [])).find("drunk_drift_px") != -1:
+				any_drunk_buff = true
+	if not any_drunk_buff and float(rules.shared_registers.get("active_drunk_drift_px", 0.0)) > 0.0:
+		rules.set_shared_var("active_drunk_drift_px", 0.0)
 	_prune_player_items()
 
 
@@ -920,28 +941,36 @@ func unequip_item(inst: Dictionary) -> void:
 
 ## Consume a consumable/book capsule instance, firing on_consume (and equipping temporary buff if not destroyed).
 func consume_capsule(inst: Dictionary) -> bool:
-	if inst.is_empty():
+	if inst.is_empty() or bool(inst.get("destroyed", false)):
 		return false
 	var cid := str(inst.get("capsule_id", ""))
 	var cap: Dictionary = catalog.capsules.get(cid, {})
 	var aff: Array = cap.get("affordances", [])
 	if not aff.has("consume") and not aff.has("read_book"):
 		return false
+	if not player_equipped_items.has(inst):
+		player_equipped_items.append(inst)
 	var env := _build_env_neutral(player_tool)
 	var list := _player_instances()
 	if not list.has(inst):
 		list.push_front(inst)
 	rules.dispatch_event("on_consume", list, env, self)
-	if not bool(inst.get("destroyed", false)) and not player_equipped_items.has(inst):
+	var ivars: Dictionary = inst.get("vars", {})
+	if aff.has("read_book") and ivars.has("is_learned"):
+		ivars["is_learned"] = 1.0
+	var has_ongoing: bool = float(ivars.get("active_sec_left", 0.0)) > 0.0 or float(ivars.get("is_learned", 0.0)) > 0.0 or float(ivars.get("installed", 0.0)) > 0.0
+	if not has_ongoing:
 		var mods: Array = cap.get("modifiers", [])
-		var has_ongoing: bool = not mods.is_empty()
+		has_ongoing = not mods.is_empty()
 		if not has_ongoing:
 			for r in cap.get("reactions", []):
-				if str(r.get("when", "")) != "on_consume":
+				if str(r.get("on", r.get("when", ""))) != "on_consume":
 					has_ongoing = true
 					break
-		if has_ongoing:
-			player_equipped_items.append(inst)
+	if not has_ongoing:
+		inst["destroyed"] = true
+	if bool(inst.get("destroyed", false)):
+		player_equipped_items.erase(inst)
 	_prune_player_items()
 	return true
 
@@ -976,7 +1005,7 @@ func sell_to_market(item_id: String, item_tier: int, qty: int) -> int:
 	if int(inventory[key]) <= 0:
 		inventory.erase(key)
 	var st: Dictionary = catalog.capsules.get(item_id, {}).get("stats", {})
-	var unit_val := int(max(1, int(st.get("value_base", 1)) * int(pow(2.0, float(item_tier)))))
+	var unit_val := int(max(1, int(st.get("base_value", st.get("value_base", 1))) * int(pow(2.0, float(item_tier)))))
 	var insts := _player_instances()
 	var env := _build_env_neutral(player_tool)
 	var val_mult := maxf(0.0, rules.resolve_stat("market_value_mult", 1.0, insts, env))
@@ -1013,6 +1042,13 @@ func is_permanent_prerequisite(item_id: String) -> bool:
 	return false
 
 
+func _get_block_gold_unit_cost(curr_id: String) -> int:
+	var b_stats: Dictionary = catalog.capsules.get(curr_id, {}).get("stats", {})
+	var base_v := float(b_stats.get("base_value", b_stats.get("value_base", 1.0)))
+	var z_un := float(b_stats.get("z_unlock", 0.0))
+	return maxi(2, int(round(base_v * (1.0 + z_un / 250.0) * 2.0)))
+
+
 ## Evaluates whether a vendor offer can currently be purchased by the player.
 func can_buy_vendor_offer(vendor_id: String, offer: Dictionary) -> Dictionary:
 	var req_depth := get_vendor_unlock_depth(vendor_id)
@@ -1021,17 +1057,35 @@ func can_buy_vendor_offer(vendor_id: String, offer: Dictionary) -> Dictionary:
 	var unlock_expr := str(offer.get("unlock_if", "")).strip_edges()
 	if unlock_expr != "":
 		var dummy_inst := {"capsule_id": str(offer.get("capsule_id", "")), "vars": {}}
-		if rules.eval_expr(unlock_expr, dummy_inst, _build_env_neutral(player_tool)) <= 0.0:
+		var eval_env := _build_env_neutral(player_tool)
+		var depth_disc := maxf(0.0, rules.resolve_stat("vendor_depth_discount", 0.0, _player_instances(), eval_env))
+		eval_env["player"]["max_depth"] = float(player_max_depth) + depth_disc
+		if rules.eval_expr(unlock_expr, dummy_inst, eval_env) <= 0.0:
 			return {"can_buy": false, "reason": "Locked (%s)" % unlock_expr}
 	var price: Dictionary = offer.get("price", {})
+	var gold_avail := int(floor(float(rules.shared_registers.get("gold_earned_total", 0.0))))
+	var gold_needed := 0
 	for curr_id in price.keys():
+		var cid_str := str(curr_id)
 		var req_qty := int(price[curr_id])
-		if req_qty > 0 and not can_satisfy_requirement(str(curr_id), 0, req_qty):
-			var c_name := str(catalog.capsules.get(str(curr_id), {}).get("meta", {}).get("name", str(curr_id)))
-			if is_permanent_prerequisite(str(curr_id)):
-				return {"can_buy": false, "reason": "Requires Skill/Station: %s" % c_name}
-			return {"can_buy": false, "reason": "Need %d %s" % [req_qty, c_name]}
-	return {"can_buy": true, "reason": "Available"}
+		if req_qty <= 0:
+			continue
+		if can_satisfy_requirement(cid_str, 0, req_qty):
+			continue
+		var c_name := str(catalog.capsules.get(cid_str, {}).get("meta", {}).get("name", cid_str))
+		if is_permanent_prerequisite(cid_str):
+			return {"can_buy": false, "reason": "Requires Skill/Station: %s" % c_name}
+		if cid_str.begins_with("blocks/"):
+			var have_qty := get_owned_count(cid_str, 0)
+			var shortfall := maxi(0, req_qty - have_qty)
+			var unit_gold := _get_block_gold_unit_cost(cid_str)
+			gold_needed += shortfall * unit_gold
+			if gold_avail >= gold_needed:
+				continue
+		return {"can_buy": false, "reason": "Need %d %s" % [req_qty, c_name]}
+	if gold_needed > 0:
+		return {"can_buy": true, "reason": "Available (%d Gold cover)" % gold_needed, "gold_cover": gold_needed}
+	return {"can_buy": true, "reason": "Available", "gold_cover": 0}
 
 
 var _last_consumed_sockets: Array = []
@@ -1045,9 +1099,17 @@ func buy_vendor_offer(vendor_id: String, offer: Dictionary, free_grant: bool = f
 			return {"ok": false, "reason": str(chk.get("reason", "Cannot buy"))}
 		var price: Dictionary = offer.get("price", {})
 		for curr_id in price.keys():
+			var cid_str := str(curr_id)
 			var req_qty := int(price[curr_id])
-			if req_qty > 0 and not is_permanent_prerequisite(str(curr_id)):
-				action_consume_item(str(curr_id), 0, req_qty)
+			if req_qty > 0 and not is_permanent_prerequisite(cid_str):
+				var have_qty := get_owned_count(cid_str, 0)
+				var take_qty := mini(have_qty, req_qty)
+				if take_qty > 0:
+					action_consume_item(cid_str, 0, take_qty)
+				var shortfall := maxi(0, req_qty - take_qty)
+				if shortfall > 0 and cid_str.begins_with("blocks/"):
+					var gold_cost := float(shortfall * _get_block_gold_unit_cost(cid_str))
+					rules.shared_registers["gold_earned_total"] = maxf(0.0, float(rules.shared_registers.get("gold_earned_total", 0.0)) - gold_cost)
 
 	var cap_id := str(offer.get("capsule_id", ""))
 	if not catalog.capsules.has(cap_id):

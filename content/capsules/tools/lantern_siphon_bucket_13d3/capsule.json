@@ -40,15 +40,29 @@
       "on": "on_zero_damage_stall",
       "if": "tile.fluid_level > 0.0",
       "do": [
-        {"act": "modify_fluid", "target": "self_tile", "fluid_type": "NONE", "delta_level": -1.0},
-        {"act": "var_add", "var": "self.durability_left", "by": -5.0},
-        {"act": "destroy_self", "if": "self.durability_left <= 0.0"}
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": -1.0
+        },
+        {
+          "act": "var_add",
+          "var": "self.durability_left",
+          "by": -5.0
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.durability_left <= 0.0"
+        }
       ]
     },
     {
       "on": "on_deplete",
       "do": [
-        {"act": "destroy_self"}
+        {
+          "act": "destroy_self"
+        }
       ]
     }
   ],
@@ -59,7 +73,7 @@
         "consumables/munchkin_brew_5ec5": 1,
         "blocks/cinder_gravel_61a3": 15
       },
-      "unlock_if": "player.max_depth >= 150.0 and player.max_depth <= 250.0"
+      "unlock_if": "player.max_depth >= 150.0"
     }
   ],
   "offline": "coarse"

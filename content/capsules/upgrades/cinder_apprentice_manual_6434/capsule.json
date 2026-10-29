@@ -8,7 +8,6 @@
   },
   "affordances": [
     "carry",
-    "equip_tool",
     "sell"
   ],
   "tags": [

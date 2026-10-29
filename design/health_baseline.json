@@ -1,13 +1,13 @@
 {
   "schema": 1,
   "description": "Monotone corpus health ratchet baseline for LFS-Tycoon (StrataPaper). CI fails if a PR worsens concentration metrics beyond single_capsule_tolerance; update_health_ratchet.py tightens these bounds monotonically as diversity improves.",
-  "calibrated_at_capsules": 491,
+  "calibrated_at_capsules": 698,
   "single_capsule_tolerance": 0.005,
   "metrics": {
-    "max_vendor_offer_share": 0.748268,
-    "top3_currency_share": 0.955654,
-    "non_block_ingredient_offer_ratio": 0.004619,
-    "frontier_depth_z": 150.0
+    "max_vendor_offer_share": 0.52443,
+    "top3_currency_share": 0.561321,
+    "non_block_ingredient_offer_ratio": 0.291531,
+    "frontier_depth_z": 410.0
   },
   "economy_value_flow": {
     "permanent_prereq_amortization_weight": 0.25,

@@ -113,7 +113,7 @@ func get_biome_at(x: int, y: int, z: int) -> String:
 		var z_min := int(st.get("z_min", 0))
 		var z_max := int(st.get("z_max", 999999))
 		if z >= z_min and z <= z_max:
-			var w := maxf(0.0, float(st.get("weight", 0.25)))
+			var w := maxf(0.0, float(st.get("biome_weight", st.get("weight", 0.25))))
 			if w > 0.0:
 				active.append({"id": b_id, "w": w})
 				total_w += w

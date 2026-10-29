@@ -6,7 +6,12 @@
     "author": "jules",
     "rarity": "uncommon"
   },
-  "affordances": ["carry", "socket_in_tool", "catalyst", "sell"],
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "catalyst",
+    "sell"
+  ],
   "tags": [
     "device",
     "solves_hazard_clearing",
@@ -36,14 +41,28 @@
     {
       "on": "on_hazard_expose",
       "do": [
-        {"act": "emit_alert", "channel": "house_bell", "tag": "hazard_exposed"}
+        {
+          "act": "emit_alert",
+          "channel": "house_bell",
+          "tag": "hazard_exposed"
+        }
       ]
     },
     {
       "on": "on_hazard_detonate",
       "do": [
-        {"act": "deal_damage", "if": "self.charges_left > 0.0", "target": "neighbors_4", "amount": "10.0"},
-        {"act": "var_add", "if": "self.charges_left > 0.0", "var": "self.charges_left", "by": "-1.0"}
+        {
+          "act": "deal_damage",
+          "if": "self.charges_left > 0.0",
+          "target": "neighbors_4",
+          "amount": "10.0"
+        },
+        {
+          "act": "var_add",
+          "if": "self.charges_left > 0.0",
+          "var": "self.charges_left",
+          "by": "-1.0"
+        }
       ]
     }
   ],
@@ -54,7 +73,7 @@
         "consumables/alkahest_decoction_dae2": 1,
         "blocks/cinder_gravel_61a3": 40
       },
-      "unlock_if": "player.max_depth <= 330"
+      "unlock_if": "player.max_depth >= 15.0"
     }
   ],
   "offline": "none"

@@ -4,8 +4,10 @@
     "GAME-001",
     "desktop.capsule.launch"
   ],
-  "aegis_lds_theme_sha256": "887f8df1a23fffd125c449d787dd9e9ac8d4ee01651869213288ed1cf0402940",
+  "aegis_lds_theme_sha256": "64763ab757407ec6b568c2f22861c177f618535efe1223a955b651b22e2a9274",
+  "alias_of": null,
   "canonical_abac_action": "desktop.capsule.launch",
+  "capsule_abac_action_id": "lfs.tycoon_game.lfs_tycoon.launch",
   "capsule_id": "lfs-tycoon",
   "category": "tycoon_game",
   "comfort_overrides": {
@@ -15,18 +17,29 @@
     "respects_reduced_motion": true
   },
   "default_theme_pack": "evergreen-dark",
+  "dock_bay": "BAY_B_ARCADE_WORLDS",
   "entrypoint": "project.godot",
   "godot_lds_theme_path": "aegis_lds_theme.tres",
-  "godot_lds_theme_sha256": "887f8df1a23fffd125c449d787dd9e9ac8d4ee01651869213288ed1cf0402940",
+  "godot_lds_theme_sha256": "64763ab757407ec6b568c2f22861c177f618535efe1223a955b651b22e2a9274",
   "help_id": "help.apps_capsules",
   "help_topic_id": "help.apps_capsules",
+  "is_alias": false,
   "lds_theme_pack_support": [
     "evergreen-dark",
     "evergreen-light",
     "high-contrast",
     "calm"
   ],
+  "legacy_schema_compat": "cp11-capsule-manifest-v1",
+  "min_trust_ring": 3,
   "path": "capsules/lfs-tycoon",
+  "persona_visibility": [
+    "FOUNDER_ADMIN",
+    "ADULT_MEMBER",
+    "TEEN_CREATOR",
+    "CHILD_EXPLORER",
+    "GUEST_SANDBOX"
+  ],
   "project_id": "PF-07",
   "quarantine_status": {
     "authority_directive": "C-07",
@@ -40,6 +53,18 @@
     "requires_step_up": false,
     "restricted_quarantine": false
   },
+  "resource_defaults": {
+    "cpu_weight": 100,
+    "gpu_preference": "auto",
+    "gpu_vram_budget_mb": 1024,
+    "memory_high_mb": 1536,
+    "memory_max_mb": 2048,
+    "renderer_fallback_chain": [
+      "vulkan",
+      "opengl3",
+      "headless_software"
+    ]
+  },
   "safe_mode": {
     "disables_shaders_and_particles": true,
     "forces_reduced_motion": true,
@@ -47,7 +72,8 @@
     "mutes_autoplay_audio": true,
     "supported": true
   },
-  "schema": "cp11-capsule-manifest-v1",
+  "schema": "cp12-capsule-manifest-v2",
+  "schema_v2": "cp12-capsule-manifest-v2",
   "settings_schema": {
     "keys": [
       "theme.pack",
@@ -57,9 +83,23 @@
     ],
     "registry": "governance/settings-registry.json"
   },
+  "spdx_license_id": "MIT",
   "stacks": [
     "godot4",
     "python"
   ],
-  "title": "LFS Tycoon Quarry & Automation"
+  "target_project_id": null,
+  "title": "LFS Tycoon Quarry & Automation",
+  "umbilical_contract": {
+    "canonical_path": "3-lfs-aegis-linux/capsules/lfs-tycoon",
+    "donor_severed": true,
+    "reused_oasis_primitives": [
+      "auth1_abac",
+      "lds_4pack_tokens",
+      "zt9_comfort_overrides",
+      "zt10_capsule_isolation"
+    ],
+    "schema": "oasis-umbilical-v1",
+    "umbrella_id": "U3_3_lfs_aegis_linux"
+  }
 }

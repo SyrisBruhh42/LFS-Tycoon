@@ -77,7 +77,7 @@
         "devices/brass_wick_splash_dampener_dab3": 1,
         "blocks/ochre_stratum_d812": 35
       },
-      "unlock_if": "player.max_depth >= 15.0 and player.max_depth <= 150.0"
+      "unlock_if": "player.max_depth >= 15.0"
     }
   ],
   "offline": "none"

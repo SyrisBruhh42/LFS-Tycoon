@@ -19,19 +19,11 @@
   ],
   "stats": {
     "cleanliness_required": 0.0,
-    "saturation_half_volume": 1000.0
+    "saturation_half_volume": 1000.0,
+    "unlock_depth": 50
   },
   "vars": {},
   "modifiers": [],
   "reactions": [],
-  "offered_by": [
-    {
-      "vendor": "npcs/peddler_vayne",
-      "price": {
-        "blocks/stone": 500
-      },
-      "unlock_if": "player.max_depth >= 50"
-    }
-  ],
   "offline": "none"
 }

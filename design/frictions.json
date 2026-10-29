@@ -122,7 +122,7 @@
     "bundle_package": {"archetype": "upgrade", "namespace": "upgrades", "example": "upgrades/surveyor_chalk_and_stencil", "hint": "A very expensive, unlock-gated NPC package that grants several single options at once."}
   },
   "world_archetypes": {
-    "block": {"namespace": "blocks", "example": "blocks/copper", "hint": "A new ore, crystal, soil or hazard stratum. Keep stats.spawn_prob small (0.005 to 0.015), set stats.z_unlock and stats.z_max (e.g. a 200-500 depth band), base_hp, value_base, and ideal_tool; never add offered_by to a natural block."},
+    "block": {"namespace": "blocks", "example": "blocks/copper", "hint": "A new ore, crystal, soil or hazard stratum. Keep stats.spawn_prob small (0.005 to 0.015), set stats.z_unlock and stats.z_max (e.g. a 200-500 depth band), base_hp, base_value, and ideal_tool; never add offered_by to a natural block."},
     "biome": {"namespace": "biomes", "example": "biomes/sunken_bog", "hint": "A rare subterranean pocket mine, geode chamber, or stratum with stats (z_min, z_max, biome_weight) and biome_weights referencing existing blocks (especially under-referenced ores). Never add offered_by to a biome."},
     "npc": {"namespace": "npcs", "example": "npcs/peddler_vayne", "hint": "A rare specialist guild artisan, runesmith, alchemist, or secret deep-stratum vendor with affordances [\"npc_vendor\"] and stats.unlock_depth. Items point back at it via their own offered_by; NEVER put offered_by inside an NPC capsule."}
   },

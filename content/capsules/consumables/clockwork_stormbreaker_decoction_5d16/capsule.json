@@ -112,7 +112,7 @@
         "blocks/stormbreaker_geode_5e99": 5,
         "blocks/copper": 10
       },
-      "unlock_if": "player.max_depth <= 330.0"
+      "unlock_if": "player.max_depth >= 15.0"
     }
   ]
 }

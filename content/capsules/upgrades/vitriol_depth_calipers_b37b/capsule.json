@@ -8,7 +8,6 @@
   },
   "affordances": [
     "carry",
-    "equip_tool",
     "sell"
   ],
   "tags": [
@@ -34,14 +33,26 @@
     {
       "on": "on_equip",
       "do": [
-        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": true},
-        {"act": "emit_alert", "channel": "hud_chime", "tag": "Calipers Ready!"}
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_depth_calipers",
+          "enabled": true
+        },
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "Calipers Ready!"
+        }
       ]
     },
     {
       "on": "on_unequip",
       "do": [
-        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": false}
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_depth_calipers",
+          "enabled": false
+        }
       ]
     }
   ],

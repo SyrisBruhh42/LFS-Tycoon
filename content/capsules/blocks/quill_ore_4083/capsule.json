@@ -6,11 +6,21 @@
     "author": "core:ground_zero",
     "rarity": "common"
   },
-  "affordances": ["mineable_block", "carry", "sell", "catalyst"],
-  "tags": ["world_block", "block", "ore", "metal", "quill"],
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell",
+    "catalyst"
+  ],
+  "tags": [
+    "world_block",
+    "block",
+    "ore",
+    "metal",
+    "quill"
+  ],
   "stats": {
     "base_hp": 32.0,
-    "value_base": 15.0,
     "ideal_tool": "PICKAXE",
     "strict_tool_lock": 0,
     "z_unlock": 15,
@@ -18,7 +28,8 @@
     "clump_xy": 6.0,
     "pipe_z": 6.0,
     "priority_rank": 50,
-    "l_step": 1000
+    "l_step": 1000,
+    "base_value": 15.0
   },
   "vars": {},
   "biome_weights": {

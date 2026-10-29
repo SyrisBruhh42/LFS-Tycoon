@@ -6,8 +6,19 @@
     "author": "jules:session",
     "rarity": "uncommon"
   },
-  "affordances": ["carry", "equip_tool", "sell"],
-  "tags": ["tool", "pickaxe", "ledger", "clockwork", "solves_vendor_access", "path_vendor_disposable"],
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "ledger",
+    "clockwork",
+    "solves_vendor_access",
+    "path_vendor_disposable"
+  ],
   "stats": {
     "tool_type": "PICKAXE",
     "tool_tier": 4,
@@ -19,7 +30,7 @@
     {
       "stat": "yield_mult",
       "phase": "mul",
-      "value": "0.0"
+      "value": "0.5"
     }
   ],
   "reactions": [
@@ -27,14 +38,21 @@
       "on": "on_block_break",
       "if": "tile.is_hazard == 1",
       "do": [
-        {"act": "spawn_item", "item": "blocks/copper", "qty": "50", "route": "backpack"}
+        {
+          "act": "spawn_item",
+          "item": "blocks/copper",
+          "qty": "50",
+          "route": "backpack"
+        }
       ]
     }
   ],
   "offered_by": [
     {
       "vendor": "npcs/peddler_vayne",
-      "price": {"blocks/copper": 5000},
+      "price": {
+        "blocks/copper": 5000
+      },
       "unlock_if": "player.max_depth >= 50"
     }
   ],

@@ -19,7 +19,6 @@
   ],
   "stats": {
     "base_hp": 35.0,
-    "value_base": 25.0,
     "ideal_tool": "PICKAXE",
     "strict_tool_lock": 0,
     "z_unlock": 150,
@@ -27,7 +26,8 @@
     "spawn_prob": 0.02,
     "clump_xy": 6.0,
     "pipe_z": 6.0,
-    "priority_rank": 50
+    "priority_rank": 50,
+    "base_value": 25.0
   },
   "biome_weights": {
     "biomes/standard_crust": 0.02

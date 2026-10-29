@@ -38,18 +38,27 @@
   ],
   "reactions": [
     {
-      "on": "on_block_break",
+      "on": "on_zero_damage_stall",
       "if": "tile.fluid_level > 0.0",
       "do": [
-        {"act": "var_add", "var": "self.wet_blocks_mined", "by": "1.0"},
-        {"act": "destroy_self", "if": "self.wet_blocks_mined >= self.stats.max_wet_blocks"}
+        {
+          "act": "var_add",
+          "var": "self.wet_blocks_mined",
+          "by": "1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.wet_blocks_mined >= self.stats.max_wet_blocks"
+        }
       ]
     }
   ],
   "offered_by": [
     {
       "vendor": "npcs/peddler_vayne",
-      "price": {"blocks/copper": 50}
+      "price": {
+        "blocks/copper": 50
+      }
     }
   ],
   "offline": "exact"

@@ -54,7 +54,7 @@
   "offered_by": [
     {
       "vendor": "npcs/deep_bore_horologist_35a3",
-      "unlock_if": "player.max_depth <= 330.0",
+      "unlock_if": "player.max_depth >= 15.0",
       "price": {
         "tools/enclave_rivet_sigil_ed7e": 1,
         "blocks/stormbreaker_geode_5e99": 5,

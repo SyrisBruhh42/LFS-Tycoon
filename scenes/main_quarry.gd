@@ -58,6 +58,8 @@ var _last_alert_count: int = 0
 # UI Layer nodes
 var _hud_layer: CanvasLayer
 var _hud_root: Control
+var _top_panel: PanelContainer
+var _bottom_panel: PanelContainer
 var _drawer_scroll: ScrollContainer
 var _last_drawer_kind: String = ""
 var _ui_k: int = 1
@@ -69,6 +71,7 @@ var _tab_buttons: Dictionary = {}
 var _drawer_panel: PanelContainer
 var _drawer_title: Label
 var _drawer_body: VBoxContainer
+var _glyph_pts: PackedVector2Array = PackedVector2Array()
 
 
 func _ready() -> void:
@@ -388,14 +391,18 @@ func _touchify(n: Node, wrap_labels: bool = false) -> void:
 		_touchify(c, wrap_labels)
 
 
-## Shared touch-first button look: visible affordance for normal/hover/pressed/disabled (default theme is dark-on-dark).
-func _build_ui_theme() -> Theme:
+## Shared touch-first button look: visible affordance for normal/hover/pressed/disabled across all 4 LDS packs (`lfs-mandatory-visual-ingest-v1`).
+func _build_ui_theme(pack_id: String = "evergreen-dark") -> Theme:
 	var th := Theme.new()
+	var is_light := pack_id == "evergreen-light" or pack_id == "day"
+	var is_hc := pack_id == "high-contrast"
+	var is_calm := pack_id == "calm"
 	var states := {
-		"normal": Color(0.20, 0.23, 0.31),
-		"hover": Color(0.26, 0.30, 0.40),
-		"pressed": Color(0.30, 0.46, 0.38),
-		"disabled": Color(0.13, 0.14, 0.18),
+		"normal": Color(0.94, 0.93, 0.89, 0.98) if is_light else (Color(0.06, 0.06, 0.06, 0.98) if is_hc else (Color(0.14, 0.19, 0.18, 0.96) if is_calm else Color(0.10, 0.14, 0.13, 0.94))),
+		"hover": Color(0.88, 0.87, 0.82, 0.98) if is_light else (Color(0.14, 0.14, 0.08, 0.98) if is_hc else (Color(0.18, 0.24, 0.22, 0.98) if is_calm else Color(0.13, 0.19, 0.16, 0.96))),
+		"pressed": Color(0.80, 0.89, 0.83, 0.98) if is_light else (Color(0.24, 0.22, 0.06, 0.98) if is_hc else (Color(0.22, 0.32, 0.28, 0.98) if is_calm else Color(0.18, 0.32, 0.25, 0.98))),
+		"disabled": Color(0.86, 0.85, 0.81, 0.88) if is_light else Color(0.08, 0.11, 0.10, 0.88),
+		"focus": Color(0.94, 0.93, 0.89, 0.98) if is_light else Color(0.12, 0.17, 0.15, 0.96),
 	}
 	for st in states.keys():
 		var sb := StyleBoxFlat.new()
@@ -407,12 +414,70 @@ func _build_ui_theme() -> Theme:
 		sb.content_margin_bottom = 6.0
 		if st == "disabled":
 			sb.set_border_width_all(1)
-			sb.border_color = Color(0.26, 0.28, 0.34)
+			sb.border_color = Color(0.68, 0.70, 0.66) if is_light else Color(0.22, 0.28, 0.25)
+		elif st == "focus" or is_hc:
+			sb.set_border_width_all(2)
+			sb.border_color = Color(1.0, 0.92, 0.15) if is_hc else Color(0.91, 0.73, 0.33)
+		else:
+			sb.set_border_width_all(1)
+			sb.border_color = Color(0.72, 0.75, 0.70) if is_light else Color(0.20, 0.28, 0.25)
 		th.set_stylebox(st, "Button", sb)
 		th.set_stylebox(st, "OptionButton", sb)
-	th.set_color("font_disabled_color", "Button", Color(0.55, 0.57, 0.64))
-	th.set_color("font_color", "Button", Color(0.94, 0.96, 1.0))
+	var f_col := Color(0.08, 0.14, 0.12) if is_light else (Color(1.0, 0.95, 0.0) if is_hc else (Color(0.88, 0.91, 0.94) if is_calm else Color(0.93, 0.96, 0.94)))
+	var f_dis := Color(0.38, 0.44, 0.41) if is_light else Color(0.55, 0.62, 0.58)
+	th.set_color("font_disabled_color", "Button", f_dis)
+	th.set_color("font_color", "Button", f_col)
+	th.set_color("font_hover_color", "Button", f_col)
+	th.set_color("font_pressed_color", "Button", f_col)
+	th.set_color("font_focus_color", "Button", f_col)
+	th.set_color("font_color", "Label", f_col)
 	return th
+
+
+func _panel_bg_color(is_drawer: bool = false) -> Color:
+	match lds_theme_pack:
+		"evergreen-light", "day":
+			return Color(0.89, 0.88, 0.83) if is_drawer else Color(0.92, 0.91, 0.86)
+		"high-contrast":
+			return Color(0.04, 0.04, 0.04) if is_drawer else Color(0.02, 0.02, 0.02)
+		"calm":
+			return Color(0.14, 0.19, 0.18) if is_drawer else Color(0.12, 0.17, 0.16)
+		_:
+			return Color(0.085, 0.095, 0.125) if is_drawer else Color(0.10, 0.11, 0.14)
+
+
+func _text_primary_color() -> Color:
+	match lds_theme_pack:
+		"evergreen-light", "day":
+			return Color(0.08, 0.14, 0.12)
+		"high-contrast":
+			return Color(1.0, 0.95, 0.0)
+		"calm":
+			return Color(0.88, 0.92, 0.90)
+		_:
+			return Color(0.95, 0.98, 1.0)
+
+
+func _text_muted_color() -> Color:
+	match lds_theme_pack:
+		"evergreen-light", "day":
+			return Color(0.22, 0.28, 0.25)
+		"high-contrast":
+			return Color(0.92, 0.92, 0.92)
+		"calm":
+			return Color(0.68, 0.76, 0.74)
+		_:
+			return Color(0.72, 0.76, 0.82)
+
+
+func _make_capsule_glyph_control(cid: String, cdef: Dictionary) -> Control:
+	var icon_ctrl := Control.new()
+	icon_ctrl.custom_minimum_size = Vector2(36.0, 36.0)
+	icon_ctrl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	icon_ctrl.draw.connect(func() -> void:
+		_draw_capsule_glyph(icon_ctrl, Rect2(Vector2.ZERO, icon_ctrl.size), cid, cdef)
+	)
+	return icon_ctrl
 
 
 func _restore_scroll(v: int) -> void:
@@ -428,7 +493,7 @@ func _build_hud() -> void:
 	add_child(_hud_layer)
 	_hud_root = Control.new()
 	_hud_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_hud_root.theme = _build_ui_theme()
+	_hud_root.theme = _build_ui_theme(lds_theme_pack)
 	_hud_layer.add_child(_hud_root)
 	_apply_ui_scale()
 	if is_inside_tree():
@@ -436,7 +501,8 @@ func _build_hud() -> void:
 
 	# 1. Top Telemetry Bar (opaque so the world never bleeds through text)
 	var top_panel := PanelContainer.new()
-	top_panel.add_theme_stylebox_override("panel", _opaque_style(Color(0.10, 0.11, 0.14)))
+	_top_panel = top_panel
+	top_panel.add_theme_stylebox_override("panel", _opaque_style(_panel_bg_color(false)))
 	top_panel.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	top_panel.offset_bottom = TOP_HUD_H
 	_hud_root.add_child(top_panel)
@@ -479,7 +545,7 @@ func _build_hud() -> void:
 
 	# 2. Slide-Up Drawer Panel (hidden when active_drawer == ""). Opaque: focus belongs to the drawer while open.
 	_drawer_panel = PanelContainer.new()
-	_drawer_panel.add_theme_stylebox_override("panel", _opaque_style(Color(0.085, 0.095, 0.125)))
+	_drawer_panel.add_theme_stylebox_override("panel", _opaque_style(_panel_bg_color(true)))
 	_drawer_panel.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_drawer_panel.offset_top = TOP_HUD_H
 	_drawer_panel.offset_bottom = -BOTTOM_DOCK_H
@@ -519,7 +585,8 @@ func _build_hud() -> void:
 
 	# 3. Bottom Control Dock (Cursor Modes + Navigation Tabs)
 	var bottom_panel := PanelContainer.new()
-	bottom_panel.add_theme_stylebox_override("panel", _opaque_style(Color(0.10, 0.11, 0.14)))
+	_bottom_panel = bottom_panel
+	bottom_panel.add_theme_stylebox_override("panel", _opaque_style(_panel_bg_color(false)))
 	bottom_panel.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	bottom_panel.offset_top = -BOTTOM_DOCK_H
 	_hud_root.add_child(bottom_panel)
@@ -750,12 +817,15 @@ func _build_bag_drawer() -> void:
 		elif is_eq_buff:
 			badge = " [EQUIPPED / ACTIVE]"
 
+		var hdr_row := HBoxContainer.new()
+		hdr_row.add_child(_make_capsule_glyph_control(cid, cap))
 		var title_lbl := Label.new()
 		title_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		title_lbl.text = "• %s%s" % [nm, badge]
-		title_lbl.add_theme_color_override("font_color", Color(0.95, 0.98, 1.0))
+		title_lbl.add_theme_color_override("font_color", _text_primary_color())
 		title_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		card.add_child(title_lbl)
+		hdr_row.add_child(title_lbl)
+		card.add_child(hdr_row)
 		card.add_child(top_row)
 
 		if affs.has("equip_tool"):
@@ -803,7 +873,7 @@ func _build_bag_drawer() -> void:
 			)
 			top_row.add_child(use_btn)
 
-		if (affs.has("carry") or affs.has("place_in_house")) and not affs.has("equip_tool"):
+		if (affs.has("carry") or affs.has("place_in_house")) and not affs.has("equip_tool") and not affs.has("consume") and not affs.has("read_book"):
 			var toggle_btn := Button.new()
 			toggle_btn.text = "Unequip" if is_eq_buff else "Activate"
 			toggle_btn.pressed.connect(func() -> void:
@@ -821,7 +891,7 @@ func _build_bag_drawer() -> void:
 			var d_lbl := Label.new()
 			d_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 			d_lbl.add_theme_font_size_override("font_size", 12)
-			d_lbl.add_theme_color_override("font_color", Color(0.72, 0.76, 0.82))
+			d_lbl.add_theme_color_override("font_color", _text_muted_color())
 			d_lbl.text = "    " + desc
 			card.add_child(d_lbl)
 
@@ -901,6 +971,23 @@ func _build_shop_drawer() -> void:
 		shop_page_offset = 0
 		_refresh_drawer()
 	))
+
+	var chip_row := HFlowContainer.new()
+	chip_row.add_theme_constant_override("h_separation", 4)
+	chip_row.add_theme_constant_override("v_separation", 4)
+	filter_row.add_child(chip_row)
+	for v_idx in mini(vendor_ids.size(), 9):
+		var chip_vid := vendor_ids[v_idx]
+		var chip_btn := Button.new()
+		chip_btn.custom_minimum_size = Vector2(56, 36)
+		chip_btn.text = "All" if chip_vid == "ALL" else str(catalog.capsules.get(chip_vid, {}).get("meta", {}).get("name", chip_vid.get_file())).split(" ")[0]
+		chip_btn.disabled = (chip_vid == shop_vendor_filter)
+		chip_btn.pressed.connect(func() -> void:
+			shop_vendor_filter = chip_vid
+			shop_page_offset = 0
+			_refresh_drawer()
+		)
+		chip_row.add_child(chip_btn)
 
 	var cats := ["ALL", "tools", "devices", "upgrades", "consumables", "books", "textiles"]
 	var cat_labels: Array[String] = []
@@ -995,6 +1082,8 @@ func _build_shop_drawer() -> void:
 		var entry: Dictionary = matching_offers[idx]
 		var v_id := str(entry["vendor_id"])
 		var offer: Dictionary = entry["offer"]
+		var cid := str(entry["cid"])
+		var cdef: Dictionary = catalog.capsules.get(cid, {})
 		var nm := str(entry["name"])
 		var desc := str(entry["desc"])
 		var chk := grid.can_buy_vendor_offer(v_id, offer)
@@ -1010,12 +1099,17 @@ func _build_shop_drawer() -> void:
 		var item_box := VBoxContainer.new()
 		_drawer_body.add_child(item_box)
 
+		var hdr := HBoxContainer.new()
+		hdr.add_theme_constant_override("separation", 6)
+		item_box.add_child(hdr)
+		hdr.add_child(_make_capsule_glyph_control(cid, cdef))
+
 		var lbl := Label.new()
 		lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		lbl.text = "%s — Cost: %s" % [nm, price_str]
-		lbl.add_theme_color_override("font_color", Color(0.95, 0.96, 1.0) if can_buy else Color(0.65, 0.65, 0.70))
-		item_box.add_child(lbl)
+		lbl.add_theme_color_override("font_color", _text_primary_color() if can_buy else _text_muted_color())
+		hdr.add_child(lbl)
 
 		var r1 := HBoxContainer.new()
 		item_box.add_child(r1)
@@ -1038,7 +1132,7 @@ func _build_shop_drawer() -> void:
 		var d_lbl := Label.new()
 		d_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		d_lbl.add_theme_font_size_override("font_size", 12)
-		d_lbl.add_theme_color_override("font_color", Color(0.70, 0.75, 0.82))
+		d_lbl.add_theme_color_override("font_color", _text_muted_color())
 		d_lbl.text = "   " + desc
 		item_box.add_child(d_lbl)
 
@@ -1059,7 +1153,7 @@ func _build_forge_drawer() -> void:
 	var sub_lbl := Label.new()
 	sub_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	sub_lbl.add_theme_font_size_override("font_size", 12)
-	sub_lbl.add_theme_color_override("font_color", Color(0.78, 0.90, 0.98))
+	sub_lbl.add_theme_color_override("font_color", _text_muted_color())
 	var skill_summary := "None yet (Unlock in Discipline 7 / 9!)" if unlocked_skills.is_empty() else ", ".join(PackedStringArray(unlocked_skills.slice(0, 5)))
 	sub_lbl.text = "Active Skill Brackets & Stations (%d): %s\n(Skill Brackets & Stations are verified and KEPT permanently when forging; base tools transfer socketed Tinker parts!)" % [
 		unlocked_skills.size(), skill_summary
@@ -1195,6 +1289,8 @@ func _build_forge_drawer() -> void:
 		var entry: Dictionary = forge_entries[idx]
 		var v_id := str(entry["vendor_id"])
 		var offer: Dictionary = entry["offer"]
+		var cid := str(entry["cid"])
+		var cdef: Dictionary = catalog.capsules.get(cid, {})
 		var nm := str(entry["name"])
 		var desc := str(entry["desc"])
 		var tags_arr: Array = entry["tags"]
@@ -1242,12 +1338,17 @@ func _build_forge_drawer() -> void:
 		var item_box := VBoxContainer.new()
 		_drawer_body.add_child(item_box)
 
+		var hdr := HBoxContainer.new()
+		hdr.add_theme_constant_override("separation", 6)
+		item_box.add_child(hdr)
+		hdr.add_child(_make_capsule_glyph_control(cid, cdef))
+
 		var lbl := Label.new()
 		lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		lbl.text = "%s%s%s %s — Artisan: %s" % [logic_badge, bracket_badge, theme_badge, nm, v_name]
-		lbl.add_theme_color_override("font_color", Color(0.98, 0.92, 0.65) if can_forge else Color(0.68, 0.70, 0.75))
-		item_box.add_child(lbl)
+		lbl.add_theme_color_override("font_color", _text_primary_color() if can_forge else _text_muted_color())
+		hdr.add_child(lbl)
 
 		var r1 := HBoxContainer.new()
 		item_box.add_child(r1)
@@ -1273,14 +1374,14 @@ func _build_forge_drawer() -> void:
 		var rec_lbl := Label.new()
 		rec_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		rec_lbl.add_theme_font_size_override("font_size", 12)
-		rec_lbl.add_theme_color_override("font_color", Color(0.62, 0.92, 0.75) if can_forge else Color(0.85, 0.68, 0.62))
+		rec_lbl.add_theme_color_override("font_color", (Color(0.08, 0.45, 0.25) if lds_theme_pack == "evergreen-light" else Color(0.62, 0.92, 0.75)) if can_forge else _text_muted_color())
 		rec_lbl.text = "   " + recipe_str
 		item_box.add_child(rec_lbl)
 
 		var d_lbl := Label.new()
 		d_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		d_lbl.add_theme_font_size_override("font_size", 12)
-		d_lbl.add_theme_color_override("font_color", Color(0.70, 0.75, 0.82))
+		d_lbl.add_theme_color_override("font_color", _text_muted_color())
 		d_lbl.text = "   " + desc
 		item_box.add_child(d_lbl)
 
@@ -1442,31 +1543,16 @@ func apply_cp11_settings(theme_pack: String, reduced_motion: bool, haptics_enabl
 	comfort_haptics_enabled = haptics_enabled and not safe_mode
 	comfort_audio_muted = audio_muted or safe_mode
 
-	var base_theme: Theme = null
-	if ResourceLoader.exists("res://aegis_lds_theme.tres"):
-		var loaded := load("res://aegis_lds_theme.tres")
-		if loaded is Theme:
-			base_theme = (loaded as Theme).duplicate(true)
-	if base_theme == null:
-		base_theme = Theme.new()
-
-	var font_col := Color(0.925, 0.957, 0.941, 1.0)
-	var accent_col := Color(0.431, 0.906, 0.718, 1.0)
-	match lds_theme_pack:
-		"evergreen-light":
-			font_col = Color(0.08, 0.14, 0.12, 1.0)
-			accent_col = Color(0.06, 0.52, 0.36, 1.0)
-		"high-contrast":
-			font_col = Color(1.0, 1.0, 1.0, 1.0)
-			accent_col = Color(1.0, 0.92, 0.15, 1.0)
-		"calm":
-			font_col = Color(0.88, 0.91, 0.94, 1.0)
-			accent_col = Color(0.56, 0.78, 0.88, 1.0)
-
-	base_theme.set_color("font_color", "Button", font_col)
-	base_theme.set_color("font_focus_color", "Button", accent_col)
-	base_theme.set_color("font_hover_color", "Button", accent_col)
-	base_theme.set_color("font_color", "Label", font_col)
+	var base_theme := _build_ui_theme(lds_theme_pack)
+	for pnl in [_top_panel, _drawer_panel, _bottom_panel]:
+		if pnl != null:
+			var sb := StyleBoxFlat.new()
+			sb.bg_color = _panel_bg_color(pnl == _drawer_panel)
+			if pnl == _drawer_panel:
+				sb.border_width_left = 1
+				sb.border_width_right = 1
+				sb.border_color = Color(0.28, 0.36, 0.32, 0.85)
+			pnl.add_theme_stylebox_override("panel", sb)
 	if _hud_root != null:
 		_hud_root.theme = base_theme
 	return {
@@ -1494,7 +1580,7 @@ func _draw() -> void:
 
 			var bid_str := catalog.block_int_to_id[grid.base_id[i]]
 			var col := _get_tile_color(bid_str, grid.fluid_type[i], grid.tier[i])
-			draw_rect(rect, col, true)
+			_draw_ore_strata(rect, bid_str, x, y, grid.depth[i], grid.tier[i], grid.fluid_type[i], col)
 
 			# Persistent damage ratio bar / crack indicator
 			if grid.damage_accum[i] > 0.0:
@@ -1512,8 +1598,9 @@ func _draw() -> void:
 				draw_rect(Rect2(rx + 1.0, ry + 1.0, t_px - 2.0, t_px - 2.0), Color(1.0, 0.95, 0.45, 0.85), false, 1.5)
 
 			if font != null:
-				var f_sz := maxi(8, 9 * grid.scale_k / 2)
-				# Top-left: Z depth counter
+				var f_sz := maxi(10, 10 * grid.scale_k / 2)
+				# Top-left: Z depth counter with Stage 4 scrimmed backing plate (alpha >= 0.90)
+				draw_rect(Rect2(rx + 1.5, ry + 1.5, maxf(14.0, float(f_sz) * 1.35), float(f_sz) + 2.0), Color(0.05, 0.08, 0.07, 0.90), true)
 				draw_string(
 					font,
 					Vector2(rx + 3.0, ry + 11.0),
@@ -1521,16 +1608,24 @@ func _draw() -> void:
 					HORIZONTAL_ALIGNMENT_LEFT,
 					-1,
 					f_sz,
-					Color(0.92, 0.94, 0.98, 0.85)
+					Color(0.95, 0.97, 0.94, 0.98)
 				)
 				# Bottom-right: Fluid level badge, Catalyst badge, or Attachment badge
 				if grid.fluid_level[i] > 0:
 					var fl_tag := ("W%d" if grid.fluid_type[i] == GridManager.FLUID_WATER else "L%d") % grid.fluid_level[i]
+					draw_rect(Rect2(rx + 1.5, ry + t_px - float(f_sz) - 7.5, maxf(16.0, float(f_sz) * 1.6), float(f_sz) + 2.0), Color(0.05, 0.08, 0.07, 0.90), true)
 					draw_string(font, Vector2(rx + 3.0, ry + t_px - 7.0), fl_tag, HORIZONTAL_ALIGNMENT_LEFT, -1, f_sz, Color(0.95, 0.98, 1.0))
 				elif grid.placed_catalyst_id[i] >= 0:
-					draw_string(font, Vector2(rx + 3.0, ry + t_px - 7.0), "C%d" % grid.placed_catalyst_tier[i], HORIZONTAL_ALIGNMENT_LEFT, -1, f_sz, Color(0.35, 0.98, 0.95))
+					draw_rect(Rect2(rx + 1.5, ry + t_px - float(f_sz) - 7.5, maxf(16.0, float(f_sz) * 1.6), float(f_sz) + 2.0), Color(0.05, 0.08, 0.07, 0.90), true)
+					draw_string(font, Vector2(rx + 3.0, ry + t_px - 7.0), "C%d" % grid.placed_catalyst_tier[i], HORIZONTAL_ALIGNMENT_LEFT, -1, f_sz, Color(0.38, 0.85, 0.63))
 				if not grid.tile_attachments[i].is_empty():
-					draw_rect(Rect2(rx + t_px - 8.0, ry + 3.0, 5.0, 5.0), Color(0.35, 0.95, 0.45), true)
+					var top_att: Dictionary = grid.tile_attachments[i][grid.tile_attachments[i].size() - 1]
+					var att_cid := str(top_att.get("capsule_id", ""))
+					var att_def: Dictionary = catalog.capsules.get(att_cid, {})
+					var badge_sz := clampf(t_px * 0.34, 12.0, 22.0)
+					var badge_rect := Rect2(rx + t_px - badge_sz - 3.0, ry + 3.0, badge_sz, badge_sz)
+					draw_rect(badge_rect.grow(1.0), Color(0.05, 0.08, 0.07, 0.82), true)
+					_draw_capsule_glyph(self, badge_rect, att_cid, att_def)
 				if grid.dynamic_entity_id[i] == GridManager.ENTITY_LOST_CAT:
 					draw_string(font, Vector2(rx + 2.0, ry + t_px * 0.6), "CAT!", HORIZONTAL_ALIGNMENT_LEFT, -1, f_sz, Color(1.0, 0.92, 0.25))
 
@@ -1566,8 +1661,132 @@ func _get_tile_color(bid: String, fl_type: int, tier_val: int) -> Color:
 		"blocks/quartz_vein": base_c = Color(0.82, 0.86, 0.92)
 		"blocks/obsidian_hazard": base_c = Color(0.20, 0.07, 0.32)
 		_:
-			var h := float(abs(bid.hash()) % 360) / 360.0
-			var s := 0.38 + float((abs(bid.hash()) >> 8) % 30) / 100.0
-			var v := 0.52 + float((abs(bid.hash()) >> 16) % 22) / 100.0
+			var mh := _smix32(bid.hash())
+			var h := fposmod(float(mh) * 0.6180339887, 1.0)
+			var s := 0.38 + float((mh >> 8) & 31) / 100.0
+			var v := 0.52 + float((mh >> 16) & 23) / 100.0
 			base_c = Color.from_hsv(h, s, v)
 	return base_c.darkened(minf(0.45, float(tier_val) * 0.12))
+
+
+static func _smix32(v: int) -> int:
+	var z := (v + 0x9E3779B9) & 0xFFFFFFFF
+	z = ((z ^ (z >> 16)) * 0x85EBCA6B) & 0xFFFFFFFF
+	z = ((z ^ (z >> 13)) * 0xC2B2AE35) & 0xFFFFFFFF
+	return (z ^ (z >> 16)) & 0x7FFFFFFF
+
+
+static func _resolve_discipline_id(cid: String, cdef: Dictionary = {}) -> int:
+	var tags: Array = cdef.get("tags", [])
+	if tags.has("craft_clockwork_automaton") or tags.has("clockwork") or cid.begins_with("devices/"):
+		return 0 # clockwork
+	if tags.has("craft_smeltery_alloy") or tags.has("crucible") or tags.has("cinder") or tags.has("ember"):
+		return 1 # pyro_metallurgy
+	if tags.has("craft_spell_grimoire") or tags.has("crystal") or tags.has("quartz") or cid.begins_with("blocks/") or cid.begins_with("biomes/"):
+		return 2 # geomancy
+	if cid.begins_with("textiles/") or tags.has("carpet") or tags.has("dampener"):
+		return 3 # textile_weaving
+	if tags.has("craft_alchemy_potion") or cid.begins_with("consumables/") or tags.has("alchemist"):
+		return 4 # alchemy
+	if tags.has("craft_tinker_part") or tags.has("craft_terraria_fusion") or cid.begins_with("tools/"):
+		return 5 # tinker_smithing
+	return 6 # arcane_sigil (upgrades, books, masteries, npcs)
+
+
+func _draw_ore_strata(rect: Rect2, bid: String, gx: int, gy: int, gz: int, tier_val: int, fl_type: int, base_col: Color) -> void:
+	draw_rect(rect, base_col, true)
+	if fl_type != GridManager.FLUID_NONE:
+		return
+	var rx := rect.position.x
+	var ry := rect.position.y
+	var t_px := rect.size.x
+	var h := _smix32(bid.hash() ^ (gx * 73856093) ^ (gy * 19349663) ^ (tier_val * 0x45D9F3B))
+	var vein_col := base_col.lightened(0.24 + 0.05 * float(mini(tier_val, 4)))
+	var dark_col := base_col.darkened(0.22)
+	var veins := mini(5, 2 + (h & 1) + mini(tier_val, 2))
+	var pad := t_px * 0.14
+	var span := t_px - pad * 2.0
+	for v in veins:
+		var vh := _smix32(h + v * 0x27D4EB2D + gz * 131)
+		var p0 := Vector2(rx + pad + span * float(vh & 63) / 63.0, ry + pad + span * float((vh >> 6) & 63) / 63.0)
+		var pm := Vector2(rx + pad + span * float((vh >> 12) & 63) / 63.0, ry + pad + span * float((vh >> 18) & 63) / 63.0)
+		var p1 := Vector2(rx + pad + span * float((vh >> 24) & 63) / 63.0, ry + pad + span * float(((vh >> 4) ^ vh) & 63) / 63.0)
+		draw_line(p0, pm, vein_col if (v & 1) == 0 else dark_col, 1.5 if tier_val > 0 else 1.0)
+		draw_line(pm, p1, vein_col, 1.2)
+
+
+func _draw_capsule_glyph(canvas: CanvasItem, rect: Rect2, cid: String, cdef: Dictionary = {}) -> void:
+	if _glyph_pts.size() != 25:
+		_glyph_pts.resize(25)
+	var c := rect.get_center()
+	var cx := c.x
+	var cy := c.y
+	var r_max := minf(rect.size.x, rect.size.y) * 0.44
+	var h0 := _smix32(cid.hash())
+	var h1 := _smix32(h0 ^ 0x27D4EB2D)
+	var d := _resolve_discipline_id(cid, cdef)
+	var m := 3 + ((h0 >> 3) % 6)
+	var q := 1 + ((h0 >> 6) % 3)
+	var a1 := 0.14 + 0.012 * float((h0 >> 9) & 15)
+	var a2 := 0.08 + 0.010 * float((h0 >> 13) & 15)
+	var beta1 := float((h0 >> 17) & 63) * (TAU / 64.0)
+	var beta2 := float((h1 >> 5) & 63) * (TAU / 64.0)
+	var hue := fposmod(float(h0) * 0.6180339887, 1.0)
+	var col := Color.from_hsv(hue, 0.72, 0.96, 0.96)
+	var bg_col := Color(0.04, 0.07, 0.06, 0.90)
+
+	# Stratum 1: Backing plate
+	canvas.draw_circle(c, r_max * 1.08, bg_col)
+
+	for k in 25:
+		var th := float(k) * (TAU / 24.0)
+		var r := r_max * 0.72
+		match d:
+			0:
+				r = r_max * (0.68 + 0.22 * clampf(3.2 * cos(float(m) * th + beta1), -1.0, 1.0) + a2 * cos(float(2 * m) * th + beta2))
+			1:
+				var sym_x := absf(sin(th))
+				r = r_max * (0.62 + (a1 * cos(float(q) * th + beta1) + a2 * sin(float(m) * th + beta2) if sin(th) < 0.0 else 0.18 * sym_x))
+			2:
+				r = r_max * (0.74 + a1 * cos(float(m) * th + beta1) + 0.5 * a2 * sin(float(q * m) * th + beta2))
+			3:
+				r = r_max * (0.66 + a1 * cos(4.0 * th + beta1) + a2 * cos(float(2 * m) * th + beta2))
+			4:
+				# VERIFY-1 Branch d=4 full parameter coupling (m, q, a1, a2, beta1, beta2)
+				r = r_max * ((0.32 + 0.08 * cos(float(q) * th + beta1)) if sin(th) < -0.35 else (0.68 + a1 * cos(float(m) * th + beta1) + a2 * sin(float(m + q) * th + beta2)))
+			5:
+				r = r_max * (0.62 + a1 * cos(2.0 * th + beta1) - a2 * cos(4.0 * th) + 0.08 * cos(float(2 * q) * th + beta2))
+			_:
+				r = r_max * (0.58 + a1 * cos(float(m) * th + beta1) + a2 * cos(float(q * m) * th - beta2))
+		_glyph_pts[k] = Vector2(cx + r * cos(th), cy + r * sin(th))
+
+	# Stratum 2: Shaded inner polygon
+	canvas.draw_colored_polygon(_glyph_pts.slice(0, 24), col.darkened(0.48))
+
+	# Stratum 3 & 4: m internal Chladni nodal chords + 8-cell micro-rune ticks driven by (h0, h1)
+	for j in m:
+		var idx0 := (j * 24 / m) % 24
+		var idx1 := ((j * 24 / m) + 12 + q) % 24
+		canvas.draw_line(_glyph_pts[idx0], _glyph_pts[idx1], col.darkened(0.20), 1.1)
+	for t_i in 8:
+		var bit_on := ((h1 >> t_i) & 1) == 1
+		var ang := float(t_i) * (TAU / 8.0) + beta2 * 0.25
+		var r_in := r_max * (0.26 if bit_on else 0.36)
+		var r_out := r_max * (0.58 if bit_on else 0.48)
+		canvas.draw_line(
+			Vector2(cx + r_in * cos(ang), cy + r_in * sin(ang)),
+			Vector2(cx + r_out * cos(ang), cy + r_out * sin(ang)),
+			col.lightened(0.18) if bit_on else col.darkened(0.12),
+			1.2
+		)
+
+	# Stratum 5: Outer harmonic contour
+	canvas.draw_polyline(_glyph_pts, col, 1.8, true)
+
+	# Stratum 6: Specular core + phase satellite
+	var core_r := r_max * (0.18 + 0.015 * float((h0 >> 23) & 7))
+	canvas.draw_circle(c, core_r, col.lightened(0.42))
+	var sat_ang := beta1 + float(q) * 0.785398
+	var sat_pos := Vector2(cx + r_max * 0.38 * cos(sat_ang), cy + r_max * 0.38 * sin(sat_ang))
+	canvas.draw_circle(sat_pos, maxf(1.5, r_max * 0.10), col.lightened(0.55))
+

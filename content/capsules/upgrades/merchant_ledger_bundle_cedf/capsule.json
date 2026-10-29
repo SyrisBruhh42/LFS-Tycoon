@@ -6,7 +6,11 @@
     "author": "jules:session",
     "rarity": "common"
   },
-  "affordances": ["carry", "equip_tool", "place_on_tile", "sell"],
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
   "tags": [
     "upgrade",
     "ledger",
@@ -34,20 +38,30 @@
     {
       "on": "on_equip",
       "do": [
-        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": true}
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_depth_calipers",
+          "enabled": true
+        }
       ]
     },
     {
       "on": "on_unequip",
       "do": [
-        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": false}
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_depth_calipers",
+          "enabled": false
+        }
       ]
     }
   ],
   "offered_by": [
     {
       "vendor": "npcs/peddler_vayne",
-      "price": {"blocks/copper": 30}
+      "price": {
+        "blocks/copper": 30
+      }
     }
   ],
   "offline": "none"

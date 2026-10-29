@@ -44,7 +44,7 @@
         "devices/flint_shale_scrubber_b898": 1,
         "blocks/flint_shale_6493": 25
       },
-      "unlock_if": "player.max_depth >= 198.0 and player.max_depth <= 330.0"
+      "unlock_if": "player.max_depth >= 198.0"
     }
   ]
 }

@@ -6,7 +6,12 @@
     "author": "core:ground_zero",
     "rarity": "uncommon"
   },
-  "affordances": ["carry", "consume", "sell", "socket_in_tool"],
+  "affordances": [
+    "carry",
+    "consume",
+    "sell",
+    "socket_in_tool"
+  ],
   "tags": [
     "consumable",
     "tonic",
@@ -41,7 +46,7 @@
         "devices/munchkin_pewter_head_13b8": 1,
         "blocks/quill_ore_4083": 15
       },
-      "unlock_if": "player.max_depth >= 100 and player.max_depth <= 249"
+      "unlock_if": "player.max_depth >= 100"
     }
   ],
   "offline": "none"

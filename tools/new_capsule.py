@@ -86,10 +86,24 @@ ARCHETYPES = {
                         "act": "var_set",
                         "var": "self.active_sec_left",
                         "value": "self.stats.duration_sec",
-                    },
-                    {"act": "destroy_self"},
+                    }
                 ],
-            }
+            },
+            {
+                "on": "on_second_tick",
+                "if": "self.active_sec_left > 0.0",
+                "do": [
+                    {
+                        "act": "var_add",
+                        "var": "self.active_sec_left",
+                        "by": "-1.0",
+                    },
+                    {
+                        "act": "destroy_self",
+                        "if": "self.active_sec_left <= 0.0",
+                    },
+                ],
+            },
         ],
         "offline": "none",
     },

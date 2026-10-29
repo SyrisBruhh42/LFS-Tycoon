@@ -9,8 +9,7 @@
   "affordances": [
     "carry",
     "socket_in_tool",
-    "sell",
-    "equip_tool"
+    "sell"
   ],
   "tags": [
     "device",
@@ -37,32 +36,48 @@
     {
       "on": "on_equip",
       "do": [
-        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true}
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_chalk_lines",
+          "enabled": true
+        }
       ]
     },
     {
       "on": "on_unequip",
       "do": [
-        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": false}
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_chalk_lines",
+          "enabled": false
+        }
       ]
     },
     {
       "on": "on_hazard_expose",
       "do": [
-        {"act": "emit_alert", "channel": "house_bell", "tag": "stall_impassable"}
+        {
+          "act": "emit_alert",
+          "channel": "house_bell",
+          "tag": "stall_impassable"
+        }
       ]
     },
     {
       "on": "on_deplete",
       "do": [
-        {"act": "destroy_self"}
+        {
+          "act": "destroy_self"
+        }
       ]
     }
   ],
   "offered_by": [
     {
       "vendor": "npcs/brass_tinkerer_c020",
-      "price": {"blocks/copper": 350}
+      "price": {
+        "blocks/copper": 350
+      }
     }
   ]
 }

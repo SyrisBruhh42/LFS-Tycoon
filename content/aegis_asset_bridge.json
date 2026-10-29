@@ -1,6 +1,6 @@
 {
   "artPalette": "Evergreen Dark & Subterranean Brass",
-  "capsuleCount": 545,
+  "capsuleCount": 698,
   "capsuleId": "lfs-tycoon",
   "enclaveConcordance": {
     "repo": "enclave-digital-twin",
@@ -100,6 +100,13 @@
       "z_unlock": 150
     },
     {
+      "id": "blocks/cinderslag_8f82",
+      "kind": "stratum_block",
+      "name": "Crucible Cinderslag",
+      "summary": "A dense, heat-retaining stratum forged by the ancient smith-lords of the Under-Sun Manifold. Essential for maintaining thermal drills and cr",
+      "z_unlock": 400
+    },
+    {
       "id": "blocks/copper",
       "kind": "stratum_block",
       "name": "Copper Vein",
@@ -114,11 +121,20 @@
       "z_unlock": 150
     },
     {
-      "id": "blocks/dirt",
-      "kind": "stratum_block",
-      "name": "Quarry Dirt",
-      "summary": "Soft topsoil and packed loam. Easily dug with a Shovel, or used as Backfill to raise over-excavated floor tiles.",
-      "z_unlock": 0
+      "id": "npcs/alkahest_vendor_300e",
+      "kind": "specialist_npc",
+      "name": "Hydro-Alchemist Valya",
+      "offers": 0,
+      "summary": "A subterranean hydro-alchemist of the Alkahest Vitriol enclave. She sells corrosive tinctures and mortar-sealing agents to soften deep-strat",
+      "unlock_depth": 330
+    },
+    {
+      "id": "npcs/alkahest_vendor_a46c",
+      "kind": "specialist_npc",
+      "name": "Vitriol Smelter",
+      "offers": 0,
+      "summary": "A subterranean hydro-alchemist of the deep strata, using a mortar to treat the quarry as a chemical alembic.",
+      "unlock_depth": 250
     },
     {
       "id": "npcs/anvil_smith_73cd",
@@ -132,7 +148,7 @@
       "id": "npcs/basalt_kettle_6ec2",
       "kind": "specialist_npc",
       "name": "Basalt Kettle",
-      "offers": 4,
+      "offers": 6,
       "summary": "A sturdy, steam-powered vendor automaton carved from basalt that dispenses heavy wares.",
       "unlock_depth": 10
     },
@@ -140,36 +156,20 @@
       "id": "npcs/bismuth_broker_af6a",
       "kind": "specialist_npc",
       "name": "Bismuth Broker",
-      "offers": 3,
+      "offers": 5,
       "summary": "A mysterious merchant clad in strange bismuth-studded attire, offering rare goods from the depths.",
       "unlock_depth": 50
     },
     {
-      "id": "npcs/bone_sconce_wick_2a5c",
+      "id": "npcs/blind_monk_a57d",
       "kind": "specialist_npc",
-      "name": "Bone Sconce Wick",
-      "offers": 4,
-      "summary": "A haggard purveyor who has hollowed out the cavern's largest skeleton to run a shop inside the ribcage sconce. Offers unique charms and ligh",
-      "unlock_depth": 0
-    },
-    {
-      "id": "npcs/brass_tinkerer_c020",
-      "kind": "specialist_npc",
-      "name": "Brass Tinkerer",
-      "offers": 14,
-      "summary": "A tinkering maestro stationed by a warm forge, ready to craft contraptions from brass and heat.",
-      "unlock_depth": 10
-    },
-    {
-      "id": "npcs/crucible_keeper_e935",
-      "kind": "specialist_npc",
-      "name": "Crucible Keeper",
-      "offers": 36,
-      "summary": "A mysterious figure wrapped in soot-stained leathers who tends the eternal flames of the deep. They offer rare smelting aids and heat-resist",
-      "unlock_depth": 30
+      "name": "Blind Monk of the Lithic Choir",
+      "offers": 0,
+      "summary": "Blind monastic archivists of Quill Hollow who discovered that bedrock is frozen acoustic music, using zero-damage stalls and bell harmonics ",
+      "unlock_depth": 330
     }
   ],
-  "frontierDepthZ": 330.0,
+  "frontierDepthZ": 410.0,
   "goalSummary": "Excavate the 14x31 layered quarry, unlock 5 Modular Skill Brackets across 11 crafting disciplines, socket Tinker parts, fuse Terraria gear, and outfit Willow's Wardrobe.",
   "howToPlaySteps": [
     "Hold-press or drag across the 14x31 quarry grid to excavate strata, bail flooded aquifers, and detonate 8-perimeter Obsidian Hazards.",
@@ -186,7 +186,8 @@
   "openBrackets": [
     1,
     2,
-    3
+    3,
+    4
   ],
   "optionsSchema": [
     {
@@ -236,99 +237,99 @@
   "upgrades": [
     {
       "bracket": "bracket_1",
-      "dependents": 3,
-      "id": "devices/munchkin_ochre_kiln_12d6",
-      "name": "Munchkin's Ochre Sconce Net",
-      "school": "skill_school_manual",
-      "summary": "An absurd contraption devised by the Paradox Symposium of St. Munchkin. Built from a brass dampener and layered with ochre stratum, it funct"
-    },
-    {
-      "bracket": "bracket_1",
-      "dependents": 3,
-      "id": "devices/ochre_sigil_9759",
-      "name": "Ochre Sigil",
-      "school": "skill_school_manual",
-      "summary": "A socketable arcane rune inscribed by the blind monastic archivists of Quill Hollow, who discovered bedrock is frozen acoustic music. Forged"
-    },
-    {
-      "bracket": "bracket_1",
-      "dependents": 3,
-      "id": "upgrades/cinder_munchkin_suite_315d",
-      "name": "Munchkin's Apprentice Hearth",
+      "dependents": 13,
+      "id": "devices/obsidian_resonant_crucible_d5d5",
+      "name": "Obsidian Resonant Crucible",
       "school": "skill_school_pewter_cinder",
-      "summary": "A starter home comfort suite approved by the Paradox Symposium of St. Munchkin. Supplied by the Gravel Keeper using Pewter Gravel and Copper"
+      "summary": "A whimsical but brilliant Crucible Transmutation device designed by the artisan of Basalt Kettle and The Sovereign Ward-Breakers of the Obsi"
     },
     {
       "bracket": "bracket_1",
-      "dependents": 2,
-      "id": "books/rivet_assayers_treatise_0b42",
-      "name": "Rivet Assayer's Treatise (Vol. I)",
+      "dependents": 13,
+      "id": "upgrades/iron_stormbreaker_charm_a589",
+      "name": "Iron Stormbreaker Charm",
+      "school": "skill_school_manual",
+      "summary": "An iron charm engineered by The Perpetual Clockwork Deep-Bore Syndicate, its self-feeding mechanisms whir softly as you explore. Forged by t"
+    },
+    {
+      "bracket": "bracket_1",
+      "dependents": 10,
+      "id": "upgrades/ochre_forge_milestone_relic_9ed9",
+      "name": "Ochre Forge Milestone Relic",
+      "school": "skill_school_manual",
+      "summary": "Forged in the heart of The Enclave First Forge & Stormbreaker Concordance by the illustrious Ochre Toad, this milestone trophy resonates wit"
+    },
+    {
+      "bracket": "bracket_3",
+      "dependents": 7,
+      "id": "books/lithic_choir_geomancy_grimoire_0954",
+      "name": "Lithic Choir Geomancy Grimoire",
       "school": "skill_school_assayers",
-      "summary": "A dusty pumice-bound manual detailing the finer points of metallurgical valuation. Reading it permanently grants an 8% boost to market payou"
+      "summary": "Bone Sconce Wick's transcribed account of the Lithic Choir's blind monastic archivists of Quill Hollow, demonstrating how to vibrate Vitriol"
+    },
+    {
+      "bracket": "bracket_1",
+      "dependents": 6,
+      "id": "books/cinder_munchkin_grimoire_95a0",
+      "name": "Cinder Munchkin Grimoire",
+      "school": "skill_school_assayers",
+      "summary": "An arcane tome from The Paradox Symposium of St. Munchkin. Whispered by the Ochre Toad to circumvent bureaucracy, it teaches you to exploit "
+    },
+    {
+      "bracket": "bracket_1",
+      "dependents": 6,
+      "id": "books/overkill_munchkin_grimoire_be82",
+      "name": "The Munchkin Paradox Grimoire",
+      "school": "skill_school_manual",
+      "summary": "An arcane tome detailing the Paradox Symposium of St. Munchkin. A secret order of subterranean bureaucrats, sommeliers, and stray-cat whispe"
     },
     {
       "bracket": "bracket_2",
-      "dependents": 2,
-      "id": "consumables/brass_quill_crucible_e1a9",
-      "name": "Brass Quill Crucible",
+      "dependents": 5,
+      "id": "devices/flint_shale_scrubber_b898",
+      "name": "Flint Shale Scrubber",
       "school": "skill_school_manual",
-      "summary": "A self-tempering thermal rig bound in brass, wrought by the smith-lords of the Under-Sun Manifold. When placed upon the earth, it resonates "
-    },
-    {
-      "bracket": "bracket_2",
-      "dependents": 2,
-      "id": "consumables/munchkin_brew_5ec5",
-      "name": "Munchkin Cinder-Kettle Brew",
-      "school": "skill_school_manual",
-      "summary": "An absurdly potent, chunky brew simmered in a Basalt Kettle by the paradoxical sommeliers of St. Munchkin. By consuming dense Cinder Mortar "
+      "summary": "Crafted from raw flint shale by the Sovereign Ward-Breakers of the Obsidian Seal, this rough stone basin uses jagged flints to scrub dirt an"
     },
     {
       "bracket": "bracket_1",
-      "dependents": 2,
-      "id": "consumables/wardbreaker_pewter_battery_a050",
-      "name": "Wardbreaker Pewter Battery",
-      "school": "skill_school_assayers",
-      "summary": "An alchemical multi-reagent concoction formulated by the Sovereign Ward-Breakers of the Obsidian Seal and sold by the Gravel Wick Vendor. Br"
-    },
-    {
-      "bracket": "bracket_1",
-      "dependents": 2,
-      "id": "devices/brass_wick_splash_dampener_dab3",
-      "name": "Brass Ledger Dampener",
-      "school": "skill_school_manual",
-      "summary": "An intricate brass fitting forged from Quill Hollow ore, created by hydro-alchemists of the Alkahest Vitriol & Abyssal Hydro-Works. It compl"
-    },
-    {
-      "bracket": "bracket_1",
-      "dependents": 2,
-      "id": "devices/hearth_crucible_slag_head_d00b",
-      "name": "Hearth Crucible Slag Head",
-      "school": "skill_school_assayers",
-      "summary": "A heavy, modular tool head cast from Crucible Slag using the methods of The Grand Crucible of the Tectonic Leviathan. It heavily boosts earl"
-    },
-    {
-      "bracket": "bracket_1",
-      "dependents": 2,
-      "id": "devices/munchkin_slag_router_55f5",
-      "name": "Munchkin Slag Router",
-      "school": "skill_school_manual",
-      "summary": "An autonomous clockwork quarry rig forged from quill hollow cinder strata, blessed by the paradoxical bureaucrats of St. Munchkin. It meticu"
-    },
-    {
-      "bracket": "bracket_1",
-      "dependents": 2,
-      "id": "devices/quill_crucible_9ff0",
-      "name": "Ochre Quill Crucible",
+      "dependents": 5,
+      "id": "devices/tinker_slag_sconce_5ae8",
+      "name": "Munchkin's Slag Sconce",
       "school": "skill_school_pewter_cinder",
-      "summary": "An ochre crucible apparatus utilized by the blind monastic archivists of the Infinite Scriptorium of the Lithic Choir. Traded by the Quill P"
+      "summary": "An absurd contraption devised by the Paradox Symposium of St. Munchkin. A lantern smith's masterwork that sockets a glowing, volatile wick o"
     },
     {
       "bracket": "bracket_2",
-      "dependents": 2,
+      "dependents": 5,
+      "id": "tools/enclave_rivet_sigil_ed7e",
+      "name": "Enclave Rivet Sigil",
+      "school": "skill_school_pewter_cinder",
+      "summary": "Forged by The Forge Squad of the Enclave of the 16, this brass rivet sigil embodies the Stormbreaker Concordance. When socketed into a tool,"
+    },
+    {
+      "bracket": "bracket_2",
+      "dependents": 5,
       "id": "tools/vitriol_hollow_geomancy_pick_54d7",
       "name": "Vitriol Hollow Geomancy Pick",
       "school": "skill_school_manual",
       "summary": "Forged by merging a sturdy iron weld pick with geomantic umber lore and resonant hollow stone. Infused with vitriol crystals, this tool natu"
+    },
+    {
+      "bracket": "bracket_1",
+      "dependents": 5,
+      "id": "upgrades/quarry_milestone_trophy_27df",
+      "name": "Quarry Milestone Trophy",
+      "school": "skill_school_assayers",
+      "summary": "An unlockable trophy seal honoring The Infinite Scriptorium of the Lithic Choir. These blind monastic archivists of Quill Hollow discovered "
+    },
+    {
+      "bracket": "bracket_1",
+      "dependents": 4,
+      "id": "consumables/wardbreaker_pewter_battery_a050",
+      "name": "Wardbreaker Pewter Battery",
+      "school": "skill_school_assayers",
+      "summary": "An alchemical multi-reagent concoction formulated by the Sovereign Ward-Breakers of the Obsidian Seal and sold by the Gravel Wick Vendor. Br"
     }
   ],
   "willowCompanion": {

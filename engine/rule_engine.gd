@@ -317,8 +317,10 @@ func _execute_action(act_obj: Dictionary, inst: Dictionary, env: Dictionary, gri
 		if bool(act_obj.get("pause_durability", false)):
 			summary["pause_durability"] = true
 	elif act == "destroy_self":
-		inst["destroyed"] = true
-		summary["destroyed_instance_ids"].append(inst.get("uid", -1))
+		var ivars: Dictionary = inst.get("vars", {})
+		if float(ivars.get("active_sec_left", 0.0)) <= 0.0:
+			inst["destroyed"] = true
+			summary["destroyed_instance_ids"].append(inst.get("uid", -1))
 	elif act == "transmute_self":
 		var into_id := str(act_obj.get("into", ""))
 		if catalog.capsules.has(into_id):

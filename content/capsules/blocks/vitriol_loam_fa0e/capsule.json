@@ -19,7 +19,6 @@
   ],
   "stats": {
     "base_hp": 40.0,
-    "value_base": 15.0,
     "ideal_tool": "SHOVEL",
     "strict_tool_lock": 0,
     "z_unlock": 380,
@@ -28,7 +27,8 @@
     "spawn_prob": 0.012,
     "clump_xy": 6.0,
     "pipe_z": 4.0,
-    "priority_rank": 40
+    "priority_rank": 40,
+    "base_value": 15.0
   },
   "biome_weights": {},
   "vars": {},

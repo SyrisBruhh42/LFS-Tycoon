@@ -6,8 +6,20 @@
     "author": "jules:session",
     "rarity": "common"
   },
-  "affordances": ["carry", "socket_in_tool", "sell"],
-  "tags": ["device", "charm", "solves_wrong_tool_penalty", "path_magic_charm", "ochre", "heron", "velvet"],
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "charm",
+    "solves_wrong_tool_penalty",
+    "path_magic_charm",
+    "ochre",
+    "heron",
+    "velvet"
+  ],
   "stats": {
     "base_value": 60.0
   },
@@ -24,18 +36,27 @@
   ],
   "reactions": [
     {
-      "on": "on_block_break",
+      "on": "on_zero_damage_stall",
       "if": "tile.fluid_level > 0",
       "do": [
-        {"act": "var_add", "var": "self.wear", "by": "1.0"},
-        {"act": "destroy_self", "if": "self.wear >= 75.0"}
+        {
+          "act": "var_add",
+          "var": "self.wear",
+          "by": "1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.wear >= 75.0"
+        }
       ]
     }
   ],
   "offered_by": [
     {
       "vendor": "npcs/peddler_vayne",
-      "price": {"blocks/dirt": 60}
+      "price": {
+        "blocks/dirt": 60
+      }
     }
   ],
   "offline": "exact"

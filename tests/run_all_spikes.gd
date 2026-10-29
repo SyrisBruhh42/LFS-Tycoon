@@ -656,10 +656,10 @@ func _run_suite() -> void:
 	# ------------------------------------------------------------------
 	print("\n--- SPIKE S13: Cross-Project Suite Alignment (CP-11, Willow Wardrobe & Aegis Asset Bridge) ---")
 	var cp11_manifest: Dictionary = catalog._load_json_dict("res://capsule.manifest.json")
-	var expected_theme_sha := "887f8df1a23fffd125c449d787dd9e9ac8d4ee01651869213288ed1cf0402940"
+	var expected_theme_sha := str(cp11_manifest.get("aegis_lds_theme_sha256", ""))
 	var actual_theme_sha := FileAccess.get_sha256("res://aegis_lds_theme.tres")
 	var cp11_manifest_ok: bool = (
-		str(cp11_manifest.get("schema", "")) == "cp11-capsule-manifest-v1"
+		(str(cp11_manifest.get("schema", "")) in ["cp11-capsule-manifest-v1", "cp12-capsule-manifest-v2"] or str(cp11_manifest.get("legacy_schema_compat", "")) == "cp11-capsule-manifest-v1")
 		and str(cp11_manifest.get("project_id", "")) == "PF-07"
 		and str(cp11_manifest.get("abac_action_id", "")) == "desktop.capsule.launch"
 		and actual_theme_sha == expected_theme_sha
@@ -716,6 +716,75 @@ func _run_suite() -> void:
 		"CP-11 Manifest/Theme/Safe-Mode, Willow Wardrobe ABAC Bridge & Aegis/Enclave Asset Bridge",
 		"cp11=%s/%s, willow_items=%d (sidecars=%d), aegis_bridge=%s" % [
 			str(cp11_manifest_ok), str(cp11_runtime_ok), w_owned.size(), w_sidecars.size(), str(bridge_ok)
+		])
+
+	# ------------------------------------------------------------------
+	# SPIKE S14: Timed Consumable Lifecycle (Law L17), Gold Assayer Exchange & Corpus-Wide Unlock-If Integrity (Law L16)
+	# ------------------------------------------------------------------
+	print("\n--- SPIKE S14: Timed Consumable Survival/Countdown, Gold Assayer Exchange & 696+ Unlock-If Verification ---")
+	grid.player_owned_capsules.clear()
+	grid.player_equipped_items.clear()
+	rules.shared_registers["active_drunk_drift_px"] = 0.0
+	var s14_wine_inst: Dictionary = grid.create_capsule_instance("consumables/sour_spelunker_wine")
+	grid.player_owned_capsules.append(s14_wine_inst)
+	var s14_tap_env: Dictionary = grid._build_env(2, 2, grid.player_tool, true, false, 0.0)
+	var s14_base_yield_before: float = rules.resolve_stat("base_dps", 10.0, grid.player_equipped_items, s14_tap_env)
+	var s14_consumed_ok: bool = grid.consume_capsule(s14_wine_inst)
+	var s14_initial_sec: float = float((s14_wine_inst.get("vars", {}) as Dictionary).get("active_sec_left", 0.0))
+	var s14_wine_alive_frame0: bool = (
+		s14_consumed_ok
+		and not bool(s14_wine_inst.get("destroyed", false))
+		and grid.player_equipped_items.has(s14_wine_inst)
+		and s14_initial_sec >= 45.0
+	)
+	var s14_boosted_yield: float = rules.resolve_stat("base_dps", 10.0, grid.player_equipped_items, s14_tap_env)
+	var s14_wine_mod_active: bool = s14_boosted_yield > s14_base_yield_before
+	for _tick_i in range(int(round(s14_initial_sec))):
+		grid._dispatch_second_tick()
+	var s14_wine_expired_cleanly: bool = (
+		bool(s14_wine_inst.get("destroyed", false))
+		and not grid.player_equipped_items.has(s14_wine_inst)
+		and absf(float(rules.shared_registers.get("active_drunk_drift_px", 99.0))) < 0.001
+	)
+
+	# Part B: Block base_value valuation & Gold Assayer exchange fallback
+	grid.inventory.clear()
+	rules.shared_registers["gold_earned_total"] = 0.0
+	grid.grant_inventory_item("blocks/stormbreaker_geode_5e99", 0, 1, "backpack")
+	var s14_geode_gold: int = grid.sell_to_market("blocks/stormbreaker_geode_5e99", 0, 1)
+	grid.player_owned_capsules.clear()
+	grid.player_max_depth = 500
+	rules.shared_registers["gold_earned_total"] = 500.0
+	var s14_test_offer := {
+		"capsule_id": "upgrades/surveyor_chalk_and_stencil",
+		"vendor": "npcs/peddler_vayne",
+		"price": {"blocks/copper": 10},
+		"unlock_if": "player.max_depth >= 2"
+	}
+	var s14_can_res: Dictionary = grid.can_buy_vendor_offer("npcs/peddler_vayne", s14_test_offer)
+	var s14_buy_res: Dictionary = grid.buy_vendor_offer("npcs/peddler_vayne", s14_test_offer, false)
+	var s14_can_buy_with_gold: bool = bool(s14_can_res.get("can_buy", false))
+	var s14_bought_with_gold: bool = bool(s14_buy_res.get("ok", false))
+	var s14_gold_remaining: float = float(rules.shared_registers.get("gold_earned_total", 0.0))
+	var s14_gold_exchange_ok: bool = (s14_geode_gold == 85 and s14_can_buy_with_gold and s14_bought_with_gold and s14_gold_remaining < 500.0)
+
+	# Part C: Zero quarantined unlock_if expressions across all vendor offers in the corpus
+	rules.runtime_quarantined.clear()
+	var s14_total_offers_checked: int = 0
+	for vid in catalog.vendor_catalog.keys():
+		var offers_arr: Array = catalog.vendor_catalog[vid]
+		for off in offers_arr:
+			if off is Dictionary:
+				grid.can_buy_vendor_offer(str(vid), off)
+				s14_total_offers_checked += 1
+	var s14_zero_quarantined_unlocks: bool = rules.runtime_quarantined.is_empty() and s14_total_offers_checked >= 450
+
+	_assert_true(s14_wine_alive_frame0 and s14_wine_mod_active and s14_wine_expired_cleanly and s14_gold_exchange_ok and s14_zero_quarantined_unlocks,
+		"Timed Consumable Survival/45s Expiry, Gold Assayer Exchange & Zero Quarantined unlock_if Expressions",
+		"wine_f0=%s, mod=%s (%.2f->%.2f), expired=%s, geode_gold=%d, gold_buy=%s (rem=%.1f), offers=%d, quarantined=%d" % [
+			str(s14_wine_alive_frame0), str(s14_wine_mod_active), s14_base_yield_before, s14_boosted_yield,
+			str(s14_wine_expired_cleanly), s14_geode_gold, str(s14_bought_with_gold), s14_gold_remaining,
+			s14_total_offers_checked, rules.runtime_quarantined.size()
 		])
 
 

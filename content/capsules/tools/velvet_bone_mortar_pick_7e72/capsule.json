@@ -35,7 +35,7 @@
     {
       "stat": "yield_mult",
       "phase": "mul",
-      "value": "0.0"
+      "value": "0.5"
     }
   ],
   "reactions": [

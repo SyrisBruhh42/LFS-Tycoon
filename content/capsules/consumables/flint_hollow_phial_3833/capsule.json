@@ -50,7 +50,7 @@
         "devices/ochre_sigil_9759": 1,
         "blocks/pewter_gravel_d53e": 150
       },
-      "unlock_if": "player.max_depth <= 249.0"
+      "unlock_if": "player.max_depth >= 15.0"
     }
   ],
   "offline": "coarse"

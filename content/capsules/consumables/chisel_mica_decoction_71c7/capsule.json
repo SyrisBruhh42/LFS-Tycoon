@@ -82,7 +82,7 @@
         "tools/enclave_rivet_sigil_ed7e": 1,
         "blocks/stormbreaker_geode_5e99": 150
       },
-      "unlock_if": "player.max_depth >= 198.0 and player.max_depth <= 330.0 and shared.quarry_resonance_charge > 50.0"
+      "unlock_if": "player.max_depth >= 198.0 and shared.quarry_resonance_charge > 50.0"
     }
   ],
   "offline": "none"

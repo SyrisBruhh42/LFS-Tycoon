@@ -6,8 +6,19 @@
     "author": "jules:session",
     "rarity": "rare"
   },
-  "affordances": ["carry", "socket_in_tool", "sell"],
-  "tags": ["device", "magic_charm", "disposable", "transmuter", "solves_haul_capacity", "path_magic_charm"],
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "magic_charm",
+    "disposable",
+    "transmuter",
+    "solves_haul_capacity",
+    "path_magic_charm"
+  ],
   "stats": {
     "base_value": 45.0
   },
@@ -18,24 +29,43 @@
     {
       "stat": "yield_mult",
       "phase": "mul",
-      "value": "0.0"
+      "value": "0.5"
     }
   ],
   "reactions": [
     {
       "on": "on_block_break",
       "do": [
-        {"act": "spawn_item", "item": "blocks/copper", "qty": "1", "route": "paired_chest"},
-        {"act": "var_add", "var": "self.charges_used", "by": "1.0"},
-        {"act": "emit_alert", "channel": "hud_chime", "tag": "charm_broken", "if": "self.charges_used >= 100.0"},
-        {"act": "destroy_self", "if": "self.charges_used >= 100.0"}
+        {
+          "act": "spawn_item",
+          "item": "blocks/copper",
+          "qty": "1",
+          "route": "paired_chest"
+        },
+        {
+          "act": "var_add",
+          "var": "self.charges_used",
+          "by": "1.0"
+        },
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "charm_broken",
+          "if": "self.charges_used >= 100.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.charges_used >= 100.0"
+        }
       ]
     }
   ],
   "offered_by": [
     {
       "vendor": "npcs/peddler_vayne",
-      "price": {"blocks/dirt": 120}
+      "price": {
+        "blocks/dirt": 120
+      }
     }
   ],
   "offline": "exact"

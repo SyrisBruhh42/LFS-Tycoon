@@ -36,6 +36,7 @@ STARTER_BLOCKS = {"blocks/copper", "blocks/dirt", "blocks/stone"}
 LOGIC_TIERS = ("canonical", "plausible", "whimsical", "absurd")
 BLOCK_RE = re.compile(r"blocks/[a-z0-9_]+")
 DEPTH_RE = re.compile(r"player\.max_depth\s*>=?\s*(\d+(?:\.\d+)?)")
+UPPER_DEPTH_RE = re.compile(r"player\.max_depth\s*<=?\s*(\d+(?:\.\d+)?)")
 HEX4 = re.compile(r"^[0-9a-f]{4}$")
 STEWARD_FOOTER_RE = re.compile(r"<!--\s*steward-audit:\s*(.*?)\s*-->", re.DOTALL)
 GENERIC = {"block", "world", "npc", "vendor", "town", "backfill", "mineral", "catalyst", "heat", "source", "strict",
@@ -209,13 +210,14 @@ class Graph:
                 if not isinstance(off, dict):
                     continue
                 vid = str(off.get("vendor", ""))
+                u_str = str(off.get("unlock_if", ""))
                 gate = 0.0
-                m = DEPTH_RE.search(str(off.get("unlock_if", "")))
+                m = DEPTH_RE.search(u_str)
                 if m:
                     gate = float(m.group(1))
                 eff_d = max(self._npc_depth(vid), gate)
                 price = {k: v for k, v in (off.get("price", {}) or {}).items()}
-                self.all_offers.append({"item": cid, "vendor": vid, "price": price, "depth": eff_d})
+                self.all_offers.append({"item": cid, "vendor": vid, "price": price, "depth": eff_d, "unlock_if": u_str})
 
         for cid, d in self.items.items():
             body = json.dumps({"m": d.get("modifiers", []), "r": d.get("reactions", [])})
@@ -226,15 +228,16 @@ class Graph:
             min_d: float | None = None
             for off in d.get("offered_by", []) or []:
                 vid = str(off.get("vendor", ""))
+                u_str = str(off.get("unlock_if", ""))
                 gate = 0.0
-                m = DEPTH_RE.search(str(off.get("unlock_if", "")))
+                m = DEPTH_RE.search(u_str)
                 if m:
                     gate = float(m.group(1))
                 eff_d = max(self._npc_depth(vid), gate)
                 if min_d is None or eff_d < min_d:
                     min_d = eff_d
                 price = {k: v for k, v in (off.get("price", {}) or {}).items()}
-                self.offers.append({"item": cid, "vendor": vid, "price": price, "depth": eff_d})
+                self.offers.append({"item": cid, "vendor": vid, "price": price, "depth": eff_d, "unlock_if": u_str})
                 self.vendor_offers[vid] += 1
                 self.item_vendors[cid].add(vid)
                 for b in price:
@@ -502,11 +505,13 @@ class Graph:
         return max(1.0, 10.0 + min(150.0, dps * 0.8) + min(60.0, mod_score) + min(40.0, rx_count * 5.0))
 
     def health_metrics(self) -> Dict[str, Any]:
-        """Returns corpus concentration, value-flow ingredient ratio, frontier depth, and open brackets."""
+        """Returns corpus concentration, value-flow ingredient ratio, frontier depth, open brackets,
+        Shannon discipline entropy H_disc, vendor/currency HHI, and gold_sink_count."""
         total_offers = len(self.all_offers)
         v_counter: Counter = Counter()
         c_counter: Counter = Counter()
         non_block_offers = 0
+        gold_sink_count = 0
         for o in self.all_offers:
             vid = o.get("vendor", "")
             if vid:
@@ -514,6 +519,8 @@ class Graph:
             price = o.get("price", {}) or {}
             if any(not str(k).startswith("blocks/") for k in price):
                 non_block_offers += 1
+            if any(str(k).startswith("blocks/") for k in price):
+                gold_sink_count += 1
             for k in price:
                 c_counter[k] += 1
 
@@ -521,6 +528,18 @@ class Graph:
         total_price_entries = sum(c_counter.values()) or 1
         top3_cnt = sum(n for _, n in c_counter.most_common(3))
         denom = max(1, total_offers)
+
+        vendor_hhi = sum((cnt / denom) ** 2 for cnt in v_counter.values())
+        currency_hhi = sum((cnt / total_price_entries) ** 2 for cnt in c_counter.values())
+
+        disc_counter: Counter = Counter()
+        for d in self.items.values():
+            for t in d.get("tags", []) or []:
+                if isinstance(t, str) and t.startswith("craft_"):
+                    disc_counter[t] += 1
+        total_disc = sum(disc_counter.values()) or 1
+        h_disc = -sum((cnt / total_disc) * math.log(cnt / total_disc) for cnt in disc_counter.values() if cnt > 0)
+
         return {
             "capsule_count": len(self.caps),
             "total_offers": total_offers,
@@ -528,6 +547,10 @@ class Graph:
             "max_vendor_offer_share": round(max_vendor_cnt / denom, 6),
             "top3_currency_share": round(top3_cnt / total_price_entries, 6),
             "non_block_ingredient_offer_ratio": round(non_block_offers / denom, 6),
+            "discipline_entropy_h": round(h_disc, 6),
+            "vendor_hhi": round(vendor_hhi, 6),
+            "currency_hhi": round(currency_hhi, 6),
+            "gold_sink_count": gold_sink_count,
             "frontier_depth_z": float(self.frontier_depth()),
             "open_brackets": self.open_brackets(),
         }
@@ -683,8 +706,67 @@ class Graph:
                 best = max(best, self.pair_affinity(item, p_item))
         return best
 
-    # ---- anchor selection for briefs
-    def vendor_candidates(self, ceiling: float, claimed: set[str], dominant_cap: float = 0.40) -> dict[str, float]:
+    # ---- anchor selection & NOAM-1 Virtual Pending Load Ledger / Shazeer MoE Router
+    def build_virtual_load_ledger(
+        self,
+        state_path: Path | None = None,
+        lambda_flight: float = 2.5,
+        lambda_unpulled: float = 1.0,
+        tau_sync: float = 14400.0,
+    ) -> Dict[str, float]:
+        """NOAM-1 x VERIFY-1 Virtual Pending Load Ledger n_hat_i(t):
+        n_hat_i(t) = n_i^disk + lambda_flight * sum_{s in active} I[i in A(s)]
+                              + lambda_unpulled * sum_{s in merged} I[i in A(s) and suffix(s) not in C_disk] * exp(-(t-t_fin)/tau_sync).
+        """
+        import time as _time
+        now_ts = _time.time()
+        ledger: Dict[str, float] = {}
+        for nid in self.npcs:
+            ledger[nid] = float(self.vendor_offers.get(nid, 0))
+        for bid in self.blocks:
+            ledger[bid] = float(self.consumer_count(bid))
+        for cid in self.items:
+            ledger[cid] = float(len(self.prereq_dependents.get(cid, set())))
+
+        disk_suffixes = {
+            cid.rsplit("_", 1)[-1]
+            for cid in self.caps
+            if "_" in cid
+        }
+
+        sp = state_path or (Path.home() / ".local" / "state" / "lfs-tycoon-factory" / "state.json")
+        if not sp.is_file():
+            return ledger
+        try:
+            st = json.loads(sp.read_text(encoding="utf-8"))
+            sessions = st.get("sessions", {})
+            if not isinstance(sessions, dict):
+                return ledger
+            for rec in sessions.values():
+                if not isinstance(rec, dict):
+                    continue
+                anchors = [str(a) for a in (rec.get("anchors") or []) if a]
+                outcome = rec.get("outcome")
+                suffix = str(rec.get("suffix", "")).strip()
+                if outcome is None:
+                    for a in anchors:
+                        ledger[a] = ledger.get(a, 0.0) + lambda_flight
+                elif str(outcome) == "merged" and suffix and suffix not in disk_suffixes:
+                    t_fin = float(rec.get("finished_at_epoch") or rec.get("created_at_epoch") or now_ts)
+                    decay = math.exp(-max(0.0, now_ts - t_fin) / max(1.0, tau_sync))
+                    for a in anchors:
+                        ledger[a] = ledger.get(a, 0.0) + lambda_unpulled * decay
+        except Exception:
+            pass
+        return ledger
+
+    def vendor_candidates(
+        self,
+        ceiling: float,
+        claimed: set[str],
+        dominant_cap: float = 0.40,
+        virtual_ledger: dict[str, float] | None = None,
+    ) -> dict[str, float]:
         top, share = self.vendor_share()
         out: dict[str, float] = {}
         for nid in self.npcs:
@@ -692,25 +774,45 @@ class Graph:
                 continue
             if nid == top and share > dominant_cap:
                 continue
-            n = self.vendor_offers.get(nid, 0) + (3 if nid in claimed else 0)
+            if virtual_ledger is not None and nid in virtual_ledger:
+                n = float(virtual_ledger[nid])
+            else:
+                n = float(self.vendor_offers.get(nid, 0) + (3 if nid in claimed else 0))
             out[nid] = 1.0 / (1.0 + n) ** 2
         return out
 
-    def block_candidates(self, ceiling: float, claimed: set[str], hazard: bool = False) -> dict[str, float]:
+    def block_candidates(
+        self,
+        ceiling: float,
+        claimed: set[str],
+        hazard: bool = False,
+        virtual_ledger: dict[str, float] | None = None,
+    ) -> dict[str, float]:
         out: dict[str, float] = {}
         for bid in self.blocks:
             if not self.obtainable(bid) or self.z_unlock(bid) > ceiling:
                 continue
             if self.is_hazardish(bid) != hazard:
                 continue
-            n = self.consumer_count(bid) + (3 if bid in claimed else 0)
+            if virtual_ledger is not None and bid in virtual_ledger:
+                n = float(virtual_ledger[bid])
+            else:
+                n = float(self.consumer_count(bid) + (3 if bid in claimed else 0))
             out[bid] = 1.0 / (1.0 + n) ** 2
         return out
 
-    def pick_pair(self, rng, tier: str, ceiling: float, claimed: set[str], hazard: bool = False):
+    def pick_pair(
+        self,
+        rng,
+        tier: str,
+        ceiling: float,
+        claimed: set[str],
+        hazard: bool = False,
+        virtual_ledger: dict[str, float] | None = None,
+    ):
         """Pick (vendor, block, affinity, tier_used) from the requested logic band, degrading gracefully."""
-        vs = self.vendor_candidates(ceiling, claimed)
-        bs = self.block_candidates(ceiling, claimed, hazard)
+        vs = self.vendor_candidates(ceiling, claimed, virtual_ledger=virtual_ledger)
+        bs = self.block_candidates(ceiling, claimed, hazard, virtual_ledger=virtual_ledger)
         if not vs or not bs:
             return None
         pairs = [(v, b, self.pair_affinity(v, b), vw * bw) for v, vw in vs.items() for b, bw in bs.items()]
@@ -726,8 +828,11 @@ class Graph:
 
     # ---- scorecard & markdown digest
     def scorecard(self, recent: int = 30) -> dict:
-        unobt, ahead = [], []
+        unobt, ahead, non_monotonic = [], [], []
         for o in self.offers:
+            u_str = str(o.get("unlock_if", ""))
+            if UPPER_DEPTH_RE.search(u_str):
+                non_monotonic.append([o["item"], o["vendor"], u_str])
             for b in o["price"]:
                 if b in self.blocks:
                     if not self.obtainable(b):
@@ -803,6 +908,7 @@ class Graph:
             "health_metrics": self.health_metrics(),
             "repair_queue": self.deterministic_repair_queue(limit=8),
             "unobtainable_prices": unobt, "ahead_of_curve_prices": ahead,
+            "non_monotonic_offers": non_monotonic,
             "connectivity": {"largest_component_share": round(comp.most_common(1)[0][1] / max(len(self.caps), 1), 3),
                              "mean_degree": round(2 * edges / max(len(self.caps), 1), 2)},
             "logic": {"derived": dict(derived), "declared": dict(declared),
@@ -831,6 +937,29 @@ class Graph:
             for item in rq[:5]:
                 lines.append(f"  - [P{item['priority']} `{item['kind']}` -> `{item['target_id']}`] {item['directive']}")
         return "\n".join(lines)
+
+
+def shazeer_moe_route(
+    rng: Any,
+    logits: Dict[str, float],
+    tau: float = 0.35,
+    eps: float = 0.05,
+) -> Tuple[str, Dict[str, float]]:
+    """NOAM-1 Softmax Mixture-of-Experts Router with Simplex Floor Projection."""
+    if not logits:
+        return "E_craft", {"E_craft": 1.0}
+    keys = sorted(logits.keys())
+    k_cnt = len(keys)
+    eff_eps = min(eps, 0.9 / max(1, k_cnt))
+    max_l = max(float(logits[k]) for k in keys)
+    exps = [math.exp(max(-20.0, min(20.0, (float(logits[k]) - max_l) / max(1e-6, tau)))) for k in keys]
+    denom = sum(exps) or 1.0
+    probs = {
+        k: round((1.0 - k_cnt * eff_eps) * (exps[idx] / denom) + eff_eps, 6)
+        for idx, k in enumerate(keys)
+    }
+    chosen = rng.choices(keys, weights=[probs[k] for k in keys], k=1)[0]
+    return chosen, probs
 
 
 ContentGraph = Graph

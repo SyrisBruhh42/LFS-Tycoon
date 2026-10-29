@@ -6,8 +6,25 @@
     "author": "jules:session",
     "rarity": "epic"
   },
-  "affordances": ["place_on_tile", "carry", "sell"],
-  "tags": ["device", "textile", "tile_cover", "gravel", "mortar", "solves_fluid_flooding", "path_field_textile", "craft_smeltery_alloy", "logic_whimsical", "theme_enclave_first_forge", "bracket_2", "skill_school_manual"],
+  "affordances": [
+    "place_on_tile",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "textile",
+    "tile_cover",
+    "gravel",
+    "mortar",
+    "solves_fluid_flooding",
+    "path_field_textile",
+    "craft_smeltery_alloy",
+    "logic_whimsical",
+    "theme_enclave_first_forge",
+    "bracket_2",
+    "skill_school_manual"
+  ],
   "stats": {
     "base_value": 75.0,
     "wear_max": 20.0
@@ -20,7 +37,7 @@
       "stat": "break_time_mult",
       "phase": "add",
       "if": "tile.covered_by_self and tile.fluid_level > 0.0",
-      "value": 0.50
+      "value": 0.5
     }
   ],
   "reactions": [
@@ -28,17 +45,34 @@
       "on": "on_second_tick",
       "if": "tile.covered_by_self and tile.fluid_level > 0.0 and player.grime < 15.0",
       "do": [
-        {"act": "modify_fluid", "target": "self_tile", "fluid_type": "NONE", "delta_level": -1.0},
-        {"act": "var_add", "var": "self.wear", "by": "1.0"},
-        {"act": "var_add", "var": "shared.quarry_resonance_charge", "by": "1.0", "if": "self.wear <= self.stats.wear_max"},
-        {"act": "destroy_self", "if": "self.wear >= self.stats.wear_max"}
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": -1.0
+        },
+        {
+          "act": "var_add",
+          "var": "self.wear",
+          "by": "1.0"
+        },
+        {
+          "act": "var_add",
+          "var": "shared.quarry_resonance_charge",
+          "by": "1.0",
+          "if": "self.wear <= self.stats.wear_max"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.wear >= self.stats.wear_max"
+        }
       ]
     }
   ],
   "offered_by": [
     {
       "vendor": "npcs/gravel_vendor_51cb",
-      "unlock_if": "player.max_depth >= 150.0 and player.max_depth <= 250.0",
+      "unlock_if": "player.max_depth >= 150.0",
       "price": {
         "tools/pewter_mortar_sigil_d84b": 1,
         "blocks/water_aquifer": 25

@@ -6,11 +6,20 @@
     "author": "jules:session",
     "rarity": "uncommon"
   },
-  "affordances": ["mineable_block", "carry", "sell"],
-  "tags": ["world_block", "block", "ore", "quill", "hollow"],
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "world_block",
+    "block",
+    "ore",
+    "quill",
+    "hollow"
+  ],
   "stats": {
     "base_hp": 30.0,
-    "value_base": 25.0,
     "ideal_tool": "PICKAXE",
     "strict_tool_lock": 0,
     "z_unlock": 15,
@@ -18,7 +27,8 @@
     "spawn_prob": 0.02,
     "clump_xy": 4.0,
     "pipe_z": 5.0,
-    "priority_rank": 40
+    "priority_rank": 40,
+    "base_value": 25.0
   },
   "biome_weights": {
     "biomes/standard_crust": 0.02

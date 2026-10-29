@@ -6,7 +6,12 @@
     "author": "jules:session",
     "rarity": "rare"
   },
-  "affordances": ["carry", "equip_tool", "place_on_tile", "sell"],
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "place_on_tile",
+    "sell"
+  ],
   "tags": [
     "tool",
     "pickaxe",
@@ -33,7 +38,7 @@
     {
       "stat": "yield_mult",
       "phase": "mul",
-      "value": "0.0"
+      "value": "0.5"
     }
   ],
   "reactions": [
@@ -41,8 +46,15 @@
       "on": "on_second_tick",
       "if": "self.charge_left > 0.0",
       "do": [
-        {"act": "var_add", "var": "self.charge_left", "by": "-1.0"},
-        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+        {
+          "act": "var_add",
+          "var": "self.charge_left",
+          "by": "-1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.charge_left <= 0.0"
+        }
       ]
     },
     {
@@ -64,14 +76,18 @@
     {
       "on": "on_deplete",
       "do": [
-        {"act": "destroy_self"}
+        {
+          "act": "destroy_self"
+        }
       ]
     }
   ],
   "offered_by": [
     {
       "vendor": "npcs/peddler_vayne",
-      "price": {"blocks/copper": 90}
+      "price": {
+        "blocks/copper": 90
+      }
     }
   ],
   "offline": "coarse"

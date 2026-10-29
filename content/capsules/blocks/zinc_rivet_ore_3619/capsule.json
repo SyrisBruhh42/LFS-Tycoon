@@ -27,7 +27,7 @@
     "clump_xy": 6.0,
     "pipe_z": 6.0,
     "priority_rank": 50,
-    "value_base": 25.0
+    "base_value": 25.0
   },
   "vars": {},
   "modifiers": [],

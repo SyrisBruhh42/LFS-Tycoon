@@ -21,7 +21,8 @@
   "stats": {
     "tool_type": "NONE",
     "tool_tier": 0,
-    "base_value": 40.0
+    "base_value": 40.0,
+    "base_dps": 8.0
   },
   "vars": {},
   "modifiers": [

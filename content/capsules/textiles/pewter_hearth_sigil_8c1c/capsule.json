@@ -68,7 +68,7 @@
         "devices/munchkin_slag_router_55f5": 1,
         "blocks/pewter_gravel_d53e": 120
       },
-      "unlock_if": "shared.quarry_resonance_charge >= 50.0 and player.max_depth <= 249"
+      "unlock_if": "shared.quarry_resonance_charge >= 50.0"
     }
   ],
   "offline": "exact"

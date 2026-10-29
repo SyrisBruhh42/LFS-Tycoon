@@ -38,7 +38,7 @@
       "stat": "yield_mult",
       "phase": "mul",
       "if": "tile.covered_by_self",
-      "value": "0.0"
+      "value": "0.5"
     }
   ],
   "reactions": [

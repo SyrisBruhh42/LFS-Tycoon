@@ -320,6 +320,8 @@ def validate_single_capsule(
         errors.append(f"[{cap_id}] 'stats.spawn_prob' must be in [0.0, 1.0] (got {stats['spawn_prob']}).")
     if "base_value" in stats and (not isinstance(stats["base_value"], (int, float)) or stats["base_value"] < 0):
         errors.append(f"[{cap_id}] 'stats.base_value' must be >= 0 (got {stats['base_value']}).")
+    if "value_base" in stats and "base_value" not in stats:
+        errors.append(f"[{cap_id}] Law L1 violation: 'stats.value_base' is deprecated; use canonical 'stats.base_value'.")
 
     valid_tool_types = set(vocab["affordances"]["tool_types"])
     for tk in ("tool_type", "ideal_tool"):
@@ -460,7 +462,9 @@ def validate_single_capsule(
                 if into_ref not in known_ids:
                     errors.append(f"[{cap_id}] transmute_self references unknown capsule '{into_ref}'{suggest(str(into_ref), known_ids)}")
 
-    # Law L3: Backward edges in offered_by and biome_weights
+    # Law L3 & Law L16: Backward edges and monotonic unlock_if in offered_by and biome_weights
+    if "unlock_if" in data:
+        errors.append(f"[{cap_id}] Law L16 violation: Root-level 'unlock_if' is forbidden (place 'unlock_if' inside 'offered_by[]' entries).")
     for o_idx, offer in enumerate(data.get("offered_by", [])):
         if not isinstance(offer, dict):
             errors.append(f"[{cap_id}] offered_by[{o_idx}] must be an object.")
@@ -477,6 +481,19 @@ def validate_single_capsule(
                     errors.append(f"[{cap_id}] offered_by[{o_idx}].price currency '{curr_id}' unknown{suggest(str(curr_id), known_ids)}")
                 if not isinstance(qty, (int, float)) or qty <= 0:
                     errors.append(f"[{cap_id}] offered_by[{o_idx}].price['{curr_id}'] must be > 0.")
+        if "unlock_if" in offer:
+            u_expr = str(offer["unlock_if"])
+            errors.extend(
+                expr_linter.validate_expr(u_expr, local_stats, local_vars, f"[{cap_id}] offered_by[{o_idx}].unlock_if")
+            )
+            if re.search(r"player\.max_depth\s*<=", u_expr) or re.search(r"player\.max_depth\s*<(?!=)", u_expr):
+                errors.append(
+                    f"[{cap_id}] Law L16 Monotonic Unlock Gate: offered_by[{o_idx}].unlock_if '{u_expr}' uses an upper-bound depth ceiling that permanently re-locks the offer as the player digs deeper."
+                )
+            if re.fullmatch(r"\s*player\.max_depth\s*>=\s*0(?:\.0+)?\s*", u_expr):
+                errors.append(
+                    f"[{cap_id}] Law L16 Non-Tautological Gate: offered_by[{o_idx}].unlock_if '{u_expr}' is a vacuous tautology (use depth >= 10 or omit 'unlock_if')."
+                )
 
     for b_target, b_weight in data.get("biome_weights", {}).items():
         if b_target not in known_ids:
@@ -648,13 +665,14 @@ def check_engine_vocab_wiring(vocab: Dict[str, Any]) -> List[str]:
     return errors
 
 
-def validate_semantic_quality(cap_id: str, data: Dict[str, Any]) -> List[str]:
-    """Forward-only semantic & physics lints enforced on newly added capsules."""
+def validate_semantic_quality(cap_id: str, data: Dict[str, Any], is_new_capsule: bool = True) -> List[str]:
+    """Semantic & physics lints enforced across capsules (Laws L17-L18)."""
     errors: List[str] = []
     ns = cap_id.split("/", 1)[0] if "/" in cap_id else ""
     affordances = set(data.get("affordances", []) if isinstance(data.get("affordances"), list) else [])
     tags = set(data.get("tags", []) if isinstance(data.get("tags"), list) else [])
     stats = data.get("stats", {}) if isinstance(data.get("stats"), dict) else {}
+    vars_dict = data.get("vars", {}) if isinstance(data.get("vars"), dict) else {}
     modifiers = data.get("modifiers", []) if isinstance(data.get("modifiers"), list) else []
     reactions = data.get("reactions", []) if isinstance(data.get("reactions"), list) else []
     offered_by = data.get("offered_by", []) if isinstance(data.get("offered_by"), list) else []
@@ -681,8 +699,8 @@ def validate_semantic_quality(cap_id: str, data: Dict[str, Any]) -> List[str]:
                     f"(Hint: use an 'npcs/*' vendor such as 'npcs/peddler_vayne')."
                 )
 
-    # 3. Per-block spawn_prob cap for new blocks so a single block cannot consume the world mass budget
-    if ns == "blocks" and str(stats.get("fluid_type", "NONE")) == "NONE":
+    # 3. Per-block spawn_prob cap for non-starter blocks so a single block cannot consume the world mass budget
+    if ns == "blocks" and cap_id not in ("blocks/copper", "blocks/dirt", "blocks/stone") and str(stats.get("fluid_type", "NONE")) == "NONE":
         try:
             sp = float(stats.get("spawn_prob", 0.02))
             if sp > 0.03:
@@ -762,14 +780,33 @@ def validate_semantic_quality(cap_id: str, data: Dict[str, Any]) -> List[str]:
                 f"(Hint: add at least one 'modifiers' entry or a gameplay action in 'reactions' that eases the target friction)."
             )
 
-    # 7. Required brief coverage tags
-    has_solution_tags = any(t.startswith("solves_") for t in tags) and any(t.startswith("path_") for t in tags)
-    has_world_tag = any(t.startswith("world_") for t in tags)
-    if not (has_solution_tags or has_world_tag):
-        errors.append(
-            f"[{cap_id}] Semantic error: missing required brief coverage tags in 'tags' "
-            f"(Hint: include both 'solves_<friction>' and 'path_<path_type>' for solution capsules, or 'world_<kind>' for world-building capsules)."
-        )
+    # 7. Required brief coverage tags (for newly added capsules)
+    if is_new_capsule:
+        has_solution_tags = any(t.startswith("solves_") for t in tags) and any(t.startswith("path_") for t in tags)
+        has_world_tag = any(t.startswith("world_") for t in tags)
+        if not (has_solution_tags or has_world_tag):
+            errors.append(
+                f"[{cap_id}] Semantic error: missing required brief coverage tags in 'tags' "
+                f"(Hint: include both 'solves_<friction>' and 'path_<path_type>' for solution capsules, or 'world_<kind>' for world-building capsules)."
+            )
+
+    # 8. Law L17: Consumable Frame-0 Suicide Prohibition
+    if "consume" in affordances and ("active_sec_left" in vars_dict or len(modifiers) > 0):
+        for r_idx, rx in enumerate(reactions):
+            if isinstance(rx, dict) and rx.get("on", rx.get("when")) == "on_consume":
+                for act in rx.get("do", []) if isinstance(rx.get("do"), list) else []:
+                    if isinstance(act, dict) and act.get("act") == "destroy_self":
+                        errors.append(
+                            f"[{cap_id}] Law L17 Consumable Frame-0 Suicide: reactions[{r_idx}] ('on_consume') executes 'destroy_self' on a timed/modifier consumable "
+                            f"(Hint: move 'destroy_self' to an 'on_second_tick' reaction gated by 'self.active_sec_left <= 0')."
+                        )
+
+    # 9. Law L18: Price Ingredient Budget (<= 4 ingredients)
+    for o_idx, offer in enumerate(offered_by):
+        if isinstance(offer, dict) and isinstance(offer.get("price"), dict) and len(offer["price"]) > 4:
+            errors.append(
+                f"[{cap_id}] Law L18 Self-Mix Budget: offered_by[{o_idx}].price has {len(offer['price'])} ingredients (max 4)."
+            )
 
     return errors
 
@@ -886,11 +923,10 @@ def check_dps_pacing_budget(capsules: Dict[str, Dict[str, Any]], check_ids: Set[
         data = capsules.get(cid)
         if not isinstance(data, dict):
             continue
-        affordances = data.get("affordances", []) if isinstance(data.get("affordances"), list) else []
         stats = data.get("stats", {}) if isinstance(data.get("stats"), dict) else {}
         tags = data.get("tags", []) if isinstance(data.get("tags"), list) else []
 
-        if "equip_tool" in affordances or ("base_dps" in stats and cid.startswith("tools/")):
+        if cid.startswith("tools/") or "base_dps" in stats:
             bracket = "bracket_1"
             for t in tags:
                 if t in budgets:
@@ -957,10 +993,10 @@ def check_recursive_value_flow(capsules: Dict[str, Dict[str, Any]], check_ids: S
             if best_cost is not None:
                 cost_map[cid] = best_cost
 
-    # Multi-step recursive arbitrage check on check_ids (and repeatable consumables)
+    # Multi-step recursive arbitrage check on check_ids (and repeatable consumables across all namespaces)
     inspect_ids = set(check_ids)
     for cid, data in capsules.items():
-        if isinstance(data, dict) and "consume" in (data.get("affordances") or []) and not cid.startswith("upgrades/"):
+        if isinstance(data, dict) and "consume" in (data.get("affordances") or []):
             inspect_ids.add(cid)
 
     for cid in sorted(inspect_ids):
@@ -1025,6 +1061,104 @@ def check_recursive_value_flow(capsules: Dict[str, Dict[str, Any]], check_ids: S
                 )
 
     return errors
+
+
+def _canonical_expr_ast_tokens(expr_str: str) -> List[str]:
+    """Parses expression strings ('if', 'value', 'by') via ast.parse(mode='eval') into alpha-renamed AST tokens."""
+    raw = str(expr_str or "").strip()
+    if not raw:
+        return ["EXPR:EMPTY"]
+    norm = re.sub(r"&&", " and ", re.sub(r"\|\|", " or ", re.sub(r"!(?!=)", " not ", raw)))
+    try:
+        tree = ast.parse(norm, mode="eval")
+    except SyntaxError:
+        return [f"EXPR:RAW:{raw}"]
+    tokens: List[str] = []
+
+    def _walk(node: ast.AST) -> None:
+        if isinstance(node, ast.Expression):
+            _walk(node.body)
+        elif isinstance(node, ast.Constant):
+            if isinstance(node.value, (int, float)) and not isinstance(node.value, bool):
+                v = float(node.value)
+                tokens.append("NUM:ZERO" if v == 0.0 else ("NUM:ONE" if v == 1.0 else "NUM:CONST"))
+            else:
+                tokens.append(f"CONST:{node.value}")
+        elif isinstance(node, ast.Attribute):
+            chain: List[str] = []
+            cur: ast.AST = node
+            while isinstance(cur, ast.Attribute):
+                chain.append(cur.attr)
+                cur = cur.value
+            if isinstance(cur, ast.Name):
+                chain.append(cur.id)
+            chain.reverse()
+            if len(chain) >= 3 and chain[0] == "self" and chain[1] == "stats":
+                tokens.append("SYM:SELF_STAT")
+            elif len(chain) >= 2 and chain[0] == "self":
+                tokens.append("SYM:SELF_VAR")
+            elif len(chain) >= 2 and chain[0] == "shared":
+                tokens.append(f"SYM:SHARED:{chain[1]}")
+            elif len(chain) >= 2:
+                tokens.append(f"SYM:ENV:{chain[0]}.{chain[1]}")
+            else:
+                tokens.append("SYM:ATTR")
+        elif isinstance(node, ast.Name):
+            tokens.append(f"SYM:NAME:{node.id}")
+        elif isinstance(node, ast.BinOp):
+            tokens.append(f"BINOP:{type(node.op).__name__}")
+            _walk(node.left)
+            _walk(node.right)
+        elif isinstance(node, ast.BoolOp):
+            tokens.append(f"BOOLOP:{type(node.op).__name__}")
+            for val in node.values:
+                _walk(val)
+        elif isinstance(node, ast.UnaryOp):
+            tokens.append(f"UNARY:{type(node.op).__name__}")
+            _walk(node.operand)
+        elif isinstance(node, ast.Compare):
+            tokens.append("CMP:" + ",".join(type(op).__name__ for op in node.ops))
+            _walk(node.left)
+            for comp in node.comparators:
+                _walk(comp)
+        elif isinstance(node, ast.Call):
+            fn_name = node.func.id if isinstance(node.func, ast.Name) else "CALL"
+            tokens.append(f"FN:{fn_name}")
+            for arg in node.args:
+                _walk(arg)
+        else:
+            tokens.append(type(node).__name__)
+
+    _walk(tree)
+    return tokens
+
+
+def canonicalize_tycoon_ast(data: Dict[str, Any]) -> Tuple[str, ...]:
+    """C_Tycoon(J): Strips non-behavioral keys (meta, tags, offered_by, stats, vars) and projects expressions into AST subtrees."""
+    seq: List[str] = ["CAPSULE"]
+    for aff in sorted(str(a) for a in (data.get("affordances") or []) if isinstance(a, str)):
+        seq.append(f"AFF:{aff}")
+    for mod in data.get("modifiers") or []:
+        if not isinstance(mod, dict):
+            continue
+        seq.append(f"MOD:{mod.get('stat', '')}:{mod.get('phase', '')}")
+        seq.extend(_canonical_expr_ast_tokens(str(mod.get("value", ""))))
+        if "if" in mod:
+            seq.extend(_canonical_expr_ast_tokens(str(mod.get("if", ""))))
+    for rx in data.get("reactions") or []:
+        if not isinstance(rx, dict):
+            continue
+        seq.append(f"RX:{rx.get('on', rx.get('when', ''))}")
+        if "if" in rx:
+            seq.extend(_canonical_expr_ast_tokens(str(rx.get("if", ""))))
+        for act in rx.get("do") or []:
+            if not isinstance(act, dict):
+                continue
+            seq.append(f"ACT:{act.get('act', '')}:{act.get('var', '')}")
+            for expr_k in ("if", "value", "by"):
+                if expr_k in act:
+                    seq.extend(_canonical_expr_ast_tokens(str(act.get(expr_k, ""))))
+    return tuple(seq)
 
 
 def check_health_ratchet(capsules: Dict[str, Dict[str, Any]]) -> List[str]:
@@ -1402,8 +1536,7 @@ def main() -> int:
         errs, data = validate_single_capsule(cap_id, cap_path, vocab, known_ids, expr_linter)
         if data is not None:
             parsed_capsules[cap_id] = data
-            if cap_id in new_cap_ids:
-                errs.extend(validate_semantic_quality(cap_id, data))
+            errs.extend(validate_semantic_quality(cap_id, data, is_new_capsule=(cap_id in new_cap_ids or not is_default_dir)))
         all_errors.extend(errs)
 
     # Load canonical capsules too for cross-capsule economy checks
@@ -1422,8 +1555,8 @@ def main() -> int:
         + check_world_mass_budget(full_economy_pool)
         + check_prereq_graph(full_economy_pool)
         + check_frontier_bound(full_economy_pool, check_ids)
-        + check_dps_pacing_budget(full_economy_pool, check_ids)
-        + check_recursive_value_flow(full_economy_pool, check_ids)
+        + check_dps_pacing_budget(full_economy_pool, set(target_map.keys()))
+        + check_recursive_value_flow(full_economy_pool, set(target_map.keys()))
     )
     # Filter economy errors to capsules in target_map
     for e in econ_errors:

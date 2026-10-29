@@ -38,7 +38,7 @@
       "stat": "yield_mult",
       "phase": "add",
       "if": "player.is_rested == 1.0",
-      "value": 0.10
+      "value": 0.1
     }
   ],
   "reactions": [],
@@ -49,7 +49,7 @@
         "blocks/pewter_gravel_d53e": 20,
         "blocks/copper": 15
       },
-      "unlock_if": "player.max_depth >= 10.0 and player.max_depth <= 45.0"
+      "unlock_if": "player.max_depth >= 10.0"
     }
   ],
   "offline": "none"

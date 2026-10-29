@@ -6,8 +6,20 @@
     "author": "jules:session",
     "rarity": "common"
   },
-  "affordances": ["carry", "socket_in_tool", "sell"],
-  "tags": ["device", "solves_haul_capacity", "path_power_source", "disposable", "pewter", "ledger", "sconce"],
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_haul_capacity",
+    "path_power_source",
+    "disposable",
+    "pewter",
+    "ledger",
+    "sconce"
+  ],
   "stats": {
     "base_value": 50.0
   },
@@ -18,29 +30,47 @@
     {
       "stat": "yield_mult",
       "phase": "mul",
-      "value": "0.0"
+      "value": "0.5"
     }
   ],
   "reactions": [
     {
       "on": "on_hold_tick",
       "do": [
-        {"act": "stall_tool", "pause_battery": true, "pause_durability": false}
+        {
+          "act": "stall_tool",
+          "pause_battery": true,
+          "pause_durability": false
+        }
       ]
     },
     {
       "on": "on_block_break",
       "do": [
-        {"act": "spawn_item", "item": "blocks/stone", "qty": "1", "route": "paired_chest"},
-        {"act": "var_add", "var": "self.breaks_left", "by": "-1.0"},
-        {"act": "destroy_self", "if": "self.breaks_left <= 0.0"}
+        {
+          "act": "spawn_item",
+          "item": "blocks/stone",
+          "qty": "1",
+          "route": "paired_chest"
+        },
+        {
+          "act": "var_add",
+          "var": "self.breaks_left",
+          "by": "-1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.breaks_left <= 0.0"
+        }
       ]
     }
   ],
   "offered_by": [
     {
       "vendor": "npcs/peddler_vayne",
-      "price": {"blocks/copper": 300},
+      "price": {
+        "blocks/copper": 300
+      },
       "unlock_if": "player.max_depth >= 40"
     }
   ],

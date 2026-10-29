@@ -56,7 +56,7 @@
         "devices/ochre_sigil_9759": 1,
         "blocks/pewter_gravel_d53e": 30
       },
-      "unlock_if": "player.max_depth >= 15.0 and player.max_depth <= 45.0 and shared.quarry_resonance_charge > 50.0"
+      "unlock_if": "player.max_depth >= 15.0 and shared.quarry_resonance_charge > 50.0"
     }
   ]
 }

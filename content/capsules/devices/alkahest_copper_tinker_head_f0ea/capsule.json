@@ -55,7 +55,7 @@
         "blocks/water_aquifer": 5,
         "blocks/copper": 50
       },
-      "unlock_if": "player.max_depth >= 150.0 and player.max_depth <= 250.0"
+      "unlock_if": "player.max_depth >= 150.0"
     }
   ]
 }

@@ -23,7 +23,8 @@
     "skill_school_assayers"
   ],
   "stats": {
-    "base_value": 900.0
+    "base_value": 900.0,
+    "base_dps": 28.0
   },
   "vars": {},
   "modifiers": [

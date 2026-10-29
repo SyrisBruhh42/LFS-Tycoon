@@ -6,11 +6,20 @@
     "author": "autonomous:content_developer",
     "rarity": "uncommon"
   },
-  "affordances": ["mineable_block", "carry", "sell"],
-  "tags": ["world_block", "block", "ore", "gravel", "pewter"],
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "world_block",
+    "block",
+    "ore",
+    "gravel",
+    "pewter"
+  ],
   "stats": {
     "base_hp": 8.0,
-    "value_base": 8.0,
     "ideal_tool": "SHOVEL",
     "strict_tool_lock": 0,
     "z_unlock": 15,
@@ -18,7 +27,8 @@
     "spawn_prob": 0.02,
     "clump_xy": 4.0,
     "pipe_z": 4.0,
-    "priority_rank": 50
+    "priority_rank": 50,
+    "base_value": 8.0
   },
   "biome_weights": {
     "biomes/standard_crust": 1.0

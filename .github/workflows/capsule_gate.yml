@@ -96,7 +96,7 @@ jobs:
           grep -aE '\[FAIL\]|VERIFICATION SUMMARY' spikes.log | tee -a report.txt
           grep -aq ", 0 FAILED" spikes.log
 
-      - name: Squash-merge the exact tested commit
+      - name: Rebase-merge the exact tested commit
         run: |
           if [ "$(gh pr view "$PR" -R "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft)" = "true" ]; then
             gh pr ready "$PR" -R "$GITHUB_REPOSITORY"

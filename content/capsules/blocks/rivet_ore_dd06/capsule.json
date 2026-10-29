@@ -6,14 +6,24 @@
     "author": "core:ground_zero",
     "rarity": "common"
   },
-  "affordances": ["mineable_block", "carry", "sell"],
-  "tags": ["world_block", "block", "ore", "metal", "rivet"],
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "world_block",
+    "block",
+    "ore",
+    "metal",
+    "rivet"
+  ],
   "stats": {
     "base_hp": 30.0,
-    "value_base": 15.0,
     "ideal_tool": "PICKAXE",
     "z_unlock": 15,
-    "spawn_prob": 0.02
+    "spawn_prob": 0.02,
+    "base_value": 15.0
   },
   "biome_weights": {
     "biomes/standard_crust": 0.02

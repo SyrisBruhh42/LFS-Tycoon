@@ -52,7 +52,7 @@
       "price": {
         "blocks/copper": 900
       },
-      "unlock_if": "player.tool_tier >= 4.0"
+      "unlock_if": "tool.tier >= 4.0"
     }
   ],
   "offline": "none"

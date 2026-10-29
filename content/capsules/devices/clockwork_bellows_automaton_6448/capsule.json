@@ -51,7 +51,7 @@
   "offered_by": [
     {
       "vendor": "npcs/gravel_vendor_51cb",
-      "unlock_if": "player.max_depth >= 15 and player.max_depth <= 45 and shared.global_cleave_bonus_pct >= 0.0",
+      "unlock_if": "player.max_depth >= 15 and shared.global_cleave_bonus_pct >= 0.0",
       "price": {
         "devices/obsidian_resonant_crucible_d5d5": 1,
         "blocks/pewter_gravel_d53e": 30

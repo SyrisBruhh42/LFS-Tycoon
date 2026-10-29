@@ -46,9 +46,23 @@
       "on": "on_consume",
       "if": "self.installed == 0.0",
       "do": [
-        {"act": "var_set", "var": "self.installed", "value": "1.0"},
-        {"act": "spawn_item", "item": "devices/quartz_kettle_rune_bc30", "qty": "3", "route": "backpack"},
-        {"act": "spawn_item", "item": "consumables/wrens_badger_wine_bc86", "qty": "5", "route": "backpack"}
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": "1.0"
+        },
+        {
+          "act": "spawn_item",
+          "item": "devices/quartz_kettle_rune_bc30",
+          "qty": "1",
+          "route": "backpack"
+        },
+        {
+          "act": "spawn_item",
+          "item": "consumables/wrens_badger_wine_bc86",
+          "qty": "1",
+          "route": "backpack"
+        }
       ]
     }
   ],
@@ -56,8 +70,8 @@
     {
       "vendor": "npcs/peddler_vayne",
       "price": {
-        "blocks/stone": 600,
-        "blocks/copper": 200
+        "blocks/stone": 900,
+        "blocks/copper": 400
       },
       "unlock_if": "player.max_depth >= 50"
     }
