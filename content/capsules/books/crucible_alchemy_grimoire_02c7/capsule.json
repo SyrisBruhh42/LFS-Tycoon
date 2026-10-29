@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Crucible Alchemy Grimoire",
+    "description": "An ancient alchemical cinder-bound manual of The Grand Crucible of the Tectonic Leviathan. Passed down by the smith-lords of the Under-Sun Manifold, it guides the binding of magma veins into Clockwork Brass. When read, it teaches how to assay ores properly for 10% bonus value at market, but consumes gold each time it is used to refine clockwork brass during sales.",
+    "author": "jules:autonomous",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "read_book", "consume", "sell"],
+  "tags": [
+    "book",
+    "skill_book",
+    "solves_market_saturation",
+    "path_skill_book",
+    "craft_alchemy_potion",
+    "logic_plausible",
+    "theme_tectonic_crucible",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "base_dps": 2.0
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "mul",
+      "value": 1.10,
+      "if": "self.is_learned >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {"act": "var_set", "var": "self.is_learned", "value": "1.0"}
+      ]
+    },
+    {
+      "on": "on_market_sell",
+      "if": "self.is_learned >= 1.0 and shared.gold_earned_total >= 5.0",
+      "do": [
+        {"act": "var_add", "var": "shared.gold_earned_total", "by": -5.0},
+        {"act": "spawn_item", "item": "blocks/clockwork_brass_409a", "qty": "1"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "devices/pewter_quill_router_head_2eed": 1,
+        "blocks/clockwork_brass_409a": 55
+      },
+      "unlock_if": "player.max_depth >= 200.0"
+    }
+  ],
+  "offline": "none"
+}
