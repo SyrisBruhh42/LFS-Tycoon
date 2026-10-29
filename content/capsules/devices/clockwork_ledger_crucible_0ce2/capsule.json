@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Ledger Crucible",
+    "description": "A crucible apparatus crafted from Alkahest Pumice and old ledger scraps by The Perpetual Clockwork Deep-Bore Syndicate. When read by automated systems, it consumes raw Alkahest Pumice and synthesizes reputation data, earning discounts from the Rivet Smith.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["device", "upgrade", "qol", "solves_vendor_access", "path_qol_upgrade", "craft_smeltery_alloy", "logic_plausible", "theme_clockwork_syndicate", "bracket_1", "skill_school_assayers", "ledger"],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "value": 0.15
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "if": "tile.depth >= 15",
+          "act": "consume_item",
+          "item": "blocks/alkahest_pumice_a42e",
+          "qty": 1
+        },
+        {
+          "if": "tile.depth >= 15",
+          "act": "var_add",
+          "var": "shared.gold_earned_total",
+          "by": 10.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "devices/clockwork_hollow_siphon_8661": 1,
+        "blocks/alkahest_pumice_a42e": 20
+      },
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ]
+}
