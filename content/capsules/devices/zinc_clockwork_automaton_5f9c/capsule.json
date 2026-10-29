@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Zinc Clockwork Automaton",
+    "description": "An autonomous engineered quarry rig forged from metal, rivet, and cinder strata to crack Obsidian Hazard seals via depth-aware detonations. The Sovereign Ward-Breakers of the Obsidian Seal rely on this device.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "tags": [
+    "solves_depth_awareness",
+    "craft_clockwork_automaton",
+    "path_craft_clockwork_automaton",
+    "bracket_3",
+    "skill_school_manual",
+    "theme_obsidian_wardbreaker",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "base_dps": 150.0
+  },
+  "modifiers": [],
+  "offline": "coarse",
+  "affordances": ["place_on_tile", "equip_tool"],
+  "offered_by": [
+    {
+      "vendor": "npcs/alkahest_vendor_a46c",
+      "price": {
+        "textiles/pewter_syndicate_dampener_cc3b": 1.0,
+        "blocks/zinc_rivet_ore_3619": 10.0,
+        "blocks/vitriol_loam_fa0e": 10.0
+      },
+      "unlock_if": "player.max_depth >= 400.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/zinc_rivet_ore_3619",
+          "qty": 1.0
+        },
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_depth_calipers",
+          "enabled": true
+        }
+      ]
+    }
+  ]
+}
