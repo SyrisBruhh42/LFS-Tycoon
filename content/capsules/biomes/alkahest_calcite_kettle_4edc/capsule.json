@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Calcite Kettle",
+    "description": "A subterranean hydro-works chamber resembling a massive terraced alembic, where hydro-alchemists flood strata with brine and vitriol to soften rock.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "world_biome",
+    "theme_alkahest_hydro",
+    "calcite",
+    "kettle",
+    "hydro"
+  ],
+  "stats": {
+    "z_min": 650,
+    "z_max": 800,
+    "biome_weight": 0.8
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/alkahest_vitriol_e67f": 1.5,
+    "blocks/alkahest_calcite_6904": 2.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
