@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Clockwork Automaton",
+    "description": "An intricate clockwork device forged from pewter gravel by the deep-bore horologist of The Perpetual Clockwork Deep-Bore Syndicate. When socketed into a tool or placed on a tile, its arcane sigil stone channels the subterranean resonance to effectively sustain the tool's runtime.",
+    "author": "jules:autonomous",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "place_on_tile", "sell"],
+  "tags": [
+    "device",
+    "solves_auto_tool_runtime",
+    "path_placeable_device",
+    "craft_skyrim_enchant",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "if": "tile.depth >= 10.0",
+      "value": 0.5
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "devices/obsidian_resonant_crucible_d5d5": 1,
+        "blocks/pewter_gravel_d53e": 120
+      },
+      "unlock_if": "player.max_depth >= 45.0"
+    }
+  ],
+  "offline": "none"
+}
