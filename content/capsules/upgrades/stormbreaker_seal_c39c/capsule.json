@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Stormbreaker Achievement Seal",
+    "description": "An unlockable trophy seal of The Enclave First Forge & Stormbreaker Concordance. Sympathetic core-metallurgy and captured-lightning geode smithing pioneered by The Forge Squad (Silas, Leo, Hector, Jane) of the Enclave of the 16, where hyper-dense alloys shift resonance with operator focus and grounding rods tame subterranean plasma.",
+    "author": "autonomous:content_developer",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": [
+    "upgrade",
+    "solves_unwanted_splash",
+    "path_placeable_device",
+    "craft_achievement_relic",
+    "logic_canonical",
+    "theme_enclave_first_forge",
+    "bracket_3",
+    "skill_school_manual",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 30.0,
+    "base_dps": 100.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "cleave_radius",
+      "phase": "clamp",
+      "value": 0.0,
+      "if": "ctx.is_secondary_damage >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/clockwork_brass_409a",
+          "qty": 1.0
+        },
+        {
+          "act": "spawn_item",
+          "item": "blocks/copper",
+          "qty": 2.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/forge_artisan_67e3",
+      "price": {
+        "devices/clockwork_automaton_dc49": 1,
+        "blocks/clockwork_brass_409a": 5,
+        "blocks/copper": 10
+      },
+      "unlock_if": "player.max_depth >= 850.0 and shared.quarry_resonance_charge >= 1.0"
+    }
+  ],
+  "offline": "none"
+}
