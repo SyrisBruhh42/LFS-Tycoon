@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin Paradox Tome",
+    "description": "A whimsical grimoire from The Paradox Symposium of St. Munchkin. Smelling faintly of tallow and bound with rivet ore brackets, this tome was penned by a rogue Lantern Smith. When striking an immovable obstacle, it reads a line of literal folk-logic aloud, pausing its own fatigue because 'one cannot tire if the stone does not yield', and channels latent energies into a minor geomantic depth shift.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_zero_damage_stall",
+    "path_tool_builtin",
+    "craft_spell_grimoire",
+    "logic_whimsical",
+    "theme_munchkin_paradox",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 3,
+    "base_dps": 65.0,
+    "durability_max": 250.0,
+    "is_rechargeable": 1,
+    "base_value": 75.0
+  },
+  "vars": {
+    "durability_left": 250.0
+  },
+  "modifiers": [
+    {
+      "stat": "cleave_pct",
+      "phase": "add",
+      "value": -0.1
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {
+          "act": "stall_tool",
+          "pause_battery": true,
+          "pause_durability": true
+        },
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "zero_damage"
+        },
+        {
+          "act": "modify_depth",
+          "target": "self_tile",
+          "delta": 1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/lantern_smith_fb67",
+      "price": {
+        "upgrades/ochre_forge_milestone_relic_9ed9": 1,
+        "blocks/rivet_ore_dd06": 120
+      },
+      "unlock_if": "player.max_depth >= 150"
+    }
+  ],
+  "offline": "none"
+}
