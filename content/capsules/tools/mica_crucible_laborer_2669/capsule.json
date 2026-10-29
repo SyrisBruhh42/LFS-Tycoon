@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mica Crucible Laborer Clockwork Pick",
+    "description": "An autonomous clockwork crucible tool forged from pewter gravel by the blind monastic archivists of Quill Hollow (part of The Infinite Scriptorium of the Lithic Choir). Operating decoupled from the player, it chips away to ease the early-game drudgery while its zero-damage stalls and bell harmonics can shatter contours and refine pewter gravel into advanced alloys.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "equip_tool", "place_on_tile", "sell"],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "automine",
+    "clockwork",
+    "disposable",
+    "solves_slow_early_dps",
+    "path_hired_laborer",
+    "craft_smeltery_alloy",
+    "logic_plausible",
+    "theme_lithic_choir",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 60.0,
+    "charge_max_sec": 14400.0,
+    "durability_max": 1200.0,
+    "is_rechargeable": 0,
+    "base_value": 75.0,
+    "unlock_depth": 45.0
+  },
+  "vars": {
+    "charge_left": 14400.0,
+    "durability_left": 1200.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "tile.depth < 300.0",
+      "value": 1.5
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "self.charge_left > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": -1.0},
+        {"act": "destroy_self", "if": "self.charge_left <= 0.0"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/pewter_gravel_d53e",
+          "qty": 1.0,
+          "if": "tile.depth >= 500.0"
+        },
+        {
+          "act": "spawn_item",
+          "item": "blocks/copper",
+          "qty": 2.0,
+          "if": "tile.depth >= 500.0",
+          "route": "backpack"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_vendor_51cb",
+      "price": {
+        "devices/clockwork_gasket_a742": 1,
+        "blocks/pewter_gravel_d53e": 50
+      },
+      "unlock_if": "player.max_depth >= 15.0"
+    }
+  ],
+  "offline": "coarse"
+}
