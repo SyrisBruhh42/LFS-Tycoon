@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Magma Vitriol Phial",
+    "description": "A concoction pioneered by The Forge Squad of the Enclave of the 16. The Quill Peddler occasionally brews this witty vitriol of the hearth by using a Munchkin's Kettle-Alarm to extract the slow, relentless heat of Magma Anvilstone. Rather than melting your pickaxe, the resulting alchemical syrup ironically softens the bedrock, slashing durability wear by half whenever striking hazardous tiles. It's subterranean folk-science at its finest.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "solves_repair_upkeep",
+    "path_forge_material",
+    "craft_alchemy_potion",
+    "logic_whimsical",
+    "theme_enclave_first_forge",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {
+    "is_active": 0.0,
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "self.is_active >= 1.0 and tile.is_hazard >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_active",
+          "value": 1.0
+        },
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": 300.0
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.active_sec_left",
+          "by": -1.0,
+          "if": "self.is_active >= 1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.is_active >= 1.0 and self.active_sec_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/quill_peddler_0c07",
+      "price": {
+        "devices/munchkin_kettle_alarm_421e": 1,
+        "blocks/magma_anvilstone_6384": 25
+      },
+      "unlock_if": "player.max_depth >= 15.0"
+    }
+  ],
+  "offline": "none"
+}
