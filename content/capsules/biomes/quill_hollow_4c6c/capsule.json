@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quill Hollow Scriptorium",
+    "description": "The Infinite Scriptorium of the Lithic Choir. Blind monastic archivists discovered that bedrock is frozen acoustic music, using zero-damage stalls and bell harmonics to shatter equal-depth contours here.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["biome", "world_biome", "theme_lithic_choir", "vitriol", "iron"],
+  "stats": {
+    "z_min": 800,
+    "z_max": 950,
+    "biome_weight": 0.25
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/alkahest_pumice_a42e": 0.5,
+    "blocks/bismuth_gasket_c829": 0.5,
+    "blocks/alkahest_calcite_6904": 0.3,
+    "blocks/alkahest_quartz_d755": 0.2
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
