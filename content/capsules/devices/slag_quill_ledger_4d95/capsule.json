@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Slag Quill Ledger",
+    "description": "A whimsically drafted apprentice ledger from The Perpetual Clockwork Deep-Bore Syndicate. Written with a slag-tipped quill, this horological apparatus magically crosses out Lark Newt Rivet ore in your pack as you mine, transmuting it into refined copper through sheer bureaucratic clockwork to avoid market saturation.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "book",
+    "skill_book",
+    "solves_market_saturation",
+    "path_skill_book",
+    "craft_smeltery_alloy",
+    "logic_whimsical",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "charge_left": 50.0
+  },
+  "vars": {
+    "is_learned": 0.0,
+    "charge_left": 50.0
+  },
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "add",
+      "value": 0.05
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_learned",
+          "value": 1.0,
+          "if": "self.is_learned == 0.0"
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/lark_newt_rivet_ore_a337",
+          "qty": 1,
+          "if": "self.is_learned >= 1.0 and self.charge_left > 0.0"
+        },
+        {
+          "act": "spawn_item",
+          "item": "blocks/copper",
+          "qty": 1,
+          "if": "self.is_learned >= 1.0 and self.charge_left > 0.0"
+        },
+        {
+          "act": "var_add",
+          "var": "self.charge_left",
+          "by": -1.0,
+          "if": "self.is_learned >= 1.0 and self.charge_left > 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ember_vendor_f749",
+      "price": {
+        "upgrades/enclave_first_forge_bench_f362": 1,
+        "blocks/lark_newt_rivet_ore_a337": 30
+      },
+      "unlock_if": "player.max_depth >= 20"
+    }
+  ],
+  "offline": "none"
+}
