@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Vitriolic Slag Catalyzer",
+    "description": "An ancient manual from The Living Atlas & Mycelial Sanctuary of the Enclave. It teaches how to channel 50% of overkill damage into splash damage on the shallowest block above, at the cost of transmuting 1 Crucible Cinderslag per use.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "book",
+    "skill_book",
+    "solves_overkill_waste",
+    "path_skill_book",
+    "craft_smeltery_alloy",
+    "logic_canonical",
+    "theme_enclave_living_atlas",
+    "bracket_2",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 80.0,
+    "splash_pct": 0.5
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_learned",
+          "value": "1.0",
+          "if": "self.is_learned == 0.0"
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": "tool.overkill_damage * self.stats.splash_pct",
+          "if": "self.is_learned >= 1.0 and tool.overkill_damage > 0.0"
+        },
+        {
+          "act": "consume_item",
+          "item": "blocks/cinderslag_8f82",
+          "qty": 1,
+          "if": "self.is_learned >= 1.0 and tool.overkill_damage > 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/cinder_runesmith_b3de",
+      "price": {
+        "devices/vitriol_tallow_brazier_16ea": 1,
+        "blocks/cinderslag_8f82": 80
+      },
+      "unlock_if": "player.max_depth >= 250.0"
+    }
+  ],
+  "offline": "none"
+}
