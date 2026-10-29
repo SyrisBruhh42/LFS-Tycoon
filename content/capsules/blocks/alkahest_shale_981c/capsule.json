@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Shale",
+    "description": "A brittle stratum softened by subterranean hydro-alchemists flooding the area with brine and vitriol.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "world_block",
+    "theme_alkahest_hydro",
+    "shale"
+  ],
+  "stats": {
+    "base_hp": 25.0,
+    "base_value": 8.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 980,
+    "z_max": 1200,
+    "l_step": 1000,
+    "spawn_prob": 0.01,
+    "clump_xy": 6.0,
+    "pipe_z": 6.0,
+    "priority_rank": 50
+  },
+  "biome_weights": {},
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
