@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Pumice",
+    "description": "A porous, sponge-like rock infused with the caustic vitriol of subterranean hydro-alchemists. Softened by centuries of acidic flooding."
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "world_block",
+    "theme_alkahest_hydro",
+    "pumice"
+  ],
+  "stats": {
+    "base_hp": 25.0,
+    "base_value": 8.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 490,
+    "z_max": 750,
+    "l_step": 1000,
+    "spawn_prob": 0.012,
+    "clump_xy": 6.0,
+    "pipe_z": 6.0,
+    "priority_rank": 50
+  },
+  "biome_weights": {},
+  "vars": {},
+  "modifiers": [],
+  "reactions": []
+}
