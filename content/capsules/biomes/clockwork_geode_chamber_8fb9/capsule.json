@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Geode Chamber",
+    "description": "A forgotten subterranean pocket mine carved out by the Perpetual Clockwork Deep-Bore Syndicate, echoing with the hum of silent horologists.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "world_biome",
+    "theme_clockwork_syndicate",
+    "tin"
+  ],
+  "stats": {
+    "z_min": 920,
+    "z_max": 1050,
+    "biome_weight": 0.25
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/alkahest_calcite_6904": 0.3,
+    "blocks/alkahest_quartz_d755": 0.3
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
