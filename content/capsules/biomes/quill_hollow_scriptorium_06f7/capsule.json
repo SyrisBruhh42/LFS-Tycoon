@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Infinite Scriptorium of the Lithic Choir",
+    "description": "Blind monastic archivists of Quill Hollow who discovered that bedrock is frozen acoustic music, using zero-damage stalls and bell harmonics to shatter equal-depth contours. Rich in cinder and galena.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "world_biome",
+    "theme_lithic_choir",
+    "cinder",
+    "galena"
+  ],
+  "stats": {
+    "z_min": 920,
+    "z_max": 1080,
+    "biome_weight": 0.25
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/alkahest_calcite_6904": 0.5,
+    "blocks/alkahest_quartz_d755": 0.5
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
