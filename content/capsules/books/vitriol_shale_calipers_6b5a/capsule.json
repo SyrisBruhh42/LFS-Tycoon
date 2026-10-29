@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Vitriol Shale Calipers",
+    "description": "A crude, alchemically-treated shale caliper designed by The Forge Squad of the Enclave of the 16. Reading its deeply etched diagrams allows one to interpret the resonating depth of vitriol loam and other deep strata, activating HUD chalk lines and depth calipers to ease depth awareness.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": [
+    "book",
+    "skill_book",
+    "solves_depth_awareness",
+    "path_skill_book",
+    "craft_alchemy_potion",
+    "logic_canonical",
+    "theme_enclave_first_forge",
+    "bracket_1",
+    "skill_school_manual",
+    "shale"
+  ],
+  "stats": {
+    "base_value": 110.0,
+    "break_time_reduction": 0.85
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "self.is_learned >= 1.0 and tile.depth >= 30",
+      "value": "self.stats.break_time_reduction"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {"act": "var_set", "var": "self.is_learned", "value": "1.0"},
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true},
+        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": true}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "if": "self.is_learned >= 1.0 and tile.depth >= 30 and tile.tier >= 2",
+      "do": [
+        {"act": "var_add", "var": "shared.quarry_resonance_charge", "by": "1.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/cinder_runesmith_b3de",
+      "price": {
+        "devices/clockwork_bellows_charm_81a9": 1,
+        "blocks/vitriol_loam_fa0e": 120
+      },
+      "unlock_if": "player.max_depth >= 180 and shared.quarry_resonance_charge >= 50.0"
+    }
+  ],
+  "offline": "none"
+}
