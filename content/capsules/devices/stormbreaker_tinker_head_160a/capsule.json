@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Stormbreaker Tinker Head",
+    "description": "Forged by The Enclave First Forge. Hyper-dense alloys shift resonance with operator focus and grounding rods tame subterranean plasma. Sockets into modular tools to assist in chaotic events.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["socket_in_tool", "carry", "sell", "equip_tool"],
+  "tags": [
+    "solves_event_helpers",
+    "path_consumable_buff",
+    "craft_tinker_part",
+    "bracket_2",
+    "skill_school_manual",
+    "theme_enclave_first_forge",
+    "logic_canonical",
+    "steward_keystone",
+    "tinker_head"
+  ],
+  "stats": {
+    "base_dps": 50.0,
+    "market_value_mult": 1.0
+  },
+  "vars": {
+    "active": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "add",
+      "value": 50.0,
+      "if": "tile.depth >= 330.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "blocks/stormbreaker_geode_5e99",
+          "qty": 1,
+          "if": "tile.depth >= 330.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/deep_bore_horologist_35a3",
+      "price": {
+        "consumables/alkahest_vitriol_tonic_e019": 1,
+        "blocks/stormbreaker_geode_5e99": 3,
+        "blocks/copper": 5
+      },
+      "unlock_if": "player.max_depth >= 198.0"
+    }
+  ],
+  "offline": "none"
+}
