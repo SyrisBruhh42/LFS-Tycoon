@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Mica Charm",
+    "description": "A trinket woven from Obsidian Mica Ward by The Perpetual Clockwork Deep-Bore Syndicate. Its steam-baronies and horologists found this warding gem prevents self-feeding wind-up automatons and deep-bore railways from wasting power on impassable barriers. It resonates with Quill Peddler dust to pause tool durability and battery loss when striking unyielding strict-locked or fluid blockades. True efficiency comes when the user's hands are clean of grime.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "consume", "sell", "socket_in_tool"],
+  "tags": [
+    "consumable",
+    "charm",
+    "solves_zero_damage_stall",
+    "path_magic_charm",
+    "craft_alchemy_potion",
+    "logic_canonical",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "duration_sec": 300.0,
+    "base_dps": 15.0
+  },
+  "vars": {
+    "active_sec_left": -1.0,
+    "times_rung": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0 and player.grime < 15.0 and tile.is_strict_locked == 1.0",
+      "value": 0.0
+    },
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0 and player.grime < 15.0 and tile.is_strict_locked == 1.0",
+      "value": 0.0
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.active_sec_left", "value": "self.stats.duration_sec"}
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "do": [
+        {"act": "var_add", "var": "self.active_sec_left", "by": "-1.0", "if": "self.active_sec_left > 0.0"},
+        {"act": "destroy_self", "if": "self.active_sec_left == 0.0"}
+      ]
+    },
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {"act": "stall_tool", "pause_battery": true, "pause_durability": true, "if": "self.active_sec_left > 0.0"},
+        {"act": "emit_alert", "channel": "house_bell", "tag": "stall_impassable", "if": "self.active_sec_left > 0.0"},
+        {"act": "var_add", "var": "shared.house_bell_ringing", "by": "1.0", "if": "self.active_sec_left > 0.0"},
+        {"act": "var_add", "var": "self.times_rung", "by": "1.0", "if": "self.active_sec_left > 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/quill_peddler_0c07",
+      "price": {
+        "upgrades/umber_wick_geomancy_grimoire_6948": 1,
+        "blocks/obsidian_mica_ward_a85f": 25
+      },
+      "unlock_if": "player.max_depth >= 15.0"
+    }
+  ],
+  "offline": "none"
+}
