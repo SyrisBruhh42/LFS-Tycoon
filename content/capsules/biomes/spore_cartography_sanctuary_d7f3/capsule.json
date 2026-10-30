@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Spore Cartography Sanctuary",
+    "description": "A rare subterranean sanctuary of The Living Atlas & Mycelial Sanctuary of the Enclave. Bioluminescent spore cartography illuminates the way through magnetotropic flora cultivation, with warm hearth vents keeping the Schrödinger's Harvest culinary alchemy active.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "biome",
+    "world_biome",
+    "theme_enclave_living_atlas",
+    "hearth"
+  ],
+  "stats": {
+    "z_min": 1200,
+    "z_max": 1300,
+    "biome_weight": 0.45
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/lantern_paradox_ore_48fa": 1.2,
+    "blocks/alkahest_quartz_d755": 0.8
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
