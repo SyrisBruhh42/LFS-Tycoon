@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Crucible Relic",
+    "description": "An anvil-struck milestone seal from the ancient smith-lords of The Grand Crucible of the Tectonic Leviathan. Proves mastery of the Ochre Stratum, offering deep-earth insights to raise floors effectively when backfilling with loose materials.",
+    "author": "core:ground_zero",
+    "rarity": "rare",
+    "era": "early"
+  },
+  "affordances": ["carry", "equip_tool"],
+  "tags": [
+    "tool",
+    "solves_backfill_scaffolding",
+    "path_tool_builtin",
+    "craft_achievement_relic",
+    "logic_canonical",
+    "theme_tectonic_crucible",
+    "bracket_1",
+    "skill_school_manual",
+    "anvil"
+  ],
+  "stats": {
+    "tool_type": "SHOVEL",
+    "tool_tier": 1,
+    "base_dps": 120.0,
+    "durability_max": 250.0,
+    "is_rechargeable": 1,
+    "base_value": 45.0
+  },
+  "vars": {
+    "durability_left": 250.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "tile.depth < tile.max_depth_reached",
+      "value": "0.75"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_backfill",
+      "do": [
+        {"act": "modify_depth", "target": "self_tile", "delta": -1.0}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ochre_toad_5e64",
+      "price": {
+        "upgrades/ochre_crucible_grimoire_4837": 1,
+        "blocks/ochre_stratum_d812": 120
+      },
+      "unlock_if": "player.max_depth >= 45 and tool.tier >= 3"
+    }
+  ],
+  "offline": "none"
+}
