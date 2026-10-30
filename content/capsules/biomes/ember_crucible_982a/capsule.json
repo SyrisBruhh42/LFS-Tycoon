@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ember Crucible",
+    "description": "A subterranean pocket mine of intense heat and anvilstone, once manipulated by the smith-lords of the Under-Sun Manifold to form natural smelting arrays.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "world_biome",
+    "theme_tectonic_crucible",
+    "ember",
+    "heat",
+    "crucible"
+  ],
+  "stats": {
+    "z_min": 1080,
+    "z_max": 1260,
+    "biome_weight": 0.45
+  },
+  "biome_weights": {
+    "blocks/stone": 1.5,
+    "blocks/alkahest_shale_981c": 2.2,
+    "blocks/alkahest_calcite_6904": 1.8,
+    "blocks/obsidian_iron_e0eb": 0.4,
+    "blocks/magma_anvilstone_6384": 0.6
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
