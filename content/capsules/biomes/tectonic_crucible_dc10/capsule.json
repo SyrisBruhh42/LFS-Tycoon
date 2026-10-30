@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tectonic Crucible Strata",
+    "description": "Ancient subterranean lens bound by magma veins and anvilstone.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["world_biome", "theme_tectonic_crucible", "anvil"],
+  "stats": {
+    "z_min": 1100,
+    "z_max": 1250,
+    "biome_weight": 0.35
+  },
+  "biome_weights": {
+    "blocks/stone": 1.8,
+    "blocks/alkahest_shale_981c": 0.8,
+    "blocks/alkahest_quartz_d755": 0.5
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
