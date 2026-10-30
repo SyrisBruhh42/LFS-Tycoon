@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Deep-Bore",
+    "description": "A sprawling subterranean pocket mine operated by the Perpetual Clockwork Deep-Bore Syndicate. Rumbling autonomous deep-bore railways and pneumatic chest tubes dot this ochre-tinted stratum, uncovering rich veins of alkahest calcite and shale.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "world_biome",
+    "theme_clockwork_syndicate",
+    "stratum",
+    "ochre",
+    "calcite",
+    "shale"
+  ],
+  "stats": {
+    "z_min": 1250,
+    "z_max": 1400,
+    "biome_weight": 0.35
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/alkahest_calcite_6904": 0.8,
+    "blocks/alkahest_shale_981c": 0.6
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
