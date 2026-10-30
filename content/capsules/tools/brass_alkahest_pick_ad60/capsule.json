@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Brass Alkahest Pick",
+    "description": "A tool of The Sovereign Ward-Breakers of the Obsidian Seal. Specially designed to pierce strict-locked Obsidian Hazard seals, using Alkahest Shale for its corrosive catalyst-sapping properties.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "equip_tool", "sell"],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_slow_early_dps",
+    "path_tool_builtin",
+    "craft_achievement_relic",
+    "logic_canonical",
+    "theme_obsidian_wardbreaker",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 80.0,
+    "durability_max": 200.0,
+    "is_rechargeable": 1,
+    "base_value": 150.0
+  },
+  "vars": {
+    "durability_left": 200.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "value": 1.5,
+      "if": "tile.depth < 300.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": 20.0,
+          "if": "tile.is_hazard == 1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "upgrades/vitriol_wardbreaker_tinker_head_7e9d": 1,
+        "blocks/alkahest_shale_981c": 20
+      },
+      "unlock_if": "player.max_depth >= 45 and shared.quarry_resonance_charge >= 50.0"
+    }
+  ],
+  "offline": "none"
+}
