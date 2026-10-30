@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quarry Achievement Seal",
+    "description": "An unlockable trophy seal requiring a deep quarry feat, forged by the Lantern Bureaucrat. It incorporates the bioluminescent spore cartography and magnetotropic flora cultivation of the Enclave, utilizing Lithic Choir Sconce fragments to mitigate mechanical and magical tool wear.",
+    "author": "Enterprise Steward",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "solves_repair_upkeep",
+    "craft_achievement_relic",
+    "bracket_4",
+    "skill_school_manual",
+    "theme_enclave_living_atlas",
+    "logic_canonical",
+    "steward_keystone",
+    "path_profession_perk"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {
+    "installed": 1.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": "0.7",
+      "if": "self.installed > 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/lithic_choir_sconce_cf21",
+          "qty": 1
+        },
+        {
+          "act": "spawn_item",
+          "item": "blocks/copper",
+          "qty": 1
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/lantern_bureaucrat_c296",
+      "price": {
+        "upgrades/stormbreaker_calipers_bench_1775": 1,
+        "blocks/lithic_choir_sconce_cf21": 5,
+        "blocks/copper": 10
+      },
+      "unlock_if": "player.max_depth >= 1250"
+    }
+  ]
+}
