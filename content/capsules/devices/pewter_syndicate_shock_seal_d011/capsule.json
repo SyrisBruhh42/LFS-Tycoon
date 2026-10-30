@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Syndicate Shock Seal",
+    "description": "A modular tinker head forged from quill ore and imbued with a glowing wick. The horologists of The Perpetual Clockwork Deep-Bore Syndicate crafted this dampening seal for their autonomous deep-bore railways. Once socketed into a tool, its pneumatic resonance clamps secondary kinetic shockwaves, preventing pristine blocks from shattering. It loses charge with each blocked splash hit.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": [
+    "device",
+    "tinker_head",
+    "solves_unwanted_splash",
+    "path_npc_enchanter",
+    "craft_tinker_part",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_assayers",
+    "pewter",
+    "wick"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "charge_left": 100.0
+  },
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "value": 1.0,
+      "if": "ctx.is_secondary_damage == 1.0 and self.charge_left > 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.charge_left",
+          "by": -1.0,
+          "if": "ctx.is_secondary_damage == 1.0 and self.charge_left > 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "books/cinder_munchkin_clockwork_6d39": 1,
+        "blocks/quill_ore_4083": 10
+      },
+      "unlock_if": "player.max_depth >= 15.0"
+    }
+  ]
+}
