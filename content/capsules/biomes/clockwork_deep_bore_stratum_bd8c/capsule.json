@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Deep-Bore Stratum",
+    "description": "A deep subterranean stratum carved out by The Perpetual Clockwork Deep-Bore Syndicate, rich in quartz and calcite.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["biome", "world_biome", "theme_clockwork_syndicate", "quartz"],
+  "stats": {
+    "z_min": 1160,
+    "z_max": 1310,
+    "biome_weight": 0.35
+  },
+  "biome_weights": {
+    "blocks/stone": 2.0,
+    "blocks/bellows_anvilstone_a42e": 1.5,
+    "blocks/alkahest_calcite_6904": 1.5
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
