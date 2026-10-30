@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Enclave Atlas Stratum",
+    "description": "A rare hollow subterranean sanctuary of The Living Atlas & Mycelial Sanctuary of the Enclave. Bioluminescent spore cartography illuminates the way through magnetotropic flora cultivation, with warm hearth vents keeping the Schrödinger's Harvest culinary alchemy active.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["world_biome", "theme_enclave_living_atlas", "hearth"],
+  "stats": {
+    "z_min": 1300,
+    "z_max": 1450,
+    "biome_weight": 0.35
+  },
+  "biome_weights": {
+    "blocks/stone": 1.5,
+    "blocks/alkahest_calcite_6904": 0.8,
+    "blocks/alkahest_quartz_d755": 0.6
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
