@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Enclave Botanist Artisan",
+    "description": "A rare guild botanist of the Living Atlas, trading in bioluminescent spore cartography, magnetotropic flora cultivation, and Schrödinger's Harvest culinary alchemy.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": ["npc_vendor"],
+  "tags": ["npc", "vendor", "world_npc", "theme_enclave_living_atlas", "bellows"],
+  "stats": {
+    "unlock_depth": 1150.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": []
+}
