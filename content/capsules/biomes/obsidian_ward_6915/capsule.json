@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Ward-Breakers Seal",
+    "description": "A rare subterranean pocket mine of The Sovereign Ward-Breakers of the Obsidian Seal. Siege geomancers swore to crack the 1% strict-locked Obsidian Hazard seals here. Rich in wick and pewter veins, this geode chamber straddles the active quarry frontier.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "world_biome",
+    "theme_obsidian_wardbreaker",
+    "pewter",
+    "wick"
+  ],
+  "stats": {
+    "z_min": 1300,
+    "z_max": 1400,
+    "biome_weight": 0.25
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/munchkin_pumice_3049": 0.6,
+    "blocks/alkahest_calcite_6904": 0.4
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
