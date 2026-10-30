@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lantern Paradox Ore",
+    "description": "A strange, glowing ore bound by bureaucratic loopholes. Miners swear it looks brighter when they file a Form 42-B in triplicate.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["mineable_block", "carry", "sell"],
+  "tags": ["world_block", "theme_munchkin_paradox", "ore", "lantern"],
+  "stats": {
+    "base_hp": 45.0,
+    "base_value": 25.0,
+    "spawn_prob": 0.010,
+    "z_unlock": 1200,
+    "z_max": 1450,
+    "ideal_tool": "PICKAXE"
+  },
+  "biome_weights": {},
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
