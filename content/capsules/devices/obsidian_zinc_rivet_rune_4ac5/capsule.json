@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Zinc Rivet Rune",
+    "description": "Forged from dense orphan strata by the Rivet Smith, this arcane resonance sigil binds the elemental rigidity of Obsidian Zinc onto any socketed tool. Fashioned from the lore of The Perpetual Clockwork Deep-Bore Syndicate, it drastically slows tool wear but gradually crumbles into dust after a bounded amount of use.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": [
+    "device",
+    "solves_tool_wear",
+    "path_magic_charm",
+    "craft_skyrim_enchant",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_rivet_chisel"
+  ],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {
+    "durability_left": 250.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": 0.5
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {"act": "var_add", "var": "self.durability_left", "by": -1.0},
+        {"act": "destroy_self", "if": "self.durability_left <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "upgrades/tap_guard_chisel_3987": 1,
+        "blocks/obsidian_zinc_0bfd": 25
+      },
+      "unlock_if": "player.max_depth >= 15.0"
+    }
+  ],
+  "offline": "exact"
+}
