@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tectonic Crucible Router",
+    "description": "Brewed by ancient smith-lords of the Under-Sun Manifold who bound magma veins and anvilstone into self-tempering thermal drills. A multi-ingredient decoction crafted by the Enclave Botanist Artisan. When placed on a tile, it infuses the strata with a tectonic logic, routing mined lark newt rivet ore directly to a paired chest. A thrifty, reliable gadget for early-game miners charting the Brass Ledger Frontier.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": [
+    "place_on_tile",
+    "carry",
+    "sell",
+    "consume"
+  ],
+  "tags": [
+    "solves_haul_capacity",
+    "path_placeable_device",
+    "craft_alchemy_potion",
+    "logic_canonical",
+    "theme_tectonic_crucible",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 30.0,
+    "duration_sec": 120.0
+  },
+  "vars": {
+    "duration_sec": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": 0.5
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.duration_sec", "value": "self.stats.duration_sec"}
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "do": [
+        {"act": "var_add", "var": "self.duration_sec", "by": -1.0},
+        {"act": "destroy_self", "if": "self.duration_sec <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/enclave_botanist_artisan_67a1",
+      "price": {
+        "devices/munchkin_brass_sigil_c629": 1,
+        "blocks/lark_newt_rivet_ore_a337": 10
+      },
+      "unlock_if": "player.max_depth >= 10.0"
+    }
+  ]
+}
