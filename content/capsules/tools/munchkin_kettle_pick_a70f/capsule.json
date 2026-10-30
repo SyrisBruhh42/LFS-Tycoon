@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin Kettle Pick",
+    "description": "An outrageously funny, over-the-top contraption that channels the paradox of St. Munchkin. A small kettle attached to the pickaxe boils over when it hits impenetrable stone, pausing durability drain with a chime, powered by Lantern Paradox Ore.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_zero_damage_stall",
+    "path_tool_builtin",
+    "craft_smeltery_alloy",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_1",
+    "skill_school_manual",
+    "lantern",
+    "kettle"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 12.0,
+    "durability_max": 200.0,
+    "is_rechargeable": 1,
+    "base_value": 45.0
+  },
+  "vars": {
+    "durability_left": 200.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {
+          "act": "stall_tool",
+          "pause_battery": true,
+          "pause_durability": true,
+          "if": "tile.is_strict_locked == 1.0"
+        },
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "stall",
+          "if": "tile.is_strict_locked == 1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/basalt_kettle_6ec2",
+      "price": {
+        "blocks/lantern_paradox_ore_48fa": 45,
+        "upgrades/munchkin_bellows_2a81": 1
+      },
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ],
+  "offline": "none"
+}
