@@ -1,0 +1,105 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Zinc Phial",
+    "description": "An alchemical decoction brewed by St. Munchkin using the Perpetual Clockwork Deep-Bore Syndicate's methods. By combining dense Obsidian Zinc with frozen acoustic Hollow Scriptorium Ore, this phial temporarily reinforces the miner's tools, significantly reducing durability drain. As a side effect, the rhythmic impacts occasionally crystallize into fresh Obsidian Zinc shards.",
+    "author": "jules:steward",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "food",
+    "solves_tool_wear",
+    "path_consumable_buff",
+    "craft_alchemy_potion",
+    "bracket_2",
+    "skill_school_manual",
+    "theme_clockwork_syndicate",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 150.0,
+    "duration_sec": 300.0,
+    "durability_drain_mult": 0.5
+  },
+  "vars": {
+    "active_sec_left": 0.0,
+    "zinc_charge": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.durability_drain_mult"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec"
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "do": [
+        {
+          "act": "destroy_self",
+          "if": "self.active_sec_left == 1.0"
+        },
+        {
+          "act": "var_add",
+          "var": "self.active_sec_left",
+          "by": -1.0,
+          "if": "self.active_sec_left > 0.0"
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.zinc_charge",
+          "by": 1.0,
+          "if": "self.active_sec_left > 0.0"
+        },
+        {
+          "act": "spawn_item",
+          "item": "blocks/obsidian_zinc_0bfd",
+          "qty": 1,
+          "if": "self.zinc_charge >= 10.0"
+        },
+        {
+          "act": "var_set",
+          "var": "self.zinc_charge",
+          "value": 0.0,
+          "if": "self.zinc_charge >= 10.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/sommelier_munchkin_51ac",
+      "price": {
+        "consumables/munchkin_market_broker_3d0a": 1,
+        "blocks/obsidian_zinc_0bfd": 10,
+        "blocks/hollow_scriptorium_ore_05a8": 15
+      },
+      "unlock_if": "player.max_depth >= 300.0"
+    }
+  ],
+  "offline": "none"
+}
