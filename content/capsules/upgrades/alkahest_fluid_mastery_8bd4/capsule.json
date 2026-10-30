@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Fluid Mastery",
+    "description": "A foundational keystone of the Perpetual Clockwork Deep-Bore Syndicate, utilizing resonant sigils to permanently alter one's mastery over hydro-alchemical floods when mining alkahest shale.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "read_book", "socket_in_tool", "sell", "consume"],
+  "tags": [
+    "skill_bracket",
+    "bracket_2",
+    "skill_school_pewter_cinder",
+    "theme_clockwork_syndicate",
+    "solves_fluid_flooding",
+    "path_profession_perk",
+    "craft_skill_mastery",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 200.0,
+    "base_dps": 40.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    },
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": -1.0,
+          "if": "self.installed >= 1.0 and tile.fluid_level > 0.0"
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/alkahest_shale_981c",
+          "qty": 1,
+          "if": "self.installed >= 1.0"
+        }
+      ]
+    }
+  ],
+  "offline": "none",
+  "offered_by": [
+    {
+      "vendor": "npcs/alkahest_vendor_a46c",
+      "price": {
+        "devices/resonant_sigil_2e45": 1,
+        "blocks/alkahest_shale_981c": 50,
+        "blocks/copper": 50
+      },
+      "unlock_if": "player.max_depth >= 250.0"
+    }
+  ]
+}
