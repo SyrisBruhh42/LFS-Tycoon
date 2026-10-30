@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Abyssal Hydro-Alchemist",
+    "description": "A secretive subterranean hydro-alchemist of the Alkahest Vitriol & Abyssal Hydro-Works. They flood the deep strata with brine and vitriol to soften rock, minting transmutations that would terrify surface dwellers.",
+    "author": "core:ground_zero",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "npc_vendor"
+  ],
+  "tags": [
+    "world_npc",
+    "theme_alkahest_hydro",
+    "guild_artisan",
+    "alchemist",
+    "salt"
+  ],
+  "stats": {
+    "unlock_depth": 1300
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
