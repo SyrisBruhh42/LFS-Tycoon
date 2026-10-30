@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Quill Hollow Pumice Stratum",
+    "description": "A subterranean geode chamber maintained by the blind monastic archivists of Quill Hollow, known for generating shattered contours through bell harmonics and zero-damage stalls.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["world_biome", "theme_lithic_choir", "pumice"],
+  "stats": {
+    "z_min": 1210,
+    "z_max": 1360,
+    "biome_weight": 0.45
+  },
+  "biome_weights": {
+    "blocks/stone": 1.5,
+    "blocks/alkahest_pumice_a42e": 2.2,
+    "blocks/alkahest_shale_981c": 0.8
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
