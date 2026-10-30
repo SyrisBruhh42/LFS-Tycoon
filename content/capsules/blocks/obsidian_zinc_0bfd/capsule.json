@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Zinc",
+    "description": "A dense zinc vein interlaced with obsidian shards, prized by the Sovereign Ward-Breakers as a key catalyst component for cracking hazard seals.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["mineable_block", "carry", "sell"],
+  "tags": ["block", "ore", "metal", "zinc", "world_block", "theme_obsidian_wardbreaker"],
+  "stats": {
+    "base_hp": 45.0,
+    "base_value": 22.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 1050,
+    "z_max": 1400,
+    "spawn_prob": 0.012,
+    "clump_xy": 5.0,
+    "priority_rank": 40
+  },
+  "biome_weights": {},
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
