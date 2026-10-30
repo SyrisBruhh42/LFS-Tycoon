@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lantern Bureaucrat",
+    "description": "A subterranean bureaucrat from the Paradox Symposium of St. Munchkin. Whispers to stray cats and files paperwork by the glow of an ochre lantern to exploit loopholes in physics.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "npc_vendor"
+  ],
+  "tags": [
+    "world_npc",
+    "theme_munchkin_paradox",
+    "npc",
+    "vendor",
+    "lantern"
+  ],
+  "stats": {
+    "cleanliness_required": 0.0,
+    "saturation_half_volume": 1000.0,
+    "unlock_depth": 1150
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
