@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Shale Desk",
+    "description": "An architectural homestead fixture crafted by hydro-alchemists of The Alkahest Vitriol & Abyssal Hydro-Works, sourced via the Pewter Quill Newt. Treated with brine and vitriol, it grants a profession perk: trading precision for speed by rapidly breaking backfilled scaffolding while sacrificing yield.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "place_in_house", "sell"],
+  "tags": [
+    "upgrade",
+    "solves_backfill_scaffolding",
+    "path_profession_perk",
+    "craft_homestead_station",
+    "logic_canonical",
+    "theme_alkahest_hydro",
+    "bracket_1",
+    "skill_school_assayers",
+    "shale"
+  ],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "tile.depth < tile.max_depth_reached"
+    },
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "tile.depth < tile.max_depth_reached"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/pewter_quill_newt_3730",
+      "price": {
+        "devices/clockwork_sigil_7432": 1,
+        "blocks/alkahest_shale_981c": 50
+      },
+      "unlock_if": "player.max_depth >= 45"
+    }
+  ],
+  "offline": "none"
+}
