@@ -1,6 +1,6 @@
 {
   "artPalette": "Evergreen Dark & Subterranean Brass",
-  "capsuleCount": 698,
+  "capsuleCount": 768,
   "capsuleId": "lfs-tycoon",
   "enclaveConcordance": {
     "repo": "enclave-digital-twin",
@@ -65,11 +65,39 @@
   },
   "entities": [
     {
+      "id": "blocks/alkahest_calcite_6904",
+      "kind": "stratum_block",
+      "name": "Alkahest Calcite",
+      "summary": "Corrosive subterranean precipitate formed from vitriol and brine. Brittle but valuable to hydro-alchemists.",
+      "z_unlock": 570
+    },
+    {
+      "id": "blocks/alkahest_pumice_a42e",
+      "kind": "stratum_block",
+      "name": "Alkahest Pumice",
+      "summary": "A porous, sponge-like rock infused with the caustic vitriol of subterranean hydro-alchemists. Softened by centuries of acidic flooding.",
+      "z_unlock": 490
+    },
+    {
       "id": "blocks/alkahest_quartz_d755",
       "kind": "stratum_block",
       "name": "Alkahest Quartz",
       "summary": "A dense quartz matrix permeated by alkahest vitriol from the hydro-works. Subterranean alchemists value its reactive properties for transmut",
       "z_unlock": 250
+    },
+    {
+      "id": "blocks/alkahest_shale_981c",
+      "kind": "stratum_block",
+      "name": "Alkahest Shale",
+      "summary": "A brittle stratum softened by subterranean hydro-alchemists flooding the area with brine and vitriol.",
+      "z_unlock": 980
+    },
+    {
+      "id": "blocks/alkahest_vitriol_e67f",
+      "kind": "stratum_block",
+      "name": "Vitriol Mica",
+      "summary": "Briny, acidic mica formed in the flooded strata of the subterranean hydro-alchemists. Softened by vitriol, it holds alchemical potency.",
+      "z_unlock": 650
     },
     {
       "id": "blocks/anvilstone_02a1",
@@ -79,52 +107,24 @@
       "z_unlock": 150
     },
     {
-      "id": "blocks/cinder_gravel_61a3",
+      "id": "blocks/bellows_anvilstone_a42e",
       "kind": "stratum_block",
-      "name": "Cinder Gravel",
-      "summary": "A loose, abrasive soil mixed with volcanic cinders. Striking it forcefully scatters debris, dealing splash damage to neighboring tiles. This",
-      "z_unlock": 15
+      "name": "Bellows Anvilstone",
+      "summary": "Ancient smith-lords of the Under-Sun Manifold bound magma veins and anvilstone into self-tempering thermal drills and crucible transmutation",
+      "z_unlock": 1150
     },
     {
-      "id": "blocks/cinder_mortar_17bb",
+      "id": "blocks/bismuth_gasket_c829",
       "kind": "stratum_block",
-      "name": "Cinder Deposit",
-      "summary": "A dense, naturally forming strata of cinder mixed beneath extreme pressure.",
-      "z_unlock": 100
-    },
-    {
-      "id": "blocks/cinder_ore_1db2",
-      "kind": "stratum_block",
-      "name": "Cinder Ore",
-      "summary": "A new cinder ore stratum.",
-      "z_unlock": 150
-    },
-    {
-      "id": "blocks/cinderslag_8f82",
-      "kind": "stratum_block",
-      "name": "Crucible Cinderslag",
-      "summary": "A dense, heat-retaining stratum forged by the ancient smith-lords of the Under-Sun Manifold. Essential for maintaining thermal drills and cr",
-      "z_unlock": 400
-    },
-    {
-      "id": "blocks/copper",
-      "kind": "stratum_block",
-      "name": "Copper Vein",
-      "summary": "Conductive metallic ore forming horizontal beds and vertical pipes. Escalates to Dense Copper at Z=1010.",
-      "z_unlock": 10
-    },
-    {
-      "id": "blocks/crucible_slag_5dfc",
-      "kind": "stratum_block",
-      "name": "Crucible Slag",
-      "summary": "Hardened, glassy byproduct of intense underground heat. Difficult to mine but valuable to specific artisans.",
-      "z_unlock": 150
+      "name": "Bismuth Gasket Ore",
+      "summary": "A dense, stepped metallic crystalline formation often found buffering the magnetotropic rootways of the Living Atlas. Valued in subterranean",
+      "z_unlock": 800
     },
     {
       "id": "npcs/alkahest_vendor_300e",
       "kind": "specialist_npc",
       "name": "Hydro-Alchemist Valya",
-      "offers": 0,
+      "offers": 1,
       "summary": "A subterranean hydro-alchemist of the Alkahest Vitriol enclave. She sells corrosive tinctures and mortar-sealing agents to soften deep-strat",
       "unlock_depth": 330
     },
@@ -132,7 +132,7 @@
       "id": "npcs/alkahest_vendor_a46c",
       "kind": "specialist_npc",
       "name": "Vitriol Smelter",
-      "offers": 0,
+      "offers": 2,
       "summary": "A subterranean hydro-alchemist of the deep strata, using a mortar to treat the quarry as a chemical alembic.",
       "unlock_depth": 250
     },
@@ -156,7 +156,7 @@
       "id": "npcs/bismuth_broker_af6a",
       "kind": "specialist_npc",
       "name": "Bismuth Broker",
-      "offers": 5,
+      "offers": 6,
       "summary": "A mysterious merchant clad in strange bismuth-studded attire, offering rare goods from the depths.",
       "unlock_depth": 50
     },
@@ -164,12 +164,12 @@
       "id": "npcs/blind_monk_a57d",
       "kind": "specialist_npc",
       "name": "Blind Monk of the Lithic Choir",
-      "offers": 0,
+      "offers": 1,
       "summary": "Blind monastic archivists of Quill Hollow who discovered that bedrock is frozen acoustic music, using zero-damage stalls and bell harmonics ",
       "unlock_depth": 330
     }
   ],
-  "frontierDepthZ": 410.0,
+  "frontierDepthZ": 1200.0,
   "goalSummary": "Excavate the 14x31 layered quarry, unlock 5 Modular Skill Brackets across 11 crafting disciplines, socket Tinker parts, fuse Terraria gear, and outfit Willow's Wardrobe.",
   "howToPlaySteps": [
     "Hold-press or drag across the 14x31 quarry grid to excavate strata, bail flooded aquifers, and detonate 8-perimeter Obsidian Hazards.",

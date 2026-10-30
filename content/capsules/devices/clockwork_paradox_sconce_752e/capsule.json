@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Paradox Sconce",
+    "description": "Forged by The Perpetual Clockwork Deep-Bore Syndicate and available through the Rivet Smith, this peculiar sconce burns Lantern Paradox Ore. When placed in your home and its clockwork is wound up, its paradoxically soothing light grants a significant boost to manual digging power if you are well-rested.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_house_comfort",
+    "path_magic_charm",
+    "craft_spell_grimoire",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 150.0,
+    "base_dps": 20.0
+  },
+  "vars": {
+    "winding_left": 50.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "add",
+      "value": 20.0,
+      "if": "player.is_rested == 1.0 and self.winding_left > 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_sleep",
+      "do": [
+        {"act": "var_add", "var": "self.winding_left", "by": -1.0},
+        {"act": "destroy_self", "if": "self.winding_left <= 0.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "devices/munchkin_brass_sigil_c629": 1,
+        "blocks/lantern_paradox_ore_48fa": 30
+      },
+      "unlock_if": "player.max_depth >= 150.0 and shared.house_bell_ringing >= 0.0"
+    }
+  ],
+  "offline": "none"
+}
