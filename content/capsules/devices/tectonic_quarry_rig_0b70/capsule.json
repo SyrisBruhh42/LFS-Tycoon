@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tectonic Quarry Rig",
+    "description": "An autonomous field rig forged from the grand crucible of the tectonic leviathan. Built by binding magma veins and anvilstone to a chassis of hollow basalt, this multi-part engineered device siphons fluids, dampens hazards, and autonomously mines while reducing the need for backfill scaffolding.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "solves_backfill_scaffolding",
+    "path_placeable_device",
+    "craft_clockwork_automaton",
+    "bracket_2",
+    "skill_school_assayers",
+    "theme_tectonic_crucible",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 250.0,
+    "base_dps": 50.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": 0.5
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/magma_anvilstone_6384",
+          "qty": 1.0
+        },
+        {
+          "act": "var_add",
+          "var": "self.activations",
+          "by": 1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/clockwork_horologist_c7b1",
+      "price": {
+        "devices/clockwork_automaton_c50a": 1,
+        "blocks/magma_anvilstone_6384": 25,
+        "blocks/copper": 50
+      },
+      "unlock_if": "player.max_depth >= 400.0"
+    }
+  ],
+  "offline": "coarse"
+}
