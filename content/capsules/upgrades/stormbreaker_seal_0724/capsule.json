@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Stormbreaker Achievement Seal",
+    "description": "An unlockable trophy seal representing mastery at The Enclave First Forge & Stormbreaker Concordance. Sympathetic core-metallurgy and captured-lightning geode smithing pioneered by The Forge Squad of the Enclave of the 16, where hyper-dense alloys shift resonance with operator focus and grounding rods tame subterranean plasma. This seal actively mitigates fluid flooding and refines anvilstone.",
+    "author": "autonomous:content_developer",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": [
+    "upgrade",
+    "solves_fluid_flooding",
+    "path_placeable_device",
+    "craft_achievement_relic",
+    "bracket_4",
+    "skill_school_manual",
+    "theme_enclave_first_forge",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 300.0,
+    "base_dps": 200.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "cleave_radius",
+      "phase": "add",
+      "value": 1.0,
+      "if": "tool.tier >= 3.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "if": "tile.fluid_level > 0.0",
+      "do": [
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "WATER",
+          "delta_level": -10.0
+        },
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "LAVA",
+          "delta_level": -10.0
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/bellows_anvilstone_a42e",
+          "qty": 1.0
+        },
+        {
+          "act": "spawn_item",
+          "item": "blocks/copper",
+          "qty": 5.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ember_munchkin_0efa",
+      "price": {
+        "upgrades/st_munchkin_ochre_rivet_bureaucracy_3033": 1,
+        "blocks/bellows_anvilstone_a42e": 5,
+        "blocks/copper": 10
+      },
+      "unlock_if": "player.max_depth >= 1150.0 and shared.quarry_resonance_charge >= 1.0"
+    }
+  ]
+}
