@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hollow Scriptorium Decoction",
+    "description": "An alchemical decoction brewed from the acoustic crystals of the blind monastic archivists. This Bioluminescent spore cartography formula resonates through The Living Atlas and Mycelial Sanctuary of the Enclave. It drastically slows tool durability drain when rested.",
+    "author": "core:jules",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "drink",
+    "potion",
+    "solves_repair_upkeep",
+    "path_consumable_buff",
+    "craft_alchemy_potion",
+    "logic_plausible",
+    "theme_enclave_living_atlas",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 30.0,
+    "duration_sec": 300.0,
+    "drain_multiplier": 0.25
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0 and player.is_rested == 1.0",
+      "value": "self.stats.drain_multiplier"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec"
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "self.active_sec_left > 0.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.active_sec_left",
+          "by": -1.0
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.active_sec_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "upgrades/lithic_choir_sponge_0407": 1,
+        "blocks/hollow_scriptorium_ore_05a8": 25
+      },
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ],
+  "offline": "none"
+}
