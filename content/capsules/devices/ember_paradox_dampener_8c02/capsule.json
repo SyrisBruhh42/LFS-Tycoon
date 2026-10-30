@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ember Paradox Dampener",
+    "description": "Forged by the Rivet Smith, this curious trinket taps into the Paradox Symposium of St. Munchkin. By burning a literal loophole into Lantern Paradox Ore, it convinces the subterranean laws of physics that collateral splash damage never happened, provided it's at depth.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["socket_in_tool", "sell"],
+  "tags": [
+    "device",
+    "solves_unwanted_splash",
+    "path_magic_charm",
+    "craft_terraria_fusion",
+    "logic_plausible",
+    "theme_munchkin_paradox",
+    "bracket_2",
+    "skill_school_manual",
+    "ember"
+  ],
+  "stats": {
+    "base_value": 325.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "value": 1.0,
+      "if": "ctx.is_direct_tap == 0.0 and tile.depth >= 250.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "tools/lantern_pick_8980": 1,
+        "blocks/lantern_paradox_ore_48fa": 35
+      },
+      "unlock_if": "player.max_depth >= 250"
+    }
+  ],
+  "offline": "none"
+}
