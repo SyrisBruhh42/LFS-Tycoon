@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin St. Cinder Bureaucrat Station",
+    "description": "An absurdly intricate bureaucratic station sculpted from Cinder Ore. It functions as a paradoxical ledger system for the Paradox Symposium of St. Munchkin, tricking merchants into offering deep-quarry stock early as a 'tax write-off'. Only functions if the player is exceptionally well-rested.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "solves_vendor_access",
+    "path_qol_upgrade",
+    "craft_homestead_station",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 200.0
+  },
+  "vars": {
+    "charge_left": 150.0
+  },
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "value": "30.0",
+      "if": "player.is_rested == 1.0 and self.charge_left > 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_market_sell",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.charge_left",
+          "by": "-1.0"
+        },
+        {
+          "act": "destroy_self",
+          "if": "self.charge_left <= 0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/enclave_botanist_d913",
+      "price": {
+        "upgrades/scriptorium_battery_chime_f38a": 1,
+        "blocks/cinder_ore_1db2": 25
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "none"
+}
