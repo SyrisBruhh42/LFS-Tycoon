@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Umber Hydro-Works",
+    "description": "A subterranean pocket mine acting as a terraced chemical alembic for hydro-alchemists. The works flood strata with brine and vitriol to soften rock.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["world_biome", "theme_alkahest_hydro", "umber"],
+  "stats": {
+    "z_min": 1250,
+    "z_max": 1400,
+    "biome_weight": 0.35
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/alkahest_calcite_6904": 2.0,
+    "blocks/alkahest_shale_981c": 1.5
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
