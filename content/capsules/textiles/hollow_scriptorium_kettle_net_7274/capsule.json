@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Hollow Scriptorium Kettle Net",
+    "description": "An arcane kettle-shaped net woven from Hollow Scriptorium Ore by the blind monastic archivists. Shared across The Wilds, The Mind, and The Hub of the Enclave of the 16, this bioluminescent textile brings the Schrödinger's Harvest culinary alchemy to the lost-cat chase. When carried or placed in the house, it permanently increases cat lure chances but slightly slows your mining speed.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "textile",
+    "tile_cover",
+    "dampener",
+    "solves_event_helpers",
+    "path_field_textile",
+    "craft_spell_grimoire",
+    "logic_canonical",
+    "theme_enclave_living_atlas",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 250.0
+  },
+  "vars": {
+    "is_installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "value": 0.05
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_enter_house",
+      "if": "self.is_installed == 0.0",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_installed",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {
+          "act": "emit_alert",
+          "channel": "house_bell",
+          "tag": "lure_chime"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/lithic_choir_archivist_2a55",
+      "price": {
+        "upgrades/munchkin_hollow_quill_station_6f64": 1,
+        "blocks/hollow_scriptorium_ore_05a8": 150
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "none"
+}
