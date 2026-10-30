@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Ward-Breakers Seal",
+    "description": "A rare subterranean pocket mine, geode chamber, or stratum for siege geomancers and catalyst-sappers sworn to cracking the 1% strict-locked Obsidian Hazard seals via 8-perimeter equal-depth catalyst detonations and blast-shield textiles.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "world_biome",
+    "biome",
+    "theme_obsidian_wardbreaker",
+    "rivet"
+  ],
+  "stats": {
+    "z_min": 1250,
+    "z_max": 1400,
+    "biome_weight": 0.25
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/alkahest_calcite_6904": 0.4,
+    "blocks/alkahest_pumice_a42e": 0.3
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
