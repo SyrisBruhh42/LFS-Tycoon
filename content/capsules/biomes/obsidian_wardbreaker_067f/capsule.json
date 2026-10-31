@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Ward-Breakers Seal",
+    "description": "The Sovereign Ward-Breakers of the Obsidian Seal - Siege geomancers and catalyst-sappers sworn to cracking the 1% strict-locked Obsidian Hazard seals via 8-perimeter equal-depth catalyst detonations and blast-shield textiles.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["biome", "world_biome", "theme_obsidian_wardbreaker", "obsidian", "iron"],
+  "stats": {
+    "z_min": 1880,
+    "z_max": 2040,
+    "biome_weight": 0.35
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/alkahest_shale_981c": 1.2,
+    "blocks/alkahest_quartz_d755": 0.8
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
