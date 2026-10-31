@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Syndicate Loam Mastery",
+    "description": "A secret technique of The Paradox Symposium of St. Munchkin. A dense, modular loam casting technique taught by Anvil Smith. It blends Syndicate Gasket Ore into a tinker's head to treat hazardous terrain like an absurdist loophole. When exposed to a hazard, the tool playfully absorbs the shock and accelerates the demolition, turning danger into a literal catalyst.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": ["socket_in_tool", "carry", "sell", "equip_tool", "catalyst"],
+  "tags": [
+    "upgrade",
+    "tinker_head",
+    "solves_hazard_clearing",
+    "path_forge_material",
+    "craft_skill_mastery",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "skill_bracket",
+    "bracket_1",
+    "skill_school_syndicate_loam",
+    "loam"
+  ],
+  "stats": {
+    "base_value": 450.0,
+    "base_dps": 85.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "value": 2.0,
+      "if": "tile.is_hazard == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_hazard_expose",
+      "if": "tile.is_hazard == 1.0",
+      "do": [
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "syndicate_loam"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/anvil_smith_73cd",
+      "price": {
+        "blocks/syndicate_gasket_ore_93f7": 15,
+        "blocks/copper": 30
+      },
+      "unlock_if": "player.max_depth >= 15.0"
+    }
+  ],
+  "offline": "none"
+}
