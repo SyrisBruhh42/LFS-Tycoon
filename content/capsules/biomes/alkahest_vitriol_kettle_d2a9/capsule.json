@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Vitriol Kettle",
+    "description": "A subterranean pocket mine where hydro-alchemists treat the quarry as a terraced chemical alembic, flooding strata with brine and vitriol to soften and transmute rock before siphoning it dry.",
+    "author": "core:jules",
+    "rarity": "common"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["world_biome", "theme_alkahest_hydro"],
+  "stats": {
+    "z_min": 1900,
+    "z_max": 2100,
+    "biome_weight": 0.35
+  },
+  "biome_weights": {
+    "blocks/stone": 1.5,
+    "blocks/alkahest_calcite_6904": 2.0,
+    "blocks/alkahest_pumice_a42e": 1.5
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
