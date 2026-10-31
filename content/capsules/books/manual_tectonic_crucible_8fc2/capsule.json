@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tectonic Crucible Manual",
+    "description": "An ancient manual detailing techniques of the smith-lords of The Grand Crucible of the Tectonic Leviathan. It teaches how to weave magma veins and anvilstone to forge self-tempering tools. Reading it allows you to hit significantly harder in shallower depths, speeding up the early game. However, this brute-force approach falters deeper down. Unlocked with Crystal Chime ore at the Rivet Smith.",
+    "author": "core:ground_zero",
+    "rarity": "common",
+    "era": "mid"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": ["book", "skill_book", "craft_tinker_part", "logic_plausible", "theme_tectonic_crucible", "bracket_1", "skill_school_pewter_cinder", "gravel", "solves_slow_early_dps", "path_skill_book"],
+  "stats": {
+    "base_value": 80.0
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "self.is_learned >= 1.0 and tile.depth < 300",
+      "value": 1.5
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "self.is_learned >= 1.0 and tile.depth >= 300",
+      "value": 1.2
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {"act": "var_set", "var": "self.is_learned", "value": 1.0}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "consumables/magma_vitriol_phial_ef8f": 1,
+        "blocks/crystal_chime_d46b": 15
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ]
+}
