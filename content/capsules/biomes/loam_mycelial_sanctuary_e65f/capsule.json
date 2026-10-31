@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Loam Mycelial Sanctuary",
+    "description": "A bioluminescent subterranean loam strata of mycelial cartography and magnetotropic flora cultivation shared by the Enclave.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["biome_profile"],
+  "tags": [
+    "world_biome",
+    "theme_enclave_living_atlas",
+    "biome",
+    "loam"
+  ],
+  "stats": {
+    "z_min": 1760,
+    "z_max": 1900,
+    "biome_weight": 0.5
+  },
+  "biome_weights": {
+    "blocks/stone": 1.2,
+    "blocks/lithic_choir_vitriol_d6c4": 0.7,
+    "blocks/alkahest_calcite_6904": 0.5
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
