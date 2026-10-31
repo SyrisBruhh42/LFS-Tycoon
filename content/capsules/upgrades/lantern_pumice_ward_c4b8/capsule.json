@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lantern Pumice Ward",
+    "description": "An arcane lantern apparatus inspired by The Grand Crucible of the Tectonic Leviathan. By channeling deep-earth harmonics of enclave pumice into the Alkahest Vitriol currents, this ward anchors the miner's hand. When active, it reduces trembling and ensures your physical strikes gently pause at the brink of destruction, halting accidental taps from finishing off a block while directly touching the display in deep strata.",
+    "author": "autonomous:content_developer",
+    "rarity": "epic"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": [
+    "upgrade",
+    "solves_tap_misfires",
+    "path_profession_perk",
+    "craft_smeltery_alloy",
+    "logic_whimsical",
+    "theme_tectonic_crucible",
+    "bracket_2",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "drunk_drift_px",
+      "phase": "mul",
+      "if": "self.installed > 0.0 and tile.depth >= 500.0",
+      "value": 0.25
+    },
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "if": "self.installed > 0.0 and ctx.is_direct_tap == 1.0 and tile.depth >= 500.0",
+      "value": 1.0
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": 1.0}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/alkahest_vendor_8014",
+      "unlock_if": "player.max_depth >= 410.0",
+      "price": {
+        "upgrades/pewter_scriptorium_ledger_6b62": 1,
+        "blocks/enclave_pumice_ore_64c0": 200
+      }
+    }
+  ],
+  "offline": "none"
+}
