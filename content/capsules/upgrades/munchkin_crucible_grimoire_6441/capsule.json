@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin Crucible Grimoire",
+    "description": "An arcane incantation authored by The Paradox Symposium of St. Munchkin. Kept by the Gravel Keeper, this grimoire claims that using the wrong tool on Crucible Cinder is a thermodynamic loophole. When read, it permanently eases wrong-tool friction in deep strata, and magically evaporates surrounding fluids when striking deep rock using imaginary bellows.",
+    "author": "core:ground_zero",
+    "rarity": "common",
+    "era": "early"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_wrong_tool_penalty",
+    "path_profession_perk",
+    "craft_spell_grimoire",
+    "logic_plausible",
+    "theme_munchkin_paradox",
+    "bracket_1",
+    "skill_school_assayers",
+    "cinder",
+    "bellows"
+  ],
+  "stats": {
+    "base_value": 60.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": 0.5,
+      "if": "self.installed >= 1.0 and tile.depth >= 500"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.installed",
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "if": "self.installed >= 1.0 and tile.depth >= 500",
+      "do": [
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": -1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "devices/hearth_crucible_slag_head_d00b": 1,
+        "blocks/crucible_cinder_d53d": 50
+      },
+      "unlock_if": "player.max_depth >= 15.0"
+    }
+  ]
+}
