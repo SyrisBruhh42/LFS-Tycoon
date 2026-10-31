@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tectonic Crucible Pocket Mine",
+    "description": "A rare subterranean geode chamber filled with slag veins. Ancient smith-lords once bound magma veins into self-tempering thermal drills here.",
+    "author": "core:jules",
+    "rarity": "uncommon"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["world_biome", "theme_tectonic_crucible"],
+  "stats": {
+    "z_min": 1780,
+    "z_max": 2060,
+    "biome_weight": 0.35
+  },
+  "biome_weights": {
+    "blocks/stone": 1.5,
+    "blocks/alkahest_calcite_6904": 2.0,
+    "blocks/alkahest_pumice_a42e": 1.5,
+    "blocks/alkahest_quartz_d755": 1.0,
+    "blocks/alkahest_shale_981c": 1.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
