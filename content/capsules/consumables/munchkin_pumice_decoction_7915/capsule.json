@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin Pumice Decoction",
+    "description": "An alchemical decoction brewed by the Scriptorium Archivists of the Alkahest Vitriol & Abyssal Hydro-Works. It softens subterranean strata into a literal pumice sludge. For a short duration, this absurd concoction tricks the marketplace into considering freshly extracted Munchkin Pumice as an incredibly rare chisel-pressed artifact, skyrocketing its trade value.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "consumable",
+    "solves_market_saturation",
+    "path_consumable_buff",
+    "craft_alchemy_potion",
+    "bracket_2",
+    "skill_school_manual",
+    "theme_alkahest_hydro",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 250.0,
+    "duration_sec": 300.0,
+    "market_value_bonus": 3.0
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "self.stats.market_value_bonus"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": 300.0
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "if": "self.active_sec_left > 0.0",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "blocks/munchkin_pumice_3049",
+          "qty": 1,
+          "route": "backpack",
+          "if": "ctx.is_direct_tap == 1.0"
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "self.active_sec_left > 0.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.active_sec_left",
+          "by": -1.0
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "self.active_sec_left <= 0.0",
+      "do": [
+        {
+          "act": "destroy_self"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/scriptorium_archivist_f564",
+      "price": {
+        "books/munchkin_geomancy_grimoire_13f4": 1,
+        "blocks/munchkin_pumice_3049": 25,
+        "blocks/copper": 30
+      }
+    }
+  ]
+}
