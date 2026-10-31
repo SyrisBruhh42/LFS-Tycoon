@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lithic Archivist",
+    "description": "A blind monastic archivist from Quill Hollow who long ago realized that bedrock itself is frozen acoustic music. They sell resonant items that use zero-damage stalls and bell harmonics to shatter equal-depth contours.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": [
+    "npc_vendor"
+  ],
+  "tags": [
+    "npc",
+    "vendor",
+    "world_npc",
+    "theme_lithic_choir",
+    "ledger"
+  ],
+  "stats": {
+    "cleanliness_required": 0.0,
+    "saturation_half_volume": 1000.0,
+    "unlock_depth": 1380
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
