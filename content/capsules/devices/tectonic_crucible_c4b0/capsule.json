@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Tap Guard",
+    "description": "An ancient crucible catalyst from The Grand Crucible of the Tectonic Leviathan. Passed down by the smith-lords of the Under-Sun Manifold who bound magma veins and anvilstone into self-tempering thermal drills. When socketed or placed as a house amenity, this ochre construct limits the drunk drift effect of a clumsy strike and acts as a rigid guide against fat-finger taps, ensuring accidental direct taps on small screens are far less likely to destroy protected tiles, particularly in deep strata. Requires Obsidian Cinder Wick methodology.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_tap_misfires",
+    "path_profession_perk",
+    "craft_smeltery_alloy",
+    "logic_canonical",
+    "theme_tectonic_crucible",
+    "bracket_1",
+    "skill_school_pewter_cinder",
+    "ochre"
+  ],
+  "stats": {
+    "base_value": 110.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "value": "1.0",
+      "if": "ctx.is_direct_tap == 1"
+    },
+    {
+      "stat": "drunk_drift_px",
+      "phase": "mul",
+      "value": "0.25",
+      "if": "tile.depth >= 500.0 or tile.tier >= 1.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/ochre_toad_5e64",
+      "price": {
+        "devices/obsidian_cinder_wick_02ca": 1,
+        "blocks/crucible_clockwork_stratum_d60b": 15
+      },
+      "unlock_if": "player.max_depth >= 45.0"
+    }
+  ],
+  "offline": "none"
+}
