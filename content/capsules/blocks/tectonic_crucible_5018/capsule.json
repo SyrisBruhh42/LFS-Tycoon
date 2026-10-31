@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tectonic Crucible",
+    "description": "An ancient, heat-tempered relic from the Grand Crucible of the Tectonic Leviathan. Withstands immense pressure and thermal flux, binding magma veins to anvilstone.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "world_block",
+    "theme_tectonic_crucible",
+    "block",
+    "ore"
+  ],
+  "stats": {
+    "base_hp": 85.0,
+    "base_value": 35.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 1820,
+    "z_max": 2000,
+    "l_step": 1000,
+    "spawn_prob": 0.012,
+    "clump_xy": 4.0,
+    "pipe_z": 4.0,
+    "priority_rank": 50
+  },
+  "biome_weights": {},
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
