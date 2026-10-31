@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ember Brass Crucible",
+    "description": "An autonomous brass crucible apparatus engineered by The Perpetual Clockwork Deep-Bore Syndicate. Utilizing conductive thermal wicks woven from the rare Ember Crucible Wick stratum, this horologist-designed kiln consumes raw wick-ore and refines it on backfill, subtly shifting the bedrock beneath the user. The Syndicate relies on this self-feeding device to effortlessly raise floors and build pneumatic scaffold matrices in the sunken steam-baronies.",
+    "author": "core:ground_zero",
+    "rarity": "common",
+    "era": "early"
+  },
+  "affordances": ["place_on_tile", "carry", "sell", "backfill_material"],
+  "tags": [
+    "device",
+    "solves_backfill_scaffolding",
+    "path_placeable_device",
+    "craft_smeltery_alloy",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_manual",
+    "brass"
+  ],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {
+    "backfills_left": 150.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_backfill",
+      "if": "tile.depth < tile.max_depth_reached",
+      "do": [
+        {"act": "modify_depth", "target": "self_tile", "delta": -1.0},
+        {"act": "consume_item", "item": "blocks/ember_crucible_wick_42fe", "qty": 1.0},
+        {"act": "var_add", "var": "self.backfills_left", "by": -1.0}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "devices/tectonic_brass_sigil_6390": 1,
+        "blocks/ember_crucible_wick_42fe": 40
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ]
+}
