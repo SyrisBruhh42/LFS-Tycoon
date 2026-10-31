@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Syndicate Gasket Ore",
+    "description": "Fossilized subterranean rubbery seals left behind by The Perpetual Clockwork Deep-Bore Syndicate, preserving their pneumatic pressure at great depths.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "world_block",
+    "theme_clockwork_syndicate",
+    "block",
+    "ore"
+  ],
+  "stats": {
+    "base_hp": 40.0,
+    "base_value": 18.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 1720,
+    "z_max": 1950,
+    "l_step": 1000,
+    "spawn_prob": 0.010,
+    "clump_xy": 6.0,
+    "pipe_z": 10.0,
+    "priority_rank": 40
+  },
+  "biome_weights": {},
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
