@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pumice Geode",
+    "description": "A secret pocket mine belonging to the paradoxical bureaucrats of St. Munchkin. Here, lightweight pumice inexplicably supports crushing layers of heavy stone and alkahest rocks, defying subterranean physics.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["world_biome", "theme_munchkin_paradox", "geode", "pumice"],
+  "stats": {
+    "z_min": 1960,
+    "z_max": 2100,
+    "biome_weight": 0.35
+  },
+  "biome_weights": {
+    "blocks/stone": 1.5,
+    "blocks/alkahest_pumice_a42e": 2.5,
+    "blocks/alkahest_quartz_d755": 0.8
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
