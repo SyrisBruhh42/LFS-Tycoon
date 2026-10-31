@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Tallow Hydro-Lens",
+    "description": "A deep subterranean pocket of the Alkahest hydro-works, flooding the strata with brine and vitriol to soften rock into a tallow-like slurry.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "world_biome",
+    "theme_alkahest_hydro",
+    "tallow"
+  ],
+  "stats": {
+    "z_min": 1800,
+    "z_max": 1950,
+    "biome_weight": 0.4
+  },
+  "biome_weights": {
+    "blocks/stone": 1.5,
+    "blocks/alkahest_calcite_6904": 0.6,
+    "blocks/alkahest_pumice_a42e": 0.4
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
