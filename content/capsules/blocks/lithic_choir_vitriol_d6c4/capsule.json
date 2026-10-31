@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lithic Choir Vitriol",
+    "description": "A potent alchemical crystal formed by the blind monastic archivists of Quill Hollow. Infused with acoustic bell harmonics, it shatters equal-depth contours.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "block",
+    "world_block",
+    "theme_lithic_choir",
+    "crystal",
+    "vitriol"
+  ],
+  "stats": {
+    "base_hp": 25.0,
+    "base_value": 12.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 1760,
+    "z_max": 1920,
+    "l_step": 1000,
+    "spawn_prob": 0.010,
+    "clump_xy": 6.0,
+    "pipe_z": 6.0,
+    "priority_rank": 50
+  },
+  "biome_weights": {},
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
