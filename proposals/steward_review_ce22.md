@@ -1,0 +1,2 @@
+<!-- steward-audit: {"mode": "steward_1_in_10", "orphan_ores_connected": ["blocks/lithic_tallow_31bc"], "vendor_targeted": "npcs/mica_salt_vendor_832d", "skill_bracket_linked": "devices/alkahest_tallow_refiner_ce22", "bracket_tier": "bracket_1", "theme": "theme_alkahest_hydro"} -->
+<!-- steward-audit: {"keystone": "devices/alkahest_tallow_refiner_ce22", "vendor": "npcs/mica_salt_vendor_832d", "ore": "blocks/lithic_tallow_31bc", "bracket": "bracket_1"} -->
