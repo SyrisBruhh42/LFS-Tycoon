@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Tallow Tinker Head",
+    "description": "A modular tool head cast from copper and tempered in a subterranean water pocket. The hydro-alchemists of the Alkahest Vitriol use these components to siphon away filth. Socketing this tinker head captures overkill damage and splashes it to nearby strata.",
+    "author": "jules:steward",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "tinker_head",
+    "solves_overkill_waste",
+    "path_forge_material",
+    "craft_tinker_part",
+    "bracket_4",
+    "skill_school_assayers",
+    "theme_alkahest_hydro",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 250.0,
+    "base_dps": 120.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "cleave_pct",
+      "phase": "add",
+      "value": 0.4
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "player.grime < 15.0",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/lithic_tallow_31bc",
+          "qty": 1
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/enclave_loam_alchemist_a95c",
+      "price": {
+        "consumables/alkahest_vitriol_wardbreaker_635e": 1,
+        "blocks/lithic_tallow_31bc": 120,
+        "blocks/copper": 50
+      },
+      "unlock_if": "player.max_depth >= 1400.0"
+    }
+  ]
+}
