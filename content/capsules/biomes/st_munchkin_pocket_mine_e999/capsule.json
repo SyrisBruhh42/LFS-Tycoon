@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "St. Munchkin Pocket Mine",
+    "description": "A rare subterranean pocket mine echoing with the hum of the Paradox Symposium of St. Munchkin, where subterranean bureaucrats and stray-cat whisperers exploit literal loopholes in the laws of physics, intoxication, and wrong-tool penalties.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["world_biome", "theme_munchkin_paradox", "calcite"],
+  "stats": {
+    "z_min": 1800,
+    "z_max": 2000,
+    "biome_weight": 0.35
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/alkahest_calcite_6904": 1.5,
+    "blocks/alkahest_pumice_a42e": 0.8
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
