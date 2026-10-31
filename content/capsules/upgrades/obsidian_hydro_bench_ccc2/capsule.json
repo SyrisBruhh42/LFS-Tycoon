@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Hydro Bench",
+    "description": "A crafted homestead architecture fixture built from multiple mineral strata. This bench permanently enhances tool upkeep by softening resilient rock, drawing upon deep subterranean lore of the Sovereign Ward-Breakers of the Obsidian Seal.",
+    "author": "autonomous:content_developer",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "place_in_house", "sell"],
+  "tags": [
+    "upgrade",
+    "solves_fluid_flooding",
+    "path_placeable_device",
+    "craft_homestead_station",
+    "bracket_3",
+    "skill_school_manual",
+    "theme_obsidian_wardbreaker",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 250.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "if": "tile.fluid_level > 0.0",
+      "do": [
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "WATER",
+          "delta_level": -10.0
+        },
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "LAVA",
+          "delta_level": -10.0
+        }
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/bellows_anvilstone_a42e",
+          "qty": 1.0
+        },
+        {
+          "act": "spawn_item",
+          "item": "blocks/copper",
+          "qty": 3.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/alkahest_hydro_guild_9624",
+      "price": {
+        "upgrades/deep_bore_syndicate_guild_node_3a22": 1,
+        "blocks/bellows_anvilstone_a42e": 5,
+        "blocks/copper": 10
+      },
+      "unlock_if": "player.max_depth >= 1300.0"
+    }
+  ]
+}
