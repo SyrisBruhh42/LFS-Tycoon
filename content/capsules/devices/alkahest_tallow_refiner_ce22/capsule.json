@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Tallow Refiner",
+    "description": "A whimsical crucible apparatus engineered by the Mica and Salt Merchant for The Alkahest Vitriol & Abyssal Hydro-Works. It harnesses the dense, waxy properties of Lithic Tallow and the subterranean folk-science of a Magma Vitriol Phial to seamlessly transmute stone into backfill scaffold matrices. This clever device allows clean-handed hydro-alchemists to raise floors effortlessly using loose materials in the deep quarry.",
+    "author": "core:ground_zero",
+    "rarity": "common",
+    "era": "mid"
+  },
+  "affordances": ["carry", "equip_tool", "backfill_material", "place_in_house"],
+  "tags": [
+    "device",
+    "solves_backfill_scaffolding",
+    "path_profession_perk",
+    "craft_smeltery_alloy",
+    "logic_whimsical",
+    "theme_alkahest_hydro",
+    "bracket_1",
+    "skill_school_pewter_cinder",
+    "pewter",
+    "steward_keystone"
+  ],
+  "stats": {
+    "tool_type": "SHOVEL",
+    "tool_tier": 2,
+    "base_dps": 40.0,
+    "durability_max": 350.0,
+    "is_rechargeable": 1,
+    "base_value": 280.0
+  },
+  "vars": {
+    "durability_left": 350.0,
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "if": "tile.depth < tile.max_depth_reached and player.grime < 15.0",
+      "value": 0.70
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_backfill",
+      "do": [
+        {"act": "modify_depth", "target": "self_tile", "delta": -1.0},
+        {"act": "consume_item", "item": "blocks/lithic_tallow_31bc", "qty": 1, "if": "player.grime < 15.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/mica_salt_vendor_832d",
+      "price": {
+        "consumables/magma_vitriol_phial_ef8f": 1,
+        "blocks/lithic_tallow_31bc": 40
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "none"
+}
