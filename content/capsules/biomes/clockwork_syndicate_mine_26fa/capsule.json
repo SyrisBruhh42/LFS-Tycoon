@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Syndicate Geode",
+    "description": "A subterranean pocket mine maintained by horologists of the Perpetual Clockwork Deep-Bore Syndicate, rich in alkahest formations and tin.",
+    "author": "core:jules",
+    "rarity": "common"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["world_biome", "theme_clockwork_syndicate", "tin"],
+  "stats": {
+    "z_min": 1950,
+    "z_max": 2100,
+    "biome_weight": 0.40
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/alkahest_calcite_6904": 2.0,
+    "blocks/alkahest_pumice_a42e": 1.5
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
