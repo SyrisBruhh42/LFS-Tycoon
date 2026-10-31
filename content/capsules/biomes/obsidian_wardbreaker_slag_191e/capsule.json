@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Wardbreaker Slag",
+    "description": "The Sovereign Ward-Breakers of the Obsidian Seal - Siege geomancers and catalyst-sappers sworn to cracking the 1% strict-locked Obsidian Hazard seals via 8-perimeter equal-depth catalyst detonations and blast-shield textiles.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["world_biome", "theme_obsidian_wardbreaker"],
+  "stats": {
+    "z_min": 1900,
+    "z_max": 2040,
+    "biome_weight": 0.35
+  },
+  "biome_weights": {
+    "blocks/stone": 1.5,
+    "blocks/alkahest_calcite_6904": 0.8,
+    "blocks/alkahest_pumice_a42e": 0.6,
+    "blocks/paradox_ochre_82f4": 0.5
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
