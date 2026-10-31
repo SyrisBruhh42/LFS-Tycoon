@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Vitriol Lithic Choir Contour Package",
+    "description": "An expensive package containing a crucible catalyst kettle apparatus used by the blind monastic archivists of Quill Hollow in The Infinite Scriptorium of the Lithic Choir. The apparatus consumes vitriol to project bell harmonics into the bedrock, letting the wielder trade digging speed for extreme contour precision across the Brass Ledger Frontier. When consumed, it enables depth calipers, a target loupe, and chalk lines, mapping the sunken bog perfectly.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": [
+    "upgrade",
+    "qol",
+    "surveyor",
+    "hud",
+    "solves_depth_awareness",
+    "path_bundle_package",
+    "craft_smeltery_alloy",
+    "logic_plausible",
+    "theme_lithic_choir",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "base_value": 110.0,
+    "unlock_depth": 45.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": 0.2,
+      "if": "self.installed == 1.0"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": 1.2,
+      "if": "self.installed == 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": 1.0},
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true},
+        {"act": "set_ui_flag", "flag": "hud_target_loupe", "enabled": true},
+        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": true},
+        {"act": "spawn_item", "item": "blocks/lithic_choir_vitriol_d6c4", "qty": 1}
+      ]
+    },
+    {
+      "on": "on_layer_reveal",
+      "if": "self.installed == 1.0",
+      "do": [
+        {"act": "spawn_item", "item": "blocks/lithic_choir_vitriol_d6c4", "qty": 1}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "unlock_if": "player.max_depth >= 40.0",
+      "price": {
+        "devices/clockwork_siphon_sconce_f826": 1,
+        "blocks/lithic_choir_vitriol_d6c4": 120
+      }
+    }
+  ]
+}
