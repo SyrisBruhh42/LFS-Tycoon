@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Living Atlas Enchanter Relic",
+    "description": "An enchanted iron seal infused with Bioluminescent spore cartography of The Living Atlas & Mycelial Sanctuary of the Enclave. It can be socketed into any tool to slow durability drain when rested.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon",
+    "era": "early"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "iron",
+    "solves_repair_upkeep",
+    "path_npc_enchanter",
+    "craft_achievement_relic",
+    "logic_plausible",
+    "theme_enclave_living_atlas",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 115.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "player.is_rested == 1",
+      "value": 0.5
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_vendor_51cb",
+      "price": {
+        "consumables/hollow_scriptorium_decoction_0ec0": 1,
+        "blocks/crystal_chime_d46b": 40
+      },
+      "unlock_if": "player.max_depth >= 45"
+    }
+  ]
+}
