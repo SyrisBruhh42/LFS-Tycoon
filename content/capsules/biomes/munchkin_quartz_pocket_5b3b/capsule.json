@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin Quartz Pocket",
+    "description": "A hidden pocket stratum curated by the Paradox Symposium of St. Munchkin, where errant quartz merges into a playground of physical loopholes and bureaucratic loopholes.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["world_biome", "theme_munchkin_paradox", "quartz"],
+  "stats": {
+    "z_min": 1910,
+    "z_max": 2060,
+    "biome_weight": 0.40
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/alkahest_quartz_d755": 2.0,
+    "blocks/alkahest_shale_981c": 1.5
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
