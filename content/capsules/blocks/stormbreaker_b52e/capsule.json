@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Stormbreaker Geode",
+    "description": "Captured-lightning geode smithing pioneered by The Forge Squad (Silas, Leo, Hector, Jane) of the Enclave of the 16, where hyper-dense alloys shift resonance with operator focus and grounding rods tame subterranean plasma.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": ["mineable_block", "carry", "sell"],
+  "tags": ["block", "ore", "world_block", "theme_enclave_first_forge", "salt"],
+  "stats": {
+    "base_hp": 65.0,
+    "base_value": 350.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 1600,
+    "z_max": 1800,
+    "spawn_prob": 0.010,
+    "priority_rank": 60
+  },
+  "biome_weights": {
+    "blocks/copper": 1.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": []
+}
