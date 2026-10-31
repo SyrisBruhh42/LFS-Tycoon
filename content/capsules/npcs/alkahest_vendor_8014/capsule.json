@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Umber Hydro-Alchemist",
+    "description": "A secretive deep-stratum hydro-alchemist of the Alkahest Vitriol enclave. They flood strata with brine and vitriol to soften rock, trading corrosive tinctures in the 14x31 quarry.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["npc_vendor"],
+  "tags": ["world_npc", "theme_alkahest_hydro", "vendor", "alchemist", "umber"],
+  "stats": {
+    "unlock_depth": 1700.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
