@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Crucible Hearth Sigil",
+    "description": "An arcane resonance sigil forged from volcanic Crucible Cinder by the ancient smith-lords of The Grand Crucible of the Tectonic Leviathan. Place this brass-lined sigil in your home to grant profound rest, increasing yield when delving into deep hazard zones.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "place_in_house", "sell", "socket_in_tool"],
+  "tags": [
+    "device",
+    "solves_house_comfort",
+    "path_bundle_package",
+    "craft_skyrim_enchant",
+    "logic_plausible",
+    "theme_tectonic_crucible",
+    "bracket_1",
+    "skill_school_pewter_cinder",
+    "brass"
+  ],
+  "stats": {
+    "base_value": 250.0,
+    "base_dps": 20.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "add",
+      "if": "player.is_rested == 1.0",
+      "value": 0.35
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_vendor_51cb",
+      "unlock_if": "player.max_depth >= 45.0",
+      "price": {
+        "upgrades/ochre_forge_milestone_relic_7296": 1,
+        "blocks/crucible_cinder_d53d": 45
+      }
+    }
+  ]
+}
