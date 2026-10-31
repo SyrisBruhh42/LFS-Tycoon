@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Zinc Tuning Fork",
+    "description": "An improvised mortar-cast zinc tuning fork mimicking the Arcane Grimoire techniques of The Infinite Scriptorium of the Lithic Choir. The blind monastic archivists of Quill Hollow discovered that bedrock is frozen acoustic music, using zero-damage stalls and bell harmonics to shatter equal-depth contours. While this fork lacks the sheer output of true harmonic mastery, its thrifty resonance captures overkill vibration to shatter hollow stone nearby.",
+    "author": "jules:session",
+    "rarity": "uncommon",
+    "era": "mid"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_overkill_waste",
+    "path_tool_builtin",
+    "craft_spell_grimoire",
+    "logic_whimsical",
+    "theme_lithic_choir",
+    "bracket_1",
+    "skill_school_manual",
+    "zinc",
+    "mortar"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 2,
+    "base_dps": 65.0,
+    "durability_max": 250.0,
+    "is_rechargeable": 1,
+    "base_value": 75.0,
+    "splash_spillover": 0.5
+  },
+  "vars": {
+    "durability_left": 250.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "if": "tool.overkill_damage > 0.0 and ctx.is_secondary_damage == 0",
+      "do": [
+        {
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": "tool.overkill_damage * self.stats.splash_spillover"
+        },
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "overkill"
+        }
+      ]
+    },
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {
+          "act": "emit_alert",
+          "channel": "house_bell",
+          "tag": "zero_damage"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/vitriol_alchemist_4814",
+      "price": {
+        "devices/ember_brass_crucible_6f15": 1,
+        "blocks/hollow_stone_b96c": 100
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "none"
+}
