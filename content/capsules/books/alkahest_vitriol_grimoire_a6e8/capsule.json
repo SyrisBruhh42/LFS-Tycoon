@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Vitriol Grimoire",
+    "description": "An arcane tome detailing the hydro-alchemy of The Alkahest Vitriol & Abyssal Hydro-Works. By transmuting water and magma into harmless vapor when reading from this manual, hydro-alchemists treat the 14x31 quarry as a terraced chemical alembic, forcing even stubborn blocks/lithic_choir_vitriol_d6c4 strata into submission. Forged of brass and bound by the Cinder Runesmith.",
+    "author": "jules:steward",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "book",
+    "skill_book",
+    "solves_fluid_flooding",
+    "path_vendor_disposable",
+    "craft_spell_grimoire",
+    "logic_canonical",
+    "theme_alkahest_hydro",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "charge_max_sec": 7200.0,
+    "base_dps": 40.0
+  },
+  "vars": {
+    "charge_left": 7200.0,
+    "is_learned": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_learned",
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "on": "on_zero_damage_stall",
+      "if": "tile.fluid_level > 0.0 and self.is_learned >= 1.0",
+      "do": [
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": -1.0
+        },
+        {
+          "act": "var_add",
+          "var": "self.charge_left",
+          "by": -50.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/cinder_runesmith_b3de",
+      "price": {
+        "upgrades/lithic_choir_brass_ledger_ce45": 1,
+        "blocks/lithic_choir_vitriol_d6c4": 120
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "none"
+}
