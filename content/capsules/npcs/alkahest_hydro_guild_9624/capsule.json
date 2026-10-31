@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Hydro-Guild",
+    "description": "Subterranean hydro-alchemists who treat the quarry as a terraced chemical alembic, flooding strata with brine and vitriol to soften and transmute rock before siphoning it dry. Their rivet-sealed suits protect against fumes.",
+    "author": "core:session",
+    "rarity": "common"
+  },
+  "affordances": ["npc_vendor"],
+  "tags": ["world_npc", "theme_alkahest_hydro", "rivet", "guild", "alchemist", "npc_vendor", "subterranean"],
+  "stats": {
+    "unlock_depth": 1900.0,
+    "cleanliness_required": 0.0,
+    "saturation_half_volume": 1000.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
