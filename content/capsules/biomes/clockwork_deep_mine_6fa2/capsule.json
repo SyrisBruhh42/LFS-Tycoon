@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Deep Mine",
+    "description": "A subterranean pocket mine of the Perpetual Clockwork Deep-Bore Syndicate, echoing with the hum of autonomous railways uncovering rich veins.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["biome", "world_biome", "theme_clockwork_syndicate", "brass"],
+  "stats": {
+    "z_min": 1400,
+    "z_max": 1600,
+    "biome_weight": 0.35
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/crystal_chime_d46b": 1.5,
+    "blocks/alkahest_calcite_6904": 0.8
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
