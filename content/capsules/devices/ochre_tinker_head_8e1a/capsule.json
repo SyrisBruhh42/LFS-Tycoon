@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ochre Tinker Head",
+    "description": "An early-tier apprentice tinker head cast from tectonic crucible ore and secondary flux. Part of The Living Atlas & Mycelial Sanctuary of the Enclave's initiative to improve bioluminescent spore cartography by easing the wrong tool penalty across subterranean veins. Socket this into your tool to drastically reduce the speed penalty when striking off-class materials.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": [
+    "device",
+    "tinker_head",
+    "solves_wrong_tool_penalty",
+    "path_magic_charm",
+    "craft_tinker_part",
+    "logic_canonical",
+    "theme_enclave_living_atlas",
+    "bracket_1",
+    "skill_school_manual",
+    "ochre"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "base_dps": 15.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": "0.5"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/quill_peddler_0c07",
+      "price": {
+        "upgrades/ochre_crucible_grimoire_4837": 1,
+        "blocks/tectonic_crucible_5018": 40
+      },
+      "unlock_if": "player.max_depth >= 45.0"
+    }
+  ]
+}
