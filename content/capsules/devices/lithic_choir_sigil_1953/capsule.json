@@ -1,0 +1,55 @@
+{
+  "id": "devices/lithic_choir_sigil_1953",
+  "schema": 1,
+  "archetype": "device",
+  "author": "core:ground_zero",
+  "meta": {
+    "name": "Lithic Choir Resonance Sigil",
+    "description": "An arcane sigil bound with the ancient acoustics of the Lithic Choir's Quill Hollow monastic archivists. Woven from quartz, crystallized tallow, and routing resonance, it hums dynamically with equal-depth bedrock vibrations. When socketed into a tool, it vibrates accumulated grime off the casing via zero-damage harmonic stalls.",
+    "version": "1.0.0"
+  },
+  "affordances": ["socket_in_tool"],
+  "tags": [
+    "device",
+    "solves_grime_cleanliness",
+    "craft_skyrim_enchant",
+    "bracket_3",
+    "skill_school_assayers",
+    "theme_lithic_choir",
+    "logic_canonical",
+    "steward_keystone",
+    "path_placeable_device"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "offered_by": [
+    {
+      "vendor": "npcs/hydro_alchemist_82e8",
+      "unlock_if": "player.max_depth >= 700",
+      "price": {
+        "upgrades/lithic_choir_routing_e842": 1,
+        "blocks/quartz_kettle_f043": 15,
+        "blocks/lithic_tallow_31bc": 12
+      }
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "if": "tile.depth >= 700",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/quartz_kettle_f043",
+          "qty": 1
+        },
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "grime_cleared"
+        }
+      ]
+    }
+  ]
+}
