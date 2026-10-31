@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Assayer Benchmark",
+    "description": "A monumental achievement in subterranean craftsmanship. This expandable bracket mastery node channels wasted force away from overkill into nearby fragile Crucible Clockwork Stratum, easing the burden of deep-bore excavation and cementing the legacy of The Sovereign Ward-Breakers of the Obsidian Seal.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": ["carry", "read_book", "sell"],
+  "tags": [
+    "upgrade",
+    "skill_bracket",
+    "solves_overkill_waste",
+    "path_profession_perk",
+    "craft_skill_mastery",
+    "bracket_4",
+    "skill_school_assayers",
+    "theme_obsidian_wardbreaker",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 2500.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": "1.0 - (0.5 * self.installed)"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": 1.0}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "if": "self.installed >= 1.0",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "blocks/crucible_clockwork_stratum_d60b",
+          "qty": 1,
+          "route": "backpack",
+          "if": "tool.overkill_damage >= 10.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/tectonic_alchemist_cbd5",
+      "price": {
+        "tools/cinder_pewter_clockwork_wick_748a": 1,
+        "blocks/crucible_clockwork_stratum_d60b": 15,
+        "blocks/syndicate_gasket_ore_93f7": 15
+      },
+      "unlock_if": "player.max_depth >= 1650.0"
+    }
+  ]
+}
