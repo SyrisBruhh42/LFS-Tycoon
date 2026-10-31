@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tectonic Rivet Tinker Head",
+    "description": "The Enclave First Forge & Stormbreaker Concordance pioneered this modular tool component. By binding a Tectonic Crucible with the resilient Rivet Chisel Tap Guard, they crafted a part that sheds subterranean slag. When submerged in deep quarry fluids, its hyper-dense alloy naturally repels detritus, easing the burden of grime for meticulous miners.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "solves_grime_cleanliness",
+    "path_qol_upgrade",
+    "craft_tinker_part",
+    "logic_canonical",
+    "theme_enclave_first_forge",
+    "bracket_1",
+    "skill_school_rivet_chisel",
+    "tinker_head"
+  ],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "grime_gain_mult",
+      "phase": "mul",
+      "if": "tile.fluid_level > 0.0",
+      "value": 0.8
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": 1.0}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_assayer_c04e",
+      "price": {
+        "blocks/tectonic_crucible_5018": 15,
+        "upgrades/tap_guard_chisel_3987": 1
+      },
+      "unlock_if": "player.max_depth >= 45.0"
+    }
+  ],
+  "offline": "none"
+}
