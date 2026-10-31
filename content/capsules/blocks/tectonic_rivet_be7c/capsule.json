@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tectonic Rivet",
+    "description": "An ancient thermal rivet forged by the smith-lords of the Under-Sun Manifold, binding magma veins and anvilstone.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "block",
+    "ore",
+    "world_block",
+    "theme_tectonic_crucible",
+    "rivet",
+    "metal"
+  ],
+  "stats": {
+    "base_hp": 35.0,
+    "base_value": 45.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 1950,
+    "z_max": 2300,
+    "l_step": 1000,
+    "spawn_prob": 0.012,
+    "clump_xy": 4.0,
+    "pipe_z": 5.0,
+    "priority_rank": 40
+  },
+  "biome_weights": {
+    "biomes/grand_crucible_45fb": 1.0,
+    "biomes/ember_crucible_982a": 0.8
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
