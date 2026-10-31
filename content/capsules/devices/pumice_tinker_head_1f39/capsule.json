@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pumice Backpack Tinker Head",
+    "description": "A modular tool component crafted by the blind archivists of Quill Hollow using buoyant Munchkin Pumice. When socketed, its resonant acoustic harmonics warp local gravity to teleport broken blocks directly into your backpack, solving the issue of carrying endless stone while you delve. The Infinite Scriptorium of the Lithic Choir demands efficient transport.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "tinker_head",
+    "solves_haul_capacity",
+    "path_tool_builtin",
+    "craft_tinker_part",
+    "bracket_4",
+    "skill_school_assayers",
+    "theme_lithic_choir",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 450.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "blocks/munchkin_pumice_3049",
+          "qty": 2.0,
+          "route": "backpack"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/lithic_archivist_3b1c",
+      "unlock_if": "player.max_depth >= 1380.0",
+      "price": {
+        "upgrades/munchkin_pewter_assayer_5c98": 1,
+        "blocks/munchkin_pumice_3049": 10,
+        "blocks/copper": 5
+      }
+    }
+  ]
+}
