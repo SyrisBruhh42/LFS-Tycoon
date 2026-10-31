@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Ember Crucible Wick",
+    "description": "A rare hazard stratum woven with conductive thermal wicks by the ancient smith-lords of the Under-Sun Manifold, designed for crucible transmutation rigs.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "block",
+    "ore",
+    "world_block",
+    "theme_tectonic_crucible",
+    "wick"
+  ],
+  "stats": {
+    "base_hp": 125.0,
+    "base_value": 85.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 1470,
+    "z_max": 1640,
+    "l_step": 1000,
+    "spawn_prob": 0.012,
+    "clump_xy": 6.0,
+    "pipe_z": 10.0,
+    "priority_rank": 40
+  },
+  "biome_weights": {
+    "blocks/magma_anvilstone_6384": 1
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
