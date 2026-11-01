@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Iron Kettle Tinker Head",
+    "description": "A specialized tinker head forged in the kettle of The Enclave First Forge. Silas and his squad hammered this core from Munchkin Hearth Calcite to resonate with subterranean plasma. When socketed into a tool, it passively boosts gem luck, but its dense core misaligns the grid touch drift as a trade-off.",
+    "author": "jules:steward",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "tinker_head",
+    "solves_ore_hunting",
+    "path_consumable_buff",
+    "craft_tinker_part",
+    "logic_canonical",
+    "theme_enclave_first_forge",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "mul",
+      "value": "1.5"
+    },
+    {
+      "stat": "drunk_drift_px",
+      "phase": "add",
+      "value": "24.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/forge_artisan_67e3",
+      "price": {
+        "upgrades/syndicate_brass_charm_b36d": 1,
+        "blocks/calcite_hearth_munchkin_e80d": 150
+      },
+      "unlock_if": "player.max_depth >= 50.0"
+    }
+  ]
+}
