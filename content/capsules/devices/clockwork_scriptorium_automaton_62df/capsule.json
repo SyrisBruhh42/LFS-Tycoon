@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lithic Choir Field Automaton",
+    "description": "A robust clockwork field rig crafted by the blind monastic archivists of Quill Hollow, designed to harmonize with bedrock as frozen acoustic music. Once placed, it applies a gentle dampening aura that halves nearby tool wear (reduces durability drain). It relies heavily on blocks/lithic_choir_chisel_ore_7d4c to function.",
+    "author": "core:jules",
+    "rarity": "common"
+  },
+  "affordances": ["place_on_tile", "carry", "sell"],
+  "tags": ["solves_tool_wear", "path_vendor_disposable", "craft_clockwork_automaton", "logic_plausible", "theme_lithic_choir", "bracket_1", "skill_school_manual"],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": "0.5"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "devices/clockwork_ochre_automaton_5be6": 1,
+        "blocks/lithic_choir_chisel_ore_7d4c": 50
+      },
+      "unlock_if": "player.max_depth >= 150"
+    }
+  ],
+  "offline": "coarse"
+}
