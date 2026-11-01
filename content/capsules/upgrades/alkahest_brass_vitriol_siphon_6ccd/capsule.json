@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Brass Vitriol Siphon",
+    "description": "A brass architectural fixture crafted in the tradition of The Alkahest Vitriol & Abyssal Hydro-Works. Subterranean hydro-alchemists of the Calcified Foundry treat the quarry as a terraced alembic, flooding strata with brine and vitriol to soften and transmute rock before siphoning it dry. When placed in your house, resting attunes its resonance, increasing cat luring in deep strata or high-tier rock.",
+    "author": "autonomous:content_developer",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "brass",
+    "solves_event_helpers",
+    "path_consumable_buff",
+    "craft_homestead_station",
+    "logic_canonical",
+    "theme_alkahest_hydro",
+    "bracket_2",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 300.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "if": "player.is_rested == 1.0 and tile.depth >= 500",
+      "value": "0.05"
+    },
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "if": "player.is_rested == 1.0 and tile.tier >= 1",
+      "value": "0.05"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_enter_house",
+      "do": [
+        {"act": "emit_alert", "channel": "hud_chime", "tag": "comfort"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/blind_monk_a57d",
+      "price": {
+        "upgrades/pewter_scriptorium_ledger_6b62": 1,
+        "blocks/vitriol_loam_fa0e": 200
+      },
+      "unlock_if": "player.max_depth >= 250.0"
+    }
+  ]
+}
