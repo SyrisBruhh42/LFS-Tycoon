@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lithic Chiselstone",
+    "description": "A dense, acoustic ore forged by the blind monastic archivists of Quill Hollow. It resonates with a dull thud when struck.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "block",
+    "ore",
+    "world_block",
+    "theme_lithic_choir",
+    "chisel"
+  ],
+  "stats": {
+    "base_hp": 45.0,
+    "base_value": 35.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 2180,
+    "z_max": 2400,
+    "l_step": 1000,
+    "spawn_prob": 0.012,
+    "clump_xy": 6.0,
+    "pipe_z": 6.0,
+    "priority_rank": 50
+  },
+  "biome_weights": {
+    "biomes/standard_crust": 1.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
