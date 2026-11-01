@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin Hearth Calcite",
+    "description": "The Paradox Symposium of St. Munchkin uses this warm, calcified strata as a literal loophole to bypass wrong-tool penalties during their subterranean wine tastings.",
+    "author": "core:jules",
+    "rarity": "common"
+  },
+  "affordances": ["mineable_block", "carry", "sell"],
+  "tags": ["world_block", "theme_munchkin_paradox", "block", "calcite", "hearth"],
+  "stats": {
+    "base_hp": 48.0,
+    "base_value": 34.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 2510,
+    "z_max": 2720,
+    "l_step": 1000,
+    "spawn_prob": 0.012,
+    "clump_xy": 7.0,
+    "pipe_z": 5.0,
+    "priority_rank": 40
+  },
+  "biome_weights": {},
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": "0.1"
+    }
+  ],
+  "reactions": [],
+  "offline": "none"
+}
