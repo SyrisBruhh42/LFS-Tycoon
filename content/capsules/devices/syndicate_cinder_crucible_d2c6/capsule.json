@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Syndicate Cinder-Crucible",
+    "description": "A field-deployable apparatus of The Paradox Symposium of St. Munchkin. Acquired from the Quill Peddler, it acts as a resilient buffer against accidental pickaxe swings, halting destruction at the last splinter. When active on a block, it constantly cycles through raw Syndicate Iron Ore to build quarry resonance, eventually wearing down its physical housing.",
+    "author": "core:jules",
+    "rarity": "common"
+  },
+  "affordances": ["place_on_tile", "carry", "sell"],
+  "tags": [
+    "device",
+    "tile_cover",
+    "solves_tap_misfires",
+    "path_field_textile",
+    "craft_smeltery_alloy",
+    "logic_canonical",
+    "theme_munchkin_paradox",
+    "bracket_1",
+    "skill_school_manual",
+    "cinder"
+  ],
+  "stats": {
+    "base_value": 70.0,
+    "base_dps": 10.0,
+    "wear_max": 50.0
+  },
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "if": "tile.covered_by_self and ctx.is_direct_tap == 1",
+      "value": "1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "tile.covered_by_self",
+      "do": [
+        {"act": "consume_item", "item": "blocks/syndicate_iron_f8d1", "qty": 1.0},
+        {"act": "var_add", "var": "shared.quarry_resonance_charge", "by": 1.0},
+        {"act": "var_add", "var": "self.wear", "by": 1.0}
+      ]
+    },
+    {
+      "on": "on_zero_damage_stall",
+      "if": "tile.covered_by_self and self.wear >= self.stats.wear_max",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/quill_peddler_0c07",
+      "unlock_if": "player.max_depth >= 40.0",
+      "price": {
+        "devices/ochre_tallow_snoot_8dd6": 1,
+        "blocks/syndicate_iron_f8d1": 80
+      }
+    }
+  ],
+  "offline": "none"
+}
