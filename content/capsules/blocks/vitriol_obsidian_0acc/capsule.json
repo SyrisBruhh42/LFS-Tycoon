@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Vitriol Obsidian Seal",
+    "description": "A dense, strictly-locked obsidian hazard laced with vitriol. Sovereign Ward-Breakers use equal-depth catalyst detonations to shatter its perimeter.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "world_block",
+    "theme_obsidian_wardbreaker",
+    "block",
+    "hazard",
+    "obsidian",
+    "vitriol"
+  ],
+  "stats": {
+    "base_hp": 850.0,
+    "base_value": 100.0,
+    "ideal_tool": "DEMOLITION",
+    "strict_tool_lock": 1,
+    "z_unlock": 2600,
+    "z_max": 2800,
+    "spawn_prob": 0.01,
+    "clump_xy": 5.0,
+    "pipe_z": 5.0,
+    "priority_rank": 90
+  },
+  "biome_weights": {},
+  "vars": {},
+  "modifiers": [],
+  "reactions": []
+}
