@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Galena",
+    "description": "Heavy, lead-rich ore threaded with perpetual motion clockwork mechanisms left by ancient deep-bore syndicates.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "world_block",
+    "theme_clockwork_syndicate",
+    "galena",
+    "metal",
+    "ore"
+  ],
+  "stats": {
+    "base_hp": 85.0,
+    "base_value": 42.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 2350,
+    "z_max": 2550,
+    "l_step": 1000,
+    "spawn_prob": 0.012,
+    "clump_xy": 5.0,
+    "pipe_z": 4.0,
+    "priority_rank": 50
+  },
+  "biome_weights": {
+    "biomes/standard_crust": 0.5,
+    "biomes/clockwork_deep_mine_6fa2": 1.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": []
+}
