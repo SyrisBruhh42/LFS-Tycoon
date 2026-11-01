@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Enclave Spore Sanctuary",
+    "description": "A bioluminescent spore cartography pocket mine cultivating magnetotropic flora and Schrödinger's Harvest alchemy, rich in galena.",
+    "author": "core:enclave",
+    "rarity": "uncommon"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["world_biome", "theme_enclave_living_atlas"],
+  "stats": {
+    "z_min": 2230,
+    "z_max": 2400,
+    "biome_weight": 0.45
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/clockwork_zinc_crust_cc83": 1.2,
+    "blocks/alkahest_calcite_6904": 0.8
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
