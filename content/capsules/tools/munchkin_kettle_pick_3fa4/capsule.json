@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin Kettle Pick",
+    "description": "An absurd contraption devised by the bureaucrats of The Paradox Symposium of St. Munchkin. Acquired from a bismuth broker, this pick features a kettle for cinder ore that radically accelerates mining at shallow depths—exploiting a legal loophole in physics.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_slow_early_dps",
+    "path_tool_builtin",
+    "craft_terraria_fusion",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_2",
+    "skill_school_assayers",
+    "kettle"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 2,
+    "base_dps": 40.0,
+    "durability_max": 500.0,
+    "is_rechargeable": 1,
+    "base_value": 150.0
+  },
+  "vars": {
+    "durability_left": 500.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "value": "2.5",
+      "if": "tile.depth < 300.0"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/bismuth_broker_af6a",
+      "price": {
+        "devices/pewter_syndicate_shock_seal_d011": 1,
+        "tools/pewter_hazard_pick_e56f": 1,
+        "blocks/cinder_ore_1db2": 45
+      },
+      "unlock_if": "player.max_depth >= 300.0"
+    }
+  ]
+}
