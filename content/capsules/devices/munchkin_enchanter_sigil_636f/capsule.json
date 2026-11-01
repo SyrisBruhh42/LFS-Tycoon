@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin Flint Sigil",
+    "description": "An enchanted flint seal crafted by the sommelier bureaucrats of St. Munchkin. Socketed into a tool, it exploits a literal loophole in the laws of intoxication: secondary splash damage harmlessly bounces off, preventing you from destroying the tiles you meant to leave intact. Only works up to depth 249m.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_unwanted_splash",
+    "path_npc_enchanter",
+    "craft_smeltery_alloy",
+    "logic_canonical",
+    "theme_munchkin_paradox",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "if": "ctx.is_secondary_damage == 1 and tile.depth <= 249",
+      "value": "0.15"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/sommelier_munchkin_51ac",
+      "price": {
+        "devices/munchkin_ochre_tome_df65": 1,
+        "blocks/lithic_choir_chisel_ore_7d4c": 200
+      },
+      "unlock_if": "player.max_depth >= 150"
+    }
+  ]
+}
