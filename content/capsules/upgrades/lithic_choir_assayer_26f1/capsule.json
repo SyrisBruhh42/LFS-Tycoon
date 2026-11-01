@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lithic Choir Scriptorium Module",
+    "description": "An expandable Assayers guild mastery bracket node bridging the Lithic Choir's ancient acoustic rituals with modern deep-boring. It drastically reduces tool wear when mining, ensuring tools sing rather than shatter within equal-depth contours.",
+    "author": "jules:steward",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "place_in_house"
+  ],
+  "tags": [
+    "upgrade",
+    "skill_bracket",
+    "solves_tool_wear",
+    "path_profession_perk",
+    "craft_skill_mastery",
+    "bracket_2",
+    "skill_school_assayers",
+    "theme_lithic_choir",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 500.0,
+    "base_dps": 50.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "value": "0.5"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/calcite_hearth_munchkin_e80d",
+          "qty": 1.0
+        },
+        {
+          "act": "spawn_item",
+          "item": "blocks/vitriol_obsidian_0acc",
+          "qty": 1.0,
+          "route": "backpack"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/obsidian_sconce_artisan_0cc5",
+      "unlock_if": "player.max_depth >= 250",
+      "price": {
+        "devices/clockwork_cinder_sponge_1ea0": 1,
+        "blocks/calcite_hearth_munchkin_e80d": 150,
+        "blocks/vitriol_obsidian_0acc": 150
+      }
+    }
+  ]
+}
