@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Umber Catalyst Ore",
+    "description": "A brittle umber-laced ore required by Sovereign Ward-Breakers for equal-depth catalyst detonations against strict-locked obsidian hazard seals.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "block",
+    "ore",
+    "metal",
+    "umber",
+    "world_block",
+    "theme_obsidian_wardbreaker"
+  ],
+  "stats": {
+    "base_hp": 65.0,
+    "base_value": 35.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 2750,
+    "z_max": 3050,
+    "spawn_prob": 0.01,
+    "clump_xy": 4.0,
+    "priority_rank": 40
+  },
+  "biome_weights": {},
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
