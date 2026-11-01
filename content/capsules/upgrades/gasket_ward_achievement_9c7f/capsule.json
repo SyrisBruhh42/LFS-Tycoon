@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Enclave Concordance Gasket Ward",
+    "description": "An unlockable trophy seal representing mastery at The Enclave First Forge & Stormbreaker Concordance. Sympathetic core-metallurgy and captured-lightning geode smithing pioneered by The Forge Squad of the Enclave of the 16, where hyper-dense alloys shift resonance with operator focus and grounding rods tame subterranean plasma. This relic provides aid in event helpers like the lost-cat chase and draws specific mechanical power when placed near Ember blocks.",
+    "author": "autonomous:content_developer",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "sell"],
+  "tags": [
+    "upgrade",
+    "solves_event_helpers",
+    "craft_achievement_relic",
+    "bracket_3",
+    "skill_school_manual",
+    "theme_enclave_first_forge",
+    "logic_canonical",
+    "steward_keystone",
+    "path_magic_charm"
+  ],
+  "stats": {
+    "base_value": 250.0,
+    "base_dps": 200.0,
+    "cat_lure_bonus": 0.05
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "value": "self.stats.cat_lure_bonus"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/ember_ad54",
+          "qty": 1.0
+        },
+        {
+          "act": "spawn_item",
+          "item": "blocks/copper",
+          "qty": 5.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gasket_smith_9bf0",
+      "price": {
+        "consumables/munchkin_brew_5ec5": 1,
+        "blocks/ember_ad54": 150,
+        "blocks/copper": 300
+      },
+      "unlock_if": "player.max_depth >= 150.0 and shared.quarry_resonance_charge >= 50.0 and shared.house_bell_ringing >= 1.0 and tool.tier >= 3.0"
+    }
+  ],
+  "offline": "coarse"
+}
