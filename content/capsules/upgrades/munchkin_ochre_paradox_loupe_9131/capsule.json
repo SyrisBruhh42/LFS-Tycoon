@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin's Ochre Paradox Loupe",
+    "description": "A baffling achievement of subterranean bureaucracy from The Paradox Symposium of St. Munchkin. This enchanter's loupe, crafted with sturdy anvilstone and the intricate knowledge of the hollow choir sponge, sockets into any tool. It exploits an absurd zoning loophole by declaring every newly discovered geological layer an 'unlicensed hazard,' instantly painting a HUD chalk outline of hidden veins. Unfortunately, this bureaucratic overreach exhausts its usefulness over time.",
+    "author": "jules",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "socket_in_tool", "sell"],
+  "tags": ["upgrade", "solves_ore_hunting", "path_npc_enchanter", "craft_skill_mastery", "logic_absurd", "theme_munchkin_paradox", "skill_bracket", "bracket_3", "skill_school_manual", "hud"],
+  "stats": {
+    "base_value": 35.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true, "if": "self.activations < 50.0"},
+        {"act": "var_add", "var": "self.activations", "by": "1.0", "if": "self.activations < 50.0"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ember_vendor_f749",
+      "price": {
+        "upgrades/flint_hollow_choir_sponge_d53f": 1,
+        "blocks/anvilstone_02a1": 45
+      },
+      "unlock_if": "player.max_depth >= 750.0"
+    }
+  ]
+}
