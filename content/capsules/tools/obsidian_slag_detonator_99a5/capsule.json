@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Vitriol Slag Detonator",
+    "description": "A robust perimeter catalyst cast from slag stratum and vitriol. Solves hazard clusters and stubborn obsidian cleanly while honoring the mycelial sanctuary of the Enclave.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "catalyst",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_hazard_clearing",
+    "path_tool_builtin",
+    "craft_alchemy_potion",
+    "logic_canonical",
+    "theme_enclave_living_atlas",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 0,
+    "base_dps": 45.0,
+    "durability_max": 300.0,
+    "is_rechargeable": 1,
+    "base_value": 50.0,
+    "durability_drain_mult": 1.0
+  },
+  "vars": {
+    "durability_left": 300.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "if": "tile.is_hazard == 1.0",
+      "value": "2.5"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_hazard_detonate",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.durability_left",
+          "by": "-5.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/ochre_toad_5e64",
+      "price": {
+        "consumables/obsidian_mica_ward_charm_1416": 1,
+        "blocks/slag_stratum_085a": 65
+      },
+      "unlock_if": "shared.quarry_resonance_charge >= 0.0 and player.max_depth >= 150.0"
+    }
+  ],
+  "offline": "none"
+}
