@@ -1,0 +1,99 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Galena Automaton",
+    "description": "An autonomous subterranean hydro-alchemist tool built to treat the 14x31 quarry as a terraced chemical alembic. Fueled by Living Atlas Galena, it floods strata with brine and vitriol to soften rock and route refined ores. A situational trade-off: it is clumsy and applies a penalty if used strictly on soft dirt.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "equip_tool", "place_on_tile", "sell"],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "automine",
+    "clockwork",
+    "disposable",
+    "solves_haul_capacity",
+    "path_hired_laborer",
+    "craft_smeltery_alloy",
+    "logic_canonical",
+    "theme_alkahest_hydro",
+    "bracket_1",
+    "skill_school_pewter_cinder"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 60.0,
+    "charge_max_sec": 14400.0,
+    "durability_max": 1200.0,
+    "is_rechargeable": 0,
+    "base_value": 85.0
+  },
+  "vars": {
+    "charge_left": 14400.0,
+    "durability_left": 1200.0
+  },
+  "modifiers": [
+    {
+      "stat": "chest_route_pct",
+      "phase": "add",
+      "value": "0.5"
+    },
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": "0.5",
+      "if": "tile.depth < 10.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "self.charge_left > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": "-1.0"}
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "self.charge_left <= 0.0",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    },
+    {
+      "on": "on_deplete",
+      "do": [
+        {"act": "destroy_self"}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "if": "tile.depth >= 150.0",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/living_atlas_galena_0725",
+          "qty": 1.0
+        },
+        {
+          "act": "spawn_item",
+          "item": "blocks/living_atlas_galena_0725",
+          "qty": 2.0,
+          "route": "paired_chest"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/cinder_runesmith_b3de",
+      "price": {
+        "textiles/crucible_cinder_weave_ab8b": 1,
+        "blocks/living_atlas_galena_0725": 200
+      },
+      "unlock_if": "player.max_depth >= 150.0"
+    }
+  ]
+}
