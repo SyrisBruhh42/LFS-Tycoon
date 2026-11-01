@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Abyssal Hydro-Alchemist",
+    "description": "A rare subterranean guild artisan of The Alkahest Vitriol & Abyssal Hydro-Works. Found in the deepest strata, they treat the quarry as a vast terraced alembic, offering alchemical secrets to transmute pumice with caustic hydro-vitriol.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "npc_vendor"
+  ],
+  "tags": [
+    "world_npc",
+    "theme_alkahest_hydro",
+    "alchemist",
+    "pumice"
+  ],
+  "stats": {
+    "unlock_depth": 2510.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
