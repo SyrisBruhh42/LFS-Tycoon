@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Galena Quill",
+    "description": "A socketable arcane sigil forged from heavy, lead-rich Clockwork Galena. This device leverages the intricate, self-feeding perpetual motion mechanisms of The Perpetual Clockwork Deep-Bore Syndicate to meticulously re-channel excess force. When socketed, it trades raw mining speed for precise kinetic redistribution, instantly dissipating overkill damage into adjacent rock.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "sell", "socket_in_tool", "consume"],
+  "tags": [
+    "device",
+    "solves_overkill_waste",
+    "path_tool_builtin",
+    "craft_skyrim_enchant",
+    "logic_canonical",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_syndicate_loam",
+    "quill"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "base_dps": 12.0
+  },
+  "vars": {
+    "installed": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "mul",
+      "value": "0.75",
+      "if": "self.installed >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {"act": "var_set", "var": "self.installed", "value": "1.0"}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "deal_damage",
+          "if": "self.installed >= 1.0 and tool.overkill_damage > 0.0 and ctx.is_secondary_damage == 0",
+          "target": "shallowest_neighbor_4",
+          "amount": "tool.overkill_damage * 0.95"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_assayer_c04e",
+      "price": {
+        "blocks/galena_clockwork_ore_9d8f": 80,
+        "upgrades/syndicate_loam_21f7": 1
+      },
+      "unlock_if": "player.max_depth >= 45.0"
+    }
+  ]
+}
