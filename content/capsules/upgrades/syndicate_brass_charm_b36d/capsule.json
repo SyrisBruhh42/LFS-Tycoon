@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Enclave Syndicate Brass Ward",
+    "description": "A crafted homestead bench or architectural fixture built from syndicate brass strata that permanently enhances rested state and tames subterranean plasma. Forged by Silas, Leo, Hector, and Jane of the Enclave of the 16. It reduces the wrong tool penalty so off-class tools suffer less slowdown.",
+    "author": "autonomous:content_developer",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "socket_in_tool", "place_in_house", "sell"],
+  "tags": [
+    "upgrade",
+    "solves_wrong_tool_penalty",
+    "path_magic_charm",
+    "craft_homestead_station",
+    "logic_canonical",
+    "theme_enclave_first_forge",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 75.0
+  },
+  "vars": {
+    "times_used": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": "0.5"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/pewter_quill_newt_3730",
+      "unlock_if": "player.max_depth >= 45.0 and shared.quarry_resonance_charge >= 1.0",
+      "price": {
+        "blocks/syndicate_brass_801b": 60,
+        "upgrades/vitriol_wardbreaker_tinker_head_7e9d": 1
+      }
+    }
+  ]
+}
