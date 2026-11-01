@@ -27,8 +27,7 @@
     "base_dps": 15.0
   },
   "vars": {
-    "is_learned": 0.0,
-    "durability_left": 100.0
+    "is_learned": 0.0
   },
   "modifiers": [
     {
@@ -54,8 +53,7 @@
       "on": "on_block_break",
       "if": "self.is_learned == 1.0 and tile.depth >= 500",
       "do": [
-        {"act": "consume_item", "item": "blocks/stone", "qty": 1.0},
-        {"act": "var_add", "var": "self.durability_left", "by": "2.0"}
+        {"act": "consume_item", "item": "blocks/stone", "qty": 1.0}
       ]
     }
   ],
