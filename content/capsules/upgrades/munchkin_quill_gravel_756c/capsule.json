@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin Paradox Quill Gravel Bracket",
+    "description": "An umber-bound treatise by The Paradox Symposium of St. Munchkin. A secret order of subterranean bureaucrats who exploit hilarious literal loopholes in the laws of physics to mitigate wrong-tool penalties. This logic-canonical bracket builds upon the quill gravel mapping to ease off-class tool slowdowns permanently when carried or placed in the house.",
+    "author": "jules:session",
+    "rarity": "common",
+    "era": "early"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "skill_bracket",
+    "bracket_2",
+    "skill_school_quill_gravel",
+    "theme_munchkin_paradox",
+    "solves_wrong_tool_penalty",
+    "path_consumable_buff",
+    "craft_skill_mastery",
+    "logic_canonical",
+    "umber"
+  ],
+  "stats": {
+    "base_value": 450.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "wrong_tool_penalty",
+      "phase": "mul",
+      "value": "0.5"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/pewter_quill_newt_3730",
+      "price": {
+        "upgrades/quill_gravel_bracket_8d53": 1,
+        "blocks/calcite_hearth_munchkin_e80d": 60
+      },
+      "unlock_if": "player.max_depth >= 400.0"
+    }
+  ]
+}
