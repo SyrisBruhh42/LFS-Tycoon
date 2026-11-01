@@ -1,0 +1,5 @@
+# 1-in-10 Enterprise Steward Audit Review
+
+This Keystone Connector (devices/obsidian_wardbreaker_crucible_71de) bridges the gap between previous 9 capsules by consuming orphan blocks (`blocks/lithic_choir_zinc_e80e` and `blocks/lithic_choir_chisel_ore_c196`) and utilizing a non-consumed upgrade prerequisite (`upgrades/lithic_choir_contour_package_2985`). It incorporates the `theme_obsidian_wardbreaker` lore via the assigned vendor (`npcs/crucible_keeper_a570`). By introducing a mechanical refinement of zinc via `on_zero_damage_stall` into activation counters, the crucible bridges the gap effectively for bracket_2 skill nodes within the `skill_school_pewter_cinder` school.
+
+<!-- steward-audit: {"mode": "steward_1_in_10", "orphan_ores_connected": ["blocks/lithic_choir_zinc_e80e", "blocks/lithic_choir_chisel_ore_c196"], "vendor_targeted": "npcs/crucible_keeper_a570", "skill_bracket_linked": "upgrades/lithic_choir_contour_package_2985", "bracket_tier": "bracket_2", "theme": "theme_obsidian_wardbreaker"} -->

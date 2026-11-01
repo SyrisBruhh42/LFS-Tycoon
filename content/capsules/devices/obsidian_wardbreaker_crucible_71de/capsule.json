@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Ward-Breaker Crucible",
+    "description": "A crucible catalyst or kiln apparatus forged by the Sovereign Ward-Breakers of the Obsidian Seal. It transmutes deep subterranean stormbreaker ores to ease unwanted splash damage, cracking strict-locked seals via equal-depth catalyst detonations.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "solves_hazard_clearing",
+    "path_placeable_device",
+    "craft_smeltery_alloy",
+    "bracket_2",
+    "skill_school_pewter_cinder",
+    "theme_obsidian_wardbreaker",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 250.0,
+    "base_dps": 18.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_zero_damage_stall",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/lithic_choir_zinc_e80e",
+          "qty": 1.0
+        },
+        {
+          "act": "var_add",
+          "var": "self.activations",
+          "by": "1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/crucible_keeper_a570",
+      "unlock_if": "player.max_depth >= 15.0",
+      "price": {
+        "upgrades/lithic_choir_contour_package_2985": 1,
+        "blocks/lithic_choir_zinc_e80e": 10,
+        "blocks/lithic_choir_chisel_ore_c196": 10
+      }
+    }
+  ]
+}
