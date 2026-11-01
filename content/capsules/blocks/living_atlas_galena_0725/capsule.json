@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Living Atlas Galena",
+    "description": "Bioluminescent spore-threaded galena ore cultivated by The Enclave. Its magnetotropic flora structure makes it vital for subterranean cartography and culinary alchemy.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "block",
+    "ore",
+    "world_block",
+    "theme_enclave_living_atlas",
+    "galena"
+  ],
+  "stats": {
+    "base_hp": 40.0,
+    "base_value": 25.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 2450,
+    "z_max": 2650,
+    "l_step": 1000,
+    "spawn_prob": 0.010,
+    "clump_xy": 6.0,
+    "pipe_z": 6.0,
+    "priority_rank": 50
+  },
+  "biome_weights": {},
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
