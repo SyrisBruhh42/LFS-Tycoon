@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Hydro Geomancy Grimoire",
+    "description": "An arcane tome detailing the subterranean hydro-alchemy of The Alkahest Vitriol & Abyssal Hydro-Works. It teaches geomancers to treat the quarry as a terraced chemical alembic, granting a discount when haggling with deep-bore vendors. Furthermore, striking stubborn Lithic Choir Zinc casts a geomantic resonance that transmutes the rock into Syndicate Brass and cascades shattering damage to neighboring blocks.",
+    "author": "jules:steward",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell",
+    "consume"
+  ],
+  "tags": [
+    "book",
+    "skill_book",
+    "path_skill_book",
+    "solves_vendor_access",
+    "craft_spell_grimoire",
+    "bracket_3",
+    "skill_school_alkahest_salt",
+    "theme_alkahest_hydro",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 450.0,
+    "discount_val": 0.15
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "value": "self.stats.discount_val",
+      "if": "self.is_learned >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_learned",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "on": "on_zero_damage_stall",
+      "if": "self.is_learned >= 1.0 ",
+      "do": [
+        {
+          "act": "transform_tile",
+          "target": "self_tile",
+          "block": "blocks/syndicate_brass_801b"
+        },
+        {
+          "act": "deal_damage",
+          "target": "shallowest_neighbor_4",
+          "amount": "150.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/lithic_archivist_9c38",
+      "price": {
+        "upgrades/alkahest_salt_tuning_charm_f862": 1,
+        "blocks/lithic_choir_zinc_e80e": 50,
+        "blocks/syndicate_brass_801b": 50
+      },
+      "unlock_if": "player.max_depth >= 700.0"
+    }
+  ]
+}
