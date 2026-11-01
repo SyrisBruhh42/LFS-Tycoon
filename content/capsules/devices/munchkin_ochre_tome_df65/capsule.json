@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin's Ochre Tome",
+    "description": "An outrageously over-engineered tome created by the Paradox Symposium of St. Munchkin. Kept permanently while carried or placed in the house, it applies bureaucratic loopholes to reality itself. By consulting the ochre-stained pages while equipped on a tool, nearby ores are legally required to declare themselves upon layer reveal. In exchange, the sheer weight of paperwork drastically slows down your raw DPS.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_ore_hunting",
+    "path_magic_charm",
+    "craft_skyrim_enchant",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 75.0,
+    "base_dps": 10.0
+  },
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "value": "1.15"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_chalk_lines", "enabled": true}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "upgrades/vitriol_wardbreaker_tinker_head_7e9d": 1,
+        "blocks/lithic_choir_zinc_e80e": 85
+      },
+      "unlock_if": "player.max_depth >= 45"
+    }
+  ]
+}
