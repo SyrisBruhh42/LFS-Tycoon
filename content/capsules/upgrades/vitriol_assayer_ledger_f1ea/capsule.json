@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Vitriol Assayer's Ledger",
+    "description": "An assayer's extensive bundle crafted from the Alkahest Vitriol & Abyssal Hydro-Works. Proves mastery over deep strata for subterranean hydro-alchemists who treat the quarry as a terraced chemical alembic. Grants a permanent deep-strata market perk: ore sold from depth 500 or deeper is valued higher, combating market saturation.",
+    "author": "autonomous:content_developer",
+    "rarity": "rare",
+    "era": "early"
+  },
+  "affordances": ["carry", "sell", "place_in_house"],
+  "tags": [
+    "upgrade",
+    "solves_market_saturation",
+    "path_bundle_package",
+    "craft_homestead_station",
+    "logic_canonical",
+    "theme_alkahest_hydro",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 250.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "add",
+      "if": "tile.depth >= 500.0",
+      "value": "0.5"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/ochre_toad_5e64",
+      "price": {
+        "upgrades/ochre_crucible_relic_2352": 1,
+        "blocks/vitriol_obsidian_0acc": 25
+      },
+      "unlock_if": "player.max_depth >= 45"
+    }
+  ]
+}
