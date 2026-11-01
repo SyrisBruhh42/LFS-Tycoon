@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tectonic Slag",
+    "description": "Dense, heat-tempered slag fused under extreme pressure by ancient smith-lords.",
+    "author": "jules:085a",
+    "rarity": "common"
+  },
+  "affordances": ["mineable_block", "carry", "sell"],
+  "tags": ["world_block", "theme_tectonic_crucible", "stone"],
+  "stats": {
+    "base_hp": 850.0,
+    "base_value": 45.0,
+    "spawn_prob": 0.012,
+    "z_unlock": 2680,
+    "z_max": 2950,
+    "ideal_tool": "PICKAXE"
+  },
+  "biome_weights": {}
+}
