@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lithic Choir Chisel Ore",
+    "description": "The Infinite Scriptorium of the Lithic Choir - Blind monastic archivists of Quill Hollow who discovered that bedrock is frozen acoustic music, using zero-damage stalls and bell harmonics to shatter equal-depth contours. Chisel ore is a resonant crystal stratum.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "world_block",
+    "theme_lithic_choir",
+    "block",
+    "ore",
+    "crystal"
+  ],
+  "stats": {
+    "base_hp": 30.0,
+    "base_value": 20.0,
+    "ideal_tool": "PICKAXE",
+    "spawn_prob": 0.015,
+    "z_unlock": 2590,
+    "z_max": 2800,
+    "priority_rank": 50
+  },
+  "biome_weights": {},
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
