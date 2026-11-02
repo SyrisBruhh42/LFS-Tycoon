@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Shale Seal Catalyst",
+    "description": "A dense shale-based ore suffused with catalytic energy. Highly sought by the Sovereign Ward-Breakers of the Obsidian Seal to perform 8-perimeter equal-depth detonations against strict-locked obsidian hazard seals.",
+    "author": "core:ground_zero",
+    "rarity": "uncommon"
+  },
+  "affordances": ["mineable_block", "carry", "sell"],
+  "tags": ["block", "ore", "shale", "world_block", "theme_obsidian_wardbreaker"],
+  "stats": {
+    "base_hp": 25.0,
+    "base_value": 15.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 3200,
+    "z_max": 3400,
+    "l_step": 1000,
+    "spawn_prob": 0.01,
+    "clump_xy": 6.0,
+    "pipe_z": 10.0,
+    "priority_rank": 40
+  },
+  "biome_weights": {
+    "biomes/standard_crust": 0.01,
+    "biomes/obsidian_wardbreaker_mine_6755": 0.5
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
