@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Syndicate Gasket Geode Chamber",
+    "description": "A clockwork-infused pocket mine where abandoned deep-bore gears have crusted over with calcite and quartz geodes.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "world_biome",
+    "theme_clockwork_syndicate",
+    "gasket",
+    "geode"
+  ],
+  "stats": {
+    "z_min": 2715,
+    "z_max": 2950,
+    "biome_weight": 0.4
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/alkahest_calcite_6904": 2.5,
+    "blocks/alkahest_quartz_d755": 0.8
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
