@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Hollow Geomancy Grimoire",
+    "description": "An arcane incantation volume inscribed by the horologists of The Perpetual Clockwork Deep-Bore Syndicate. Rivet Smith sells these to deep-bore railmen, who read it to summon a minor geomantic event: evaporating subterranean fluids and leaving traces of Alkahest Tin Veins, while also setting chalk lines to ease depth awareness.",
+    "author": "jules:steward",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "book",
+    "skill_book",
+    "solves_depth_awareness",
+    "path_skill_book",
+    "craft_spell_grimoire",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_pewter_cinder",
+    "hollow"
+  ],
+  "stats": {
+    "base_value": 120.0
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "mul",
+      "if": "self.is_learned >= 1.0 and tile.depth >= 50.0",
+      "value": "1.15"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.is_learned",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "on": "on_layer_reveal",
+      "if": "self.is_learned == 1.0",
+      "do": [
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_chalk_lines",
+          "enabled": true
+        },
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_depth_calipers",
+          "enabled": true
+        },
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": -1.0
+        },
+        {
+          "act": "spawn_item",
+          "item": "blocks/alkahest_tin_vein_e6b6",
+          "qty": 1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "textiles/quartz_choir_dampener_ea76": 1,
+        "blocks/alkahest_tin_vein_e6b6": 15
+      },
+      "unlock_if": "player.max_depth >= 15"
+    }
+  ]
+}
