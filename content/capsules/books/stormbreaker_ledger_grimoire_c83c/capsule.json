@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Stormbreaker Ledger Grimoire",
+    "description": "An arcane spell tome or incantation from The Enclave First Forge & Stormbreaker Concordance. Pioneered by The Forge Squad, this sympathetic core-metallurgy ledger uses captured-lightning geode smithing where hyper-dense alloys shift resonance with operator focus and grounding rods tame subterranean plasma. Placed on a tile or read, it trades speed for precision, aiding in emergent events like the lost-cat chase by altering the resonance of Tallow Hydro-Seam.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "read_book",
+    "sell"
+  ],
+  "tags": [
+    "book",
+    "solves_event_helpers",
+    "path_placeable_device",
+    "craft_spell_grimoire",
+    "logic_plausible",
+    "theme_enclave_first_forge",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 65.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "value": "0.05"
+    },
+    {
+      "stat": "cleave_pct",
+      "phase": "add",
+      "value": "-0.2"
+    },
+    {
+      "stat": "break_time_mult",
+      "phase": "add",
+      "value": "0.2"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "NONE",
+          "delta_level": -1.0
+        },
+        {
+          "act": "emit_alert",
+          "channel": "house_bell",
+          "tag": "lure_chime"
+        },
+        {
+          "act": "var_add",
+          "var": "self.activations",
+          "by": 1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "price": {
+        "tools/mica_crucible_laborer_2669": 1,
+        "blocks/basalt_tallow_hydro_613b": 50
+      },
+      "unlock_if": "player.max_depth >= 15.0"
+    }
+  ]
+}
