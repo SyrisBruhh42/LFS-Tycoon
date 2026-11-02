@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "River Otter Weir",
+    "description": "River Otter Weir.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_timber_shortage",
+    "path_device"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "yield_mult",
+      "phase": "add",
+      "value": "0.25"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.activations",
+          "by": "1.0"
+        }
+      ]
+    }
+  ],
+  "offline": "none"
+}
