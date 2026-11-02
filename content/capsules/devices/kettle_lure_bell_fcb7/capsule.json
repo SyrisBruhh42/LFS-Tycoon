@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Kettle Tallow Lure Bell",
+    "description": "A crucible catalyst cast by The Forge Squad of the Enclave of the 16. Smelling faintly of tallow, this kettle bell resonates with Stormbreaker Concordance geode smithing. When placed on a tile, it provides a passive cat lure bonus in dry areas and consumes raw choir brass upon layer reveal to emit an acoustic chime.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["carry", "socket_in_tool", "place_on_tile", "sell"],
+  "tags": ["device", "tallow", "solves_event_helpers", "path_placeable_device", "craft_smeltery_alloy", "logic_canonical", "theme_enclave_first_forge", "bracket_1", "skill_school_manual"],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "cat_lure_bonus",
+      "phase": "add",
+      "value": "0.05",
+      "if": "tile.fluid_level == 0.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "consume_item", "item": "blocks/choir_brass_93b0", "qty": 1},
+        {"act": "emit_alert", "channel": "house_bell", "tag": "stall_impassable"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/pewter_quill_newt_3730",
+      "price": {
+        "books/arcane_crucible_grimoire_0eb8": 1,
+        "blocks/choir_brass_93b0": 20
+      },
+      "unlock_if": "player.max_depth >= 150"
+    }
+  ],
+  "offline": "exact"
+}
