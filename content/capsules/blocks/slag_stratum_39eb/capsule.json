@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Crucible Slag",
+    "description": "The Grand Crucible of the Tectonic Leviathan — Ancient smith-lords of the Under-Sun Manifold who bound magma veins and anvilstone into self-tempering thermal drills and crucible transmutation rigs.",
+    "author": "core:ground_zero",
+    "rarity": "rare"
+  },
+  "affordances": ["mineable_block", "carry", "sell"],
+  "tags": ["world_block", "theme_tectonic_crucible", "block", "slag", "ore"],
+  "stats": {
+    "base_hp": 80.0,
+    "base_value": 25.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 3260,
+    "z_max": 3500,
+    "l_step": 1000,
+    "spawn_prob": 0.01,
+    "clump_xy": 6.0,
+    "pipe_z": 10.0,
+    "priority_rank": 40
+  },
+  "biome_weights": {},
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
