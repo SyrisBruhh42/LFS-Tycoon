@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "St. Munchkin Paradox Symposium",
+    "description": "A secret order of subterranean bureaucrats and sommeliers exploiting loopholes in the laws of physics, located in a rare pocket mine.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "world_biome",
+    "theme_munchkin_paradox"
+  ],
+  "stats": {
+    "z_min": 3180,
+    "z_max": 3300,
+    "biome_weight": 0.35
+  },
+  "biome_weights": {
+    "blocks/stone": 2.0,
+    "blocks/alkahest_calcite_6904": 0.8,
+    "blocks/alkahest_pumice_a42e": 0.5
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
