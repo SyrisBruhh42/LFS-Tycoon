@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Tin Vein",
+    "description": "Subterranean hydro-alchemists treat the 14x31 quarry as a terraced chemical alembic, flooding strata with brine and vitriol to soften and transmute rock before siphoning it dry.",
+    "author": "core:ground_zero",
+    "rarity": "common"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "world_block",
+    "theme_alkahest_hydro",
+    "block",
+    "ore",
+    "metal",
+    "tin"
+  ],
+  "stats": {
+    "base_hp": 28.0,
+    "base_value": 12.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 2950,
+    "z_max": 3200,
+    "spawn_prob": 0.01,
+    "l_step": 1000,
+    "clump_xy": 6.0,
+    "pipe_z": 10.0,
+    "priority_rank": 40
+  },
+  "biome_weights": {},
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
