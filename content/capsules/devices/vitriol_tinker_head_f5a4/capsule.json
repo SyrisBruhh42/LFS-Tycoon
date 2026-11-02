@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Vitriol Slag Tinker Head",
+    "description": "Forged in the blazing heat of The Grand Crucible of the Tectonic Leviathan, this tinker head is composed of dense tectonic slag. Bound with vitriol, it acts as a magical charm, granting deeper access to elusive vendors by resonating with the very heartbeat of the Under-Sun Manifold.",
+    "author": "jules:f5a4",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_vendor_access",
+    "path_magic_charm",
+    "craft_tinker_part",
+    "logic_plausible",
+    "theme_tectonic_crucible",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 300.0,
+    "base_dps": 60.0
+  },
+  "vars": {
+    "is_active": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "vendor_depth_discount",
+      "phase": "add",
+      "value": "150.0",
+      "if": "self.is_active == 1.0 and tile.depth >= 150.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": "1.0"}
+      ]
+    },
+    {
+      "on": "on_unequip",
+      "do": [
+        {"act": "var_set", "var": "self.is_active", "value": "0.0"}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "do": [
+        {"act": "spawn_item", "item": "blocks/slag_stratum_085a", "qty": 1.0, "route": "backpack", "if": "self.is_active == 1.0 and tile.depth >= 150.0 and roll(0.05)"}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "devices/iron_crucible_sigil_e05f": 1,
+        "blocks/slag_stratum_085a": 15
+      },
+      "unlock_if": "player.max_depth >= 100.0"
+    }
+  ],
+  "offline": "exact"
+}
