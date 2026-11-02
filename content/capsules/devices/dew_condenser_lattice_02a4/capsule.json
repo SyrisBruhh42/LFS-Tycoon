@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Dew Condenser Lattice",
+    "description": "Dew Condenser Lattice (device capsule).",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_water",
+    "path_water"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [
+      {
+        "stat": "base_dps",
+        "phase": "add",
+        "if": "self.activations == 1.0",
+        "value": 2.0
+      }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "do": [
+        {"act": "modify_fluid", "target": "self_tile", "fluid_type": "WATER", "delta_level": 1.0}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/stone": 10,
+        "blocks/dirt": 10
+      }
+    }
+  ],
+  "offline": "exact"
+}
