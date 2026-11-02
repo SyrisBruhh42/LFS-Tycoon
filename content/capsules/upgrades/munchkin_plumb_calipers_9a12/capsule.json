@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Munchkin's Plumb Calipers",
+    "description": "An absurdist homestead fixture from The Paradox Symposium of St. Munchkin. A bureaucrat figured out that by stacking Syndicate Tin upon an Alkahest Shale Desk, you can trick the universe into displaying HUD Depth Calipers because the desk technically qualifies as an 'unregistered architectural hazard', mildly improving luck while sacrificing some yield.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "place_in_house", "sell"],
+  "tags": [
+    "upgrade",
+    "solves_depth_awareness",
+    "path_profession_perk",
+    "craft_homestead_station",
+    "logic_absurd",
+    "theme_munchkin_paradox",
+    "bracket_1",
+    "skill_school_assayers",
+    "calcite"
+  ],
+  "stats": {
+    "base_value": 85.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "value": 0.2
+    },
+    {
+      "stat": "yield_mult",
+      "phase": "mul",
+      "value": 0.5
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_layer_reveal",
+      "do": [
+        {"act": "set_ui_flag", "flag": "hud_depth_calipers", "enabled": true}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/lantern_smith_fb67",
+      "price": {
+        "upgrades/alkahest_shale_desk_4b17": 1,
+        "blocks/syndicate_tin_da60": 50
+      },
+      "unlock_if": "player.max_depth >= 45.0"
+    }
+  ],
+  "offline": "none"
+}
