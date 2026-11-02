@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Frost-Fern Groundcover",
+    "description": "A hardy groundcover fern that insulates the soil against the cold.",
+    "author": "core:agent",
+    "rarity": "common"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "block",
+    "flora",
+    "world_block"
+  ],
+  "stats": {
+    "base_hp": 25.0,
+    "base_value": 8.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 0,
+    "l_step": 1000,
+    "spawn_prob": 0.05,
+    "clump_xy": 6.0,
+    "pipe_z": 6.0,
+    "priority_rank": 50,
+    "z_max": 100
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "if": "tile.depth >= 0",
+      "value": "0.75"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "tile.depth >= 0",
+      "do": [
+        {
+          "act": "emit_alert",
+          "channel": "hud_chime",
+          "tag": "stall_water"
+        }
+      ]
+    }
+  ],
+  "offline": "exact",
+  "biome_weights": {},
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/dirt": 5,
+        "blocks/stone": 5
+      },
+      "unlock_if": "player.max_depth >= 1"
+    }
+  ],
+  "voxels": {
+    "palette": [
+      "blocks/dirt",
+      "blocks/stone"
+    ],
+    "indices": [
+      0,
+      1
+    ]
+  }
+}
