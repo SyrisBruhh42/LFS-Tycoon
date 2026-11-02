@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lithic Choir Crucible",
+    "description": "A whimsical kiln apparatus utilized by the blind monastic archivists of the Infinite Scriptorium of the Lithic Choir. Procured from the Gravel Keeper, this crucible catalyst is consumed to initiate a melodic zero-damage stall resonance. For 3 minutes, it bathes the quarry in bell harmonics, drastically reducing tool wear (repair upkeep) as long as it periodically consumes Alkahest Tin Vein ore to fuel the acoustic fire.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_repair_upkeep",
+    "path_consumable_buff",
+    "craft_smeltery_alloy",
+    "logic_whimsical",
+    "theme_lithic_choir",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 35.0,
+    "duration_sec": 180.0,
+    "base_dps": 10.0
+  },
+  "vars": {
+    "active_sec_left": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "durability_drain_mult",
+      "phase": "mul",
+      "if": "self.active_sec_left > 0.0",
+      "value": "0.5"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "do": [
+        {
+          "act": "var_set",
+          "var": "self.active_sec_left",
+          "value": "self.stats.duration_sec"
+        }
+      ]
+    },
+    {
+      "on": "on_second_tick",
+      "if": "self.active_sec_left > 0.0",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.active_sec_left",
+          "by": -1.0
+        },
+        {
+          "act": "consume_item",
+          "item": "blocks/alkahest_tin_vein_e6b6",
+          "qty": 1
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/gravel_keeper_9c46",
+      "unlock_if": "player.max_depth >= 15.0",
+      "price": {
+        "textiles/alkahest_vitriol_carpet_6676": 1,
+        "blocks/alkahest_tin_vein_e6b6": 5
+      }
+    }
+  ]
+}
