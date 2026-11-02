@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lithic Scriptorium Automaton",
+    "description": "The Infinite Scriptorium of the Lithic Choir \u2014 Blind monastic archivists of Quill Hollow who discovered that bedrock is frozen acoustic music, using zero-damage stalls and bell harmonics to shatter equal-depth contours.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "place_on_tile"
+  ],
+  "tags": [
+    "solves_hazard_clearing",
+    "craft_clockwork_automaton",
+    "bracket_2",
+    "skill_school_manual",
+    "theme_lithic_choir",
+    "logic_canonical",
+    "steward_keystone",
+    "path_placeable_device"
+  ],
+  "stats": {
+    "base_value": 45.0,
+    "base_dps": 150.0
+  },
+  "modifiers": [
+    {
+      "stat": "incoming_damage",
+      "phase": "mul",
+      "if": "tile.is_hazard == 1.0",
+      "value": "3.0"
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/blind_archivist_74d1",
+      "price": {
+        "books/stormbreaker_ledger_grimoire_c83c": 1.0,
+        "blocks/bismuth_11a8": 10.0,
+        "blocks/alkahest_tin_vein_e6b6": 10.0
+      },
+      "unlock_if": "player.max_depth >= 400.0"
+    }
+  ],
+  "offline": "exact"
+}
