@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Stormbreaker Slag Pocket Mine",
+    "description": "A rare subterranean pocket mine pioneered by The Forge Squad of the Enclave of the 16. Hyper-dense alloys shift resonance and grounding rods tame subterranean plasma to forge molten slag.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "world_biome",
+    "theme_enclave_first_forge",
+    "slag",
+    "pocket_mine"
+  ],
+  "stats": {
+    "z_min": 2720,
+    "z_max": 2900,
+    "biome_weight": 0.40
+  },
+  "biome_weights": {
+    "blocks/stone": 1.2,
+    "blocks/alkahest_shale_981c": 0.7,
+    "blocks/alkahest_quartz_d755": 0.5
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
