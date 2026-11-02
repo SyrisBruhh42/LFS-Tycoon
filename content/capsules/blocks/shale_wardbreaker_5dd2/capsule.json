@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Shale Wardbreaker Layer",
+    "description": "A dense layer of shale infused with ward-breaking geomancy. The Sovereign Ward-Breakers of the Obsidian Seal rely on this tough material for their explosive blast shields and core structural engineering.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell",
+    "catalyst"
+  ],
+  "tags": [
+    "block",
+    "ore",
+    "shale",
+    "world_block",
+    "theme_obsidian_wardbreaker"
+  ],
+  "stats": {
+    "base_hp": 45.0,
+    "base_value": 15.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 3150,
+    "z_max": 3400,
+    "l_step": 1000,
+    "spawn_prob": 0.01,
+    "clump_xy": 8.0,
+    "pipe_z": 12.0,
+    "priority_rank": 40
+  },
+  "biome_weights": {
+      "biomes/obsidian_wardbreaker_mine_6755": 2.0,
+      "biomes/obsidian_wardbreaker_067f": 1.5,
+      "biomes/obsidian_ward_6915": 1.0,
+      "biomes/cinder_wardbreaker_mine_fa9f": 0.5
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": []
+}
