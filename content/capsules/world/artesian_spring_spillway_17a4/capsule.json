@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Artesian Spring Spillway",
+    "description": "A spillway that stabilizes canal flow.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "block",
+    "world_block",
+    "path_fluid"
+  ],
+  "stats": {
+    "base_hp": 25.0,
+    "base_value": 8.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 0,
+    "l_step": 1000,
+    "spawn_prob": 0.05,
+    "clump_xy": 6.0,
+    "pipe_z": 6.0,
+    "priority_rank": 50
+  },
+  "biome_weights": {},
+  "vars": {
+    "wear": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "add",
+      "value": "1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "self.wear < 100",
+      "do": [
+        {
+          "act": "modify_fluid",
+          "target": "self_tile",
+          "fluid_type": "WATER",
+          "delta_level": -10.0
+        }
+      ]
+    }
+  ]
+}
