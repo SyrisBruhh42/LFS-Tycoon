@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Clockwork Loom Shuttle",
+    "description": "Synthesizes fabric bolts automatically.",
+    "author": "jules:clockwork_loom_shuttle",
+    "rarity": "rare"
+  },
+  "affordances": ["carry", "sell"],
+  "tags": ["world_guild", "clockwork", "loom", "shuttle"],
+  "stats": {
+    "base_value": 150.0
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "do": [
+        {"act": "spawn_item", "item": "blocks/copper", "qty": "1", "route": "backpack"}
+      ]
+    }
+  ],
+  "offline": "none"
+}
