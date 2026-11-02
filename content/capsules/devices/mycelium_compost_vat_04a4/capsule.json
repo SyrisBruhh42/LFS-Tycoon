@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Mycelium Compost Vat",
+    "description": "A compost vat that ferments organic scrap into a loam fertility surge.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_hazard_clearing",
+    "path_placeable_device"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "organic_scrap": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.organic_scrap",
+          "by": 1.0
+        },
+        {
+          "act": "spawn_item",
+          "if": "self.organic_scrap >= 10.0",
+          "item": "blocks/vitriol_loam_fa0e",
+          "qty": 1
+        },
+        {
+          "act": "var_set",
+          "if": "self.organic_scrap >= 10.0",
+          "var": "self.organic_scrap",
+          "value": "0.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/enclave_loam_alchemist_a95c",
+      "price": {
+        "blocks/vitriol_loam_fa0e": 10
+      }
+    }
+  ],
+  "offline": "exact"
+}
