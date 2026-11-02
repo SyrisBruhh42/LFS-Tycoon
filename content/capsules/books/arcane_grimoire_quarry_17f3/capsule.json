@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Arcane Grimoire: Quarry Geomancy",
+    "description": "An arcane spell tome shared across The Wilds, The Mind, and The Hub of the Enclave of the 16. It teaches active quarry geomancy, unlocking potent transmutations of living atlas galena to shift subterranean bedrock depths.",
+    "author": "jules:steward",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "consume",
+    "sell"
+  ],
+  "tags": [
+    "solves_house_comfort",
+    "path_qol_upgrade",
+    "craft_spell_grimoire",
+    "bracket_2",
+    "skill_school_assayers",
+    "theme_enclave_living_atlas",
+    "logic_canonical",
+    "steward_keystone"
+  ],
+  "stats": {
+    "base_value": 350.0,
+    "base_dps": 40.0
+  },
+  "vars": {
+    "is_learned": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "base_dps",
+      "phase": "add",
+      "value": "2.0",
+      "if": "self.is_learned >= 1.0"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_consume",
+      "if": "self.is_learned == 0.0",
+      "do": [
+        {"act": "var_set", "var": "self.is_learned", "value": "1.0"},
+        {"act": "var_add", "var": "shared.global_cleave_bonus_pct", "by": 0.1}
+      ]
+    },
+    {
+      "on": "on_block_break",
+      "if": "self.is_learned >= 1.0",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/living_atlas_galena_0725",
+          "qty": 1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/lithic_archivist_1aa4",
+      "price": {
+        "devices/clockwork_automaton_c50a": 1,
+        "blocks/living_atlas_galena_0725": 80,
+        "blocks/umber_catalyst_ore_fff0": 80
+      },
+      "unlock_if": "player.max_depth >= 250.0"
+    }
+  ]
+}
