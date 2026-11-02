@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Lithic Choir Calcite Strata",
+    "description": "A subterranean pocket mine rich in calcite. Maintained by the blind monastic archivists of Quill Hollow who discovered that bedrock is frozen acoustic music, using zero-damage stalls and bell harmonics to shatter equal-depth contours.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "biome_profile"
+  ],
+  "tags": [
+    "biome",
+    "world_biome",
+    "theme_lithic_choir",
+    "calcite"
+  ],
+  "stats": {
+    "z_min": 2900,
+    "z_max": 3000,
+    "biome_weight": 0.25
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/alkahest_calcite_6904": 2.0,
+    "blocks/alkahest_pumice_a42e": 1.5
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
