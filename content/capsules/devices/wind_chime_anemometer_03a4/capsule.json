@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Wind Chime Anemometer",
+    "description": "An anemometer that detects gust spikes to adjust turbine pitch trim, helping auto-tools conserve battery power over time.",
+    "author": "autonomous:content_developer",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_auto_tool_runtime",
+    "path_placeable_device"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": 0.85
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.activations",
+          "by": 1.0
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/peddler_vayne",
+      "price": {
+        "blocks/copper": 50
+      }
+    }
+  ],
+  "offline": "exact"
+}
