@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Ward-Breaker's Kettle",
+    "description": "An eccentric kettle apparatus engineered by the Anvil Smith for The Sovereign Ward-Breakers of the Obsidian Seal. Relying on whimsical Quarry Folk-Science, it brews a warm, comforting broth from flint shale and gravel. Placed in the house, it permanently grants a huge luck boost when well-rested, and occasionally refines mined shale into pure resonance while active.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "solves_house_comfort",
+    "path_profession_perk",
+    "craft_smeltery_alloy",
+    "logic_whimsical",
+    "theme_obsidian_wardbreaker",
+    "bracket_1",
+    "skill_school_manual"
+  ],
+  "stats": {
+    "base_value": 250.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "luck_mult",
+      "phase": "add",
+      "if": "player.is_rested == 1.0",
+      "value": "1.5"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_block_break",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/flint_shale_6493",
+          "qty": 1.0,
+          "if": "player.is_rested == 1.0"
+        },
+        {
+          "act": "var_add",
+          "var": "shared.quarry_resonance_charge",
+          "by": 5.0,
+          "if": "player.is_rested == 1.0"
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/anvil_smith_73cd",
+      "price": {
+        "tools/munchkin_kettle_pick_a70f": 1,
+        "blocks/flint_shale_6493": 45
+      },
+      "unlock_if": "player.max_depth >= 30.0"
+    }
+  ],
+  "offline": "none"
+}

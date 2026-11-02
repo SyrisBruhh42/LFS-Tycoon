@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Pewter Syndicate Assayer's Trophy",
+    "description": "A commemorative seal awarded by The Perpetual Clockwork Deep-Bore Syndicate for proving your merit. Cast from ember-tin ore and synchronized with market pneumatics, this trophy permanently improves sale prices.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": [
+    "carry",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "qol",
+    "solves_market_saturation",
+    "path_qol_upgrade",
+    "craft_achievement_relic",
+    "logic_canonical",
+    "theme_clockwork_syndicate",
+    "bracket_1",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 110.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "phase": "mul",
+      "stat": "market_value_mult",
+      "value": "1.25"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_assayer_c04e",
+      "price": {
+        "devices/pewter_syndicate_shock_seal_d011": 1,
+        "blocks/clockwork_ember_tin_5d20": 40
+      },
+      "unlock_if": "player.max_depth >= 45.0"
+    }
+  ]
+}
