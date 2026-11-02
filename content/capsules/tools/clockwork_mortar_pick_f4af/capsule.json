@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Syndicate Clockwork Mortar-Pick",
+    "description": "Forged by The Perpetual Clockwork Deep-Bore Syndicate, this winding wind-up automine pick uses Alkahest Mortar Crystal dust infused with gravel to drastically reduce internal friction. Its complex steam-baron escapement halves battery drain until its charge completely winds down and it shatters.",
+    "author": "jules:session",
+    "rarity": "epic"
+  },
+  "affordances": [
+    "carry",
+    "equip_tool",
+    "sell"
+  ],
+  "tags": [
+    "tool",
+    "pickaxe",
+    "solves_auto_tool_runtime",
+    "path_bundle_package",
+    "craft_terraria_fusion",
+    "logic_plausible",
+    "theme_clockwork_syndicate",
+    "bracket_2",
+    "skill_school_pewter_cinder",
+    "gravel",
+    "automine",
+    "disposable"
+  ],
+  "stats": {
+    "tool_type": "PICKAXE",
+    "tool_tier": 1,
+    "base_dps": 180.0,
+    "durability_max": 400.0,
+    "is_rechargeable": 0,
+    "base_value": 750.0
+  },
+  "vars": {
+    "charge_left": 7200.0,
+    "durability_left": 400.0
+  },
+  "modifiers": [
+    {
+      "stat": "battery_drain_mult",
+      "phase": "mul",
+      "value": "0.5"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "if": "self.charge_left > 0.0",
+      "do": [
+        {"act": "var_add", "var": "self.charge_left", "by": -1.0}
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/rivet_smith_6a68",
+      "price": {
+        "tools/umber_forged_pick_2b2d": 1,
+        "blocks/mortar_crystal_0882": 50
+      },
+      "unlock_if": "player.max_depth >= 250.0"
+    }
+  ],
+  "offline": "coarse"
+}
