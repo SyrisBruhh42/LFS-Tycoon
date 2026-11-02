@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Signal Heliograph Tower",
+    "description": "A signal heliograph tower constructed by the guild. It flashes semaphore signals to distant caravan spotters, effectively applying a trade tariff rebate that slightly buffs your market value yields when selling goods to passing merchants.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "guild",
+    "solves_market_saturation",
+    "path_placeable_device"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "market_value_mult",
+      "phase": "add",
+      "value": "0.15"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_market_sell",
+      "do": [
+        {
+          "act": "var_add",
+          "var": "self.activations",
+          "by": "1.0"
+        }
+      ]
+    }
+  ],
+  "offline": "exact"
+}
