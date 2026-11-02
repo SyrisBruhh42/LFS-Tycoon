@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Rope Trestle Span",
+    "description": "Rope Trestle Span (device capsule).",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "world_device",
+    "solves_gorge_crossed",
+    "path_haul_route_shortcut"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_equip",
+      "do": [
+        {
+          "act": "set_ui_flag",
+          "flag": "hud_chalk_lines",
+          "enabled": true
+        }
+      ]
+    }
+  ]
+}
