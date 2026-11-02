@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Apprentice Drafting Lectern",
+    "description": "Apprentice Drafting Lectern (device capsule).",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_build_speed_acclaim",
+    "path_blueprint_completed",
+    "lectern",
+    "apprentice"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [
+    {
+      "stat": "break_time_mult",
+      "phase": "mul",
+      "value": 0.8
+    }
+  ],
+  "reactions": [],
+  "offline": "exact"
+}
