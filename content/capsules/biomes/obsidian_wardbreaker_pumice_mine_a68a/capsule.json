@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Obsidian Wardbreaker Pumice Mine",
+    "description": "The Sovereign Ward-Breakers of the Obsidian Seal - A rare subterranean pocket mine, rich in under-referenced ores where pumice weaves together.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": ["biome_profile"],
+  "tags": ["biome", "world_biome", "theme_obsidian_wardbreaker", "pocket_mine", "pumice"],
+  "stats": {
+    "z_min": 3100,
+    "z_max": 3200,
+    "biome_weight": 0.35
+  },
+  "biome_weights": {
+    "blocks/stone": 1.0,
+    "blocks/choir_brass_93b0": 0.5,
+    "blocks/alkahest_pumice_a42e": 0.5
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none"
+}
