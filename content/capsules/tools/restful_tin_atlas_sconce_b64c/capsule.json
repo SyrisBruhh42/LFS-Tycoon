@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Restful Tin Atlas Sconce",
+    "description": "A whimsical tin sconce crafted by the Monastic Lithic Archivists in the Scriptorium of Hollow Quill. Using living atlas galena, it binds the spirit of The Grand Crucible of the Tectonic Leviathan to a consumed ember charm and clockwork router. It ensures secondary splashes bounce harmlessly like cats on warm stones, provided you are well-rested.",
+    "author": "jules:session",
+    "rarity": "uncommon"
+  },
+  "affordances": ["carry", "socket_in_tool", "place_on_tile", "sell"],
+  "tags": [
+    "tool",
+    "device",
+    "charm",
+    "solves_unwanted_splash",
+    "path_npc_enchanter",
+    "craft_terraria_fusion",
+    "logic_whimsical",
+    "theme_tectonic_crucible",
+    "bracket_3",
+    "skill_school_assayers"
+  ],
+  "stats": {
+    "base_value": 300.0,
+    "base_dps": 150.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "min_hp_clamp",
+      "phase": "base",
+      "value": "1.0",
+      "if": "ctx.is_secondary_damage == 1 and player.is_rested == 1"
+    }
+  ],
+  "reactions": [],
+  "offered_by": [
+    {
+      "vendor": "npcs/alkahest_vendor_a46c",
+      "price": {
+        "tools/deep_bore_syndicate_router_f96b": 1,
+        "devices/ember_iron_charm_2d71": 1,
+        "blocks/living_atlas_galena_0725": 85
+      },
+      "unlock_if": "player.max_depth >= 1350"
+    }
+  ]
+}
