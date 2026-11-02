@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Glow-Moth Apiary",
+    "description": "Glow-Moth Apiary (device capsule).",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "carry",
+    "socket_in_tool",
+    "place_on_tile",
+    "sell"
+  ],
+  "tags": [
+    "device",
+    "gadget",
+    "solves_slow_early_dps",
+    "path_consumable_buff"
+  ],
+  "stats": {
+    "base_value": 45.0
+  },
+  "vars": {
+    "activations": 0.0
+  },
+  "modifiers": [],
+  "reactions": [
+    {
+      "on": "on_second_tick",
+      "do": [
+        {
+          "act": "spawn_item",
+          "item": "blocks/copper",
+          "qty": 1.0
+        }
+      ]
+    }
+  ],
+  "offline": "exact"
+}
