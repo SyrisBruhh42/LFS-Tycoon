@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Choir Brass",
+    "description": "A hardened brass alloy, naturally formed via tectonic acoustics. Resonates with zero-damage bell harmonics in the Infinite Scriptorium.",
+    "author": "jules:session",
+    "rarity": "common"
+  },
+  "affordances": [
+    "mineable_block",
+    "carry",
+    "sell",
+    "catalyst"
+  ],
+  "tags": [
+    "block",
+    "ore",
+    "metal",
+    "world_block",
+    "theme_lithic_choir",
+    "brass"
+  ],
+  "stats": {
+    "base_hp": 650.0,
+    "base_value": 90.0,
+    "ideal_tool": "PICKAXE",
+    "strict_tool_lock": 0,
+    "z_unlock": 3100,
+    "l_step": 1000,
+    "spawn_prob": 0.01,
+    "clump_xy": 6.0,
+    "pipe_z": 6.0,
+    "priority_rank": 50,
+    "z_max": 3300
+  },
+  "vars": {},
+  "modifiers": [],
+  "reactions": [],
+  "offline": "none",
+  "biome_weights": {}
+}
