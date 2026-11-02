@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "meta": {
+    "name": "Alkahest Hydro Rivet Bench",
+    "description": "An architectural fixture engineered by the Abyssal Hydro-Alchemist. Crafted using rare Tectonic Rivets and deep-quarry Copper, it requires the knowledge of a Cinder Munchkin's Clockwork Trick to properly install. Placing this bench in your homestead drastically reduces grime accumulation.",
+    "author": "jules:session",
+    "rarity": "rare"
+  },
+  "affordances": [
+    "carry",
+    "place_in_house",
+    "sell"
+  ],
+  "tags": [
+    "upgrade",
+    "solves_grime_cleanliness",
+    "craft_homestead_station",
+    "bracket_2",
+    "skill_school_assayers",
+    "theme_alkahest_hydro",
+    "logic_canonical",
+    "steward_keystone",
+    "path_profession_perk"
+  ],
+  "stats": {
+    "base_value": 400.0
+  },
+  "vars": {},
+  "modifiers": [
+    {
+      "stat": "grime_gain_mult",
+      "phase": "mul",
+      "value": "0.75"
+    }
+  ],
+  "reactions": [
+    {
+      "on": "on_wash",
+      "do": [
+        {
+          "act": "consume_item",
+          "item": "blocks/tectonic_rivet_be7c",
+          "qty": 1
+        }
+      ]
+    }
+  ],
+  "offered_by": [
+    {
+      "vendor": "npcs/abyssal_hydro_vendor_a3d7",
+      "price": {
+        "books/cinder_munchkin_clockwork_6d39": 1,
+        "blocks/tectonic_rivet_be7c": 12,
+        "blocks/copper": 30
+      },
+      "unlock_depth": 2510.0,
+      "unlock_if": "player.max_depth >= 2510.0"
+    }
+  ],
+  "offline": "none"
+}
