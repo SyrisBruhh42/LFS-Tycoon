@@ -1,0 +1,95 @@
+{
+  "affordances": [
+    "mineable_block"
+  ],
+  "authored_by": "lfs-tycoon-factory",
+  "biome_weights": {},
+  "connections": [
+    {
+      "description": "Synchronizes logistics throughput with biomes/abyssal_hydro_works_3007.",
+      "target": "biomes/abyssal_hydro_works_3007",
+      "type": "synergy",
+      "weight": 0.25
+    },
+    {
+      "description": "Draws calibrated telemetry baselines from books/alkahest_hydro_grimoire_c9c1.",
+      "target": "books/alkahest_hydro_grimoire_c9c1",
+      "type": "dependency",
+      "weight": 0.15
+    }
+  ],
+  "economy": {
+    "base_cost": 450,
+    "base_income_per_sec": 24.5,
+    "cost_multiplier": 1.18,
+    "unlock_threshold": 1200,
+    "upkeep_per_sec": 4.2
+  },
+  "id": "blocks/030c_world_block_030c",
+  "lore": {
+    "district_origin": "blocks_sector_prime",
+    "flavor_text": "Engineered within the blocks directorate, capsule 030c: world/block stabilizes regional supply chains while recycling surplus thermal output across neighboring districts."
+  },
+  "meta": {
+    "description": "Deterministic blocks simulation capsule for capsule 030c: world/block.",
+    "id": "blocks/030c_world_block_030c",
+    "name": "capsule 030c: world/block",
+    "namespace": "blocks",
+    "tags": [
+      "world_block",
+      "blocks",
+      "tycoon-sim"
+    ],
+    "version": 1
+  },
+  "modifiers": [
+    {
+      "phase": "add",
+      "stat": "yield_mult",
+      "value": "0.15"
+    }
+  ],
+  "namespace": "blocks",
+  "offline": "coarse",
+  "rarity": "rare",
+  "reactions": [
+    {
+      "do": [
+        {
+          "act": "var_add",
+          "by": "1",
+          "var": "self.pulse_count"
+        }
+      ],
+      "on": "on_block_break"
+    }
+  ],
+  "schema": 1,
+  "schema_version": "1.0",
+  "simulation": {
+    "efficiency_curve": "logarithmic",
+    "max_level": 25,
+    "tick_interval_ms": 1000,
+    "variance_band": 0.08
+  },
+  "stats": {
+    "base_hp": 45,
+    "base_value": 15,
+    "clump_xy": 2,
+    "l_step": 10,
+    "pipe_z": 2,
+    "spawn_prob": 0.01,
+    "z_unlock": 40
+  },
+  "summary": "Autonomous LFS Tycoon blocks capsule for capsule 030c: world/block.",
+  "tags": [
+    "world_block",
+    "blocks",
+    "tycoon-sim"
+  ],
+  "title": "capsule 030c: world/block",
+  "unlock_tier": 2,
+  "vars": {
+    "pulse_count": 0
+  }
+}
