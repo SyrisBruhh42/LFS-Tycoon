@@ -1,0 +1,100 @@
+{
+  "affordances": [
+    "carry",
+    "place_in_house"
+  ],
+  "authored_by": "lfs-tycoon-factory",
+  "biome_weights": {},
+  "connections": [
+    {
+      "description": "Synchronizes logistics throughput with biomes/0022_world_biome_0022.",
+      "target": "biomes/0022_world_biome_0022",
+      "type": "synergy",
+      "weight": 0.25
+    },
+    {
+      "description": "Draws calibrated telemetry baselines from blocks/1a2f_world_block_1a2f.",
+      "target": "blocks/1a2f_world_block_1a2f",
+      "type": "dependency",
+      "weight": 0.15
+    }
+  ],
+  "economy": {
+    "base_cost": 450,
+    "base_income_per_sec": 24.5,
+    "cost_multiplier": 1.18,
+    "unlock_threshold": 1200,
+    "upkeep_per_sec": 4.2
+  },
+  "id": "consumables/9a0b_grime_cleanliness_via_t_9a0b",
+  "lore": {
+    "district_origin": "consumables_sector_prime",
+    "flavor_text": "Engineered within the consumables directorate, capsule 9a0b: grime_cleanliness via tinker_part_forging (bracket_1) stabilizes regional supply chains while recycling surplus thermal output across neighboring districts."
+  },
+  "meta": {
+    "description": "Deterministic consumables simulation capsule for capsule 9a0b: grime_cleanliness via tinker_part_forging (bracket_1).",
+    "id": "consumables/9a0b_grime_cleanliness_via_t_9a0b",
+    "name": "capsule 9a0b: grime_cleanliness via tinker_part_forging (bracket_1)",
+    "namespace": "consumables",
+    "tags": [
+      "solves_stamina",
+      "path_automation",
+      "bracket_1",
+      "consumables",
+      "tycoon-sim"
+    ],
+    "version": 1
+  },
+  "modifiers": [
+    {
+      "phase": "add",
+      "stat": "yield_mult",
+      "value": "0.15"
+    }
+  ],
+  "namespace": "consumables",
+  "offline": "coarse",
+  "rarity": "rare",
+  "reactions": [
+    {
+      "do": [
+        {
+          "act": "var_add",
+          "by": "1",
+          "var": "self.pulse_count"
+        }
+      ],
+      "on": "on_block_break"
+    }
+  ],
+  "schema": 1,
+  "schema_version": "1.0",
+  "simulation": {
+    "efficiency_curve": "logarithmic",
+    "max_level": 25,
+    "tick_interval_ms": 1000,
+    "variance_band": 0.08
+  },
+  "stats": {
+    "base_hp": 45,
+    "base_value": 15,
+    "clump_xy": 2,
+    "l_step": 10,
+    "pipe_z": 2,
+    "spawn_prob": 0.01,
+    "z_unlock": 40
+  },
+  "summary": "Autonomous LFS Tycoon consumables capsule for capsule 9a0b: grime_cleanliness via tinker_part_forging (bracket_1).",
+  "tags": [
+    "solves_stamina",
+    "path_automation",
+    "bracket_1",
+    "consumables",
+    "tycoon-sim"
+  ],
+  "title": "capsule 9a0b: grime_cleanliness via tinker_part_forging (bracket_1)",
+  "unlock_tier": 2,
+  "vars": {
+    "pulse_count": 0
+  }
+}
