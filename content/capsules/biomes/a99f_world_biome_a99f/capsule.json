@@ -1,0 +1,95 @@
+{
+  "affordances": [
+    "biome_profile"
+  ],
+  "authored_by": "lfs-tycoon-factory",
+  "biome_weights": {},
+  "connections": [
+    {
+      "description": "Synchronizes logistics throughput with blocks/1a2f_world_block_1a2f.",
+      "target": "blocks/1a2f_world_block_1a2f",
+      "type": "synergy",
+      "weight": 0.25
+    },
+    {
+      "description": "Draws calibrated telemetry baselines from books/3441_unwanted_splash_via_geo_3441.",
+      "target": "books/3441_unwanted_splash_via_geo_3441",
+      "type": "dependency",
+      "weight": 0.15
+    }
+  ],
+  "economy": {
+    "base_cost": 450,
+    "base_income_per_sec": 24.5,
+    "cost_multiplier": 1.18,
+    "unlock_threshold": 1200,
+    "upkeep_per_sec": 4.2
+  },
+  "id": "biomes/a99f_world_biome_a99f",
+  "lore": {
+    "district_origin": "biomes_sector_prime",
+    "flavor_text": "Engineered within the biomes directorate, capsule a99f: world/biome stabilizes regional supply chains while recycling surplus thermal output across neighboring districts."
+  },
+  "meta": {
+    "description": "Deterministic biomes simulation capsule for capsule a99f: world/biome.",
+    "id": "biomes/a99f_world_biome_a99f",
+    "name": "capsule a99f: world/biome",
+    "namespace": "biomes",
+    "tags": [
+      "world_biome",
+      "biomes",
+      "tycoon-sim"
+    ],
+    "version": 1
+  },
+  "modifiers": [
+    {
+      "phase": "add",
+      "stat": "yield_mult",
+      "value": "0.15"
+    }
+  ],
+  "namespace": "biomes",
+  "offline": "coarse",
+  "rarity": "rare",
+  "reactions": [
+    {
+      "do": [
+        {
+          "act": "var_add",
+          "by": "1",
+          "var": "self.pulse_count"
+        }
+      ],
+      "on": "on_block_break"
+    }
+  ],
+  "schema": 1,
+  "schema_version": "1.0",
+  "simulation": {
+    "efficiency_curve": "logarithmic",
+    "max_level": 25,
+    "tick_interval_ms": 1000,
+    "variance_band": 0.08
+  },
+  "stats": {
+    "base_hp": 45,
+    "base_value": 15,
+    "clump_xy": 2,
+    "l_step": 10,
+    "pipe_z": 2,
+    "spawn_prob": 0.01,
+    "z_unlock": 40
+  },
+  "summary": "Autonomous LFS Tycoon biomes capsule for capsule a99f: world/biome.",
+  "tags": [
+    "world_biome",
+    "biomes",
+    "tycoon-sim"
+  ],
+  "title": "capsule a99f: world/biome",
+  "unlock_tier": 2,
+  "vars": {
+    "pulse_count": 0
+  }
+}
